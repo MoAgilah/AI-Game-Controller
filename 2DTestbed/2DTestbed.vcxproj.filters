@@ -1,0 +1,266 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Collisions">
+      <UniqueIdentifier>{5c720b04-6d6c-4006-8ce5-39acdebd3f7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Collisions">
+      <UniqueIdentifier>{4413542c-a52b-42b7-aa34-597f43a7789f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObjects">
+      <UniqueIdentifier>{53b1ab3c-9e8b-48d1-8b3f-9c81929ae60e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObjects\Player">
+      <UniqueIdentifier>{1223269b-a09f-4081-8a17-dd76e58143e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObjects\Enemy">
+      <UniqueIdentifier>{42c16bca-c32d-4d2d-96b0-e9bb33640098}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Controller">
+      <UniqueIdentifier>{60f9e246-2d73-428d-b6f6-a2fdb965d170}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Game">
+      <UniqueIdentifier>{b72cb61a-eef8-4a78-9f4d-667ae3439152}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game">
+      <UniqueIdentifier>{ce1d7079-7f49-4c58-a716-994548a080d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameObjects">
+      <UniqueIdentifier>{6b50c55d-bb7b-4f06-b6d4-ed153cb9d579}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameObjects\Enemy">
+      <UniqueIdentifier>{3d22cd06-7b8f-4585-8722-8356248944f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameObjects\Player">
+      <UniqueIdentifier>{2530db5b-76be-4426-869b-9216e5ba1016}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Controller\NEAT">
+      <UniqueIdentifier>{e10f8985-fca7-4404-b404-b7b11be3e00c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Controller">
+      <UniqueIdentifier>{9a3b06b7-1634-46f0-8dbe-b0f37e6b9d03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Controller\NEAT">
+      <UniqueIdentifier>{f0a9290e-e72d-413d-b1fc-1b9b36609e29}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Marlo.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Collisions\Collisions.cpp">
+      <Filter>Source Files\Collisions</Filter>
+    </ClCompile>
+    <ClCompile Include="Collisions\BoundingBox.cpp">
+      <Filter>Source Files\Collisions</Filter>
+    </ClCompile>
+    <ClCompile Include="Collisions\Grid.cpp">
+      <Filter>Source Files\Collisions</Filter>
+    </ClCompile>
+    <ClCompile Include="Collisions\Tile.cpp">
+      <Filter>Source Files\Collisions</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller\Controller.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller\CtrlMgr.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller\Sensors.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Camera.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Game.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Level.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Timer.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Bill.cpp">
+      <Filter>Source Files\GameObjects\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Chuck.cpp">
+      <Filter>Source Files\GameObjects\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Enemy.cpp">
+      <Filter>Source Files\GameObjects\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Koopa.cpp">
+      <Filter>Source Files\GameObjects\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\PPlant.cpp">
+      <Filter>Source Files\GameObjects\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Rex.cpp">
+      <Filter>Source Files\GameObjects\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Player.cpp">
+      <Filter>Source Files\GameObjects\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\AnimatedSprite.cpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Object.cpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\GameObject.cpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="NEAT\Cga.cpp">
+      <Filter>Source Files\Controller\NEAT</Filter>
+    </ClCompile>
+    <ClCompile Include="NEAT\CInnovation.cpp">
+      <Filter>Source Files\Controller\NEAT</Filter>
+    </ClCompile>
+    <ClCompile Include="NEAT\CParams.cpp">
+      <Filter>Source Files\Controller\NEAT</Filter>
+    </ClCompile>
+    <ClCompile Include="NEAT\CSpecies.cpp">
+      <Filter>Source Files\Controller\NEAT</Filter>
+    </ClCompile>
+    <ClCompile Include="NEAT\CTimer.cpp">
+      <Filter>Source Files\Controller\NEAT</Filter>
+    </ClCompile>
+    <ClCompile Include="NEAT\genotype.cpp">
+      <Filter>Source Files\Controller\NEAT</Filter>
+    </ClCompile>
+    <ClCompile Include="NEAT\phenotype.cpp">
+      <Filter>Source Files\Controller\NEAT</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller\ANNView.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Collisions\BoundingBox.h">
+      <Filter>Header Files\Collisions</Filter>
+    </ClInclude>
+    <ClInclude Include="Collisions\Collisions.h">
+      <Filter>Header Files\Collisions</Filter>
+    </ClInclude>
+    <ClInclude Include="Collisions\Grid.h">
+      <Filter>Header Files\Collisions</Filter>
+    </ClInclude>
+    <ClInclude Include="Collisions\Tile.h">
+      <Filter>Header Files\Collisions</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\Controller.h">
+      <Filter>Header Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\CtrlMgr.h">
+      <Filter>Header Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\Sensors.h">
+      <Filter>Header Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Camera.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Game.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Level.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Timer.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Bill.h">
+      <Filter>Header Files\GameObjects\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Chuck.h">
+      <Filter>Header Files\GameObjects\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Enemy.h">
+      <Filter>Header Files\GameObjects\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Koopa.h">
+      <Filter>Header Files\GameObjects\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\PPlant.h">
+      <Filter>Header Files\GameObjects\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Rex.h">
+      <Filter>Header Files\GameObjects\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Player.h">
+      <Filter>Header Files\GameObjects\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\AnimatedSprite.h">
+      <Filter>Header Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\GameObject.h">
+      <Filter>Header Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Object.h">
+      <Filter>Header Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="NEAT\Cga.h">
+      <Filter>Header Files\Controller\NEAT</Filter>
+    </ClInclude>
+    <ClInclude Include="NEAT\CInnovation.h">
+      <Filter>Header Files\Controller\NEAT</Filter>
+    </ClInclude>
+    <ClInclude Include="NEAT\CParams.h">
+      <Filter>Header Files\Controller\NEAT</Filter>
+    </ClInclude>
+    <ClInclude Include="NEAT\CSpecies.h">
+      <Filter>Header Files\Controller\NEAT</Filter>
+    </ClInclude>
+    <ClInclude Include="NEAT\CTimer.h">
+      <Filter>Header Files\Controller\NEAT</Filter>
+    </ClInclude>
+    <ClInclude Include="NEAT\defines.h">
+      <Filter>Header Files\Controller\NEAT</Filter>
+    </ClInclude>
+    <ClInclude Include="NEAT\genes.h">
+      <Filter>Header Files\Controller\NEAT</Filter>
+    </ClInclude>
+    <ClInclude Include="NEAT\genotype.h">
+      <Filter>Header Files\Controller\NEAT</Filter>
+    </ClInclude>
+    <ClInclude Include="NEAT\phenotype.h">
+      <Filter>Header Files\Controller\NEAT</Filter>
+    </ClInclude>
+    <ClInclude Include="NEAT\resource.h">
+      <Filter>Header Files\Controller\NEAT</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\ANNView.h">
+      <Filter>Header Files\Controller</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Resources\TileTypes.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
+</Project>
