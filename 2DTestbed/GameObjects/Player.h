@@ -1,5 +1,4 @@
-#ifndef PlayerH
-#define PlayerH
+#pragma once
 
 #include <string>
 #include "../GameObjects/GameObject.h"
@@ -108,4 +107,3 @@ private:
 	const float m_jumpSpeed = 3.0f;
 };
 
-#endif

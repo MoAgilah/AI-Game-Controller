@@ -1,3 +1,5 @@
+#pragma once
+
 #include <SFML/Graphics.hpp>
 
 #include <stdlib.h>
@@ -7,35 +9,33 @@
 #include <iostream>
 #include <vector>
 
-#ifndef UtilsH
-#define UtilsH
+//Dcontrol shows debug for the controller
+#define DControl
 
-	//Dcontrol shows debug for the controller
-	#define DControl
+//DRender shows debug for the testbed
+//#define DRender
 
-	//DRender shows debug for the testbed
-	//#define DRender
+//#define GridInput
 
-	//#define GridInput
+//scale factor
+#define sX 2.34375f
+#define sY 2.5f
 
-	//scale factor
-	#define sX 2.34375f
-	#define sY 2.5f
+//screen dimensions
+#define scrX 600
+#define scrY 600
 
-	//screen dimensions
-	#define scrX 600
-	#define scrY 600
+#define Automated false
+#define RightMost 11350.f
 
-	#define Automated false
-	#define RightMost 11350.f
-
-	#define FPS 60.0f
+#define FPS 60.0f
 
 
 struct Sensor
 {
 	sf::Vertex points[3];
-	bool halfCol, endCol;
+	bool halfCol;
+	bool endCol;
 	void ClearSensor()
 	{
 		halfCol = endCol = false;
@@ -63,7 +63,6 @@ inline bool   RandBool()
 //returns a random float in the range -1 < n < 1
 inline double RandomClamped() { return RandFloat() - RandFloat(); }
 
-
 //-----------------------------------------------------------------------
 //
 //	some handy little functions
@@ -81,8 +80,6 @@ inline std::string itos(int arg)
 	return buffer.str();
 }
 
-
-
 //converts a float to a string
 inline std::string ftos(float arg)
 {
@@ -99,62 +96,44 @@ inline std::string ftos(float arg)
 inline void Clamp(double &arg, double min, double max)
 {
 	if (arg < min)
-	{
 		arg = min;
-	}
 
 	if (arg > max)
-	{
 		arg = max;
-	}
 }
 
 inline void Clamp(int &arg, int min, int max)
 {
 	if (arg < min)
-	{
 		arg = min;
-	}
 
 	if (arg > max)
-	{
 		arg = max;
-	}
 }
 
 //rounds a double up or down depending on its value
 inline int Rounded(double val)
 {
-	int    integral = (int)val;
+	int integral = (int)val;
 	double mantissa = val - integral;
 
 	if (mantissa < 0.5)
-	{
 		return integral;
-	}
-
 	else
-	{
 		return integral + 1;
-	}
 }
 
 //rounds a double up or down depending on whether its
 //mantissa is higher or lower than offset
 inline int RoundUnderOffset(double val, double offset)
 {
-	int    integral = (int)val;
+	int integral = (int)val;
 	double mantissa = val - integral;
 
 	if (mantissa < offset)
-	{
 		return integral;
-	}
-
 	else
-	{
 		return integral + 1;
-	}
 }
 
 
@@ -165,11 +144,9 @@ inline int RoundUnderOffset(double val, double offset)
 /////////////////////////////////////////////////////////////////////
 struct SPoint
 {
-	float x, y;
+	float x;
+	float y;
 
-	SPoint() {}
+	SPoint() = default;
 	SPoint(float a, float b) :x(a), y(b) {}
 };
-
-
-#endif // !UtilsH

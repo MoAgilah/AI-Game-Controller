@@ -1,5 +1,4 @@
-#ifndef LevelH
-#define LevelH
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include "../Utils.h"
@@ -35,5 +34,3 @@ private:
 	std::vector<std::unique_ptr<Enemy>> m_enemy;
 	std::vector<std::unique_ptr<Object>> m_objects;
 };
-
-#endif

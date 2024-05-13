@@ -1,5 +1,4 @@
-#ifndef CGA_H
-#define	CGA_H
+#pragma once
 
 //------------------------------------------------------------------------
 //
@@ -142,6 +141,3 @@ public:
 
 	double  BestEverFitness()const{return m_dBestEverFitness;}
 };
-
-
-#endif

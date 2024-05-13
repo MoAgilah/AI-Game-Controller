@@ -1,5 +1,4 @@
-#ifndef CINNOVATION_H
-#define CINNOVATION_H
+#pragma once
 //-----------------------------------------------------------------------
 //
 //  Name: CInnovation.h
@@ -145,7 +144,3 @@ public:
 	return m_NextInnovationNum;
   }
 };
-
-
-
-#endif

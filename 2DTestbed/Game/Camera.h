@@ -1,5 +1,4 @@
-#ifndef CameraH
-#define CameraH
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -52,5 +51,3 @@ private:
 	int m_displaytime;
 	int m_tileNum;
 };
-
-#endif

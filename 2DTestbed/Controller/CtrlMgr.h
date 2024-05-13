@@ -1,5 +1,4 @@
-#ifndef CtrlMgrH
-#define CtrlMgrH
+#pragma once
 
 #include <vector>
 #include <SFML\Graphics.hpp>
@@ -19,5 +18,3 @@ private:
 	Controller* m_controller;
 
 };
-
-#endif

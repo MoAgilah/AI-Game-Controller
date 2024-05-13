@@ -1,5 +1,4 @@
-#ifndef ANNViewH
-#define AnnViewH
+#pragma once
 
 #include <vector>
 #include <SFML\Graphics.hpp>
@@ -26,5 +25,3 @@ private:
 	std::vector<sf::Text*> m_text;
 	sf::Font m_font;
 };
-
-#endif

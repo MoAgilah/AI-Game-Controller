@@ -1,5 +1,4 @@
-#ifndef BoundingBoxH
-#define BoundingBoxH
+#pragma once
 
 #include <SFML\Graphics.hpp>
 #include "../Utils.h"
@@ -20,7 +19,7 @@ public:
 
 	bool Intersects(Tile tile);
 	bool Intersects(BoundingBox* box);
-	
+
 	sf::Sprite* GetSprite();
 	int GetID();
 	void SetID(int ID);
@@ -34,5 +33,3 @@ private:
 	int number;
 	static int numOn;
 };
-
-#endif

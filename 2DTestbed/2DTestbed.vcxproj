@@ -177,8 +177,8 @@
     <ClCompile Include="Game\Camera.cpp" />
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Game\Level.cpp" />
+    <ClCompile Include="Game\Logger.cpp" />
     <ClCompile Include="Game\Timer.cpp" />
-    <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Marlo.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -213,8 +213,8 @@
     <ClInclude Include="Game\Camera.h" />
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Game\Level.h" />
+    <ClInclude Include="Game\Logger.h" />
     <ClInclude Include="Game\Timer.h" />
-    <ClInclude Include="Logger.h" />
     <ClInclude Include="NEAT\Cga.h" />
     <ClInclude Include="NEAT\CInnovation.h" />
     <ClInclude Include="NEAT\CParams.h" />

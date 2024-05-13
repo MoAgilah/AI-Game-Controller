@@ -1,5 +1,4 @@
-#ifndef  GameObjectH
-#define  GameObjectH
+#pragma once
 
 #include <memory>
 #include <string>
@@ -102,5 +101,3 @@ protected:
 	sf::Vector2f m_velocity;
 	sf::Vector2f m_initialPos;
 };
-
-#endif

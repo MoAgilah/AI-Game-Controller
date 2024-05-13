@@ -1,5 +1,4 @@
-#ifndef AnimatedSpriteH		
-#define AnimatedSpriteH
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include <string>
@@ -43,5 +42,3 @@ private:
 	sf::Texture m_texture;
 	sf::Vector2f m_frameSize;
 };
-
-#endif

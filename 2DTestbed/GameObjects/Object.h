@@ -1,5 +1,4 @@
-#ifndef ObjectH
-#define ObjectH
+#pragma once
 
 #include "../GameObjects/GameObject.h"
 
@@ -39,6 +38,4 @@ private:
 	const float c_maxAirTime = 1.0f;
 	int m_objectNum;
 };
-
-#endif
 

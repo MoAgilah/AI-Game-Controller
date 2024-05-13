@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include <format>
 #include <SFML/Graphics.hpp>
 #include "Utils.h"
 
@@ -15,32 +16,27 @@ int main()
 	sf::Vector2i screenDimensions(scrX, scrY);
 	sf::RenderWindow window(sf::VideoMode(screenDimensions.x, screenDimensions.y), "SFML works!");
 	window.setFramerateLimit((unsigned int)FPS);
-	float t = 0.0f;
 	float dt = 1.f / FPS;
-	
+
 	//initialise begin
 	CParams g_params;
 	CtrlMgr::GetCtrlMgr()->GetController();
 
-	Game::GetGameMgr()->GetLogger()->AddDebugLog("Current Generation: " + std::to_string(CtrlMgr::GetCtrlMgr()->GetController()->GetCurrentGeneration()));
-	Game::GetGameMgr()->GetLogger()->AddExperimentLog("Current Generation: " + std::to_string(CtrlMgr::GetCtrlMgr()->GetController()->GetCurrentGeneration()));
+	Game::GetGameMgr()->GetLogger()->AddDebugLog(std::format("Current Generation: {}", CtrlMgr::GetCtrlMgr()->GetController()->GetCurrentGeneration()));
+	Game::GetGameMgr()->GetLogger()->AddExperimentLog(std::format("Current Generation: {}", CtrlMgr::GetCtrlMgr()->GetController()->GetCurrentGeneration()));
 	Game::GetGameMgr()->GetLogger()->AddExperimentLog(Game::GetGameMgr()->GetLogger()->GetTimeStamp());
-	
+
 	//initialise end
 	sf::Clock clock;
 	sf::Event event;
 	float currentTime = clock.getElapsedTime().asSeconds();
+
 	while (window.isOpen())
 	{
-		
 		while (window.pollEvent(event))
 		{
-			switch (event.type)
-			{
-			case sf::Event::Closed:
+			if (event.type == sf::Event::Closed)
 				window.close();
-				break;
-			}
 		}
 
 		float newTime = clock.getElapsedTime().asSeconds();
@@ -51,6 +47,7 @@ int main()
 		CtrlMgr::GetCtrlMgr()->GetController()->GetAnnView()->Update();
 
 		window.clear(sf::Color::White);
+
 		while (frameTime > 0.0)
 		{
 			float deltaTime = std::min(frameTime, dt);
@@ -61,22 +58,20 @@ int main()
 			CtrlMgr::GetCtrlMgr()->GetController()->GetSensorInputs();
 #endif
 			Game::GetGameMgr()->Update(deltaTime);
-			
 
 			//end update
 			frameTime -= deltaTime;
-			t += deltaTime;
 		}
 
 		//do render
 		Game::GetGameMgr()->Render(window);
 #ifdef DControl
 		CtrlMgr::GetCtrlMgr()->GetController()->GetAnnView()->Render(window);
-#endif // DControl			
+#endif // DControl
 
 		//end render
 		window.display();
 	}
-	
+
 	return 0;
 }

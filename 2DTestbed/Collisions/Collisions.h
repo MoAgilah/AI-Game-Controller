@@ -1,5 +1,4 @@
-#ifndef CollisionsH
-#define CollisionsH
+#pragma once
 
 #include <SFML\Graphics.hpp>
 #include "../Utils.h"
@@ -9,7 +8,7 @@
 #include "../Collisions/Grid.h"
 #include "../Controller/Sensors.h"
 
-enum Direction 
+enum Direction
 {
 	LDIR, RDIR, UDIR, DDIR
 };
@@ -57,5 +56,3 @@ private:
 	std::vector<Tile*> m_grid;
 	std::vector<GameObject*> m_collidables;
 };
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef BillH
-#define BillH
+#pragma once
 
 #include "../GameObjects/Enemy.h"
 
@@ -22,5 +21,3 @@ private:
 	Body colbody;
 	void Animate(float deltaTime);
 };
-
-#endif

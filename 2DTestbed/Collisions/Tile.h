@@ -1,5 +1,4 @@
-#ifndef TileH
-#define TileH
+#pragma once
 
 #include <SFML\Graphics.hpp>
 #include "../Utils.h"
@@ -38,7 +37,7 @@ public:
 	int GetCowNum();
 
 	void SetFillColour(sf::Color col);
-	
+
 	void Render(sf::RenderWindow& window);
 private:
 	void InvertY(int& y);
@@ -59,8 +58,5 @@ private:
 	sf::RectangleShape m_srect;
 	std::vector<sf::RectangleShape> m_slope;
 
-	
 };
 
-
-#endif

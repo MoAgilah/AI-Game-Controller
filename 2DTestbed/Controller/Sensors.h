@@ -1,5 +1,4 @@
-#ifndef SensorsH
-#define SensorsH
+#pragma once
 
 #include <SFML\Graphics.hpp>
 #include "../Utils.h"
@@ -19,5 +18,3 @@ private:
 
 	std::vector<Sensor*> m_Sensors;
 };
-
-#endif

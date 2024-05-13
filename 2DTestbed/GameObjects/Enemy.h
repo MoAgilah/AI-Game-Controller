@@ -1,6 +1,4 @@
-#ifndef EnemyH
-#define EnemyH
-
+#pragma once
 #include "../GameObjects/GameObject.h"
 
 class Camera;
@@ -42,5 +40,3 @@ protected:
 
 	int m_enemyNum;
 };
-
-#endif

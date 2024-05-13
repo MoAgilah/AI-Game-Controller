@@ -2,7 +2,7 @@
 
 Timer* Timer::self = nullptr;
 
-Timer::~Timer() 
+Timer::~Timer()
 {
 	if (self)
 	{
@@ -21,7 +21,7 @@ Timer::~Timer()
 	return self;
 }
 
-float Timer::CurrentTime()
+float Timer::CurrentTime() const
 {
 	return m_time;
 }
@@ -31,7 +31,7 @@ void Timer::UpdateTime(float deltaTime)
 	m_time -= deltaTime;
 }
 
-bool Timer::CheckEnd()
+bool Timer::CheckEnd() const
 {
 	return m_time <= 0.0f;
 }
@@ -46,7 +46,7 @@ void Timer::Stop()
 	stopped = true;
 }
 
-Timer::Timer() 
+Timer::Timer()
 {
 	m_time = 300.0f;
 }

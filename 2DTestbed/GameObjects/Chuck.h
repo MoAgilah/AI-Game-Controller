@@ -1,5 +1,4 @@
-#ifndef ChuckH
-#define ChuckH
+#pragma once
 
 #include "../GameObjects/Enemy.h"
 
@@ -16,5 +15,3 @@ private:
 	float m_waitTime;
 	void Animate(float deltaTime);
 };
-
-#endif

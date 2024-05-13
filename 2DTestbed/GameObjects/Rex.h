@@ -1,5 +1,4 @@
-#ifndef RexH
-#define RexH
+#pragma once
 
 #include "../GameObjects/Enemy.h"
 
@@ -20,5 +19,3 @@ private:
 	bool onTheGround;
 	BoundingBox* m_SmlBox;
 };
-
-#endif

@@ -1,11 +1,10 @@
-#ifndef GameH
-#define GameH
+#pragma once
 
 #include <memory>
 #include <SFML\Graphics.hpp>
 
 #include "../Utils.h"
-#include "../Logger.h"
+#include "Logger.h"
 
 #include "Level.h"
 #include "Timer.h"
@@ -31,7 +30,3 @@ private:
 	std::unique_ptr<Level> m_level;
 	std::unique_ptr<Logger> m_logger;
 };
-
-
-
-#endif

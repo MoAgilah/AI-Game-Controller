@@ -1,5 +1,4 @@
-#ifndef GridH
-#define GridH
+#pragma once
 
 #include <iostream>
 #include <string>
@@ -26,5 +25,3 @@ private:
 	std::vector<Tile*> m_grid;
 	sf::Font font;
 };
-
-#endif
