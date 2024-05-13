@@ -408,7 +408,7 @@ BoundingBox * Player::GetBBox()
 	return m_curBbox;
 }
 
-sf::Vector2f Player::GetPosition()
+sf::Vector2f Player::GetPosition() const
 {
 	return m_currSpr->GetSpr()->getPosition();
 }
@@ -443,7 +443,7 @@ void Player::SetPosition(float x, float y)
 	}
 }
 
-sf::Vector2f Player::GetOrigin()
+sf::Vector2f Player::GetOrigin() const
 {
 	return m_currSpr->GetSpr()->getOrigin();
 }
@@ -458,7 +458,7 @@ void Player::SetPrevPosition(float x, float y)
 	m_prevPos = sf::Vector2f(x, y);
 }
 
-sf::Vector2f Player::GetPrevPostion()
+sf::Vector2f Player::GetPrevPostion() const
 {
 	return m_prevPos;
 }

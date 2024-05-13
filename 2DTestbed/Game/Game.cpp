@@ -60,16 +60,16 @@ Logger * Game::GetLogger()
 
 void Game::CheckInView()
 {
-	m_player->SetVisible(Camera::GetCamera()->IsInView(*m_player->GetBBox()->GetSprite()));
+	m_player->SetVisible(Camera::GetCamera()->IsInView(m_player->GetBBox()->GetSprite()));
 
 	for (Tile* grid : Collisions::Get()->GetGrid())
 		grid->SetVisible(Camera::GetCamera()->IsinView(grid->GetRect()));
 
 	for (Enemy* enemy : m_level->GetEnemies())
-		enemy->SetVisible(Camera::GetCamera()->IsInView(*enemy->GetBBox()->GetSprite()));
+		enemy->SetVisible(Camera::GetCamera()->IsInView(enemy->GetBBox()->GetSprite()));
 
 	for (Object* object : m_level->GetObjects())
-		object->SetVisible(Camera::GetCamera()->IsInView(*object->GetBBox()->GetSprite()));
+		object->SetVisible(Camera::GetCamera()->IsInView(object->GetBBox()->GetSprite()));
 }
 
 void Game::Update(float deltaTime)
@@ -82,7 +82,7 @@ void Game::Update(float deltaTime)
 	m_player->Update(deltaTime);
 	m_level->Update(deltaTime);
 
-	Camera::GetCamera()->Update(deltaTime);
+	Camera::GetCamera()->Update();
 }
 
 void Game::Render(sf::RenderWindow & window)

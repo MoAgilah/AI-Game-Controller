@@ -77,7 +77,7 @@ void Collisions::Render(sf::RenderWindow& window)
 	{
 		if (m_collidables[i]->GetActive())
 		{
-			bool inView = Camera::GetCamera()->IsInView(*m_collidables[i]->GetBBox()->GetSprite());
+			bool inView = Camera::GetCamera()->IsInView(m_collidables[i]->GetBBox()->GetSprite());
 
 			if (inView)
 			{
@@ -87,7 +87,7 @@ void Collisions::Render(sf::RenderWindow& window)
 			}
 		}
 	}
-	
+
 	grid.Render(window);
 }
 
@@ -99,17 +99,17 @@ void Collisions::ProcessCollisions(GameObject* gobj)
 		for (int t = 0; t < m_grid.size(); ++t)
 		{
 			Tile* tile = m_grid[t];
-	
+
 			if (tile->GetType() == EMPTY || gobj->GetBBox()->GetID() == CHKPOINT || gobj->GetBBox()->GetID() == GOAL)
 			{
 				continue;
 			}
-	
+
 			if (!tile->GetVisible()) continue;
-	
+
 			numchecks++;
 			Col = gobj->GetBBox()->Intersects(*tile);
-	
+
 			if (Col)
 			{
 				++numchecks;
@@ -117,7 +117,7 @@ void Collisions::ProcessCollisions(GameObject* gobj)
 				break;
 			}
 		}
-	
+
 	if (!Col)
 	{
 		gobj->SetOnGround(false);
@@ -140,7 +140,7 @@ void Collisions::ProcessCollisions(GameObject* gobj)
 
 
 		Col = gobj->GetBBox()->Intersects(m_collidables[g]->GetBBox());
-		
+
 		if (Col)
 		{
 			ColObjectToColObject(gobj, m_collidables[g]);
@@ -186,9 +186,9 @@ void Collisions::PlayerToTile(GameObject * ply, Tile * tile)
 	{
 		float plyBot = plyObj->GetBBox()->GetSprite()->getPosition().y + plyObj->GetOrigin().y;
 		float tiletop = tile->GetPosition().y - tile->GetOrigin().y;
-    
+
 		//if above the tile
-       	if (plyBot < tiletop)
+		if (plyBot < tiletop)
 		{
 			//if falling
 			if (dir == DDIR)
@@ -202,7 +202,7 @@ void Collisions::PlayerToTile(GameObject * ply, Tile * tile)
 		{
 			if (plyObj->GetIsSuper())
 			{
-				//error occured with super mario colliding with tile above him when on the ground 
+				//error occured with super mario colliding with tile above him when on the ground
 				//this skips collision with that tile as way to alleiviate the problem
 				if (tile->GetID() == "17910")
 				{
@@ -236,9 +236,9 @@ void Collisions::PlayerToTile(GameObject * ply, Tile * tile)
 
 		return;
 	}
-	
+
 	//if travelling up or down a slope
-  	if (tile->GetType() == DIAGU || tile->GetType() == DIAGD)
+	if (tile->GetType() == DIAGU || tile->GetType() == DIAGD)
 	{
 		//extract slope
 		std::vector<sf::RectangleShape> tmpSlope = tile->GetSlopeBBox();
@@ -396,7 +396,7 @@ void Collisions::PlayerToObject(Player * ply, Object * obj)
 		ply->GoalHit();
 		break;
 	default:
-  		std::cout << "Unknown type!" << std::endl;
+		std::cout << "Unknown type!" << std::endl;
 		break;
 	}
 }
@@ -464,7 +464,7 @@ void Collisions::ObjectToTile(GameObject * obj, Tile * tile)
 				//set to minimum closest dist
 				obj->SetPosition(sf::Vector2f((tile->GetRect().getPosition().x - tile->GetRect().getOrigin().x * sX) - (obj->GetOrigin().x * sX) + 7.5f, obj->GetPosition().y));
 			}
-			
+
 			//flip direction
 			if (obj->GetDirection())
 			{
@@ -501,7 +501,7 @@ void Collisions::ObjectToTile(GameObject * obj, Tile * tile)
 				//set to minimum closest dist
 				obj->SetPosition(sf::Vector2f((tile->GetRect().getPosition().x + tile->GetRect().getOrigin().x * sX) + (obj->GetOrigin().x * sX) - 7.5f, obj->GetPosition().y));
 			}
-			
+
 			//flip direction
 			if (obj->GetDirection())
 			{
@@ -511,7 +511,7 @@ void Collisions::ObjectToTile(GameObject * obj, Tile * tile)
 			{
 				obj->SetDirection(true);
 			}
-			
+
 			break;
 		}
 
@@ -705,12 +705,12 @@ void Collisions::QBoxHit(Player * ply, Object * obj)
 			//add to the level
 			Game::GetGameMgr()->GetLevel()->AddObject(spawn);
 
-			obj->GetAnimSpr()->ChangeAnim(1);//change to inactive box 
+			obj->GetAnimSpr()->ChangeAnim(1);//change to inactive box
 			obj->SetIsAnimated(true);//set can be hit to false
 		}
 		//resove collision
 		ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (obj->GetPosition().y + obj->GetOrigin().y * sY) + (ply->GetOrigin().y * sY) + 4.f));
-		ply->SetCantJump();//make mario fall 
+		ply->SetCantJump();//make mario fall
 		break;
 	case DDIR:
 		//set to top of qbox
@@ -757,7 +757,7 @@ void Collisions::SpinBoxHit(Player * ply, Object * obj)
 	{
 		switch (GetDirTravelling(ply))
 		{
-		case UDIR://if going up 
+		case UDIR://if going up
 			ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (obj->GetPosition().y - obj->GetOrigin().y * sY) - (ply->GetOrigin().y * sY) + 4.f));
 			//make box spin
 			obj->SetIsAnimated(true);
@@ -777,7 +777,7 @@ bool Collisions::CircleToRect(sf::CircleShape circle, Player* ply)
 	//convert object into sphere
 	sf::Sprite* pspr = ply->GetBBox()->GetSprite();
 	sf::Vector2f Obj1Size = sf::Vector2f(pspr->getOrigin().x * 2, pspr->getOrigin().y * 2);
-	
+
 	Obj1Size.x *= sX;
 	Obj1Size.y *= sY;
 

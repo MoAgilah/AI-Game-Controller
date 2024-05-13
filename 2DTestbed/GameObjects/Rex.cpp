@@ -73,7 +73,7 @@ void Rex::Update(float deltaTime)
 			m_tillReset -= deltaTime;
 			if (m_tillReset <= 0)
 			{
-				if (!Camera::GetCamera()->IsInView(m_initialPos,GetOrigin()))
+				if (!Camera::GetCamera()->IsInView(m_initialPos, GetOrigin()))
 				{
 					Reset();
 				}

@@ -29,8 +29,8 @@ public:
 	virtual void Update(float deltaTime) = 0;
 	virtual void Render(sf::RenderWindow& window) = 0;
 
-	BoundingBox* GetBBox() { return m_bbox.get(); };
-	AnimatedSprite* GetAnimSpr() { return m_spr.get(); }
+	virtual BoundingBox* GetBBox() { return m_bbox.get(); };
+	virtual AnimatedSprite* GetAnimSpr() { return m_spr.get(); }
 
 	virtual void SetInitialPos(sf::Vector2f pos) { m_initialPos = pos; }
 	virtual sf::Vector2f GetPosition() const { return m_spr->GetSpr()->getPosition(); }

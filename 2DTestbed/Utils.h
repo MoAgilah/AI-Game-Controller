@@ -26,10 +26,10 @@
 	#define scrX 600
 	#define scrY 600
 
-	#define Automated true
+	#define Automated false
 	#define RightMost 11350.f
 
-	#define FPS 600.0f
+	#define FPS 60.0f
 
 
 struct Sensor

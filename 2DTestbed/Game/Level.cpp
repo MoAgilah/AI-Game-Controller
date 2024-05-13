@@ -66,7 +66,7 @@ void Level::Update(float deltaTime)
 void Level::Render(sf::RenderWindow & window)
 {
 	window.draw(*m_sprites.front());
-	
+
 	for (int i = 0; i < m_enemy.size(); i++)
 	{
 		if (m_enemy[i]->GetActive())
@@ -98,7 +98,7 @@ void Level::Render(sf::RenderWindow & window)
 
 	for (int i = 1; i < m_sprites.size(); i++)
 	{
-		if (Camera::GetCamera()->IsInView(*m_sprites[i]))
+		if (Camera::GetCamera()->IsInView(m_sprites[i]))
 		{
 			window.draw(*m_sprites[i]);
 		}
@@ -193,62 +193,62 @@ void Level::AddEnemies()
 	/*m_enemy.push_back(new Koopa("koopa.png",3,2,FPS,KOOPA,1,false,false,1,.5f));
 	m_enemy.back()->SetPosition(sf::Vector2f(tmp.GetPosition()));
 	m_enemy.back()->SetInitialPos(m_enemy.back()->GetPosition());*/
-	
+
 
 	tmp = Collisions::Get()->GetTile(32, 5);
 	m_enemy.push_back(new Bill("bill.png",1,1,FPS,BILL,1,false,true,0,1.f));
 	m_enemy.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x + tmp.GetOrigin().x *sX-10.f, tmp.GetPosition().y - tmp.GetOrigin().y * sY + 3.f));
 	m_enemy.back()->SetInitialPos(m_enemy.back()->GetPosition());
-	
 
-	
+
+
 	tmp = Collisions::Get()->GetTile(33, 3);
 	m_enemy.push_back(new Rex("rex.png",3,2,FPS,REX,1,false,false,0, .5f));
 	m_enemy.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY));
 	m_enemy.back()->SetInitialPos(m_enemy.back()->GetPosition());
-	
-	
+
+
 	tmp = Collisions::Get()->GetTile(47, 3);
 	m_enemy.push_back(new Rex("rex.png",3,2,FPS,REX,1,false,false,0, .5f));
 	m_enemy.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY));
 	m_enemy.back()->SetInitialPos(m_enemy.back()->GetPosition());
-	
+
 
 	tmp = Collisions::Get()->GetTile(55, 8);
 	m_enemy.push_back(new Rex("rex.png",3,2,FPS,REX,1,false,false,0, .5f));
 	m_enemy.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY));
 	m_enemy.back()->SetInitialPos(m_enemy.back()->GetPosition());
-	
+
 
 	tmp = Collisions::Get()->GetTile(72, 7);
 	m_enemy.push_back(new Rex("rex.png",3,2,FPS,REX,1,false,false,0, .5f));
 	m_enemy.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY));
 	m_enemy.back()->SetInitialPos(m_enemy.back()->GetPosition());
-	
+
 
 	tmp = Collisions::Get()->GetTile(82, 3);
 	m_enemy.push_back(new Rex("rex.png",3,2,FPS,REX,1,false,false,0, .5f));
 	m_enemy.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY));
 	m_enemy.back()->SetInitialPos(m_enemy.back()->GetPosition());
-	
+
 
 	tmp = Collisions::Get()->GetTile(89, 3);
 	m_enemy.push_back(new Rex("rex.png",3,2,FPS,REX,1,false,false,0, .5f));
 	m_enemy.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY));
 	m_enemy.back()->SetInitialPos(m_enemy.back()->GetPosition());
-	
+
 
 	tmp = Collisions::Get()->GetTile(112, 3);
 	m_enemy.push_back(new Rex("rex.png",3,2,FPS,REX,1,false,false,0, .5f));
 	m_enemy.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY));
 	m_enemy.back()->SetInitialPos(m_enemy.back()->GetPosition());
-	
+
 
 	tmp = Collisions::Get()->GetTile(113, 5);
 	m_enemy.push_back(new PPlant("pplant.png",2,2,FPS,PPLANT,2,false,false,0,1.f));
 	m_enemy.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x + tmp.GetOrigin().x * sX, tmp.GetPosition().y - tmp.GetOrigin().y * sY));
 	m_enemy.back()->SetInitialPos(m_enemy.back()->GetPosition());
-	
+
 
 	m_sprites.push_back(new sf::Sprite());
 	m_sprites.back()->setTexture(*m_textures[1]);
@@ -260,13 +260,13 @@ void Level::AddEnemies()
 	m_enemy.push_back(new Rex("rex.png",3,2,FPS,REX,1,false,false,0, .5f));
 	m_enemy.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY));
 	m_enemy.back()->SetInitialPos(m_enemy.back()->GetPosition());
-	
+
 
 	tmp = Collisions::Get()->GetTile(139, 6);
 	m_enemy.push_back(new PPlant("pplant.png",2,2,FPS,PPLANT,2,false, false,0,1.f));
 	m_enemy.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x + tmp.GetOrigin().x * sX, tmp.GetPosition().y - tmp.GetOrigin().y * sY));
 	m_enemy.back()->SetInitialPos(m_enemy.back()->GetPosition());
-	
+
 
 	m_sprites.push_back(new sf::Sprite());
 	m_sprites.back()->setTexture(*m_textures[2]);
@@ -278,79 +278,79 @@ void Level::AddEnemies()
 	m_enemy.push_back(new Rex("rex.png",3,2,FPS,REX,1,false,false,0, .5f));
 	m_enemy.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY));
 	m_enemy.back()->SetInitialPos(m_enemy.back()->GetPosition());
-	
+
 
 	tmp = Collisions::Get()->GetTile(182, 3);
 	m_enemy.push_back(new Rex("rex.png",3,2,FPS,REX,1,false,false,0, .5f));
 	m_enemy.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY));
 	m_enemy.back()->SetInitialPos(m_enemy.back()->GetPosition());
-	
+
 
 	tmp = Collisions::Get()->GetTile(184, 3);
 	m_enemy.push_back(new Rex("rex.png",3,2,FPS,REX,1,false,false,0, .5f));
 	m_enemy.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY));
 	m_enemy.back()->SetInitialPos(m_enemy.back()->GetPosition());
-	
+
 
 	tmp = Collisions::Get()->GetTile(186, 3);
 	m_enemy.push_back(new Rex("rex.png",3,2,FPS,REX,1,false,false,0, .5f));
 	m_enemy.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY));
 	m_enemy.back()->SetInitialPos(m_enemy.back()->GetPosition());
-	
+
 
 	tmp = Collisions::Get()->GetTile(189, 3);
 	m_enemy.push_back(new Rex("rex.png",3,2,FPS,REX,1,false,false,0, .5f));
 	m_enemy.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY));
 	m_enemy.back()->SetInitialPos(m_enemy.back()->GetPosition());
-	
+
 
 	tmp = Collisions::Get()->GetTile(203, 4);
 	m_enemy.push_back(new Bill("bill.png", 1, 1, FPS, BILL, 1, false, true, 0, 1.f));
 	m_enemy.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x + tmp.GetOrigin().x *sX - 10.f, tmp.GetPosition().y - tmp.GetOrigin().y * sY - 2.f));
 	m_enemy.back()->SetInitialPos(m_enemy.back()->GetPosition());
-	
+
 
 	tmp = Collisions::Get()->GetTile(207, 3);
 	m_enemy.push_back(new Rex("rex.png",3,2,FPS,REX,1,false,false,0, .5f));
 	m_enemy.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY));
 	m_enemy.back()->SetInitialPos(m_enemy.back()->GetPosition());
-	
+
 
 	tmp = Collisions::Get()->GetTile(227, 4);
 	m_enemy.push_back(new Bill("bill.png", 1, 1, FPS, BILL, 1, false, true, 0, 1.f));
 	m_enemy.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x + tmp.GetOrigin().x *sX - 10.f, tmp.GetPosition().y - tmp.GetOrigin().y * sY - 2.f));
 	m_enemy.back()->SetInitialPos(m_enemy.back()->GetPosition());
-	
+
 
 	tmp = Collisions::Get()->GetTile(242, 3);
 	m_enemy.push_back(new Rex("rex.png",3,2,FPS,REX,1,false,false,0, .5f));
 	m_enemy.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY));
 	m_enemy.back()->SetInitialPos(m_enemy.back()->GetPosition());
-	
+
 
 	tmp = Collisions::Get()->GetTile(257, 3);
 	m_enemy.push_back(new Rex("rex.png",3,2,FPS,REX,1,false,false,0, .5f));
 	m_enemy.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY));
 	m_enemy.back()->SetInitialPos(m_enemy.back()->GetPosition());
-	
+
 
 	tmp = Collisions::Get()->GetTile(263, 3);
 	m_enemy.push_back(new Rex("rex.png",3,2,FPS,REX,1,false,false,0, .5f));
 	m_enemy.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY));
 	m_enemy.back()->SetInitialPos(m_enemy.back()->GetPosition());
-	
+
 
 	tmp = Collisions::Get()->GetTile(280, 4);
 	m_enemy.push_back(new Bill("bill.png", 1, 1, FPS, BILL, 1, false, true, 0, 1.f));
 	m_enemy.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x + tmp.GetOrigin().x *sX - 10.f, tmp.GetPosition().y - tmp.GetOrigin().y * sY - 2.f));
 	m_enemy.back()->SetInitialPos(m_enemy.back()->GetPosition());
-	
+
 
 	tmp = Collisions::Get()->GetTile(284, 6);
 	m_enemy.push_back(new PPlant("pplant.png",2,2,FPS,PPLANT,2,false,false,0,1.f));
 	m_enemy.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x + tmp.GetOrigin().x * sX, tmp.GetPosition().y - tmp.GetOrigin().y * sY));
 	m_enemy.back()->SetInitialPos(m_enemy.back()->GetPosition());
-	
+
 
 	m_sprites.push_back(new sf::Sprite());
 	m_sprites.back()->setTexture(*m_textures[3]);
@@ -362,13 +362,13 @@ void Level::AddEnemies()
 	m_enemy.push_back(new Rex("rex.png",3,2,FPS,REX,1,false,false,0, .5f));
 	m_enemy.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY));
 	m_enemy.back()->SetInitialPos(m_enemy.back()->GetPosition());
-	
+
 
 	tmp = Collisions::Get()->GetTile(298, 3);
 	m_enemy.push_back(new Chuck("chuck.png", 6, 2, FPS, CHUCK, 1, false, false, 3, 0.5f));
 	m_enemy.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y *sY + 6.f));
 	m_enemy.back()->SetInitialPos(m_enemy.back()->GetPosition());
-	
+
 }
 
 void Level::AddObjects()
@@ -376,80 +376,80 @@ void Level::AddObjects()
 	Tile tmp = Collisions::Get()->GetTile(17, 9);
 	m_objects.push_back(new Object("ycoin.png",1,1,FPS,YCOIN,2,true,true,0,1.f));
 	m_objects.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x,tmp.GetPosition().y - tmp.GetOrigin().y * 2.f - 4.f));
-	
+
 
 	tmp = Collisions::Get()->GetTile(37, 6);
 	std::vector<int> frames{ 1, 1 };
 	m_objects.push_back(new Object("bopwr.png", 2, 1, FPS, QBOX, 2, true, false, 0, 1.f));
 	m_objects.back()->GetAnimSpr()->SetFrames(frames);
 	m_objects.back()->SetPosition(sf::Vector2f(tmp.GetPosition()));
-	
+
 
 	tmp = Collisions::Get()->GetTile(88, 9);
 	m_objects.push_back(new Object("ycoin.png", 1, 1, FPS, YCOIN, 2, true, true, 0, 1.f));
 	m_objects.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * 2.f - 4.f));
-	
+
 
 	tmp = Collisions::Get()->GetTile(102, 3);
 	m_objects.push_back(new Object("shroom.png", 1, 1, FPS, SHROOM, 2, true, true, 0, 1.f));
 	m_objects.back()->SetPosition(sf::Vector2f(tmp.GetPosition()));
-	
+
 
 	tmp = Collisions::Get()->GetTile(120, 6);
 	m_objects.push_back(new Object("boassort.png", 1, 1, FPS, SMBOX, 2, true, true, 0, 1.f));
 	m_objects.back()->SetPosition(sf::Vector2f(tmp.GetPosition()));
-	
+
 
 	tmp = Collisions::Get()->GetTile(121, 6);
 	m_objects.push_back(new Object("boassort.png", 1, 1, FPS, SMBOX, 2, true, true, 0, 1.f));
 	m_objects.back()->SetPosition(sf::Vector2f(tmp.GetPosition()));
-	
+
 
 	tmp = Collisions::Get()->GetTile(151, 5);
 	m_objects.push_back(new Object("chpnt.png", 1, 1, FPS, CHKPOINT, 2, true, true, 0, 1.f));
 	m_objects.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY +10.f));
-	
+
 
 	tmp = Collisions::Get()->GetTile(179, 11);
 	m_objects.push_back(new Object("ycoin.png", 1, 1, FPS, YCOIN, 2, true, true, 0, 1.f));
 	m_objects.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * 2.f - 4.f));
-	
+
 
 	tmp = Collisions::Get()->GetTile(239, 6);
 	frames = std::vector<int>{ 1, 4 };
 	m_objects.push_back(new Object("bospin.png", 2, 4, FPS, SPBOX, 2, true, false, 0, 0.25f));
 	m_objects.back()->GetAnimSpr()->SetFrames(frames);
 	m_objects.back()->SetPosition(sf::Vector2f(tmp.GetPosition()));
-	
+
 
 	tmp = Collisions::Get()->GetTile(243, 5);
 	m_objects.push_back(new Object("bospin.png", 2, 4, FPS, SPBOX, 2, true, false, 0, 0.25f));
 	m_objects.back()->GetAnimSpr()->SetFrames(frames);
 	m_objects.back()->SetPosition(sf::Vector2f(tmp.GetPosition()));
-	
+
 
 	tmp = Collisions::Get()->GetTile(247, 6);
 	m_objects.push_back(new Object("bospin.png", 2, 4, FPS, SPBOX, 2, true, false, 0, 0.25f));
 	m_objects.back()->GetAnimSpr()->SetFrames(frames);
 	m_objects.back()->SetPosition(sf::Vector2f(tmp.GetPosition()));
-	
+
 
 	tmp = Collisions::Get()->GetTile(243, 9);
 	frames = std::vector<int>{ 1, 1 };
 	m_objects.push_back(new Object("bopwr.png", 2, 1, FPS, QBOX, 2, true, false, 0, 1.f));
 	m_objects.back()->GetAnimSpr()->SetFrames(frames);
 	m_objects.back()->SetPosition(sf::Vector2f(tmp.GetPosition()));
-	
+
 
 	tmp = Collisions::Get()->GetTile(288, 9);
 	m_objects.push_back(new Object("ycoin.png", 1, 1, FPS, YCOIN, 2, true, true, 0, 1.f));
 	m_objects.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * 2.f - 4.f));
-	
+
 
 	tmp = Collisions::Get()->GetTile(302, 3);
 	m_objects.push_back(new Object("goal.png", 1, 1, FPS, GOAL,1, true, true, 0, 1.f));
 	m_objects.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x-6.f, tmp.GetPosition().y - tmp.GetOrigin().y * sY +30.f));
-	
+
 }
 
 void Level::AddObject(Object * obj)
