@@ -14,16 +14,16 @@ using namespace std;
 
 	//Dcontrol shows debug for the controller
 	#define DControl
-	
+
 	//DRender shows debug for the testbed
 	//#define DRender
 
 	//#define GridInput
-	
+
 	//scale factor
 	#define sX 2.34375f
 	#define sY 2.5f
-	
+
 	//screen dimensions
 	#define scrX 600
 	#define scrY 600
@@ -33,7 +33,7 @@ using namespace std;
 
 	#define FPS 600.0f
 
-	
+
 struct Sensor
 {
 	sf::Vertex points[3];
@@ -67,7 +67,7 @@ inline double RandomClamped() { return RandFloat() - RandFloat(); }
 
 
 //-----------------------------------------------------------------------
-//	
+//
 //	some handy little functions
 //-----------------------------------------------------------------------
 
@@ -141,7 +141,7 @@ inline int Rounded(double val)
 	}
 }
 
-//rounds a double up or down depending on whether its 
+//rounds a double up or down depending on whether its
 //mantissa is higher or lower than offset
 inline int RoundUnderOffset(double val, double offset)
 {
@@ -173,5 +173,5 @@ struct SPoint
 	SPoint(float a, float b) :x(a), y(b) {}
 };
 
-	
+
 #endif // !UtilsH

@@ -11,7 +11,7 @@ Rex::Rex(std::string filepath, int rows, int cols, float fps, int bTyp, int strl
 	m_type = REX;
 	numLives = maxLives = 2;
 
-	m_CurBox = m_bbox;
+	m_curBbox = m_bbox.get();
 
 	m_SmlBox = new BoundingBox(filepath.substr(0, strloc) + "c", bTyp);
 }
@@ -27,9 +27,9 @@ void Rex::Die()
 void Rex::Change()
 {
 	m_spr->ChangeAnim(1);
-	
-	m_CurBox = m_SmlBox;
-	
+
+	m_curBbox = m_SmlBox;
+
 	//change bbox
 	//smaller one
 }
@@ -38,7 +38,7 @@ void Rex::Update(float deltaTime)
 {
 	if (m_active)
 	{
-		if (visible)
+		if (m_visible)
 		{
 			if (timeLeftActive > 0)
 			{
@@ -59,7 +59,7 @@ void Rex::Update(float deltaTime)
 		else
 		{
 			//and wasn't previousily off screen
-			if (visible != prevVisibility)
+			if (m_visible != m_prevVisibility)
 			{
 
 				m_tillReset = 1;
@@ -73,7 +73,7 @@ void Rex::Update(float deltaTime)
 			m_tillReset -= deltaTime;
 			if (m_tillReset <= 0)
 			{
-				if (!Camera::GetCamera()->IsInView(initialPos,GetOrigin()))
+				if (!Camera::GetCamera()->IsInView(m_initialPos,GetOrigin()))
 				{
 					Reset();
 				}
@@ -81,7 +81,7 @@ void Rex::Update(float deltaTime)
 		}
 
 
-		if (visible)
+		if (m_visible)
 		{
 			if (m_alive)
 			{
@@ -96,26 +96,26 @@ void Rex::Update(float deltaTime)
 			if (numLives == maxLives)
 			{
 				//+
-				m_CurBox->Update(sf::Vector2f(m_spr->GetSpr()->getPosition().x - 2.f, m_spr->GetSpr()->getPosition().y));
+				m_curBbox->Update(sf::Vector2f(m_spr->GetSpr()->getPosition().x - 2.f, m_spr->GetSpr()->getPosition().y));
 			}
 			else
 			{
 				//+
-				m_CurBox->Update(sf::Vector2f(m_spr->GetSpr()->getPosition().x - 4.f, m_spr->GetSpr()->getPosition().y + 18.5f));
+				m_curBbox->Update(sf::Vector2f(m_spr->GetSpr()->getPosition().x - 4.f, m_spr->GetSpr()->getPosition().y + 18.5f));
 			}
-			
+
 		}
 		else
 		{
 			if (numLives == maxLives)
 			{
 				//+
-				m_CurBox->Update(sf::Vector2f(m_spr->GetSpr()->getPosition().x + 2.f, m_spr->GetSpr()->getPosition().y));
+				m_curBbox->Update(sf::Vector2f(m_spr->GetSpr()->getPosition().x + 2.f, m_spr->GetSpr()->getPosition().y));
 			}
 			else
 			{
 				//-
-				m_CurBox->Update(sf::Vector2f(m_spr->GetSpr()->getPosition().x + 4.f, m_spr->GetSpr()->getPosition().y + 18.5f));
+				m_curBbox->Update(sf::Vector2f(m_spr->GetSpr()->getPosition().x + 4.f, m_spr->GetSpr()->getPosition().y + 18.5f));
 			}
 		}
 	}
@@ -123,8 +123,8 @@ void Rex::Update(float deltaTime)
 
 void Rex::Reset()
 {
-	m_direction = initialDir;
-	SetPosition(initialPos);
+	m_direction = m_initialDir;
+	SetPosition(m_initialPos);
 	m_prevPos = GetPosition();
 	m_velocity = sf::Vector2f(0, 0);
 
@@ -132,20 +132,20 @@ void Rex::Reset()
 	m_onGround = false;
 	m_falling = true;
 	m_airbourne = false;
-	visible = prevVisibility = false;
+	m_visible = m_prevVisibility = false;
 
 	m_tillReset = 0;
 
 	numLives = maxLives;
 
-	m_CurBox = m_bbox;
+	m_curBbox = m_bbox.get();
 	m_spr->ChangeAnim(0);
 }
 
 void Rex::Revive()
 {
-	m_direction = initialDir;
-	SetPosition(initialPos);
+	m_direction = m_initialDir;
+	SetPosition(m_initialPos);
 	m_prevPos = GetPosition();
 	m_velocity = sf::Vector2f(0, 0);
 
@@ -153,14 +153,14 @@ void Rex::Revive()
 	m_onGround = false;
 	m_falling = true;
 	m_airbourne = false;
-	visible = prevVisibility = false;
+	m_visible = m_prevVisibility = false;
 
 	m_tillReset = 0;
 	timeLeftActive = 0;
 	numLives = maxLives;
 
-	m_CurBox = m_bbox;
-	m_spr->ChangeAnim(initialAnim);
+	m_curBbox = m_bbox.get();
+	m_spr->ChangeAnim(m_initialAnim);
 	m_alive = true;
 	m_active = true;
 }
@@ -181,7 +181,7 @@ void Rex::Animate(float deltaTime)
 	{
 		m_velocity.x = -2;
 	}
-	
+
 	if (m_onGround)
 	{
 		m_velocity.y = 0;
@@ -190,7 +190,7 @@ void Rex::Animate(float deltaTime)
 	else
 	{
 		m_falling = true;
-		m_velocity.y += gravity; 
+		m_velocity.y += m_gravity;
 	}
 
 	if (m_velocity.x != 0)

@@ -1,9 +1,9 @@
 #include "../GameObjects/AnimatedSprite.h"
   
-AnimatedSprite::AnimatedSprite(std::string filePath, int rows, int columns, float framesPerSec, int id, bool symmetrical, int initialAnim, float animationSpeed)
+AnimatedSprite::AnimatedSprite(std::string filePath, int rows, int columns, float framesPerSec, int id, bool symmetrical, int m_initialAnim, float animationSpeed)
 {
 	m_currentFrame = 0;
-	m_currentAnim = initialAnim;
+	m_currentAnim = m_initialAnim;
 	animEnd = 0;
 	m_currentTime = 0;
 	m_framesPerSecond = framesPerSec / 1000.0f;

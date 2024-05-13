@@ -11,11 +11,9 @@ Enemy::Enemy(std::string filepath, int rows, int cols, float fps, int bTyp, int 
 	resetAllowed = false;
 	m_alive = true;
 
-	initialAnim = initAnim;
+	m_initialAnim = initAnim;
 
-	m_CurBox = m_bbox;
-	
-	m_type;
+	m_curBbox = m_bbox.get();
 }
 
 Enemy::~Enemy()
@@ -26,7 +24,7 @@ void Enemy::Update(float deltaTime)
 {
 	if (m_active)
 	{
-		if (visible)
+		if (m_visible)
 		{
 			if (timeLeftActive > 0)
 			{
@@ -47,7 +45,7 @@ void Enemy::Update(float deltaTime)
 		else
 		{
 			//and wasn't previousily off screen
-			if (visible != prevVisibility)
+			if (m_visible != m_prevVisibility)
 			{
 
 				m_tillReset = 1;
@@ -61,7 +59,7 @@ void Enemy::Update(float deltaTime)
 			m_tillReset -= deltaTime;
 			if (m_tillReset <= 0)
 			{
-				if (!Camera::GetCamera()->IsInView(initialPos,GetOrigin()))
+				if (!Camera::GetCamera()->IsInView(m_initialPos,GetOrigin()))
 				{
 					Reset();
 				}
@@ -69,7 +67,7 @@ void Enemy::Update(float deltaTime)
 		}
 
 
-		if (visible)
+		if (m_visible)
 		{
 			if (m_alive || m_bbox->GetID() == BILL)
 			{
@@ -82,12 +80,12 @@ void Enemy::Update(float deltaTime)
 		if (m_direction)
 		{
 			//+
-			m_CurBox->Update(sf::Vector2f(m_spr->GetSpr()->getPosition().x - 2, m_spr->GetSpr()->getPosition().y));
+			m_curBbox->Update(sf::Vector2f(m_spr->GetSpr()->getPosition().x - 2, m_spr->GetSpr()->getPosition().y));
 		}
 		else
 		{
 			//-
-			m_CurBox->Update(sf::Vector2f(m_spr->GetSpr()->getPosition().x + 2, m_spr->GetSpr()->getPosition().y));
+			m_curBbox->Update(sf::Vector2f(m_spr->GetSpr()->getPosition().x + 2, m_spr->GetSpr()->getPosition().y));
 		}
 	}
 }
@@ -100,7 +98,7 @@ void Enemy::Render(sf::RenderWindow & window)
 int Enemy::DecrementLife()
 {
 	if(numLives > 0)
-	{ 
+	{
 		--numLives;
 		if (numLives == 0)
 		{
@@ -113,9 +111,9 @@ int Enemy::DecrementLife()
 
 				((Rex*)this)->Change();
 			}
-			
+
 		}
-		
+
 	}
 
 	return numLives;
@@ -136,11 +134,6 @@ void Enemy::Change()
 	return;
 }
 
-BoundingBox * Enemy::GetBBox()
-{
-	return m_CurBox;
-}
-
 int Enemy::GetLives()
 {
 	return numLives;
@@ -148,8 +141,8 @@ int Enemy::GetLives()
 
 void Enemy::Revive()
 {
-	m_direction = initialDir;
-	SetPosition(initialPos);
+	m_direction = m_initialDir;
+	SetPosition(m_initialPos);
 	m_prevPos = GetPosition();
 	m_velocity = sf::Vector2f(0, 0);
 
@@ -157,13 +150,13 @@ void Enemy::Revive()
 	m_onGround = false;
 	m_falling = true;
 	m_airbourne = false;
-	visible = prevVisibility = false;
+	m_visible = m_prevVisibility = false;
 
 	m_tillReset = 0;
 	timeLeftActive = 0;
 	numLives = maxLives;
 
-	m_spr->ChangeAnim(initialAnim);
+	m_spr->ChangeAnim(m_initialAnim);
 	m_alive = true;
 	m_active = true;
 }
@@ -175,8 +168,8 @@ int Enemy::GetEnemyNum()
 
 void Enemy::Reset()
 {
-	m_direction = initialDir;
-	SetPosition(initialPos);
+	m_direction = m_initialDir;
+	SetPosition(m_initialPos);
 	m_prevPos = GetPosition();
 	m_velocity = sf::Vector2f(0,0);
 
@@ -184,11 +177,11 @@ void Enemy::Reset()
 	m_onGround = false;
 	m_falling = true;
 	m_airbourne = false;
-	visible = prevVisibility = false;
+	m_visible = m_prevVisibility = false;
 
 	m_tillReset = 0;
 
 	numLives = maxLives;
 
-	m_spr->ChangeAnim(initialAnim);
+	m_spr->ChangeAnim(m_initialAnim);
 }

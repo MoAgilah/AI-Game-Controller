@@ -17,19 +17,19 @@ Player::Player(std::string filepath, int rows, int cols, float fps, int bTyp, in
 	m_bbox->GetSprite()->setPosition(sf::Vector2f(m_spr->GetSpr()->getPosition().x - 2, m_spr->GetSpr()->getPosition().y + 4));
 	m_CrouchBbox = new BoundingBox(filepath.substr(0, strloc) + "c", bTyp);
 
-	m_currSpr = m_spr;
-	m_curBbox = m_bbox;
+	m_currSpr = m_spr.get();
+	m_curBbox = m_bbox.get();
 
 	m_deathLoc = m_velocity = sf::Vector2f(0.0f, 0.0f);
-	m_prevPos = m_spawnLoc = initialPos = sf::Vector2f{ 75, 454 };
-	
+	m_prevPos = m_spawnLoc = m_initialPos = sf::Vector2f{ 75, 454 };
+
 	//super mario
 	filepath = "s" + filepath;
 	frames = std::vector<int>{ 1, 1, 1, 3, 1, 2, 1, 2 };
 	m_SupSpr = new AnimatedSprite(filepath, rows, cols + 1, fps, strloc, symmetrical, initAnim, animSpd);
 	m_SupSpr->SetFrames(frames);
 	m_SupSpr->GetSpr()->setPosition(sf::Vector2f(m_SupSpr->GetSpr()->getOrigin().x * 2, 481));
-	
+
 	m_SupBbox = new BoundingBox(filepath.substr(0, strloc + 1), bTyp);
 	m_SCrouchBbox = new BoundingBox(filepath.substr(0, strloc + 1) + "c", bTyp);
 
@@ -39,7 +39,7 @@ Player::Player(std::string filepath, int rows, int cols, float fps, int bTyp, in
 	m_spindown = false;
 	ifWasSuper = m_super = false;
 	justCrouched = false;
-	visible = true;
+	m_visible = true;
 	die = false;
 	killed = false;
 	m_alive = true;
@@ -60,7 +60,7 @@ Player::Player(std::string filepath, int rows, int cols, float fps, int bTyp, in
 	//if automated
 	if (Automated)
 	{
-		//if player already inserted 
+		//if player already inserted
 		if (s_playerInserted)
 		{
 			//remove additional players
@@ -68,7 +68,7 @@ Player::Player(std::string filepath, int rows, int cols, float fps, int bTyp, in
 		}
 		else
 		{
-			//if first player 
+			//if first player
 			s_playerInserted = true;
 		}
 	}
@@ -131,12 +131,12 @@ void Player::Update(float deltaTime)
 			else
 			{
 				//if current spr and bbox is not regular
-				if (m_currSpr != m_spr)
+				if (m_currSpr != m_spr.get())
 				{
 					//change spr and bbox
-					m_currSpr = m_spr;
-					m_curBbox = m_bbox;
-					
+					m_currSpr = m_spr.get();
+					m_curBbox = m_bbox.get();
+
 					//adjust position
 					SetPosition(m_SupSpr->GetSpr()->getPosition() + sf::Vector2f(0, heightDiff));
 				}
@@ -144,7 +144,7 @@ void Player::Update(float deltaTime)
 				ifWasSuper = false;
 			}
 		}//end super
-		
+
 		//start change bbox to crouch bbox
 		//if crouched key held down
 		if (m_keyState[DOWN_KEY])
@@ -158,7 +158,7 @@ void Player::Update(float deltaTime)
 				if (m_super)
 				{
 					m_curBbox = m_SCrouchBbox;
-					
+
 					//adjust bbox position
 					if (m_direction)
 						m_curBbox->Update(sf::Vector2f(m_currSpr->GetSpr()->getPosition().x - 1.f, m_currSpr->GetSpr()->getPosition().y + 22.f));
@@ -189,7 +189,7 @@ void Player::Update(float deltaTime)
 				if (m_super)
 					m_curBbox = m_SupBbox;
 				else
-					m_curBbox = m_bbox;
+					m_curBbox = m_bbox.get();
 
 				SetPosition(GetPosition());
 			}
@@ -228,9 +228,9 @@ void Player::Update(float deltaTime)
 			if (m_noGravTime <= 0)
 			{
 				if (justHitEnemy)	justHitEnemy = false;
-				
-				//apply gravity
-				m_velocity.y += gravity;
+
+				//apply m_gravity
+				m_velocity.y += m_gravity;
 			}
 			else //if hovering
 			{
@@ -310,7 +310,7 @@ void Player::Update(float deltaTime)
 						goingUp = false;
 					}
 				}
-				
+
 			}
 			else
 			{
@@ -330,12 +330,12 @@ void Player::Update(float deltaTime)
 					}
 				}
 			}
-			
+
 			Move(sf::Vector2f(0, m_velocity.y * FPS * deltaTime));
 		}
 		else
 		{
-			//decomposition of movement 
+			//decomposition of movement
 			if (m_velocity.x != 0)
 			{
 				SetPrevPosition(m_currSpr->GetSpr()->getPosition());
@@ -362,7 +362,7 @@ void Player::Update(float deltaTime)
 		{
 			if (goalHit == false)
 				goalHit = true;
-			
+
 			CheckPointHit(false);
 			SetSpawnLoc();
 
@@ -477,7 +477,7 @@ void Player::SetSpawnLoc(sf::Vector2f loc)
 {
 	if (loc == sf::Vector2f(0,0))
 	{
-		m_spawnLoc = initialPos;
+		m_spawnLoc = m_initialPos;
 	}
 	else
 	{
@@ -495,10 +495,10 @@ void Player::Reset()
 {
 	ifWasSuper = m_super = false;
 
-	m_currSpr = m_spr;
-	m_curBbox = m_bbox;
+	m_currSpr = m_spr.get();
+	m_curBbox = m_bbox.get();
 
-	m_spawnLoc = initialPos;
+	m_spawnLoc = m_initialPos;
 
 	SetPosition(m_spawnLoc);
 	SetPrevPosition(m_spawnLoc);
@@ -516,8 +516,8 @@ void Player::Reset()
 	killed = false;
 	m_alive = true;
 
-	m_active = visible = true;
-	m_currSpr->ChangeAnim(initialAnim);
+	m_active = m_visible = true;
+	m_currSpr->ChangeAnim(m_initialAnim);
 
 	for (size_t i = 0; i < MAXKEYS; i++)
 	{
@@ -529,8 +529,8 @@ void Player::ReSpawn()
 {
 	ifWasSuper = m_super = false;
 
-	m_currSpr = m_spr;
-	m_curBbox = m_bbox;
+	m_currSpr = m_spr.get();
+	m_curBbox = m_bbox.get();
 
 	SetPosition(m_spawnLoc);
 	SetPrevPosition(m_spawnLoc);
@@ -548,8 +548,8 @@ void Player::ReSpawn()
 	killed = false;
 	m_alive = true;
 
-	m_active = visible = true;
-	m_currSpr->ChangeAnim(initialAnim);
+	m_active = m_visible = true;
+	m_currSpr->ChangeAnim(m_initialAnim);
 	Timer::Get()->ResetTime();
 	Game::GetGameMgr()->GetLevel()->ResetLevel();
 }
@@ -583,7 +583,7 @@ void Player::Kill()
 	goingUp = true;
 	die = true;
 	m_alive = false;
-    m_currSpr->ChangeAnim(DIE);//Die
+	m_currSpr->ChangeAnim(DIE);//Die
 	//m_dFitness -= 200;
 }
 
@@ -785,19 +785,19 @@ void Player::ControllerInput()
 		case RCRTL_KEY:
 			move = "sJmp";
 			break;
-		
+
 		default:
 			break;
 		}
 
-		//clamp output 
+		//clamp output
 		if (oval <= 0.1) output = false;
 		else if (oval >= 0.9) output = true;
 		else output = false;
-		
+
 		Game::GetGameMgr()->GetLogger()->AddDebugLog(move + " = " + std::to_string(oval) + " = " + std::to_string(output),false);
 		Game::GetGameMgr()->GetLogger()->AddDebugLog("\t",false);
-		//store output 
+		//store output
 		m_keyState[i] = output;
 	}
 	Game::GetGameMgr()->GetLogger()->AddDebugLog("");
@@ -843,7 +843,7 @@ void Player::ProcessInput()
 				m_velocity.x = -m_moveSpeed;
 			}
 		}
-		
+
 
 		//move right
 		if (m_keyState[RIGHT_KEY])
@@ -866,7 +866,7 @@ void Player::ProcessInput()
 				m_velocity.x = m_moveSpeed;
 			}
 		}
-		
+
 
 		if ((m_keyState[LEFT_KEY] == false && m_keyState[RIGHT_KEY] == false))
 		{

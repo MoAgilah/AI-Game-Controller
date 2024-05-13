@@ -9,14 +9,14 @@ class Enemy : public GameObject
 public:
 	Enemy(std::string filepath, int rows, int cols, float fps, int bTyp, int strloc = 1, bool dir = true, bool symmetrical = true, int initAnim = 0, float animSpd = 1);
 	~Enemy();
-	virtual void Update(float deltaTime);
-	virtual void Render(sf::RenderWindow& window);
+
+	void Update(float deltaTime) override;
+	void Render(sf::RenderWindow& window) override;
 	int DecrementLife();
 	void ResetLives();
 	virtual void Die() = 0;
 	bool GetIsAlive();
 	virtual void Change();
-	BoundingBox *GetBBox();
 
 	int GetLives();
 	virtual void Revive();
@@ -38,8 +38,6 @@ protected:
 	bool m_alive;
 
 	float timeLeftActive;
-
-	BoundingBox* m_CurBox;
 
 	int m_enemyNum;
 };

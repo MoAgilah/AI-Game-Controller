@@ -1,7 +1,9 @@
 #ifndef  GameObjectH
 #define  GameObjectH
 
+#include <memory>
 #include <string>
+#include <vector>
 #include <SFML/Graphics.hpp>
 #include "../GameObjects/AnimatedSprite.h"
 
@@ -22,77 +24,83 @@ class GameObject
 {
 public:
 	GameObject(std::string filepath, int rows, int cols, float fps, int bTyp, int strloc, bool dir, bool symmetrical, int initAnim, float animSpd);
-	~GameObject();
+	virtual ~GameObject() = default;
 
 	virtual void Update(float deltaTime) = 0;
 	virtual void Render(sf::RenderWindow& window) = 0;
 
-	sf::Sprite GetSprite();
-	virtual BoundingBox* GetBBox();
-	AnimatedSprite* GetAnimSpr() { return m_spr; }
+	BoundingBox* GetBBox() { return m_bbox.get(); };
+	AnimatedSprite* GetAnimSpr() { return m_spr.get(); }
 
-	virtual void SetInitialPos(sf::Vector2f pos);
-	virtual sf::Vector2f GetPosition();
-	virtual void SetPosition(sf::Vector2f);
-	virtual void SetPosition(float x, float y);
+	virtual void SetInitialPos(sf::Vector2f pos) { m_initialPos = pos; }
+	virtual sf::Vector2f GetPosition() const { return m_spr->GetSpr()->getPosition(); }
+	virtual void SetPosition(sf::Vector2f pos) { m_spr->GetSpr()->setPosition(pos); }
+	virtual void SetPosition(float x, float y) { m_spr->GetSpr()->setPosition((sf::Vector2f(x, y))); }
 
-	virtual sf::Vector2f GetVelocity();
-	virtual void SetVelocity(sf::Vector2f);
-	virtual void SetVelocity(float x, float y);
+	sf::Vector2f GetVelocity() const { return m_velocity; }
+	void SetVelocity(sf::Vector2f vec) { m_velocity = vec; }
+	void SetVelocity(float x, float y) { m_velocity = sf::Vector2f(x, y); }
 
-	virtual sf::Vector2f GetOrigin();
+	sf::Vector2f GetOrigin() const { return m_spr->GetSpr()->getOrigin(); }
 
-	virtual void SetPrevPosition(sf::Vector2f);
-	virtual void SetPrevPosition(float x, float y);
-	virtual sf::Vector2f GetPrevPostion();
+	sf::Vector2f GetPrevPostion() const { return m_prevPos; }
+	void SetPrevPosition(sf::Vector2f pos) { m_prevPos = pos; }
+	void SetPrevPosition(float x, float y) { m_prevPos = sf::Vector2f(x, y); }
 
-	bool GetOnGround();
+	bool GetOnGround() const { return m_onGround; }
 	virtual void SetOnGround(bool grnd);
 
-	bool GetAirbourne();
-	void SetAirbourne(bool air);
+	bool GetAirbourne() const { return m_airbourne; }
+	void SetAirbourne(bool air) { m_airbourne = air; }
 
-	bool GetFalling();
-	void SetFalling(bool fall);
+	bool GetFalling() const { return m_falling; }
+	void SetFalling(bool fall) { m_falling = fall; }
 
-	bool GetDirection();
-	void SetDirection(bool dir);
+	bool GetDirection() const { return m_direction; }
+	void SetDirection(bool dir) { m_direction = dir; }
 
-	bool GetVisible();
-	void SetVisible(bool vis);
-	
-	int GetObjectNum();
+	bool GetVisible() const { return m_visible; }
+	void SetVisible(bool vis)
+	{
+		m_prevVisibility = m_visible;
+		m_visible = vis;
+	}
 
-	void SetActive(bool act);
-	bool GetActive();
+	int GetObjectNum() const { return m_objectID; };
+
+	bool GetActive() const { return m_active; }
+	void SetActive(bool act) { m_active = act; }
 
 protected:
-	int objectID;
-	int initialAnim;
+	int m_objectID;
+	int m_initialAnim;
 	int m_type;
-	int m_state;
-	static int m_objectNum;
+	static int s_objectNum;
 	static int s_numOfEnemies;
 	static int s_numOfObjects;
 
-	bool m_active;
-	bool prevVisibility;
-	bool visible;
+	bool m_active = true;
+	bool m_prevVisibility = false;
+	bool m_visible = false;
 	bool m_direction;
-	bool m_onGround;
-	bool m_falling;
-	bool m_airbourne;
-	bool initialDir;
+	bool m_onGround = false;
+	bool m_falling = true;
+	bool m_airbourne = false;
+	bool m_initialDir;
 
-	const float gravity = 0.981f;
+	const float m_gravity = 0.981f;
 
-	AnimatedSprite* m_spr;
-	BoundingBox* m_bbox;
+	int m_state = 0;
+	BoundingBox* m_curBbox;
+	AnimatedSprite* m_currSpr;
+
+	std::unique_ptr<AnimatedSprite> m_spr;
+	std::unique_ptr<BoundingBox> m_bbox;
 
 	sf::Vector2f m_position;
 	sf::Vector2f m_prevPos;
 	sf::Vector2f m_velocity;
-	sf::Vector2f initialPos;
+	sf::Vector2f m_initialPos;
 };
 
 #endif

@@ -18,7 +18,7 @@ public:
 
 	void Update(float deltaTime);
 	void Render(sf::RenderWindow& window);
-	
+
 	BoundingBox* GetBBox();
 
 	void Move(sf::Vector2f vel);
@@ -62,7 +62,7 @@ private:
 	//Controller code
 	static bool s_playerInserted;
 	CNeuralNet*  m_pItsBrain;
-	//the players fitness score. 
+	//the players fitness score.
 	double			m_dFitness;
 	std::vector<double> outputs;
 	void ControllerInput();
@@ -73,9 +73,6 @@ private:
 
 	sf::Vector2f m_spawnLoc;
 	sf::Vector2f m_deathLoc;
-
-	AnimatedSprite * m_currSpr;
-	BoundingBox * m_curBbox;
 
 	AnimatedSprite * m_SupSpr;
 	BoundingBox * m_SupBbox;

@@ -46,7 +46,7 @@ void Koopa::Animate(float deltaTime)
 	else
 	{
 		m_falling = true;
-		m_velocity.y += gravity;
+		m_velocity.y += m_gravity;
 	}
 
 	if (m_velocity.x != 0)
@@ -55,7 +55,7 @@ void Koopa::Animate(float deltaTime)
 		Collisions::Get()->ProcessCollisions(this);
 	}
 
-	
+
 	//check for leftmost and rightmost boundary
 	if (m_spr->GetSpr()->getPosition().x < m_spr->GetSpr()->getOrigin().x || m_spr->GetSpr()->getPosition().x > 11776 - m_spr->GetSpr()->getOrigin().x)
 	{
