@@ -8,7 +8,7 @@ class Enemy : public GameObject
 {
 public:
 	Enemy(std::string filepath, int rows, int cols, float fps, int bTyp, int strloc = 1, bool dir = true, bool symmetrical = true, int initAnim = 0, float animSpd = 1);
-	~Enemy();
+	~Enemy() override = default;
 
 	void Update(float deltaTime) override;
 	void Render(sf::RenderWindow& window) override;
@@ -21,6 +21,7 @@ public:
 	int GetLives();
 	virtual void Revive();
 	int GetEnemyNum();
+
 protected:
 	virtual void Animate(float deltaTime) = 0;
 	virtual void Reset();

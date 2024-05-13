@@ -695,15 +695,10 @@ void Collisions::QBoxHit(Player * ply, Object * obj)
 	case UDIR:
 		if (obj->IsAnimated() == false)//if not yet been hit
 		{
-			//ply->UpdateFitness(100);
-			//spawn a mushroom
-			Object* spawn = new Object("boshroom.png", 1, 1, FPS, SHROOM, 2, true, true, 0, 1.f);
-			//at this position
-			spawn->SetPosition(obj->GetPosition() - sf::Vector2f(0, (obj->GetOrigin().y * sY) * 2.f - 20.f));
-			spawn->SetOnGround(true);
+			auto pos = obj->GetPosition() - sf::Vector2f(0, (obj->GetOrigin().y * sY) * 2.f - 20.f);
 
 			//add to the level
-			Game::GetGameMgr()->GetLevel()->AddObject(spawn);
+			Game::GetGameMgr()->GetLevel()->AddObject("boshroom.png", 1, 1, FPS, SHROOM, 2, pos, true);
 
 			obj->GetAnimSpr()->ChangeAnim(1);//change to inactive box
 			obj->SetIsAnimated(true);//set can be hit to false

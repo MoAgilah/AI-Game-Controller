@@ -62,13 +62,13 @@ void Game::CheckInView()
 {
 	m_player->SetVisible(Camera::GetCamera()->IsInView(m_player->GetBBox()->GetSprite()));
 
-	for (Tile* grid : Collisions::Get()->GetGrid())
+	for (auto& grid : Collisions::Get()->GetGrid())
 		grid->SetVisible(Camera::GetCamera()->IsinView(grid->GetRect()));
 
-	for (Enemy* enemy : m_level->GetEnemies())
+	for (const auto& enemy : m_level->GetEnemies())
 		enemy->SetVisible(Camera::GetCamera()->IsInView(enemy->GetBBox()->GetSprite()));
 
-	for (Object* object : m_level->GetObjects())
+	for (const auto& object : m_level->GetObjects())
 		object->SetVisible(Camera::GetCamera()->IsInView(object->GetBBox()->GetSprite()));
 }
 

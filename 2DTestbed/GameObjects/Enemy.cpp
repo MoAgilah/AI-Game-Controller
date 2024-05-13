@@ -16,10 +16,6 @@ Enemy::Enemy(std::string filepath, int rows, int cols, float fps, int bTyp, int 
 	m_curBbox = m_bbox.get();
 }
 
-Enemy::~Enemy()
-{
-}
-
 void Enemy::Update(float deltaTime)
 {
 	if (m_active)

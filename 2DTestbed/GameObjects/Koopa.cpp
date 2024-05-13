@@ -20,11 +20,6 @@ void Koopa::Die()
 	timeLeftActive = 0.5f;
 }
 
-
-Koopa::~Koopa()
-{
-}
-
 void Koopa::Animate(float deltaTime)
 {
 	SetPrevPosition(GetPosition());

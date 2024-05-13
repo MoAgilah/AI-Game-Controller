@@ -26,7 +26,7 @@ public:
 	sf::View GetView() const { return m_camera; };
 
 	bool OnScreen(const Player* ply) const;
-	bool IsInView(sf::Vector2f pos, sf::Vector2f ori);
+	bool IsInView(sf::Vector2f pos, sf::Vector2f ori) const;
 	bool IsInView(const sf::Sprite* spr) const;
 	bool IsinView(const sf::RectangleShape& rect) const;
 

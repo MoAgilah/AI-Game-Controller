@@ -14,7 +14,7 @@ public:
 	void Update(float deltaTime);
 	void Reset();
 	void Revive();
-	~Rex();
+	~Rex() final = default;
 private:
 	void Animate(float deltaTime);
 	bool onTheGround;

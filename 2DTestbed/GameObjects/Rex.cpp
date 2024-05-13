@@ -165,10 +165,6 @@ void Rex::Revive()
 	m_active = true;
 }
 
-Rex::~Rex()
-{
-}
-
 void Rex::Animate(float deltaTime)
 {
 	SetPrevPosition(GetPosition());

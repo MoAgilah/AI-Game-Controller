@@ -18,10 +18,6 @@ Chuck::Chuck(std::string filepath, int rows, int cols, float fps, int bTyp, int 
 	goingUp = true;
 }
 
-Chuck::~Chuck()
-{
-}
-
 void Chuck::Die()
 {
 	numLives = 0;
@@ -62,7 +58,7 @@ void Chuck::Animate(float deltaTime)
 	{
 		m_spr->ChangeAnim(4);
 		if(goingUp) goingUp = false;
-		
+
 	}
 
 	if (currentPos.y > 447)
@@ -73,10 +69,10 @@ void Chuck::Animate(float deltaTime)
 			m_waitTime = 0;
 			goingUp = true;
 		}
-		
+
 	}
 
-	
+
 
 
 	if (m_velocity.y != 0)

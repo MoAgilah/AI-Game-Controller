@@ -8,7 +8,7 @@ class Chuck :
 {
 public:
 	Chuck(std::string filepath, int rows, int cols, float fps, int bTyp, int strloc = 1, bool dir = true, bool symmetrical = true, int initAnim = 0, float animSpd = 1);
-	~Chuck();
+	~Chuck() final = default;
 	void Die();
 	bool Jumping();
 private:

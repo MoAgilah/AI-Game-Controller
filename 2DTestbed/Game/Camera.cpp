@@ -119,7 +119,7 @@ bool Camera::OnScreen(const Player* ply) const
 	return false;
 }
 
-bool Camera::IsInView(sf::Vector2f position, sf::Vector2f origin)
+bool Camera::IsInView(sf::Vector2f position, sf::Vector2f origin) const
 {
 	float screenLeft = m_curScrBounds.left;
 	float screenRight = m_curScrBounds.right;
@@ -128,14 +128,12 @@ bool Camera::IsInView(sf::Vector2f position, sf::Vector2f origin)
 	float posLeft = pos + origin.x * sX;
 	float posRight = pos - origin.x * sX;
 
-	////dont let anymore tiles past 240 be visible
-	//if (m_tileNum == 240)
-	//	return false;
+	//dont let anymore tiles past 240 be visible
+	/*if (m_tileNum == 240)
+		return false;*/
 
 	//if center is on screen
-	if (pos > screenLeft && pos < screenRight
-		|| pos < screenLeft && posLeft > screenLeft
-		|| pos > screenRight && posRight < screenRight)
+	if (pos > screenLeft && pos < screenRight)
 	{
 		//m_tileNum++;
 		return true;
@@ -149,7 +147,7 @@ bool Camera::IsInView(sf::Vector2f position, sf::Vector2f origin)
 	//if center is not on screen check right hand side
 	else if (pos > screenRight && posRight < screenRight)
 	{
-		//m_tileNum++;
+		////m_tileNum++;
 		return true;
 	}
 

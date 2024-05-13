@@ -33,10 +33,6 @@ void Bill::Die()
 	timeLeftActive = 2.f;
 }
 
-Bill::~Bill()
-{
-}
-
 void Bill::Render(sf::RenderWindow & window)
 {
 	window.draw(*m_spr->GetSpr());
