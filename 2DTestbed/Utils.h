@@ -7,8 +7,6 @@
 #include <iostream>
 #include <vector>
 
-using namespace std;
-
 #ifndef UtilsH
 #define UtilsH
 
@@ -72,9 +70,9 @@ inline double RandomClamped() { return RandFloat() - RandFloat(); }
 //-----------------------------------------------------------------------
 
 //converts an integer to a string
-inline string itos(int arg)
+inline std::string itos(int arg)
 {
-	ostringstream buffer;
+	std::ostringstream buffer;
 
 	//send the int to the ostringstream
 	buffer << arg;
@@ -86,9 +84,9 @@ inline string itos(int arg)
 
 
 //converts a float to a string
-inline string ftos(float arg)
+inline std::string ftos(float arg)
 {
-	ostringstream buffer;
+	std::ostringstream buffer;
 
 	//send the int to the ostringstream
 	buffer << arg;

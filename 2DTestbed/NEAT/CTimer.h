@@ -1,5 +1,4 @@
-#ifndef CTIMER_H
-#define CTIMER_H
+#pragma once
 //-----------------------------------------------------------------------
 //
 //  Name: CTimer.h
@@ -9,8 +8,8 @@
 //	Desc: Windows timer class
 //
 //-----------------------------------------------------------------------
-
-#include <windows.h>
+#define NOMINMAX
+#include <Windows.h>
 #include <iostream>
 
 
@@ -53,6 +52,3 @@ public:
 
 
 
-#endif
-
-	

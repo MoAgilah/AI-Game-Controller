@@ -3,7 +3,7 @@
 
 //------------------------------------------------------------------------
 //
-//  this ctor creates an instance of a new species. A local copy of 
+//  this ctor creates an instance of a new species. A local copy of
 //  the initializing genome is kept in m_Leader and the first element
 //  of m_vecMembers is a pointer to that genome.
 //------------------------------------------------------------------------
@@ -14,10 +14,10 @@ CSpecies::CSpecies(CGenome  &FirstOrg,
                                        m_iAge(0),
                                        m_Leader(FirstOrg),
                                        m_dSpawnsRqd(0)
-                                     
+
 {
   m_vecMembers.push_back(&FirstOrg);
-  
+
   m_Leader = FirstOrg;
 }
 
@@ -28,7 +28,7 @@ CSpecies::CSpecies(CGenome  &FirstOrg,
 //------------------------------------------------------------------------
 void CSpecies::AddMember(CGenome &NewMember)
 {
- 
+
    //is the new member's fitness better than the best fitness?
   if (NewMember.Fitness() > m_dBestFitness)
   {
@@ -66,7 +66,7 @@ void CSpecies::Purge()
 //  This function adjusts the fitness of each individual by first
 //  examining the species age and penalising if old, boosting if young.
 //  Then we perform fitness sharing by dividing the fitness by the number
-//  of individuals in the species. This ensures a species does not grow 
+//  of individuals in the species. This ensures a species does not grow
 //  too large
 //------------------------------------------------------------------------
 void CSpecies::AdjustFitnesses()
@@ -101,7 +101,7 @@ void CSpecies::AdjustFitnesses()
 
 //------------------------ CalculateSpawnAmount --------------------------
 //
-//  Simply adds up the expected spawn amount for each individual in the 
+//  Simply adds up the expected spawn amount for each individual in the
 //  species to calculate the amount of offspring this species should
 //  spawn
 //------------------------------------------------------------------------
@@ -122,12 +122,12 @@ void CSpecies::CalculateSpawnAmount()
 CGenome CSpecies::Spawn()
 {
   CGenome baby;
-  
+
   if (m_vecMembers.size() == 1)
   {
-    baby = *m_vecMembers[0];    
+    baby = *m_vecMembers[0];
   }
-  
+
   else
   {
     int MaxIndexSize = (int) (CParams::dSurvivalRate * m_vecMembers.size())+1;

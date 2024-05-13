@@ -1,14 +1,12 @@
-
-#ifndef GENES_H
-#define GENES_H
+#pragma once
 //-----------------------------------------------------------------------
 //
 //  Name: GeneGenes.h
 //
 //  Author: Mat Buckland 2002
 //
-//	Desc: neuron and link gene definitions used in the 
-//        implementation of Kenneth Owen Stanley's and Risto 
+//	Desc: neuron and link gene definitions used in the
+//        implementation of Kenneth Owen Stanley's and Risto
 //        Miikkulainen's NEAT idea.These structures are used to define
 //        a genome.
 //
@@ -34,7 +32,7 @@ enum neuron_type
 //  this structure defines a neuron gene
 //------------------------------------------------------------------------
 struct SNeuronGene
-{  
+{
   //its identification
   int         iID;
 
@@ -48,18 +46,19 @@ struct SNeuronGene
   double    dActivationResponse;
 
   //position in network grid
-  double    dSplitY, dSplitX;
+  double    dSplitY;
+  double	dSplitX;
 
   SNeuronGene(neuron_type type,
-              int         id,
-              double      y,
-              double      x,
-              bool        r = false):iID(id),
-                                     NeuronType(type),
-                                     bRecurrent(r),
-                                     dSplitY(y),
-                                     dSplitX(x),
-                                     dActivationResponse(1)
+			  int         id,
+			  double      y,
+			  double      x,
+			  bool        r = false):iID(id),
+									 NeuronType(type),
+									 bRecurrent(r),
+									 dSplitY(y),
+									 dSplitX(x),
+									 dActivationResponse(1)
   {}
 };
 
@@ -69,10 +68,10 @@ struct SNeuronGene
 //------------------------------------------------------------------------
 struct SLinkGene
 {
-	//the IDs of the two neurons this link connects		
+	//the IDs of the two neurons this link connects
 	int     FromNeuron,
-	        ToNeuron;
-	
+			ToNeuron;
+
 	double	dWeight;
 
   //flag to indicate if this link is currently enabled or not
@@ -80,22 +79,22 @@ struct SLinkGene
 
   //flag to indicate if this link is recurrent or not
   bool    bRecurrent;
-	
+
 	int     InnovationID;
 
   SLinkGene(){}
-  
+
   SLinkGene(int    in,
-            int    out,
-            bool   enable,
-            int    tag,
-            double w,
-            bool   rec = false):bEnabled(enable),
+			int    out,
+			bool   enable,
+			int    tag,
+			double w,
+			bool   rec = false):bEnabled(enable),
 								InnovationID(tag),
-                                FromNeuron(in),
-                                ToNeuron(out),
-                                dWeight(w),
-                                bRecurrent(rec)
+								FromNeuron(in),
+								ToNeuron(out),
+								dWeight(w),
+								bRecurrent(rec)
 	{}
 
   //overload '<' used for sorting(we use the innovation ID as the criteria)
@@ -104,7 +103,3 @@ struct SLinkGene
 		return (lhs.InnovationID < rhs.InnovationID);
 	}
 };
-
-
-                                         
-#endif 

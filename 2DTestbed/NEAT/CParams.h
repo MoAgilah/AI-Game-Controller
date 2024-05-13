@@ -1,5 +1,4 @@
-#ifndef CPARAMS_H
-#define CPARAMS_H
+#pragma once
 //------------------------------------------------------------------------
 //
 //	Name: CParams.h
@@ -9,14 +8,13 @@
 //  Desc: class to hold all the parameters used in this project. The values
 //        are loaded in from an ini file when an instance of the class is
 //        created.
-//       
+//
 //
 //------------------------------------------------------------------------
-#include <windows.h>
+#define NOMINMAX
+#include <Windows.h>
 #include <fstream>
 #include <iostream>
-
-using namespace std;
 
 class CParams
 {
@@ -61,8 +59,8 @@ public:
 	//see CGenome::AddLink()
 	static int    iNumAddLinkAttempts;
 
-	//number of attempts made to choose a node that is not an input 
-	//node and that does not already have a recurrently looped connection 
+	//number of attempts made to choose a node that is not an input
+	//node and that does not already have a recurrently looped connection
 	//to itself. See CGenome::AddLink()
 	static int    iNumTrysToFindLoopedLink;
 
@@ -92,7 +90,7 @@ public:
 	// used in CSpecies.h/cpp
 	//----------------------------------------------------------------------
 
-	//during fitness adjustment this is how much the fitnesses of 
+	//during fitness adjustment this is how much the fitnesses of
 	//young species are boosted (eg 1.2 is a 20% boost)
 	static double dYoungFitnessBonus;
 
@@ -144,10 +142,3 @@ public:
 
 	}
 };
-
-
-
-
-
-
-#endif

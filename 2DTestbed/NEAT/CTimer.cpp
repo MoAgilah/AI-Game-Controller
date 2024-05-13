@@ -5,14 +5,14 @@
 //-------------------------------------------------------------------------
 
 CTimer::CTimer(): m_FPS(0),
-				          m_TimeElapsed(0.0f),
-				          m_FrameTime(0),
-				          m_LastTime(0),
-				          m_PerfCountFreq(0)
+						  m_TimeElapsed(0.0f),
+						  m_FrameTime(0),
+						  m_LastTime(0),
+						  m_PerfCountFreq(0)
 {
 	//how many ticks per sec do we get
 	QueryPerformanceFrequency( (LARGE_INTEGER*) &m_PerfCountFreq);
-	
+
 	m_TimeScale = 1.0f/m_PerfCountFreq;
 }
 
@@ -23,9 +23,9 @@ CTimer::CTimer(): m_FPS(0),
 //-------------------------------------------------------------------------
 
 CTimer::CTimer(float fps): m_FPS(fps),
-						               m_TimeElapsed(0.0f),
-						               m_LastTime(0),
-						               m_PerfCountFreq(0)
+									   m_TimeElapsed(0.0f),
+									   m_LastTime(0),
+									   m_PerfCountFreq(0)
 {
 
 	//how many ticks per sec do we get
@@ -66,9 +66,9 @@ bool CTimer::ReadyForNextFrame()
   {
 		std::cout << "No FPS set in timer" << std::endl;
 
-    return false;
+	return false;
   }
-  
+
   QueryPerformanceCounter( (LARGE_INTEGER*) &m_CurrentTime);
 
 	if (m_CurrentTime > m_NextTime)
@@ -95,11 +95,11 @@ bool CTimer::ReadyForNextFrame()
 double CTimer::TimeElapsed()
 {
 	QueryPerformanceCounter( (LARGE_INTEGER*) &m_CurrentTime);
-	
+
 	m_TimeElapsed	= (m_CurrentTime - m_LastTime) * m_TimeScale;
-	
+
 	m_LastTime		= m_CurrentTime;
 
 	return m_TimeElapsed;
-		
+
 }

@@ -1,5 +1,4 @@
-#ifndef PHENOTYPE_H
-#define PHENOTYPE_H
+#pragma once
 
 //-----------------------------------------------------------------------
 //
@@ -9,28 +8,24 @@
 //
 //	Desc: definitions required for the creation of a neural network. To be
 //        used in the implementation of Kenneth Owen Stanley's NEAT idea.
-//        
+//
 //-----------------------------------------------------------------------
 
 #include <vector>
 #include <math.h>
-#include <windows.h>
+#define NOMINMAX
+#include <Windows.h>
 #include <algorithm>
 
 #include "../Utils.h"
 #include "CParams.h"
 #include "genes.h"
 
-
-using namespace std;
-
-
-
 struct SNeuron;
 
 //------------------------------------------------------------------------
 //
-//  SLink structure 
+//  SLink structure
 //------------------------------------------------------------------------
 struct SLink
 {
@@ -45,9 +40,9 @@ struct SLink
   bool    bRecurrent;
 
   SLink(double dW, SNeuron* pIn, SNeuron* pOut, bool bRec):dWeight(dW),
-                                                           pIn(pIn),
-                                                           pOut(pOut),
-                                                           bRecurrent(bRec)
+														   pIn(pIn),
+														   pOut(pOut),
+														   bRecurrent(bRec)
   {}
 };
 
@@ -59,10 +54,10 @@ struct SLink
 struct SNeuron
 {
    //all the links coming into this neuron
-  vector<SLink> vecLinksIn;
+  std::vector<SLink> vecLinksIn;
 
   //and out
-  vector<SLink> vecLinksOut;
+  std::vector<SLink> vecLinksOut;
 
   //sum of weights x inputs
   double        dSumActivation;
@@ -80,23 +75,25 @@ struct SNeuron
   double        dActivationResponse;
 
   //used in visualization of the phenotype
-  int           iPosX,   iPosY;
-  double        dSplitY, dSplitX;
+  int           iPosX;
+  int			iPosY;
+  double        dSplitY;
+  double		dSplitX;
 
   //--- ctors
   SNeuron(neuron_type type,
-          int         id,
-          double      y,
-          double      x,
-          double      ActResponse):NeuronType(type),
-                                   iNeuronID(id),
-                                   dSumActivation(0),
-                                   dOutput(0),
-                                   iPosX(0),
-                                   iPosY(0),
-                                   dSplitY(y),
-                                   dSplitX(x),
-                                   dActivationResponse(ActResponse)
+		  int         id,
+		  double      y,
+		  double      x,
+		  double      ActResponse):NeuronType(type),
+								   iNeuronID(id),
+								   dSumActivation(0),
+								   dOutput(0),
+								   iPosX(0),
+								   iPosY(0),
+								   dSplitY(y),
+								   dSplitX(x),
+								   dActivationResponse(ActResponse)
 	{}
 };
 
@@ -108,18 +105,18 @@ class CNeuralNet
 {
 
 private:
-  
-  vector<SNeuron*>  m_vecpNeurons;
+
+  std::vector<SNeuron*>  m_vecpNeurons;
 
   //the depth of the network
   int               m_iDepth;
 
 
 public:
-  
-  CNeuralNet(vector<SNeuron*> neurons,
-             int              depth);
-								
+
+  CNeuralNet(std::vector<SNeuron*> neurons,
+			 int              depth);
+
 
   ~CNeuralNet();
 
@@ -130,16 +127,13 @@ public:
   enum run_type{snapshot, active};
 
   //update network for this clock cycle
-  vector<double>  Update(const vector<double> &inputs, const run_type type);
+  std::vector<double>  Update(const std::vector<double> &inputs, const run_type type);
 
   //draws a graphical representation of the network to a user speciefied window
   void            DrawNet(HDC &surface,
-                          int cxLeft,
-                          int cxRight,
-                          int cyTop,
-                          int cyBot);
+						  int cxLeft,
+						  int cxRight,
+						  int cyTop,
+						  int cyBot);
 
 };
-
-
-#endif

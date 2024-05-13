@@ -17,11 +17,7 @@
 #include "genotype.h"
 #include "phenotype.h"
 
-using namespace std;
-
 struct SLinkGene;
-
-
 
 //---------------------Innovation related structs/classes----------------
 //
@@ -42,7 +38,7 @@ struct	SInnovation
   innov_type  InnovationType;
 
   int         InnovationID;
-	
+
   int         NeuronIn;
   int         NeuronOut;
 
@@ -52,47 +48,47 @@ struct	SInnovation
 
   //if the innovation is a neuron we need to keep a record
   //of its position in the tree (for display purposes)
-  double      dSplitY,
-              dSplitX;
+  double      dSplitY;
+  double		dSplitX;
 
 	SInnovation(int        in,
-              int        out, 
-              innov_type t, 
-              int        inov_id):NeuronIn(in),
-                                  NeuronOut(out),
-                                  InnovationType(t),
-                                  InnovationID(inov_id),
-                                  NeuronID(0),
-                                  dSplitX(0),
-                                  dSplitY(0),
-                                  NeuronType(none)
+			  int        out,
+			  innov_type t,
+			  int        inov_id):NeuronIn(in),
+								  NeuronOut(out),
+								  InnovationType(t),
+								  InnovationID(inov_id),
+								  NeuronID(0),
+								  dSplitX(0),
+								  dSplitY(0),
+								  NeuronType(none)
 	{}
 
   SInnovation(SNeuronGene neuron,
-              int          innov_id,
-              int          neuron_id):InnovationID(innov_id),
-                                      NeuronID(neuron_id),
-                                      dSplitX(neuron.dSplitX),
-                                      dSplitY(neuron.dSplitY),
-                                      NeuronType(neuron.NeuronType),
-                                      NeuronIn(-1),
-                                      NeuronOut(-1)
+			  int          innov_id,
+			  int          neuron_id):InnovationID(innov_id),
+									  NeuronID(neuron_id),
+									  dSplitX(neuron.dSplitX),
+									  dSplitY(neuron.dSplitY),
+									  NeuronType(neuron.NeuronType),
+									  NeuronIn(-1),
+									  NeuronOut(-1)
   {}
-  
+
   SInnovation(int         in,
-              int         out, 
-              innov_type  t, 
-              int         inov_id,
-              neuron_type type,
-              double      x,
-              double      y):NeuronIn(in),
-                            NeuronOut(out),
-                            InnovationType(t),
-                            InnovationID(inov_id),
-                            NeuronID(0),
-                            NeuronType(type),
-                            dSplitX(x),
-                            dSplitY(y)
+			  int         out,
+			  innov_type  t,
+			  int         inov_id,
+			  neuron_type type,
+			  double      x,
+			  double      y):NeuronIn(in),
+							NeuronOut(out),
+							InnovationType(t),
+							InnovationID(inov_id),
+							NeuronID(0),
+							NeuronType(type),
+							dSplitX(x),
+							dSplitY(y)
 	{}
 };
 
@@ -105,8 +101,8 @@ class CInnovation
 {
 
 private:
-	
-  vector<SInnovation> m_vecInnovs;
+
+  std::vector<SInnovation> m_vecInnovs;
 
   int                 m_NextNeuronID;
 
@@ -115,9 +111,9 @@ private:
 
 public:
 
-  CInnovation(vector<SLinkGene>   start_genes,
-              vector<SNeuronGene> start_neurons);
-		
+  CInnovation(std::vector<SLinkGene>   start_genes,
+			  std::vector<SNeuronGene> start_neurons);
+
   //checks to see if this innovation has already occurred. If it has it
   //returns the innovation ID. If not it returns a negative value.
   int   CheckInnovation(int in, int out, innov_type type);
@@ -127,11 +123,11 @@ public:
 
   //as above but includes adding x/y position of new neuron
   int   CreateNewInnovation(int         from,
-                            int         to,
-                            innov_type  InnovType,
-                            neuron_type NeuronType,
-                            double      x,
-                            double      y);
+							int         to,
+							innov_type  InnovType,
+							neuron_type NeuronType,
+							double      x,
+							double      y);
 
   //creates a BasicNeuron from the given neuron ID
   SNeuronGene CreateNeuronFromID(int id);
@@ -141,13 +137,13 @@ public:
   int   GetNeuronID(int inv)const{return m_vecInnovs[inv].NeuronID;}
 
   void  Flush(){m_vecInnovs.clear(); return;}
-  
+
   int   NextNumber(int num = 0)
   {
-    m_NextInnovationNum += num;
+	m_NextInnovationNum += num;
 
-    return m_NextInnovationNum;
-  } 
+	return m_NextInnovationNum;
+  }
 };
 
 
