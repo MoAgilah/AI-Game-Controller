@@ -1,4 +1,5 @@
-#pragma once
+#ifndef RexH
+#define RexH
 
 #include "../GameObjects/Enemy.h"
 
@@ -13,9 +14,11 @@ public:
 	void Update(float deltaTime);
 	void Reset();
 	void Revive();
-	~Rex() final = default;
+	~Rex();
 private:
 	void Animate(float deltaTime);
 	bool onTheGround;
 	BoundingBox* m_SmlBox;
 };
+
+#endif

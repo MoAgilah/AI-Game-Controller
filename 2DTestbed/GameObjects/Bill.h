@@ -1,4 +1,5 @@
-#pragma once
+#ifndef BillH
+#define BillH
 
 #include "../GameObjects/Enemy.h"
 
@@ -14,10 +15,12 @@ class Bill :
 public:
 	Bill(std::string filepath, int rows, int cols, float fps, int bTyp, int strloc = 1, bool dir = true, bool symmetrical = true, int initAnim = 0, float animSpd = 1);
 	void Die();
-	~Bill() final = default;
+	~Bill();
 	void Render(sf::RenderWindow & window);
 	Body GetBody();
 private:
 	Body colbody;
 	void Animate(float deltaTime);
 };
+
+#endif

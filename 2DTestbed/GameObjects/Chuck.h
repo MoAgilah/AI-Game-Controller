@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ChuckH
+#define ChuckH
 
 #include "../GameObjects/Enemy.h"
 
@@ -7,7 +8,7 @@ class Chuck :
 {
 public:
 	Chuck(std::string filepath, int rows, int cols, float fps, int bTyp, int strloc = 1, bool dir = true, bool symmetrical = true, int initAnim = 0, float animSpd = 1);
-	~Chuck() final = default;
+	~Chuck();
 	void Die();
 	bool Jumping();
 private:
@@ -15,3 +16,5 @@ private:
 	float m_waitTime;
 	void Animate(float deltaTime);
 };
+
+#endif

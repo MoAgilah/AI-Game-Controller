@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TimerH
+#define TimerH
 
 class Timer
 {
@@ -7,11 +8,11 @@ public:
 
 	static Timer* Get();
 
-	float CurrentTime() const;
+	float CurrentTime();
 
 	void UpdateTime(float deltaTime);
 
-	bool CheckEnd() const;
+	bool CheckEnd();
 	void ResetTime();
 	void Stop();
 private:
@@ -21,3 +22,5 @@ private:
 	float m_time;
 	bool stopped;
 };
+
+#endif	//TimerH

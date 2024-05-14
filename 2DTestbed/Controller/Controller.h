@@ -1,7 +1,10 @@
-#pragma once
+#ifndef ControllerH
+#define ControllerH
 
 #include <SFML/Graphics.hpp>
 #include "../Utils.h"
+
+
 
 #include "../NEAT/Cga.h"
 
@@ -51,3 +54,5 @@ private:
 	//points container
 	std::vector<sf::Vector2f> points;
 };
+
+#endif

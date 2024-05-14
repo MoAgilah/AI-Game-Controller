@@ -8,15 +8,15 @@ Bill::Bill(std::string filepath, int rows, int cols, float fps, int bTyp, int st
 	numLives = maxLives = 1;
 	m_falling = false;
 
-
+	
 	colbody.front.setOutlineColor(sf::Color::Red);
 	colbody.front.setOutlineThickness(2.0f);
 	colbody.front.setFillColor(sf::Color::Transparent);
 	colbody.front.setRadius(74.f);
 	colbody.front.setPointCount((size_t)30);
 	colbody.front.setOrigin(74.f, 74.f);
-
-
+	
+	
 	colbody.back.setOutlineColor(sf::Color::Red);
 	colbody.back.setOutlineThickness(2.0f);
 	colbody.back.setSize(sf::Vector2f(15.f, m_bbox->GetSprite()->getTexture()->getSize().y-2.f));
@@ -31,6 +31,10 @@ void Bill::Die()
 	m_alive = false;
 	m_falling = true;
 	timeLeftActive = 2.f;
+}
+
+Bill::~Bill()
+{
 }
 
 void Bill::Render(sf::RenderWindow & window)
@@ -72,7 +76,7 @@ void Bill::Animate(float deltaTime)
 
 		m_spr->Move(0, m_velocity.y * FPS * deltaTime);
 	}
-
+	
 	if (m_velocity.x != 0)
 	{
 		m_spr->Move(m_velocity.x * FPS * deltaTime, 0);

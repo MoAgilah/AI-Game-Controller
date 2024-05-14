@@ -17,11 +17,11 @@ Player::Player(std::string filepath, int rows, int cols, float fps, int bTyp, in
 	m_bbox->GetSprite()->setPosition(sf::Vector2f(m_spr->GetSpr()->getPosition().x - 2, m_spr->GetSpr()->getPosition().y + 4));
 	m_CrouchBbox = new BoundingBox(filepath.substr(0, strloc) + "c", bTyp);
 
-	m_currSpr = m_spr.get();
-	m_curBbox = m_bbox.get();
+	m_currSpr = m_spr;
+	m_curBbox = m_bbox;
 
 	m_deathLoc = m_velocity = sf::Vector2f(0.0f, 0.0f);
-	m_prevPos = m_spawnLoc = m_initialPos = sf::Vector2f{ 75, 454 };
+	m_prevPos = m_spawnLoc = initialPos = sf::Vector2f{ 75, 454 };
 
 	//super mario
 	filepath = "s" + filepath;
@@ -39,7 +39,7 @@ Player::Player(std::string filepath, int rows, int cols, float fps, int bTyp, in
 	m_spindown = false;
 	ifWasSuper = m_super = false;
 	justCrouched = false;
-	m_visible = true;
+	visible = true;
 	die = false;
 	killed = false;
 	m_alive = true;
@@ -131,11 +131,11 @@ void Player::Update(float deltaTime)
 			else
 			{
 				//if current spr and bbox is not regular
-				if (m_currSpr != m_spr.get())
+				if (m_currSpr != m_spr)
 				{
 					//change spr and bbox
-					m_currSpr = m_spr.get();
-					m_curBbox = m_bbox.get();
+					m_currSpr = m_spr;
+					m_curBbox = m_bbox;
 
 					//adjust position
 					SetPosition(m_SupSpr->GetSpr()->getPosition() + sf::Vector2f(0, heightDiff));
@@ -189,7 +189,7 @@ void Player::Update(float deltaTime)
 				if (m_super)
 					m_curBbox = m_SupBbox;
 				else
-					m_curBbox = m_bbox.get();
+					m_curBbox = m_bbox;
 
 				SetPosition(GetPosition());
 			}
@@ -229,8 +229,8 @@ void Player::Update(float deltaTime)
 			{
 				if (justHitEnemy)	justHitEnemy = false;
 
-				//apply m_gravity
-				m_velocity.y += m_gravity;
+				//apply gravity
+				m_velocity.y += gravity;
 			}
 			else //if hovering
 			{
@@ -360,8 +360,7 @@ void Player::Update(float deltaTime)
 		//check for exceeded rightmost || or hit the goal
 		if (m_currSpr->GetSpr()->getPosition().x > RightMost || goalHit)
 		{
-			if (goalHit == false)
-				goalHit = true;
+			goalHit = false;
 
 			CheckPointHit(false);
 			SetSpawnLoc();
@@ -408,7 +407,7 @@ BoundingBox * Player::GetBBox()
 	return m_curBbox;
 }
 
-sf::Vector2f Player::GetPosition() const
+sf::Vector2f Player::GetPosition()
 {
 	return m_currSpr->GetSpr()->getPosition();
 }
@@ -443,7 +442,7 @@ void Player::SetPosition(float x, float y)
 	}
 }
 
-sf::Vector2f Player::GetOrigin() const
+sf::Vector2f Player::GetOrigin()
 {
 	return m_currSpr->GetSpr()->getOrigin();
 }
@@ -458,7 +457,7 @@ void Player::SetPrevPosition(float x, float y)
 	m_prevPos = sf::Vector2f(x, y);
 }
 
-sf::Vector2f Player::GetPrevPostion() const
+sf::Vector2f Player::GetPrevPostion()
 {
 	return m_prevPos;
 }
@@ -477,7 +476,7 @@ void Player::SetSpawnLoc(sf::Vector2f loc)
 {
 	if (loc == sf::Vector2f(0,0))
 	{
-		m_spawnLoc = m_initialPos;
+		m_spawnLoc = initialPos;
 	}
 	else
 	{
@@ -495,10 +494,10 @@ void Player::Reset()
 {
 	ifWasSuper = m_super = false;
 
-	m_currSpr = m_spr.get();
-	m_curBbox = m_bbox.get();
+	m_currSpr = m_spr;
+	m_curBbox = m_bbox;
 
-	m_spawnLoc = m_initialPos;
+	m_spawnLoc = initialPos;
 
 	SetPosition(m_spawnLoc);
 	SetPrevPosition(m_spawnLoc);
@@ -516,8 +515,8 @@ void Player::Reset()
 	killed = false;
 	m_alive = true;
 
-	m_active = m_visible = true;
-	m_currSpr->ChangeAnim(m_initialAnim);
+	m_active = visible = true;
+	m_currSpr->ChangeAnim(initialAnim);
 
 	for (size_t i = 0; i < MAXKEYS; i++)
 	{
@@ -529,8 +528,8 @@ void Player::ReSpawn()
 {
 	ifWasSuper = m_super = false;
 
-	m_currSpr = m_spr.get();
-	m_curBbox = m_bbox.get();
+	m_currSpr = m_spr;
+	m_curBbox = m_bbox;
 
 	SetPosition(m_spawnLoc);
 	SetPrevPosition(m_spawnLoc);
@@ -548,8 +547,8 @@ void Player::ReSpawn()
 	killed = false;
 	m_alive = true;
 
-	m_active = m_visible = true;
-	m_currSpr->ChangeAnim(m_initialAnim);
+	m_active = visible = true;
+	m_currSpr->ChangeAnim(initialAnim);
 	Timer::Get()->ResetTime();
 	Game::GetGameMgr()->GetLevel()->ResetLevel();
 }

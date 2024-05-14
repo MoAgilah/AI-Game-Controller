@@ -35,7 +35,7 @@ Controller::Controller()
 			m_vecMarios[i]->InsertNewBrain(pBrains[i]);
 		}
 	}
-
+	
 	m_iTicks = 0;
 	m_iGenerations = 0;
 
@@ -99,7 +99,7 @@ std::vector<double> Controller::GetSensorInputs()
 		}
 		for (int j = 0; j < points.size(); j++)
 		{
-
+			
 			if (m_grid[i]->GetRect().getGlobalBounds().contains(points[j]))
 			{
 				m_inputs[cnt] = ColourToInput(m_grid[i]->GetRect().getFillColor());
@@ -111,7 +111,7 @@ std::vector<double> Controller::GetSensorInputs()
 			}
 		}
 
-
+		
 	}
 
 	return m_inputs;
@@ -153,7 +153,7 @@ Player * Controller::GetCurrentPlayer()
 
 bool Controller::Update()
 {
-	//if havent moved in 2000 ticks
+	//if havent moved in 2000 ticks 
 	if ((m_vecMarios[currPlayer]->GetPosition().x == m_vecMarios[currPlayer]->GetPrevPostion().x && m_iTicks++ > CParams::iNumTicks) ||
 		//if been killed
 		m_vecMarios[currPlayer]->GetIsAlive() == false ||
@@ -170,7 +170,7 @@ bool Controller::Update()
 			Game::GetGameMgr()->GetPlayer()->ReSpawn();
 		}
 	}
-	//if have moved right before timing out
+	//if have moved right before timing out 
 	else if (m_vecMarios[currPlayer]->GetPosition().x != m_vecMarios[currPlayer]->GetPrevPostion().x && m_vecMarios[currPlayer]->GetPosition().x > 75.0f)
 	{
 		m_iTicks = 0;
@@ -204,7 +204,7 @@ bool Controller::Update()
 
 		//reset cycles
 		m_iTicks = 0;
-
+		
 		//perform an epoch and grab the new brains
 		std::vector<CNeuralNet*> pBrains = m_pPop->Epoch(GetFitnessScores());
 
@@ -213,7 +213,7 @@ bool Controller::Update()
 		for (int i = 0; i< iNumPlayers; ++i)
 		{
 			Game::GetGameMgr()->GetLogger()->AddExperimentLog("Player " + std::to_string(i) + " Fitness: " + std::to_string(m_vecMarios[i]->Fitness()));
-
+			
 			m_vecMarios[i]->InsertNewBrain(pBrains[i]);
 			m_vecMarios[i]->Reset();
 		}
@@ -221,7 +221,7 @@ bool Controller::Update()
 		currPlayer = 0;
 		Game::GetGameMgr()->ChangePlayer(m_vecMarios[currPlayer]);
 		Game::GetGameMgr()->GetPlayer()->ReSpawn();
-
+		
 		m_dBestFitness = m_pPop->BestEverFitness();
 
 		Game::GetGameMgr()->GetLogger()->AddExperimentLog("Best Fitness: " + std::to_string(m_dBestFitness));

@@ -7,7 +7,7 @@ Object::Object(std::string filepath, int rows, int cols, float fps, int bTyp, in
 {
 	isAnimating = false;
 	goingUp = false;
-	m_initialAnim = initAnim;
+	initialAnim = initAnim;
 	m_objectNum = s_numOfObjects++;
 }
 
@@ -35,7 +35,7 @@ void Object::Update(float deltaTime)
 				}
 			}
 
-			if (m_visible)
+			if (visible)
 			{
 				Animate(deltaTime);
 			}
@@ -93,7 +93,7 @@ void Object::Animate(float deltaTime)
 		else
 		{
 			m_falling = true;
-			m_velocity.y += m_gravity;
+			m_velocity.y += gravity;
 		}
 	
 		if (m_velocity.x != 0)
@@ -166,7 +166,7 @@ void Object::Reset()
 {
 	isAnimating = false;
 	goingUp = false;
-	m_spr->ChangeAnim(m_initialAnim);
+	m_spr->ChangeAnim(initialAnim);
 	m_active = true;
 }
 

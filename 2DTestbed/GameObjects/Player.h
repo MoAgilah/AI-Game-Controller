@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PlayerH
+#define PlayerH
 
 #include <string>
 #include "../GameObjects/GameObject.h"
@@ -17,17 +18,17 @@ public:
 
 	void Update(float deltaTime);
 	void Render(sf::RenderWindow& window);
-
+	
 	BoundingBox* GetBBox();
 
 	void Move(sf::Vector2f vel);
-	sf::Vector2f GetPosition() const;
+	sf::Vector2f GetPosition();
 	void SetPosition(sf::Vector2f);
 	void SetPosition(float x, float y);
 
-	sf::Vector2f GetOrigin() const;
+	sf::Vector2f GetOrigin();
 
-	sf::Vector2f GetPrevPostion() const;
+	sf::Vector2f GetPrevPostion();
 	void SetPrevPosition(sf::Vector2f);
 	void SetPrevPosition(float x, float y);
 
@@ -61,7 +62,7 @@ private:
 	//Controller code
 	static bool s_playerInserted;
 	CNeuralNet*  m_pItsBrain;
-	//the players fitness score.
+	//the players fitness score. 
 	double			m_dFitness;
 	std::vector<double> outputs;
 	void ControllerInput();
@@ -72,6 +73,9 @@ private:
 
 	sf::Vector2f m_spawnLoc;
 	sf::Vector2f m_deathLoc;
+
+	AnimatedSprite * m_currSpr;
+	BoundingBox * m_curBbox;
 
 	AnimatedSprite * m_SupSpr;
 	BoundingBox * m_SupBbox;
@@ -107,3 +111,4 @@ private:
 	const float m_jumpSpeed = 3.0f;
 };
 
+#endif

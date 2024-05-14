@@ -1,13 +1,13 @@
-#pragma once
+#ifndef GameH
+#define GameH
 
-#include <memory>
 #include <SFML\Graphics.hpp>
-
 #include "../Utils.h"
-#include "Logger.h"
+
 
 #include "Level.h"
 #include "Timer.h"
+#include "Logger.h"
 
 class Player;
 class Game
@@ -26,7 +26,11 @@ private:
 	Game();
 
 	static Game* m_instance;
-	std::unique_ptr<Player> m_player;
-	std::unique_ptr<Level> m_level;
-	std::unique_ptr<Logger> m_logger;
+	Player* m_player;
+	Level* m_level;
+	Logger* m_logger;
 };
+
+
+
+#endif

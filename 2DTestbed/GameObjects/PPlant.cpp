@@ -16,6 +16,11 @@ void PPlant::Die()
 {
 }
 
+
+PPlant::~PPlant()
+{
+}
+
 void PPlant::Animate(float deltaTime)
 {
 	SetPrevPosition(GetPosition());
@@ -50,5 +55,5 @@ void PPlant::Animate(float deltaTime)
 		m_spr->ChangeAnim(1);
 		//go down
 	}
-
+	
 }

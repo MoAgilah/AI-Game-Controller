@@ -1,4 +1,4 @@
-#include "../Game/Timer.h"
+#include "Timer.h"
 
 Timer* Timer::self = nullptr;
 
@@ -21,7 +21,7 @@ Timer::~Timer()
 	return self;
 }
 
-float Timer::CurrentTime() const
+float Timer::CurrentTime()
 {
 	return m_time;
 }
@@ -31,7 +31,7 @@ void Timer::UpdateTime(float deltaTime)
 	m_time -= deltaTime;
 }
 
-bool Timer::CheckEnd() const
+bool Timer::CheckEnd()
 {
 	return m_time <= 0.0f;
 }

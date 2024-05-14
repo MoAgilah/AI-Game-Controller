@@ -4,29 +4,29 @@
 #include "../Game/Game.h"
 #include "../GameObjects/Player.h"
 
-Camera* Camera::m_instance = nullptr;
+Camera* Camera::instance = nullptr;
 
 Camera::Camera()
 {
-	if (!m_nameTex.loadFromFile("Sprites/name.png"))
+	if (!nameTex.loadFromFile("Sprites/name.png"))
 	{
 		std::cout << "failed to load name sprite" << std::endl;
 	}
 
-	m_nameSpr.setTexture(m_nameTex);
-	m_nameSpr.setOrigin((float)m_nameTex.getSize().x * 0.5f, (float)m_nameTex.getSize().y * 0.5f);
+	name.setTexture(nameTex);
+	name.setOrigin(nameTex.getSize().x * 0.5f, nameTex.getSize().y * 0.5f);
 
-	if (!m_timeTex.loadFromFile("Sprites/time.png"))
+	if (!timeTex.loadFromFile("Sprites/time.png"))
 	{
 		std::cout << "failed to load name sprite" << std::endl;
 	}
 
-	m_timeSpr.setTexture(m_timeTex);
-	m_timeSpr.setOrigin((float)m_timeTex.getSize().x * 0.5f, (float)m_timeTex.getSize().y * 0.5f);
+	time.setTexture(timeTex);
+	time.setOrigin(timeTex.getSize().x * 0.5f, timeTex.getSize().y * 0.5f);
 
 	m_font.loadFromFile("Fonts/arial.ttf");
 
-	m_text.push_back(std::make_unique<sf::Text>());
+	m_text.push_back(new sf::Text());
 	m_text.back()->setFont(m_font);
 	m_text.back()->setCharacterSize(15);
 	m_text.back()->setOutlineColor(sf::Color::Black);
@@ -34,29 +34,33 @@ Camera::Camera()
 	m_text.back()->setFillColor(sf::Color::Yellow);
 	m_text.back()->setString("x 00");
 
-	m_text.push_back(std::make_unique<sf::Text>());
+	m_text.push_back(new sf::Text());
 	m_text.back()->setFont(m_font);
 	m_text.back()->setCharacterSize((unsigned)15);
 	m_text.back()->setOutlineColor(sf::Color::Black);
 	m_text.back()->setOutlineThickness(1.f);
 	m_text.back()->setFillColor(sf::Color::Yellow);
 
-	m_displaytime = (int)Timer::Get()->CurrentTime();
-	m_text.back()->setString(std::to_string(m_displaytime));
+	displaytime = (int)Timer::Get()->CurrentTime();
+	m_text.back()->setString(std::to_string(displaytime));
 
-	m_tileNum = 0;
+	tileNum = 0;
 
 	//initialise camera view
-	m_camera.reset(sf::FloatRect(0, 0, scrX, scrY));
-	m_camera.setViewport(sf::FloatRect(0, 0, 1.0f, 1.0f));
-	m_camera.setCenter(scrX * 0.5f, scrY * 0.5f);
+	camera.reset(sf::FloatRect(0, 0, scrX, scrY));
+	camera.setViewport(sf::FloatRect(0, 0, 1.0f, 1.0f));
+	camera.setCenter(scrX * 0.5f, scrY * 0.5f);
 
 	//initialise screen bounds
-	m_curScrBounds.left = m_camera.getCenter().x - scrX * 0.5f;
-	m_curScrBounds.right = m_camera.getCenter().x + scrX * 0.5f;
+	curScrBounds.left = camera.getCenter().x - scrX * 0.5f;
+	curScrBounds.right = camera.getCenter().x + scrX * 0.5f;
 
-	m_curScrBounds.bottom = m_camera.getCenter().y - scrX * 0.5f;
-	m_curScrBounds.top = m_camera.getCenter().y + scrX * 0.5f;
+	curScrBounds.bottom = camera.getCenter().y - scrX * 0.5f;
+	curScrBounds.top = camera.getCenter().y + scrX * 0.5f;
+}
+
+Camera::~Camera()
+{
 }
 
 void Camera::Reset(sf::RenderWindow& window)
@@ -78,25 +82,53 @@ void Camera::Reset(sf::RenderWindow& window)
 	}
 
 	//reset the camera position
-	m_camera.reset(sf::FloatRect(posX, 0, scrX, scrY));
+	camera.reset(sf::FloatRect(posX, 0, scrX, scrY));
 
-	window.setView(m_camera);
+	window.setView(camera);
 }
 
 Camera* Camera::GetCamera()
 {
-	if (m_instance == nullptr)
+	if (instance == nullptr)
 	{
-		m_instance = new Camera();
+		instance = new Camera();
 	}
 
-	return m_instance;
+	return instance;
 }
 
-bool Camera::OnScreen(const Player* ply) const
+sf::View Camera::GetView()
 {
-	float screenBot = m_curScrBounds.bottom;
-	float screenTop = m_curScrBounds.top;
+	return camera;
+}
+
+void Camera::Update(float deltaTime)
+{
+	//update the screen boundaries
+	curScrBounds.left = camera.getCenter().x - scrX * 0.5f;
+	curScrBounds.right = camera.getCenter().x + scrX * 0.5f;
+
+	curScrBounds.bottom = camera.getCenter().y - scrX * 0.5f;
+	curScrBounds.top = camera.getCenter().y + scrX * 0.5f;
+
+	//update the text positions
+	name.setPosition(curScrBounds.left + name.getOrigin().x + 20, curScrBounds.bottom + name.getOrigin().y + 20);
+	m_text[0]->setPosition(name.getPosition() + sf::Vector2f(name.getOrigin().x + 10, -9));
+	time.setPosition(camera.getCenter().x, curScrBounds.bottom + time.getOrigin().y + 20);
+
+	//update time
+	displaytime = (int)Timer::Get()->CurrentTime();
+	m_text[1]->setString(std::to_string(displaytime));
+	m_text[1]->setPosition(time.getPosition()+ sf::Vector2f(time.getOrigin().x + 10,-9));
+
+	//reset number of tiles extracted
+	tileNum = 0;
+}
+
+bool Camera::OnScreen(Player* ply)
+{
+	float screenBot = curScrBounds.bottom;
+	float screenTop = curScrBounds.top;
 
 	float pos = ply->GetPosition().y;
 	float posLeft = ply->GetPosition().y + ply->GetOrigin().y * sY;
@@ -107,85 +139,107 @@ bool Camera::OnScreen(const Player* ply) const
 	{
 		return true;
 	}
-	else if (pos < screenBot && posLeft > screenBot)
+	else if (pos < screenBot)
 	{
-		return true;
+		//if center is not on screen check left hand side
+		if (posLeft > screenBot)
+		{
+			return true;
+		}
 	}
-	else if (pos > screenTop && posRight < screenTop)
+	else if (pos > screenTop)
 	{
-		return true;
+		//if center is not on screen check right hand side
+		if (posRight < screenTop)
+		{
+			return true;
+		}
 	}
 
 	return false;
 }
 
-bool Camera::IsInView(sf::Vector2f position, sf::Vector2f origin) const
+bool Camera::IsInView(sf::Vector2f position, sf::Vector2f ori)
 {
-	float screenLeft = m_curScrBounds.left;
-	float screenRight = m_curScrBounds.right;
+	float screenLeft = curScrBounds.left;
+	float screenRight = curScrBounds.right;
 
 	float pos = position.x;
-	float posLeft = pos + origin.x * sX;
-	float posRight = pos - origin.x * sX;
+	float posLeft = pos + ori.x * sX;
+	float posRight = pos - ori.x * sX;
 
 	//dont let anymore tiles past 240 be visible
-	/*if (m_tileNum == 240)
-		return false;*/
+	if (tileNum == 240)
+	{
+		return false;
+	}
 
 	//if center is on screen
 	if (pos > screenLeft && pos < screenRight)
 	{
-		//m_tileNum++;
+		tileNum++;
 		return true;
 	}
-	//if center is not on screen check left hand side
-	else if (pos < screenLeft && posLeft > screenLeft)
+	else if (pos < screenLeft)
 	{
-		//m_tileNum++;
-		return true;
+		//if center is not on screen check left hand side
+		if (posLeft > screenLeft)
+		{
+			tileNum++;
+			return true;
+		}
 	}
-	//if center is not on screen check right hand side
-	else if (pos > screenRight && posRight < screenRight)
+	else if (pos > screenRight)
 	{
-		////m_tileNum++;
-		return true;
+		//if center is not on screen check right hand side
+		if (posRight < screenRight)
+		{
+			tileNum++;
+			return true;
+		}
 	}
 
 	return false;
 }
 
-bool Camera::IsInView(const sf::Sprite* spr) const
+bool Camera::IsInView(sf::Sprite spr)
 {
-	float screenLeft = m_curScrBounds.left;
-	float screenRight = m_curScrBounds.right;
+	float screenLeft = curScrBounds.left;
+	float screenRight = curScrBounds.right;
 
-	float pos = spr->getPosition().x;
-	float posLeft = pos + spr->getOrigin().x * sX;
-	float posRight = pos - spr->getOrigin().x * sX;
+	float pos = spr.getPosition().x;
+	float posLeft = pos + spr.getOrigin().x * sX;
+	float posRight = pos - spr.getOrigin().x * sX;
 
 	//if center on screen
 	if (pos > screenLeft && pos < screenRight)
 	{
 		return true;
 	}
-	//if center is not on screen check left hand side
-	else if (pos < screenLeft && posLeft > screenLeft)
+	else if (pos < screenLeft)
 	{
-		return true;
+		//if center is not on screen check left hand side
+		if (posLeft > screenLeft)
+		{
+			return true;
+		}
 	}
-	//if center is not on screen check right hand side
-	else if (pos > screenRight && posRight < screenRight)
+	else if (pos > screenRight)
 	{
-		return true;
+		//if center is not on screen check right hand side
+		if (posRight < screenRight)
+		{
+			return true;
+		}
 	}
 
 	return false;
 }
 
-bool Camera::IsinView(const sf::RectangleShape& rect) const
+bool Camera::IsinView(sf::RectangleShape rect)
 {
-	float screenLeft = m_curScrBounds.left;
-	float screenRight = m_curScrBounds.right;
+	float screenLeft = curScrBounds.left;
+	float screenRight = curScrBounds.right;
 	float pos = rect.getPosition().x;
 	float posLeft = pos + rect.getOrigin().x * sX;
 	float posRight = pos - rect.getOrigin().x * sX;
@@ -195,48 +249,33 @@ bool Camera::IsinView(const sf::RectangleShape& rect) const
 	{
 		return true;
 	}
-	//if center is not on screen check left hand side
-	else if (pos < screenLeft && posLeft > screenLeft)
+	else if (pos < screenLeft)
 	{
-		return true;
+		//if center is not on screen check left hand side
+		if (posLeft > screenLeft)
+		{
+			return true;
+		}
 	}
-	//if center is not on screen check right hand side
-	else if (pos > screenRight && posRight < screenRight)
+	else if (pos > screenRight)
 	{
-		return true;
+		//if center is not on screen check right hand side
+		if (posRight < screenRight)
+		{
+			return true;
+		}
 	}
 
 	return false;
 }
 
-void Camera::Update()
+void Camera::RenderGui(sf::RenderWindow & window)
 {
-	//update the screen boundaries
-	m_curScrBounds.left = m_camera.getCenter().x - scrX * 0.5f;
-	m_curScrBounds.right = m_camera.getCenter().x + scrX * 0.5f;
+	window.draw(name);
+	window.draw(time);
 
-	m_curScrBounds.bottom = m_camera.getCenter().y - scrX * 0.5f;
-	m_curScrBounds.top = m_camera.getCenter().y + scrX * 0.5f;
-
-	//update the text positions
-	m_nameSpr.setPosition(m_curScrBounds.left + m_nameSpr.getOrigin().x + 20, m_curScrBounds.bottom + m_nameSpr.getOrigin().y + 20);
-	m_text[0]->setPosition(m_nameSpr.getPosition() + sf::Vector2f(m_nameSpr.getOrigin().x + 10, -9));
-	m_timeSpr.setPosition(m_camera.getCenter().x, m_curScrBounds.bottom + m_timeSpr.getOrigin().y + 20);
-
-	//update time
-	m_displaytime = (int)Timer::Get()->CurrentTime();
-	m_text[1]->setString(std::to_string(m_displaytime));
-	m_text[1]->setPosition(m_timeSpr.getPosition() + sf::Vector2f(m_timeSpr.getOrigin().x + 10, -9));
-
-	//reset number of tiles extracted
-	m_tileNum = 0;
-}
-
-void Camera::RenderGui(sf::RenderWindow& window) const
-{
-	window.draw(m_nameSpr);
-	window.draw(m_timeSpr);
-
-	for (auto const& text : m_text)
-		window.draw(*text.get());
+	for (int i = 0; i < m_text.size(); i++)
+	{
+		window.draw(*m_text[i]);
+	}
 }

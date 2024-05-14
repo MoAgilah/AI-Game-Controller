@@ -1,4 +1,5 @@
-#pragma once
+#ifndef AnimatedSpriteH		
+#define AnimatedSpriteH
 
 #include <SFML/Graphics.hpp>
 #include <string>
@@ -10,7 +11,7 @@
 class AnimatedSprite
 {
 public:
-	AnimatedSprite(std::string filePath, int rows, int columns, float framesPerSec, int id, bool symmetrical, int m_initialAnim, float animationSpeed);
+	AnimatedSprite(std::string filePath, int rows, int columns, float framesPerSec, int id, bool symmetrical, int initialAnim, float animationSpeed);
 	~AnimatedSprite();
 
 	void Update(float dt, bool direction = true);
@@ -42,3 +43,5 @@ private:
 	sf::Texture m_texture;
 	sf::Vector2f m_frameSize;
 };
+
+#endif

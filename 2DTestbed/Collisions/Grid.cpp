@@ -38,7 +38,7 @@ Grid::~Grid()
 
 		m_grid.clear();
 	}
-
+		
 }
 
 void Grid::SetTilePosition()
@@ -119,7 +119,7 @@ void Grid::SetTileTypes()
 
 std::vector<Tile*> Grid::GetGrid()
 {
-	return m_grid;
+ 	return m_grid;
 }
 
 
