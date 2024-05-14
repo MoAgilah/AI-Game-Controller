@@ -1,56 +1,42 @@
 #ifndef CameraH
 #define CameraH
 
-#include <vector>
-#include <SFML\Graphics.hpp>
 #include "../Utils.h"
+#include <memory>
+#include <SFML\Graphics.hpp>
+#include <array>
 
-
-enum CamID
-{
-	CENTER,TOPLEFT,TOPRIGHT,BOTTOMLEFT,BOTTOMRIGHT
-};
-
-struct ScreenLimits
-{
-	float left;
-	float right;
-	float bottom;
-	float top;
-};
+enum class GUI { NAME, TIME, MAX };
 
 class Player;
+
 class Camera
 {
 public:
-	~Camera();
-	void Reset(sf::RenderWindow & window);
-	static Camera* GetCamera();
-	sf::View GetView();
-	void Update(float deltaTime);
-	bool OnScreen(Player* ply);
-	bool IsInView(sf::Vector2f pos, sf::Vector2f ori);
-	bool IsInView(sf::Sprite spr);
-	bool IsinView(sf::RectangleShape rect);
-	void RenderGui(sf::RenderWindow& window);
-private:
 	Camera();
-	static Camera* instance;
-	sf::Vector2i screenDimensions;
-	ScreenLimits curScrBounds;
-	sf::View camera;
+	~Camera() = default;
 
-	sf::Sprite name;
-	sf::Texture nameTex;
+	sf::View GetView() const { return m_camera; }
 
-	sf::Sprite time;
-	sf::Texture timeTex;
+	bool OnScreen(const Player* ply) const;
+	bool IsInView(const sf::Vector2f& pos, const sf::Vector2f& ori) const;
+	bool IsInView(const sf::Sprite* spr) const;
+	bool IsinView(const sf::RectangleShape& rect) const;
 
-	std::vector<sf::Text*> m_text;
+	void Reset(sf::RenderWindow& window);
+	void UpdateGUI(float deltaTime);
+	void RenderGUI(sf::RenderWindow& window) const;
+
+private:
+
+	sf::View m_camera;
+	sf::Vector2i m_screenDimensions;
+	sf::Rect<float> m_curScrBounds;
+
 	sf::Font m_font;
-
-	int displaytime;
-	int tileNum;
+	std::array<sf::Sprite, (int)GUI::MAX> m_sprites;
+	std::array<sf::Texture, (int)GUI::MAX> m_textures;
+	std::array<sf::Text, (int)GUI::MAX> m_text;
 };
 
 #endif

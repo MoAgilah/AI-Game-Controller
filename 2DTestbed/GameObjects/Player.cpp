@@ -314,7 +314,7 @@ void Player::Update(float deltaTime)
 			}
 			else
 			{
-				if (Camera::GetCamera()->OnScreen(this))
+				if (Game::GetGameMgr()->GetCamera()->OnScreen(this))
 				{
 					m_velocity.y = 4;
 				}
@@ -407,7 +407,7 @@ BoundingBox * Player::GetBBox()
 	return m_curBbox;
 }
 
-sf::Vector2f Player::GetPosition()
+sf::Vector2f Player::GetPosition() const
 {
 	return m_currSpr->GetSpr()->getPosition();
 }
@@ -442,7 +442,7 @@ void Player::SetPosition(float x, float y)
 	}
 }
 
-sf::Vector2f Player::GetOrigin()
+sf::Vector2f Player::GetOrigin() const
 {
 	return m_currSpr->GetSpr()->getOrigin();
 }

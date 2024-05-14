@@ -1,5 +1,6 @@
 #include "../GameObjects/Enemy.h"
 #include "../../Collisions/Collisions.h"
+#include "../Game/Game.h"
 #include "../Game/Camera.h"
 #include "../GameObjects/Rex.h"
 
@@ -14,7 +15,7 @@ Enemy::Enemy(std::string filepath, int rows, int cols, float fps, int bTyp, int 
 	initialAnim = initAnim;
 
 	m_CurBox = m_bbox;
-	
+
 	m_type;
 }
 
@@ -61,7 +62,7 @@ void Enemy::Update(float deltaTime)
 			m_tillReset -= deltaTime;
 			if (m_tillReset <= 0)
 			{
-				if (!Camera::GetCamera()->IsInView(initialPos,GetOrigin()))
+				if (!Game::GetGameMgr()->GetCamera()->IsInView(initialPos, GetOrigin()))
 				{
 					Reset();
 				}
@@ -100,7 +101,7 @@ void Enemy::Render(sf::RenderWindow & window)
 int Enemy::DecrementLife()
 {
 	if(numLives > 0)
-	{ 
+	{
 		--numLives;
 		if (numLives == 0)
 		{
@@ -113,9 +114,9 @@ int Enemy::DecrementLife()
 
 				((Rex*)this)->Change();
 			}
-			
+
 		}
-		
+
 	}
 
 	return numLives;

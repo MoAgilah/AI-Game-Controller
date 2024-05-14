@@ -17,22 +17,23 @@ int main()
 	window.setFramerateLimit((unsigned int)FPS);
 	float t = 0.0f;
 	float dt = 1.f / FPS;
-	
+
 	//initialise begin
 	CParams g_params;
 	CtrlMgr::GetCtrlMgr()->GetController();
 
-	Game::GetGameMgr()->GetLogger()->AddDebugLog("Current Generation: " + std::to_string(CtrlMgr::GetCtrlMgr()->GetController()->GetCurrentGeneration()));
-	Game::GetGameMgr()->GetLogger()->AddExperimentLog("Current Generation: " + std::to_string(CtrlMgr::GetCtrlMgr()->GetController()->GetCurrentGeneration()));
-	Game::GetGameMgr()->GetLogger()->AddExperimentLog(Game::GetGameMgr()->GetLogger()->GetTimeStamp());
-	
+	Game gameMgr;
+	gameMgr.GetLogger()->AddDebugLog("Current Generation: " + std::to_string(CtrlMgr::GetCtrlMgr()->GetController()->GetCurrentGeneration()));
+	gameMgr.GetLogger()->AddExperimentLog("Current Generation: " + std::to_string(CtrlMgr::GetCtrlMgr()->GetController()->GetCurrentGeneration()));
+	gameMgr.GetLogger()->AddExperimentLog(Game::GetGameMgr()->GetLogger()->GetTimeStamp());
+
 	//initialise end
 	sf::Clock clock;
 	sf::Event event;
 	float currentTime = clock.getElapsedTime().asSeconds();
 	while (window.isOpen())
 	{
-		
+
 		while (window.pollEvent(event))
 		{
 			switch (event.type)
@@ -47,7 +48,7 @@ int main()
 		float frameTime = newTime - currentTime;
 		currentTime = newTime;
 
-		Camera::GetCamera()->Reset(window);
+		gameMgr.GetCamera()->Reset(window);
 		CtrlMgr::GetCtrlMgr()->GetController()->GetAnnView()->Update();
 
 		window.clear(sf::Color::White);
@@ -60,8 +61,7 @@ int main()
 #else
 			CtrlMgr::GetCtrlMgr()->GetController()->GetSensorInputs();
 #endif
-			Game::GetGameMgr()->Update(deltaTime);
-			
+			gameMgr.Update(deltaTime);
 
 			//end update
 			frameTime -= deltaTime;
@@ -69,14 +69,14 @@ int main()
 		}
 
 		//do render
-		Game::GetGameMgr()->Render(window);
+		gameMgr.Render(window);
 #ifdef DControl
 		CtrlMgr::GetCtrlMgr()->GetController()->GetAnnView()->Render(window);
-#endif // DControl			
+#endif // DControl
 
 		//end render
 		window.display();
 	}
-	
+
 	return 0;
 }

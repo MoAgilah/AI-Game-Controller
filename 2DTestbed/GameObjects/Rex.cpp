@@ -1,6 +1,7 @@
 #include "../GameObjects/Rex.h"
 #include "../../Collisions/Collisions.h"
 #include "../Game/Camera.h"
+#include "../Game/Game.h"
 
 Rex::Rex(std::string filepath, int rows, int cols, float fps, int bTyp, int strloc, bool dir, bool symmetrical, int initAnim, float animSpd)
 	:Enemy(filepath, rows, cols, fps, bTyp, strloc, dir, symmetrical, initAnim, animSpd)
@@ -27,9 +28,9 @@ void Rex::Die()
 void Rex::Change()
 {
 	m_spr->ChangeAnim(1);
-	
+
 	m_CurBox = m_SmlBox;
-	
+
 	//change bbox
 	//smaller one
 }
@@ -73,7 +74,7 @@ void Rex::Update(float deltaTime)
 			m_tillReset -= deltaTime;
 			if (m_tillReset <= 0)
 			{
-				if (!Camera::GetCamera()->IsInView(initialPos,GetOrigin()))
+				if (!Game::GetGameMgr()->GetCamera()->IsInView(initialPos,GetOrigin()))
 				{
 					Reset();
 				}
@@ -103,7 +104,6 @@ void Rex::Update(float deltaTime)
 				//+
 				m_CurBox->Update(sf::Vector2f(m_spr->GetSpr()->getPosition().x - 4.f, m_spr->GetSpr()->getPosition().y + 18.5f));
 			}
-			
 		}
 		else
 		{
@@ -181,7 +181,7 @@ void Rex::Animate(float deltaTime)
 	{
 		m_velocity.x = -2;
 	}
-	
+
 	if (m_onGround)
 	{
 		m_velocity.y = 0;
@@ -190,7 +190,7 @@ void Rex::Animate(float deltaTime)
 	else
 	{
 		m_falling = true;
-		m_velocity.y += gravity; 
+		m_velocity.y += gravity;
 	}
 
 	if (m_velocity.x != 0)

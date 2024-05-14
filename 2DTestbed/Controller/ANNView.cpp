@@ -56,8 +56,10 @@ ANNView::ANNView()
 
 void ANNView::Update()
 {
+	const Camera* camera = Game::GetGameMgr()->GetCamera();
+
 	//get main view
-	sf::View standard = Camera::GetCamera()->GetView();
+	sf::View standard = camera->GetView();
 
 	//reset mini view with standard view
 	m_view.reset(sf::FloatRect(standard.getCenter().x, standard.getCenter().y, static_cast<float>(size), static_cast<float>(scrY*size / scrX)));
@@ -65,7 +67,7 @@ void ANNView::Update()
 	m_view.zoom(4.f);
 
 	//update bkg image with standard view center position
-	back.setPosition(Camera::GetCamera()->GetView().getCenter());
+	back.setPosition(camera->GetView().getCenter());
 
 	Controller* ctrl = CtrlMgr::GetCtrlMgr()->GetController();
 	

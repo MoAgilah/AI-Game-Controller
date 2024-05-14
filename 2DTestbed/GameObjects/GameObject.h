@@ -32,7 +32,7 @@ public:
 	AnimatedSprite* GetAnimSpr() { return m_spr; }
 
 	virtual void SetInitialPos(sf::Vector2f pos);
-	virtual sf::Vector2f GetPosition();
+	virtual sf::Vector2f GetPosition() const;
 	virtual void SetPosition(sf::Vector2f);
 	virtual void SetPosition(float x, float y);
 
@@ -40,7 +40,7 @@ public:
 	virtual void SetVelocity(sf::Vector2f);
 	virtual void SetVelocity(float x, float y);
 
-	virtual sf::Vector2f GetOrigin();
+	virtual sf::Vector2f GetOrigin() const;
 
 	virtual void SetPrevPosition(sf::Vector2f);
 	virtual void SetPrevPosition(float x, float y);
@@ -60,7 +60,7 @@ public:
 
 	bool GetVisible();
 	void SetVisible(bool vis);
-	
+
 	int GetObjectNum();
 
 	void SetActive(bool act);

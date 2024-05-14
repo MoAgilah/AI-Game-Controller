@@ -1,4 +1,5 @@
 #include "../Game/Level.h"
+#include "../Game/Game.h"
 #include "../Game/Camera.h"
 
 #include "../../Collisions/BoundingBox.h"
@@ -98,7 +99,7 @@ void Level::Render(sf::RenderWindow & window)
 
 	for (int i = 1; i < m_sprites.size(); i++)
 	{
-		if (Camera::GetCamera()->IsInView(*m_sprites[i]))
+		if (Game::GetGameMgr()->GetCamera()->IsInView(m_sprites[i]))
 		{
 			window.draw(*m_sprites[i]);
 		}

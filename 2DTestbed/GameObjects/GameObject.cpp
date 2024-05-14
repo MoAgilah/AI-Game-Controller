@@ -57,7 +57,7 @@ void GameObject::SetInitialPos(sf::Vector2f pos)
 	initialPos = pos;
 }
 
-sf::Vector2f GameObject::GetPosition()
+sf::Vector2f GameObject::GetPosition() const
 {
 	return m_spr->GetSpr()->getPosition();
 }
@@ -87,7 +87,7 @@ void GameObject::SetVelocity(float x, float y)
 	m_velocity = sf::Vector2f(x, y);
 }
 
-sf::Vector2f GameObject::GetOrigin()
+sf::Vector2f GameObject::GetOrigin() const
 {	
 	return m_spr->GetSpr()->getOrigin();
 }

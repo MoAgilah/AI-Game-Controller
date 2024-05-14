@@ -18,15 +18,15 @@ public:
 
 	void Update(float deltaTime);
 	void Render(sf::RenderWindow& window);
-	
+
 	BoundingBox* GetBBox();
 
 	void Move(sf::Vector2f vel);
-	sf::Vector2f GetPosition();
+	sf::Vector2f GetPosition() const;
 	void SetPosition(sf::Vector2f);
 	void SetPosition(float x, float y);
 
-	sf::Vector2f GetOrigin();
+	sf::Vector2f GetOrigin() const;
 
 	sf::Vector2f GetPrevPostion();
 	void SetPrevPosition(sf::Vector2f);
@@ -62,7 +62,7 @@ private:
 	//Controller code
 	static bool s_playerInserted;
 	CNeuralNet*  m_pItsBrain;
-	//the players fitness score. 
+	//the players fitness score.
 	double			m_dFitness;
 	std::vector<double> outputs;
 	void ControllerInput();
