@@ -1,10 +1,9 @@
-#ifndef CameraH
-#define CameraH
+#pragma once
 
 #include "../Utils.h"
+#include <array>
 #include <memory>
 #include <SFML\Graphics.hpp>
-#include <array>
 
 enum class GUI { NAME, TIME, MAX };
 
@@ -38,5 +37,3 @@ private:
 	std::array<sf::Texture, (int)GUI::MAX> m_textures;
 	std::array<sf::Text, (int)GUI::MAX> m_text;
 };
-
-#endif
