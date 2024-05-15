@@ -57,7 +57,7 @@ void Object::Update(float deltaTime)
 
 void Object::Render(sf::RenderWindow & window)
 {
-	window.draw(m_spr->GetSprite());
+	window.draw(*m_spr->GetSprite());
 }
 
 void Object::SetIsAnimated(bool isAnim)

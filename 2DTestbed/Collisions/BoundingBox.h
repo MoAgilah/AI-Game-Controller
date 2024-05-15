@@ -1,10 +1,8 @@
 #ifndef BoundingBoxH
 #define BoundingBoxH
 
+#include "../GameObjects/Sprite.h"
 #include <SFML\Graphics.hpp>
-#include "../Utils.h"
-
-#include <iostream>
 #include <string>
 
 class Camera;
@@ -12,23 +10,26 @@ class Tile;
 class BoundingBox
 {
 public:
-	BoundingBox(std::string filepath, int id);
-	~BoundingBox();
+	BoundingBox(std::string_view filepath, int id);
+	~BoundingBox() = default;
 
 	void Update(sf::Vector2f pos);
 	void Render(sf::RenderWindow& window);
 
 	bool Intersects(Tile tile);
 	bool Intersects(BoundingBox* box);
-	
-	sf::Sprite* GetSprite();
-	int GetID();
-	void SetID(int ID);
 
-	int GetBoxNumber();
+	sf::Sprite* GetSprite() { return m_bbox.GetSprite(); }
+
+	int GetID() const { return m_id; }
+	void SetID(int ID) { m_id = ID; }
+
+	int GetBoxNumber() const { return number; }
 private:
+	bool Intersects(const sf::FloatRect& box);
+
 	int m_id;
-	sf::Sprite m_bbox;
+	Sprite m_bbox;
 	sf::Texture m_bboxTex;
 
 	int number;

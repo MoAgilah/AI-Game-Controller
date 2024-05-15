@@ -42,7 +42,7 @@ GameObject::~GameObject()
 	}
 }
 
-sf::Sprite GameObject::GetSprite() const
+sf::Sprite* GameObject::GetSprite()
 {
 	return m_spr->GetSprite();
 }

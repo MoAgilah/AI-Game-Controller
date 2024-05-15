@@ -17,7 +17,7 @@ public:
 
 	virtual void Render(sf::RenderWindow& window) { window.draw(m_sprite); }
 
-	sf::Sprite GetSprite() const { return m_sprite; }
+	sf::Sprite* GetSprite() { return &m_sprite; }
 
 	void Move(float x, float y) { m_sprite.move(x, y); }
 

@@ -39,7 +39,7 @@ Bill::~Bill()
 
 void Bill::Render(sf::RenderWindow & window)
 {
-	window.draw(m_spr->GetSprite());
+	window.draw(*m_spr->GetSprite());
 
 #ifdef DEBUG
 	#ifdef DRender

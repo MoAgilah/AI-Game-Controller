@@ -95,7 +95,7 @@ void Enemy::Update(float deltaTime)
 
 void Enemy::Render(sf::RenderWindow & window)
 {
-	window.draw(m_spr->GetSprite());
+	window.draw(*m_spr->GetSprite());
 }
 
 int Enemy::DecrementLife()

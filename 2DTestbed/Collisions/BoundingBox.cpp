@@ -5,67 +5,35 @@
 
 int BoundingBox::numOn = 0;
 
-BoundingBox::BoundingBox(std::string filepath, int id)
+BoundingBox::BoundingBox(std::string_view filepath, int id)
+	:m_id(id), m_bbox(filepath)
 {
 	number = numOn++;
-
-	m_id = id;
-
-	if (!m_bboxTex.loadFromFile("Sprites/" + filepath + "bbox.png"))
-	{
-		std::cout << "boundingBox failed to load" << std::endl;
-	}
-
-	m_bboxTex.setSmooth(true);
-	
-	m_bbox.setTexture(m_bboxTex);
-	m_bbox.scale(sX, sY);
-	m_bbox.setOrigin(m_bboxTex.getSize().x * 0.5f, m_bboxTex.getSize().y * 0.5f);
-}
-
-BoundingBox::~BoundingBox()
-{
-
 }
 
 void BoundingBox::Update(sf::Vector2f pos)
 {
-	m_bbox.setPosition(pos);
+	m_bbox.SetPosition(pos);
 }
 
 void BoundingBox::Render(sf::RenderWindow& window)
 {
-	window.draw(m_bbox);
+	m_bbox.Render(window);
 }
 
 bool BoundingBox::Intersects(Tile tile)
 {
-	return m_bbox.getGlobalBounds().intersects(tile.GetRect().getGlobalBounds());
+	return Intersects(tile.GetRect().getGlobalBounds());
 }
 
 bool BoundingBox::Intersects(BoundingBox* box)
 {
-	return m_bbox.getGlobalBounds().intersects(box->GetSprite()->getGlobalBounds());
+	return Intersects(box->GetSprite()->getGlobalBounds());
 }
 
-sf::Sprite* BoundingBox::GetSprite()
+bool BoundingBox::Intersects(const sf::FloatRect& box)
 {
-	return &m_bbox;
-}
-
-int BoundingBox::GetID()
-{
-	return m_id;
-}
-
-void BoundingBox::SetID(int ID)
-{
-	m_id = ID;
-}
-
-int BoundingBox::GetBoxNumber()
-{
-	return number;
+	return m_bbox.GetSprite()->getGlobalBounds().intersects(box);
 }
 
 
