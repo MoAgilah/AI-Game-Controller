@@ -9,6 +9,7 @@ Sprite::Sprite(std::string_view filePath)
 
 	m_texture.setSmooth(true);
 	m_sprite.setTexture(m_texture);
+	SetOrigin(sf::Vector2f((float)m_texture.getSize().x * 0.5f, (float)m_texture.getSize().y * 0.5f));
 }
 
 AnimatedSprite::AnimatedSprite(std::string_view filePath, int rows, int columns, float framesPerSec, bool symmetrical, int initialAnim, float animSpeed)

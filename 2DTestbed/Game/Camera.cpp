@@ -6,6 +6,7 @@
 #include <assert.h>
 
 Camera::Camera()
+	: m_sprites{ Sprite("name.png"), Sprite("time.png") }
 {
 	std::vector<std::string> filenames {"Sprites/name.png", "Sprites/time.png"};
 
@@ -13,15 +14,6 @@ Camera::Camera()
 
 	for (int i = 0; i < (int)GUI::MAX; i++)
 	{
-		if (!m_textures[i].loadFromFile(filenames[i]))
-		{
-			std::cout << "failed to load texture file" << filenames[i] << std::endl;
-			continue;
-		}
-
-		m_sprites[i].setTexture(m_textures[i]);
-		m_sprites[i].setOrigin((float)m_textures[i].getSize().x * 0.5f, (float)m_textures[i].getSize().y * 0.5f);
-
 		m_text[i].setFont(m_font);
 		m_text[i].setCharacterSize(15);
 		m_text[i].setOutlineColor(sf::Color::Black);
@@ -135,14 +127,14 @@ void Camera::UpdateGUI(float deltaTime)
 	m_curScrBounds.left = m_camera.getCenter().x - scrX * 0.5f;
 	m_curScrBounds.top = m_camera.getCenter().y - scrY * 0.5f;
 
-	m_sprites[(int)GUI::NAME].setPosition(m_curScrBounds.left + m_sprites[(int)GUI::NAME].getOrigin().x + 20,
-		m_curScrBounds.top + m_sprites[(int)GUI::NAME].getOrigin().y + 20);
+	m_sprites[(int)GUI::NAME].SetPosition(sf::Vector2f(m_curScrBounds.left + m_sprites[(int)GUI::NAME].GetOrigin().x + 20,
+		m_curScrBounds.top + m_sprites[(int)GUI::NAME].GetOrigin().y + 20));
 
-	m_sprites[(int)GUI::TIME].setPosition(m_camera.getCenter().x,
-		m_curScrBounds.top + m_sprites[(int)GUI::TIME].getOrigin().y + 20);
+	m_sprites[(int)GUI::TIME].SetPosition(sf::Vector2f(m_camera.getCenter().x,
+		m_curScrBounds.top + m_sprites[(int)GUI::TIME].GetOrigin().y + 20));
 
 	for (int i = 0; i < (int)GUI::MAX; i++)
-		m_text[i].setPosition(m_sprites[i].getPosition() + sf::Vector2f(m_sprites[i].getOrigin().x + 10, -9));
+		m_text[i].setPosition(m_sprites[i].GetPosition() + sf::Vector2f(m_sprites[i].GetOrigin().x + 10, -9));
 
 	Timer* timer = Timer::Get();
 
@@ -152,10 +144,10 @@ void Camera::UpdateGUI(float deltaTime)
 	timer = nullptr;
 }
 
-void Camera::RenderGUI(sf::RenderWindow & window) const
+void Camera::RenderGUI(sf::RenderWindow& window)
 {
-	for (const auto& sprite : m_sprites)
-		window.draw(sprite);
+	for (auto& sprite : m_sprites)
+		window.draw(*sprite.GetSprite());
 
 	for (const auto& text : m_text)
 		window.draw(text);

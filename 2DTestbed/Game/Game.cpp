@@ -48,6 +48,7 @@ void Game::Update(float deltaTime)
 
 void Game::Render(sf::RenderWindow & window)
 {
+	m_camera->Reset(window);
 	CheckInView();
 
 	m_level->Render(window);

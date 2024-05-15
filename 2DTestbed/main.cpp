@@ -48,7 +48,6 @@ int main()
 		float frameTime = newTime - currentTime;
 		currentTime = newTime;
 
-		gameMgr.GetCamera()->Reset(window);
 		CtrlMgr::GetCtrlMgr()->GetController()->GetAnnView()->Update();
 
 		window.clear(sf::Color::White);

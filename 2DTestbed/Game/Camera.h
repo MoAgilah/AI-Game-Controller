@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../GameObjects/Sprite.h"
 #include "../Utils.h"
 #include <array>
 #include <memory>
@@ -21,10 +22,9 @@ public:
 	bool IsInView(const sf::Vector2f& pos, const sf::Vector2f& ori) const;
 	bool IsInView(const sf::Sprite* spr) const;
 	bool IsinView(const sf::RectangleShape& rect) const;
-
 	void Reset(sf::RenderWindow& window);
 	void UpdateGUI(float deltaTime);
-	void RenderGUI(sf::RenderWindow& window) const;
+	void RenderGUI(sf::RenderWindow& window);
 
 private:
 
@@ -33,7 +33,6 @@ private:
 	sf::Rect<float> m_curScrBounds;
 
 	sf::Font m_font;
-	std::array<sf::Sprite, (int)GUI::MAX> m_sprites;
-	std::array<sf::Texture, (int)GUI::MAX> m_textures;
+	std::array<Sprite, (int)GUI::MAX> m_sprites;
 	std::array<sf::Text, (int)GUI::MAX> m_text;
 };
