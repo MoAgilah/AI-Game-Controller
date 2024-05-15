@@ -3,11 +3,15 @@
 #include "../Game/Camera.h"
 #include "../Collisions/Tile.h"
 
+#include <format>
+
 int BoundingBox::numOn = 0;
 
 BoundingBox::BoundingBox(std::string_view filepath, int id)
-	:m_id(id), m_bbox(filepath)
+	:m_id(id), m_bbox(std::format("{}{}",filepath, "bbox.png"))
 {
+	m_bbox.SetScale(sf::Vector2f(sX, sY));
+	m_bbox.SetOrigin(sf::Vector2f((float)m_bbox.GetTextureSize().x * 0.5f, (float)m_bbox.GetTextureSize().y * 0.5f));
 	number = numOn++;
 }
 
