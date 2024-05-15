@@ -8,7 +8,7 @@ Koopa::Koopa(std::string filepath, int rows, int cols, float fps, int bTyp, int 
 	std::vector<int> frames{ 1, 2, 1};
 	m_spr->SetFrames(frames);
 
-	m_spr->GetSpr()->setPosition(sf::Vector2f(400, 524));
+	m_spr->SetPosition(sf::Vector2f(400, 524));
 	m_type = KOOPA;
 	numLives = maxLives = 1;
 }
@@ -57,7 +57,7 @@ void Koopa::Animate(float deltaTime)
 
 	
 	//check for leftmost and rightmost boundary
-	if (m_spr->GetSpr()->getPosition().x < m_spr->GetSpr()->getOrigin().x || m_spr->GetSpr()->getPosition().x > 11776 - m_spr->GetSpr()->getOrigin().x)
+	if (m_spr->GetPosition().x < m_spr->GetOrigin().x || m_spr->GetPosition().x > 11776 - m_spr->GetOrigin().x)
 	{
 		m_spr->Move(-m_velocity.x * FPS * deltaTime, 0);
 		m_direction = !m_direction;

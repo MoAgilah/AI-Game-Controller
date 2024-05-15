@@ -164,7 +164,7 @@
     <ClCompile Include="Controller\Controller.cpp" />
     <ClCompile Include="Controller\CtrlMgr.cpp" />
     <ClCompile Include="Controller\Sensors.cpp" />
-    <ClCompile Include="GameObjects\AnimatedSprite.cpp" />
+    <ClCompile Include="GameObjects\Sprite.cpp" />
     <ClCompile Include="GameObjects\Bill.cpp" />
     <ClCompile Include="GameObjects\Chuck.cpp" />
     <ClCompile Include="GameObjects\Enemy.cpp" />
@@ -200,7 +200,7 @@
     <ClInclude Include="Controller\Controller.h" />
     <ClInclude Include="Controller\CtrlMgr.h" />
     <ClInclude Include="Controller\Sensors.h" />
-    <ClInclude Include="GameObjects\AnimatedSprite.h" />
+    <ClInclude Include="GameObjects\Sprite.h" />
     <ClInclude Include="GameObjects\Bill.h" />
     <ClInclude Include="GameObjects\Chuck.h" />
     <ClInclude Include="GameObjects\Enemy.h" />

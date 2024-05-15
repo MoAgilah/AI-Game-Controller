@@ -3,7 +3,7 @@
 
 #include <string>
 #include <SFML/Graphics.hpp>
-#include "../GameObjects/AnimatedSprite.h"
+#include "Sprite.h"
 
 enum GOTYPE
 {
@@ -27,7 +27,7 @@ public:
 	virtual void Update(float deltaTime) = 0;
 	virtual void Render(sf::RenderWindow& window) = 0;
 
-	sf::Sprite GetSprite();
+	sf::Sprite GetSprite() const;
 	virtual BoundingBox* GetBBox();
 	AnimatedSprite* GetAnimSpr() { return m_spr; }
 

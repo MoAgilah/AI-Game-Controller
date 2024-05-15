@@ -16,8 +16,6 @@ Level::Level()
 {
 	std::vector<std::string> filenames{ "Sprites/background.png", "Sprites/pipe1.png", "Sprites/pipe2.png", "Sprites/pipe3.png" };
 
-	assert(filenames.size() == m_textures.size() == m_sprites.size());
-
 	for (int i = 0; i < (int)SPRID::MAX; i++)
 	{
 		if (!m_textures[i].loadFromFile(filenames[i]))

@@ -8,7 +8,7 @@ Chuck::Chuck(std::string filepath, int rows, int cols, float fps, int bTyp, int 
 	std::vector<int> cframes{ 1, 2, 1, 1, 1, 1 };
 	m_spr->SetFrames(cframes);
 
-	m_spr->GetSpr()->setPosition(sf::Vector2f(400, 519));
+	m_spr->SetPosition(sf::Vector2f(400, 519));
 	m_type = CHUCK;
 	numLives = maxLives = 2;
 

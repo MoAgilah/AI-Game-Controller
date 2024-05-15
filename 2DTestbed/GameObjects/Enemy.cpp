@@ -83,19 +83,19 @@ void Enemy::Update(float deltaTime)
 		if (m_direction)
 		{
 			//+
-			m_CurBox->Update(sf::Vector2f(m_spr->GetSpr()->getPosition().x - 2, m_spr->GetSpr()->getPosition().y));
+			m_CurBox->Update(sf::Vector2f(m_spr->GetPosition().x - 2, m_spr->GetPosition().y));
 		}
 		else
 		{
 			//-
-			m_CurBox->Update(sf::Vector2f(m_spr->GetSpr()->getPosition().x + 2, m_spr->GetSpr()->getPosition().y));
+			m_CurBox->Update(sf::Vector2f(m_spr->GetPosition().x + 2, m_spr->GetPosition().y));
 		}
 	}
 }
 
 void Enemy::Render(sf::RenderWindow & window)
 {
-	window.draw(*m_spr->GetSpr());
+	window.draw(m_spr->GetSprite());
 }
 
 int Enemy::DecrementLife()

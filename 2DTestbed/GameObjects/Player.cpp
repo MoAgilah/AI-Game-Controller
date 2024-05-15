@@ -13,8 +13,8 @@ Player::Player(std::string filepath, int rows, int cols, float fps, int bTyp, in
 	std::vector<int> frames{ 1, 1, 1, 2, 1, 2, 1, 2 };
 	//regular mario
 	m_spr->SetFrames(frames);
-	m_spr->GetSpr()->setPosition(sf::Vector2f(75, 454));
-	m_bbox->GetSprite()->setPosition(sf::Vector2f(m_spr->GetSpr()->getPosition().x - 2, m_spr->GetSpr()->getPosition().y + 4));
+	m_spr->SetPosition(sf::Vector2f(75, 454));
+	m_bbox->GetSprite()->setPosition(sf::Vector2f(m_spr->GetPosition().x - 2, m_spr->GetPosition().y + 4));
 	m_CrouchBbox = new BoundingBox(filepath.substr(0, strloc) + "c", bTyp);
 
 	m_currSpr = m_spr;
@@ -26,9 +26,9 @@ Player::Player(std::string filepath, int rows, int cols, float fps, int bTyp, in
 	//super mario
 	filepath = "s" + filepath;
 	frames = std::vector<int>{ 1, 1, 1, 3, 1, 2, 1, 2 };
-	m_SupSpr = new AnimatedSprite(filepath, rows, cols + 1, fps, strloc, symmetrical, initAnim, animSpd);
+	m_SupSpr = new AnimatedSprite(filepath, rows, cols + 1, fps, symmetrical, initAnim, animSpd);
 	m_SupSpr->SetFrames(frames);
-	m_SupSpr->GetSpr()->setPosition(sf::Vector2f(m_SupSpr->GetSpr()->getOrigin().x * 2, 481));
+	m_SupSpr->SetPosition(sf::Vector2f(m_SupSpr->GetOrigin().x * 2, 481));
 
 	m_SupBbox = new BoundingBox(filepath.substr(0, strloc + 1), bTyp);
 	m_SCrouchBbox = new BoundingBox(filepath.substr(0, strloc + 1) + "c", bTyp);
@@ -53,7 +53,7 @@ Player::Player(std::string filepath, int rows, int cols, float fps, int bTyp, in
 	m_noGravTime = -1;
 	m_InvulTime = -1;
 
-	heightDiff = m_SupSpr->GetSpr()->getOrigin().y * sY - m_spr->GetSpr()->getOrigin().y * sY;
+	heightDiff = m_SupSpr->GetOrigin().y * sY - m_spr->GetOrigin().y * sY;
 
 	m_type = PLAYER;
 
@@ -123,7 +123,7 @@ void Player::Update(float deltaTime)
 					m_curBbox = m_SupBbox;
 
 					//adjust postion
-					SetPosition(m_spr->GetSpr()->getPosition() - sf::Vector2f(0, heightDiff));
+					SetPosition(m_spr->GetPosition() - sf::Vector2f(0, heightDiff));
 				}
 
 				ifWasSuper = true;
@@ -138,7 +138,7 @@ void Player::Update(float deltaTime)
 					m_curBbox = m_bbox;
 
 					//adjust position
-					SetPosition(m_SupSpr->GetSpr()->getPosition() + sf::Vector2f(0, heightDiff));
+					SetPosition(m_SupSpr->GetPosition() + sf::Vector2f(0, heightDiff));
 				}
 
 				ifWasSuper = false;
@@ -161,9 +161,9 @@ void Player::Update(float deltaTime)
 
 					//adjust bbox position
 					if (m_direction)
-						m_curBbox->Update(sf::Vector2f(m_currSpr->GetSpr()->getPosition().x - 1.f, m_currSpr->GetSpr()->getPosition().y + 22.f));
+						m_curBbox->Update(sf::Vector2f(m_currSpr->GetPosition().x - 1.f, m_currSpr->GetPosition().y + 22.f));
 					else
-						m_curBbox->Update(sf::Vector2f(m_currSpr->GetSpr()->getPosition().x + 1.f, m_currSpr->GetSpr()->getPosition().y + 22.f));
+						m_curBbox->Update(sf::Vector2f(m_currSpr->GetPosition().x + 1.f, m_currSpr->GetPosition().y + 22.f));
 				}
 				else
 				{
@@ -171,9 +171,9 @@ void Player::Update(float deltaTime)
 
 					//adjust bbox position
 					if (m_direction)
-						m_curBbox->Update(sf::Vector2f(m_currSpr->GetSpr()->getPosition().x - 2.f, m_currSpr->GetSpr()->getPosition().y + 12.f));
+						m_curBbox->Update(sf::Vector2f(m_currSpr->GetPosition().x - 2.f, m_currSpr->GetPosition().y + 12.f));
 					else
-						m_curBbox->Update(sf::Vector2f(m_currSpr->GetSpr()->getPosition().x + 2.f, m_currSpr->GetSpr()->getPosition().y + 12.f));
+						m_curBbox->Update(sf::Vector2f(m_currSpr->GetPosition().x + 2.f, m_currSpr->GetPosition().y + 12.f));
 				}
 
 				justCrouched = true;
@@ -338,27 +338,27 @@ void Player::Update(float deltaTime)
 			//decomposition of movement
 			if (m_velocity.x != 0)
 			{
-				SetPrevPosition(m_currSpr->GetSpr()->getPosition());
+				SetPrevPosition(m_currSpr->GetPosition());
 				Move(sf::Vector2f(m_velocity.x * FPS * deltaTime, 0));
 				Collisions::Get()->ProcessCollisions(this);
 			}
 
 			if (m_velocity.y != 0)
 			{
-				SetPrevPosition(m_currSpr->GetSpr()->getPosition());
+				SetPrevPosition(m_currSpr->GetPosition());
 				Move(sf::Vector2f(0, m_velocity.y * FPS * deltaTime));
 				Collisions::Get()->ProcessCollisions(this);
 			}
 		}
 
 		//check for leftmost and rightmost boundary
-		if (m_currSpr->GetSpr()->getPosition().x < m_currSpr->GetSpr()->getOrigin().x || m_currSpr->GetSpr()->getPosition().x > 11776 - m_currSpr->GetSpr()->getOrigin().x)
+		if (m_currSpr->GetPosition().x < m_currSpr->GetOrigin().x || m_currSpr->GetPosition().x > 11776 - m_currSpr->GetOrigin().x)
 		{
 			Move(sf::Vector2f(-m_velocity.x * FPS * deltaTime, 0));
 		}
 
 		//check for exceeded rightmost || or hit the goal
-		if (m_currSpr->GetSpr()->getPosition().x > RightMost || goalHit)
+		if (m_currSpr->GetPosition().x > RightMost || goalHit)
 		{
 			goalHit = false;
 
@@ -398,7 +398,7 @@ void Player::Render(sf::RenderWindow & window)
 
 void Player::Move(sf::Vector2f vel)
 {
-	m_currSpr->GetSpr()->move(vel);
+	m_currSpr->Move(vel.x, vel.y);
 	m_curBbox->GetSprite()->move(vel);
 }
 
@@ -409,42 +409,42 @@ BoundingBox * Player::GetBBox()
 
 sf::Vector2f Player::GetPosition() const
 {
-	return m_currSpr->GetSpr()->getPosition();
+	return m_currSpr->GetPosition();
 }
 
 void Player::SetPosition(sf::Vector2f pos)
 {
-	m_currSpr->GetSpr()->setPosition(pos);
+	m_currSpr->SetPosition(pos);
 	if (m_direction)
 	{
 		//+
-		m_curBbox->Update(sf::Vector2f(m_currSpr->GetSpr()->getPosition().x - 2.f, m_currSpr->GetSpr()->getPosition().y + 3.5f));
+		m_curBbox->Update(sf::Vector2f(m_currSpr->GetPosition().x - 2.f, m_currSpr->GetPosition().y + 3.5f));
 	}
 	else
 	{
 		//-
-		m_curBbox->Update(sf::Vector2f(m_currSpr->GetSpr()->getPosition().x + 2.f, m_currSpr->GetSpr()->getPosition().y + 3.5f));
+		m_curBbox->Update(sf::Vector2f(m_currSpr->GetPosition().x + 2.f, m_currSpr->GetPosition().y + 3.5f));
 	}
 }
 
 void Player::SetPosition(float x, float y)
 {
-	m_currSpr->GetSpr()->setPosition(sf::Vector2f(x,y));
+	m_currSpr->SetPosition(sf::Vector2f(x,y));
 	if (m_direction)
 	{
 		//+
-		m_curBbox->Update(sf::Vector2f(m_currSpr->GetSpr()->getPosition().x - 2.f, m_currSpr->GetSpr()->getPosition().y + 3.5f));
+		m_curBbox->Update(sf::Vector2f(m_currSpr->GetPosition().x - 2.f, m_currSpr->GetPosition().y + 3.5f));
 	}
 	else
 	{
 		//-
-		m_curBbox->Update(sf::Vector2f(m_currSpr->GetSpr()->getPosition().x + 2.f, m_currSpr->GetSpr()->getPosition().y + 3.5f));
+		m_curBbox->Update(sf::Vector2f(m_currSpr->GetPosition().x + 2.f, m_currSpr->GetPosition().y + 3.5f));
 	}
 }
 
 sf::Vector2f Player::GetOrigin() const
 {
-	return m_currSpr->GetSpr()->getOrigin();
+	return m_currSpr->GetOrigin();
 }
 
 void Player::SetPrevPosition(sf::Vector2f pos)

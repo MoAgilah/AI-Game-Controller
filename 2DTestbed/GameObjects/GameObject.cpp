@@ -8,7 +8,7 @@ int GameObject::s_numOfObjects = 0;
 
 GameObject::GameObject(std::string filepath, int rows, int cols, float fps, int bTyp, int strloc, bool dir, bool symmetrical, int initAnim, float animSpd)
 {
-	m_spr = new AnimatedSprite(filepath,rows,cols,fps,strloc,symmetrical,initAnim,animSpd);
+	m_spr = new AnimatedSprite(filepath, rows, cols, fps, symmetrical, initAnim, animSpd);
 
 	//extract id for bounding box
 	std::string s_id = filepath.substr(0, strloc);
@@ -42,9 +42,9 @@ GameObject::~GameObject()
 	}
 }
 
-sf::Sprite GameObject::GetSprite()
+sf::Sprite GameObject::GetSprite() const
 {
-	return *m_spr->GetSpr();
+	return m_spr->GetSprite();
 }
 
 BoundingBox * GameObject::GetBBox()
@@ -59,17 +59,17 @@ void GameObject::SetInitialPos(sf::Vector2f pos)
 
 sf::Vector2f GameObject::GetPosition() const
 {
-	return m_spr->GetSpr()->getPosition();
+	return m_spr->GetPosition();
 }
 
 void GameObject::SetPosition(sf::Vector2f pos)
 {
-	m_spr->GetSpr()->setPosition(pos);
+	m_spr->SetPosition(pos);
 }
 
 void GameObject::SetPosition(float x, float y)
 {
-	m_spr->GetSpr()->setPosition((sf::Vector2f(x, y)));
+	m_spr->SetPosition((sf::Vector2f(x, y)));
 }
 
 sf::Vector2f GameObject::GetVelocity()
@@ -88,8 +88,8 @@ void GameObject::SetVelocity(float x, float y)
 }
 
 sf::Vector2f GameObject::GetOrigin() const
-{	
-	return m_spr->GetSpr()->getOrigin();
+{
+	return m_spr->GetOrigin();
 }
 
 void GameObject::SetPrevPosition(sf::Vector2f pos)

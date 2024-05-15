@@ -8,20 +8,20 @@ Bill::Bill(std::string filepath, int rows, int cols, float fps, int bTyp, int st
 	numLives = maxLives = 1;
 	m_falling = false;
 
-	
+
 	colbody.front.setOutlineColor(sf::Color::Red);
 	colbody.front.setOutlineThickness(2.0f);
 	colbody.front.setFillColor(sf::Color::Transparent);
 	colbody.front.setRadius(74.f);
 	colbody.front.setPointCount((size_t)30);
 	colbody.front.setOrigin(74.f, 74.f);
-	
-	
+
+
 	colbody.back.setOutlineColor(sf::Color::Red);
 	colbody.back.setOutlineThickness(2.0f);
-	colbody.back.setSize(sf::Vector2f(15.f, m_bbox->GetSprite()->getTexture()->getSize().y-2.f));
+	colbody.back.setSize(sf::Vector2f(15.f, (float)m_bbox->GetSprite()->getTexture()->getSize().y-2.f));
 	colbody.back.setOrigin(sf::Vector2f(7.f,
-		m_spr->GetSpr()->getTexture()->getSize().y / 2.f));
+		(float)m_spr->GetTextureSize().y / 2.f));
 	colbody.back.setScale(sX, sY);
 	colbody.back.setFillColor(sf::Color::Transparent);
 }
@@ -39,7 +39,7 @@ Bill::~Bill()
 
 void Bill::Render(sf::RenderWindow & window)
 {
-	window.draw(*m_spr->GetSpr());
+	window.draw(m_spr->GetSprite());
 
 #ifdef DEBUG
 	#ifdef DRender
@@ -76,7 +76,7 @@ void Bill::Animate(float deltaTime)
 
 		m_spr->Move(0, m_velocity.y * FPS * deltaTime);
 	}
-	
+
 	if (m_velocity.x != 0)
 	{
 		m_spr->Move(m_velocity.x * FPS * deltaTime, 0);
@@ -87,7 +87,7 @@ void Bill::Animate(float deltaTime)
 	colbody.back.setPosition(GetPosition() + sf::Vector2f(m_bbox->GetSprite()->getOrigin().x*sX -17, 7));
 
 	//check for leftmost and rightmost boundary
-	if (m_spr->GetSpr()->getPosition().x < m_spr->GetSpr()->getOrigin().x || m_spr->GetSpr()->getPosition().x > 11776 - m_spr->GetSpr()->getOrigin().x)
+	if (m_spr->GetPosition().x < m_spr->GetOrigin().x || m_spr->GetPosition().x > 11776 - m_spr->GetOrigin().x)
 	{
 		m_spr->Move(-m_velocity.x * FPS * deltaTime, 0);
 		m_direction = !m_direction;

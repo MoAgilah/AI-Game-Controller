@@ -9,8 +9,6 @@ Camera::Camera()
 {
 	std::vector<std::string> filenames {"Sprites/name.png", "Sprites/time.png"};
 
-	assert(filesnames.size() == m_textures.size() == m_sprites.size() == m_text.size());
-
 	m_font.loadFromFile("Fonts/arial.ttf");
 
 	for (int i = 0; i < (int)GUI::MAX; i++)

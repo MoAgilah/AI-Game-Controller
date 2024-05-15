@@ -45,19 +45,19 @@ void Object::Update(float deltaTime)
 			if (m_direction)
 			{
 				//+
-				m_bbox->Update(sf::Vector2f(m_spr->GetSpr()->getPosition().x - 2, m_spr->GetSpr()->getPosition().y));
+				m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x - 2, m_spr->GetPosition().y));
 			}
 			else
 			{
 				//-
-				m_bbox->Update(sf::Vector2f(m_spr->GetSpr()->getPosition().x + 2, m_spr->GetSpr()->getPosition().y));
+				m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x + 2, m_spr->GetPosition().y));
 			}
 	}
 }
 
 void Object::Render(sf::RenderWindow & window)
 {
-	window.draw(*m_spr->GetSpr());
+	window.draw(m_spr->GetSprite());
 }
 
 void Object::SetIsAnimated(bool isAnim)
@@ -103,7 +103,7 @@ void Object::Animate(float deltaTime)
 		}
 	
 		//check for leftmost and rightmost boundary
-		if (m_spr->GetSpr()->getPosition().x < m_spr->GetSpr()->getOrigin().x || m_spr->GetSpr()->getPosition().x > 11776 - m_spr->GetSpr()->getOrigin().x)
+		if (m_spr->GetPosition().x < m_spr->GetOrigin().x || m_spr->GetPosition().x > 11776 - m_spr->GetOrigin().x)
 		{
 			m_spr->Move(-m_velocity.x * FPS * deltaTime, 0);
 			m_direction = !m_direction;
@@ -149,16 +149,16 @@ void Object::Animate(float deltaTime)
 
 void Object::SetPosition(sf::Vector2f pos)
 {
-	m_spr->GetSpr()->setPosition(pos);
+	m_spr->SetPosition(pos);
 	if (m_direction)
 	{
 		//+
-		m_bbox->Update(sf::Vector2f(m_spr->GetSpr()->getPosition().x-2, m_spr->GetSpr()->getPosition().y));
+		m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x-2, m_spr->GetPosition().y));
 	}
 	else
 	{
 		//-
-		m_bbox->Update(sf::Vector2f(m_spr->GetSpr()->getPosition().x+2, m_spr->GetSpr()->getPosition().y));
+		m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x+2, m_spr->GetPosition().y));
 	}
 }
 

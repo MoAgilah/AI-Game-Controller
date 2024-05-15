@@ -97,12 +97,12 @@ void Rex::Update(float deltaTime)
 			if (numLives == maxLives)
 			{
 				//+
-				m_CurBox->Update(sf::Vector2f(m_spr->GetSpr()->getPosition().x - 2.f, m_spr->GetSpr()->getPosition().y));
+				m_CurBox->Update(sf::Vector2f(m_spr->GetPosition().x - 2.f, m_spr->GetPosition().y));
 			}
 			else
 			{
 				//+
-				m_CurBox->Update(sf::Vector2f(m_spr->GetSpr()->getPosition().x - 4.f, m_spr->GetSpr()->getPosition().y + 18.5f));
+				m_CurBox->Update(sf::Vector2f(m_spr->GetPosition().x - 4.f, m_spr->GetPosition().y + 18.5f));
 			}
 		}
 		else
@@ -110,12 +110,12 @@ void Rex::Update(float deltaTime)
 			if (numLives == maxLives)
 			{
 				//+
-				m_CurBox->Update(sf::Vector2f(m_spr->GetSpr()->getPosition().x + 2.f, m_spr->GetSpr()->getPosition().y));
+				m_CurBox->Update(sf::Vector2f(m_spr->GetPosition().x + 2.f, m_spr->GetPosition().y));
 			}
 			else
 			{
 				//-
-				m_CurBox->Update(sf::Vector2f(m_spr->GetSpr()->getPosition().x + 4.f, m_spr->GetSpr()->getPosition().y + 18.5f));
+				m_CurBox->Update(sf::Vector2f(m_spr->GetPosition().x + 4.f, m_spr->GetPosition().y + 18.5f));
 			}
 		}
 	}
@@ -201,7 +201,7 @@ void Rex::Animate(float deltaTime)
 
 
 	//check for leftmost and rightmost boundary
-	if (m_spr->GetSpr()->getPosition().x < m_spr->GetSpr()->getOrigin().x || m_spr->GetSpr()->getPosition().x > 11776 - m_spr->GetSpr()->getOrigin().x)
+	if (m_spr->GetPosition().x < m_spr->GetOrigin().x || m_spr->GetPosition().x > 11776 - m_spr->GetOrigin().x)
 	{
 		m_spr->Move(-m_velocity.x * FPS * deltaTime, 0);
 		m_direction = !m_direction;
