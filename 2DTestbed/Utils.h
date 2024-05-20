@@ -16,8 +16,6 @@
 	//DRender shows debug for the testbed
 	#define DRender
 
-	//#define GridInput
-
 	//scale factor
 	#define sX 2.34375f
 	#define sY 2.5f

@@ -33,7 +33,7 @@ ANNView::ANNView()
 	m_text.back()->setOutlineThickness(1.f);
 	m_text.back()->setFillColor(sf::Color::Yellow);
 	m_text.back()->setString("Highest fitness: 0");
-	
+
 	//background of second screen
 	back.setSize(sf::Vector2f(600.f, 600.f));
 	back.setOrigin(scrX * 0.5f, scrY * 0.5f);
@@ -47,11 +47,6 @@ ANNView::ANNView()
 	{
 		m_vecView.push_back(new Tile());
 	}
-	
-#ifndef GridInput
-	//iniialise to players pos
-	m_sensors = new Sensors(sf::Vector2f{ 18, 456 }, 16);
-#endif // !GridInput
 }
 
 void ANNView::Update()
@@ -70,7 +65,7 @@ void ANNView::Update()
 	back.setPosition(camera->GetView().getCenter());
 
 	Controller* ctrl = CtrlMgr::GetCtrlMgr()->GetController();
-	
+
 	m_text[0]->setString("Player: " + std::to_string(ctrl->GetCurrentPlayerNum()) + "/" + std::to_string(CParams::iNumPlayers));
 	m_text[0]->setPosition(m_view.getCenter() - sf::Vector2f(400, -200));
 
@@ -79,12 +74,6 @@ void ANNView::Update()
 
 	m_text[2]->setString("Highest fitness: " + std::to_string(ctrl->BestFitness()));
 	m_text[2]->setPosition(m_view.getCenter() - sf::Vector2f(400, -330));
-
-#ifndef GridInput
-	//update sensor with player position
-	sf::Vector2f pos = Game::GetGameMgr()->GetPlayer()->GetBBox()->GetSprite()->getPosition() + sf::Vector2f(0, 2);
-	m_sensors->Update(pos);
-#endif // !GridInput
 
 	//extract visible tiles
 	int num(0),cnt(0);
@@ -149,7 +138,7 @@ void ANNView::Update()
 						{
 							m_vecView[i]->SetFillColour(sf::Color::Green);
 						}
-						
+
 						break;
 					}
 					else
@@ -174,10 +163,6 @@ void ANNView::Render(sf::RenderWindow & window)
 {
 	window.setView(m_view);
 	window.draw(back);
-	
-#ifndef GridInput
-	m_sensors->Render(window);
-#endif // !GridInput
 
 	for (int i = 0; i < m_vecView.size(); i++)
 	{
@@ -194,12 +179,6 @@ std::vector<Tile*> ANNView::GetVecView()
 {
 	return m_vecView;
 }
-
-Sensors * ANNView::GetSensors()
-{
-	return m_sensors;
-}
-
 
 ANNView::~ANNView()
 {

@@ -131,11 +131,7 @@ public:
 		dHalfPi = dPi / 2;
 		dTwoPi = dPi * 2;
 
-#ifdef GridInput
 		iNumInputs = 240;
-#else
-		iNumInputs = 16;
-#endif //
 		iNumOutputs = 6;
 
 		return true;

@@ -698,11 +698,8 @@ void Player::HumanInput()
 bool Player::UpdateANN()
 {
 	std::vector<double> inputs;
-#ifdef GridInput
+
 	inputs = CtrlMgr::GetCtrlMgr()->GetController()->GetGridInputs();
-#else
-	inputs = CtrlMgr::GetCtrlMgr()->GetController()->GetSensorInputs();
-#endif // GridInput
 
 	outputs = m_pItsBrain->Update(inputs, CNeuralNet::active);
 

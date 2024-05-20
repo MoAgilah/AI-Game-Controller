@@ -55,11 +55,9 @@ int main()
 		{
 			float deltaTime = std::min(frameTime, dt);
 			//do update
-#ifdef GridInput
+
 			CtrlMgr::GetCtrlMgr()->GetController()->GetGridInputs();
-#else
-			CtrlMgr::GetCtrlMgr()->GetController()->GetSensorInputs();
-#endif
+
 			gameMgr.Update(deltaTime);
 
 			//end update

@@ -15,17 +15,14 @@ class Controller
 {
 public:
 	Controller();
-	//void CheckSensors();
 	ANNView* GetAnnView();
 	std::vector<double> GetGridInputs();
-	std::vector<double> GetSensorInputs();
-	std::vector<int> GetOutputs();
 
 	int GetCurrentPlayerNum();
 	int GetCurrentGeneration();
 	double BestFitness();
 	~Controller();
-	
+
 	Player* GetCurrentPlayer();
 	bool Update();
 	std::vector<double>  GetFitnessScores()const;//body needs to be written
@@ -38,7 +35,7 @@ private:
 	std::vector<double> m_inputs;
 	//storage for the entire population of chromosomes
 	Cga*                 m_pPop;
-	//stores the average fitness per generation 
+	//stores the average fitness per generation
 	std::vector<double> m_vecAvFitness;
 	//stores the best fitness per generation
 	std::vector<double> m_vecBestFitness;
