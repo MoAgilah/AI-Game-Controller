@@ -90,9 +90,6 @@
     <ClCompile Include="Game\Game.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Level.cpp">
-      <Filter>Source Files\Game</Filter>
-    </ClCompile>
     <ClCompile Include="Game\Timer.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
@@ -116,9 +113,6 @@
     </ClCompile>
     <ClCompile Include="GameObjects\Player.cpp">
       <Filter>Source Files\GameObjects\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObjects\AnimatedSprite.cpp">
-      <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="GameObjects\Object.cpp">
       <Filter>Source Files\GameObjects</Filter>
@@ -153,6 +147,12 @@
     <ClCompile Include="Game\Logger.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
+    <ClCompile Include="Game\World.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Sprite.cpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collisions\BoundingBox.h">
@@ -182,9 +182,6 @@
     <ClInclude Include="Game\Game.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Level.h">
-      <Filter>Header Files\Game</Filter>
-    </ClInclude>
     <ClInclude Include="Game\Timer.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
@@ -208,9 +205,6 @@
     </ClInclude>
     <ClInclude Include="GameObjects\Player.h">
       <Filter>Header Files\GameObjects\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObjects\AnimatedSprite.h">
-      <Filter>Header Files\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="GameObjects\GameObject.h">
       <Filter>Header Files\GameObjects</Filter>
@@ -256,6 +250,12 @@
     </ClInclude>
     <ClInclude Include="Utils.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Sprite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\World.h">
+      <Filter>Header Files\Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

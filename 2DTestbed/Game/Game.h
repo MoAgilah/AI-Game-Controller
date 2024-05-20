@@ -4,7 +4,8 @@
 #include <SFML\Graphics.hpp>
 
 #include "../Utils.h"
-#include "Level.h"
+#include "Camera.h"
+#include "World.h"
 #include "Logger.h"
 #include "Timer.h"
 
@@ -19,7 +20,7 @@ public:
 
 	Camera* GetCamera() { return m_camera.get(); }
 	Player* GetPlayer() { return m_player.get(); }
-	Level* GetLevel() { return m_level.get(); }
+	World* GetLevel() { return m_world.get(); }
 	Logger* GetLogger() { return m_logger.get(); }
 
 	void ChangePlayer(Player* ply);
@@ -32,6 +33,6 @@ private:
 	static std::unique_ptr<Game> m_instance;
 	std::unique_ptr<Camera>		 m_camera;
 	std::unique_ptr<Player>		 m_player;
-	std::unique_ptr<Level>		 m_level;
+	std::unique_ptr<World>		 m_world;
 	std::unique_ptr<Logger>		 m_logger;
 };

@@ -707,7 +707,7 @@ void Collisions::QBoxHit(Player * ply, Object * obj)
 			spawn->SetOnGround(true);
 
 			//add to the level
-			Game::GetGameMgr()->GetLevel()->AddObject(spawn);
+			//Game::GetGameMgr()->GetLevel()->AddObject(spawn);
 
 			obj->GetAnimSpr()->ChangeAnim(1);//change to inactive box
 			obj->SetIsAnimated(true);//set can be hit to false

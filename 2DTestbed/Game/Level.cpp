@@ -128,7 +128,7 @@ Level::~Level()
 
 void Level::AddEnemies()
 {
-	Tile tmp = Collisions::Get()->GetTile(32, 5);
+	/*Tile tmp = Collisions::Get()->GetTile(32, 5);
 	m_enemy.push_back(new Bill("bill.png",1,1,FPS,BILL,1,false,true,0,1.f));
 	m_enemy.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x + tmp.GetOrigin().x *sX-10.f, tmp.GetPosition().y - tmp.GetOrigin().y * sY + 3.f));
 	m_enemy.back()->SetInitialPos(m_enemy.back()->GetPosition());
@@ -265,12 +265,12 @@ void Level::AddEnemies()
 	tmp = Collisions::Get()->GetTile(298, 3);
 	m_enemy.push_back(new Chuck("chuck.png", 6, 2, FPS, CHUCK, 1, false, false, 3, 0.5f));
 	m_enemy.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y *sY + 6.f));
-	m_enemy.back()->SetInitialPos(m_enemy.back()->GetPosition());
+	m_enemy.back()->SetInitialPos(m_enemy.back()->GetPosition());*/
 }
 
 void Level::AddObjects()
 {
-	Tile tmp = Collisions::Get()->GetTile(17, 9);
+	/*Tile tmp = Collisions::Get()->GetTile(17, 9);
 	m_objects.push_back(new Object("ycoin.png",1,1,FPS,YCOIN,2,true,true,0,1.f));
 	m_objects.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x,tmp.GetPosition().y - tmp.GetOrigin().y * 2.f - 4.f));
 
@@ -332,7 +332,7 @@ void Level::AddObjects()
 
 	tmp = Collisions::Get()->GetTile(302, 3);
 	m_objects.push_back(new Object("goal.png", 1, 1, FPS, GOAL,1, true, true, 0, 1.f));
-	m_objects.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x-6.f, tmp.GetPosition().y - tmp.GetOrigin().y * sY +30.f));
+	m_objects.back()->SetPosition(sf::Vector2f(tmp.GetPosition().x-6.f, tmp.GetPosition().y - tmp.GetOrigin().y * sY +30.f));*/
 }
 
 void Level::AddObject(Object * obj)

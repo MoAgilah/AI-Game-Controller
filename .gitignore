@@ -338,3 +338,9 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/2DTestbed/Collisions/BoundingVolume.cpp
+/2DTestbed/Collisions/BoundingVolume.h
+/2DTestbed/GameObjects/NGameObject.cpp
+/2DTestbed/GameObjects/NGameObject.h
+/2DTestbed/SFMLMathsHelper.h
+/2DTestbed/Constants.h

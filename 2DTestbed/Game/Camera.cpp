@@ -6,24 +6,7 @@
 #include <assert.h>
 
 Camera::Camera()
-	: m_sprites{ Sprite("name.png"), Sprite("time.png") }
 {
-	std::vector<std::string> filenames {"Sprites/name.png", "Sprites/time.png"};
-
-	m_font.loadFromFile("Fonts/arial.ttf");
-
-	for (int i = 0; i < (int)GUI::MAX; i++)
-	{
-		m_text[i].setFont(m_font);
-		m_text[i].setCharacterSize(15);
-		m_text[i].setOutlineColor(sf::Color::Black);
-		m_text[i].setOutlineThickness(1.f);
-		m_text[i].setFillColor(sf::Color::Yellow);
-	}
-
-	m_text[(int)GUI::NAME].setString("x 00");
-	m_text[(int)GUI::TIME].setString(std::to_string((int)Timer::Get()->CurrentTime()));
-
 	//initialise m_camera view
 	m_camera.reset(sf::FloatRect(0, 0, scrX, scrY));
 	m_camera.setViewport(sf::FloatRect(0, 0, 1.0f, 1.0f));
@@ -119,36 +102,10 @@ void Camera::Reset(sf::RenderWindow& window)
 	m_camera.reset(sf::FloatRect(posX, 0, scrX, scrY));
 
 	window.setView(m_camera);
-}
 
-void Camera::UpdateGUI(float deltaTime)
-{
-	//update the screen boundaries
 	m_curScrBounds.left = m_camera.getCenter().x - scrX * 0.5f;
+	m_curScrBounds.width = scrX;
+
 	m_curScrBounds.top = m_camera.getCenter().y - scrY * 0.5f;
-
-	m_sprites[(int)GUI::NAME].SetPosition(sf::Vector2f(m_curScrBounds.left + m_sprites[(int)GUI::NAME].GetOrigin().x + 20,
-		m_curScrBounds.top + m_sprites[(int)GUI::NAME].GetOrigin().y + 20));
-
-	m_sprites[(int)GUI::TIME].SetPosition(sf::Vector2f(m_camera.getCenter().x,
-		m_curScrBounds.top + m_sprites[(int)GUI::TIME].GetOrigin().y + 20));
-
-	for (int i = 0; i < (int)GUI::MAX; i++)
-		m_text[i].setPosition(m_sprites[i].GetPosition() + sf::Vector2f(m_sprites[i].GetOrigin().x + 10, -9));
-
-	Timer* timer = Timer::Get();
-
-	timer->UpdateTime(deltaTime);
-	m_text[(int)GUI::TIME].setString(std::to_string((int)timer->CurrentTime()));
-
-	timer = nullptr;
-}
-
-void Camera::RenderGUI(sf::RenderWindow& window)
-{
-	for (auto& sprite : m_sprites)
-		window.draw(*sprite.GetSprite());
-
-	for (const auto& text : m_text)
-		window.draw(text);
+	m_curScrBounds.height = scrY;
 }

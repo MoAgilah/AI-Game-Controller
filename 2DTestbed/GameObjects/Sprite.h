@@ -12,10 +12,13 @@
 class Sprite
 {
 public:
+	Sprite();
 	explicit Sprite(std::string_view filePath);
 	virtual ~Sprite() = default;
 
-	virtual void Render(sf::RenderWindow& window) { window.draw(m_sprite); }
+	void Init(std::string_view filePath);
+
+	void Render(sf::RenderWindow& window) const { window.draw(m_sprite); }
 
 	sf::Sprite* GetSprite() { return &m_sprite; }
 
@@ -31,6 +34,7 @@ public:
 	void SetTextureRect(const sf::IntRect& rect) { m_sprite.setTextureRect(rect); }
 
 	void SetScale(const sf::Vector2f& factors) { m_sprite.setScale(factors); }
+
 private:
 
 	sf::Sprite m_sprite;

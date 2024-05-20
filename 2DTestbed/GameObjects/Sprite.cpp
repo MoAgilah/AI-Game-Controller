@@ -2,7 +2,16 @@
 #include <format>
 #include <iostream>
 
+Sprite::Sprite()
+{
+}
+
 Sprite::Sprite(std::string_view filePath)
+{
+	Init(filePath);
+}
+
+void Sprite::Init(std::string_view filePath)
 {
 	if (!m_texture.loadFromFile(std::format("Sprites/{}", filePath)))
 		std::cout << std::format("failed to load Sprites/{}", filePath) << std::endl;

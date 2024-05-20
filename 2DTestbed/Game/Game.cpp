@@ -18,7 +18,7 @@ Game::Game()
 	else
 		m_player = std::make_unique<Player>("mario.png", 8, 2, FPS, PLAYER, 1, true, false, 0, .5f);
 
-	m_level = std::make_unique<Level>();
+	m_world = std::make_unique<World>();
 	m_logger = std::make_unique<Logger>();
 	m_instance.reset(this);
 }
@@ -37,13 +37,13 @@ void Game::ChangePlayer(Player * ply)
 
 void Game::Update(float deltaTime)
 {
+	Timer::Get()->UpdateTime(deltaTime);
+
 	if (Automated)
 		CtrlMgr::GetCtrlMgr()->GetController()->Update();
 
 	m_player->Update(deltaTime);
-	m_level->Update(deltaTime);
-
-	m_camera->UpdateGUI(deltaTime);
+	m_world->Update(deltaTime);
 }
 
 void Game::Render(sf::RenderWindow & window)
@@ -51,8 +51,7 @@ void Game::Render(sf::RenderWindow & window)
 	m_camera->Reset(window);
 	CheckInView();
 
-	m_level->Render(window);
-	m_camera->RenderGUI(window);
+	m_world->Render(window);
 	m_player->Render(window);
 
 	Collisions::Get()->Render(window);
@@ -65,9 +64,9 @@ void Game::CheckInView()
 	for (auto& tile : Collisions::Get()->GetGrid())
 		tile->SetVisible(m_camera->IsinView(tile->GetRect()));
 
-	for (auto& enemy : m_level->GetEnemies())
+	/*for (auto& enemy : m_world->GetEnemies())
 		enemy->SetVisible(m_camera->IsInView(enemy->GetBBox()->GetSprite()));
 
 	for (auto& object : m_level->GetObjects())
-		object->SetVisible(m_camera->IsInView(object->GetBBox()->GetSprite()));
+		object->SetVisible(m_camera->IsInView(object->GetBBox()->GetSprite()));*/
 }
