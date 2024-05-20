@@ -6,6 +6,8 @@
 #include "../Controller/Sensors.h"
 #include "../Controller/CtrlMgr.h"
 
+#include <format>
+
 ANNView::ANNView()
 {
 	m_font.loadFromFile("Fonts/arial.ttf");
@@ -35,11 +37,12 @@ ANNView::ANNView()
 	m_text.back()->setString("Highest fitness: 0");
 
 	//background of second screen
-	back.setSize(sf::Vector2f(600.f, 600.f));
-	back.setOrigin(scrX * 0.5f, scrY * 0.5f);
+	back.setSize(sf::Vector2f(260, 400));
+	back.setOrigin(130,200);
 	back.setScale(sX, sY);
 	//black half transparency
 	back.setFillColor(sf::Color(0, 0, 0, 125));
+
 
 	//create the grid inputs
 	int cnt = 0;
@@ -57,8 +60,8 @@ void ANNView::Update()
 	sf::View standard = camera->GetView();
 
 	//reset mini view with standard view
-	m_view.reset(sf::FloatRect(standard.getCenter().x, standard.getCenter().y, static_cast<float>(size), static_cast<float>(scrY*size / scrX)));
-	m_view.setViewport(sf::FloatRect(1.f - static_cast<float>(m_view.getSize().x) / scrX - 0.6f, 1.f - static_cast<float>(m_view.getSize().y) / scrY - 0.6f, static_cast<float>(m_view.getSize().x) / scrX, static_cast<float>(m_view.getSize().y) / scrY));
+	m_view.reset(sf::FloatRect(300, 300, 200, 200));
+	m_view.setViewport(sf::FloatRect(0.035f, 0.070f, 0.3f, 0.3f));
 	m_view.zoom(4.f);
 
 	//update bkg image with standard view center position
@@ -66,13 +69,13 @@ void ANNView::Update()
 
 	Controller* ctrl = CtrlMgr::GetCtrlMgr()->GetController();
 
-	m_text[0]->setString("Player: " + std::to_string(ctrl->GetCurrentPlayerNum()) + "/" + std::to_string(CParams::iNumPlayers));
+	m_text[0]->setString(std::format("Player: {} / {}", ctrl->GetCurrentPlayerNum(), CParams::iNumPlayers));
 	m_text[0]->setPosition(m_view.getCenter() - sf::Vector2f(400, -200));
 
-	m_text[1]->setString("Generation: " + std::to_string(ctrl->GetCurrentGeneration()));
+	m_text[1]->setString(std::format("Generation: {}" ,ctrl->GetCurrentGeneration()));
 	m_text[1]->setPosition(m_view.getCenter() - sf::Vector2f(400, -260));
 
-	m_text[2]->setString("Highest fitness: " + std::to_string(ctrl->BestFitness()));
+	m_text[2]->setString(std::format("Highest fitness: {}", ctrl->BestFitness()));
 	m_text[2]->setPosition(m_view.getCenter() - sf::Vector2f(400, -330));
 
 	//extract visible tiles
