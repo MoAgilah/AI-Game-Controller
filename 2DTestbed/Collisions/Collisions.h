@@ -7,7 +7,6 @@
 #include "../Collisions/Tile.h"
 #include "../Collisions/BoundingBox.h"
 #include "../Collisions/Grid.h"
-#include "../Controller/Sensors.h"
 
 enum Direction 
 {

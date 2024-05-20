@@ -2,7 +2,6 @@
 #include "../Collisions/Collisions.h"
 #include "../GameObjects/Player.h"
 #include "../Controller/ANNView.h"
-#include "../Controller/Sensors.h"
 #include "../Game/Game.h"
 
 Controller::Controller()
