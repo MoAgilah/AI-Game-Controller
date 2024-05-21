@@ -100,35 +100,31 @@ void Collisions::ProcessCollisions(GameObject* gobj)
 	int numchecks = 0;
 	//check for collision with tilemap
 	bool Col = false;
-		for (int t = 0; t < m_grid.size(); ++t)
+	for (int t = 0; t < m_grid.size(); ++t)
+	{
+		Tile* tile = m_grid[t];
+
+		if (tile->GetType() == EMPTY || gobj->GetBBox()->GetID() == CHKPOINT || gobj->GetBBox()->GetID() == GOAL)
 		{
-			Tile* tile = m_grid[t];
-
-			if (tile->GetType() == EMPTY || gobj->GetBBox()->GetID() == CHKPOINT || gobj->GetBBox()->GetID() == GOAL)
-			{
-				continue;
-			}
-
-			if (!tile->GetVisible()) continue;
-
-			numchecks++;
-			Col = gobj->GetBBox()->Intersects(*tile);
-
-			if (Col)
-			{
-				++numchecks;
-				ColObjectToTile(gobj, tile);
-				break;
-			}
+			continue;
 		}
+
+		if (!tile->GetVisible()) continue;
+
+		numchecks++;
+		Col = gobj->GetBBox()->Intersects(*tile);
+
+		if (Col)
+		{
+			++numchecks;
+			ColObjectToTile(gobj, tile);
+			break;
+		}
+	}
 
 	if (!Col)
 	{
 		gobj->SetOnGround(false);
-	}
-	else
-	{
-		Col = false;
 	}
 
 	for (int g = 0; g < m_collidables.size(); ++g)
@@ -181,8 +177,8 @@ void Collisions::PlayerToTile(GameObject * ply, Tile * tile)
 			//move to top of tile
 			plyObj->SetPosition(sf::Vector2f(plyObj->GetPosition().x, (tile->GetRect().getPosition().y - tile->GetRect().getOrigin().y * sY) - (plyObj->GetOrigin().y * sY) +4.f));
 			plyObj->SetOnGround(true);
+			return;
 		}
-		return;
 	}
 
 	//oway is a one way tile can be fell upon and jumped through
@@ -200,6 +196,7 @@ void Collisions::PlayerToTile(GameObject * ply, Tile * tile)
 				//move to top of tile
 				plyObj->SetPosition(sf::Vector2f(plyObj->GetPosition().x, (tile->GetRect().getPosition().y - tile->GetRect().getOrigin().y * sY) - (plyObj->GetOrigin().y * sY) + 4.f));
 				plyObj->SetOnGround(true);
+				return;
 			}
 		}
 		else
@@ -214,8 +211,6 @@ void Collisions::PlayerToTile(GameObject * ply, Tile * tile)
 				}
 			}
 		}
-
-		return;
 	}
 
 	//corner tile or wall tile
@@ -227,18 +222,16 @@ void Collisions::PlayerToTile(GameObject * ply, Tile * tile)
 			//move to tile top
 			plyObj->SetPosition(sf::Vector2f(plyObj->GetPosition().x, (tile->GetRect().getPosition().y - tile->GetRect().getOrigin().y * sY) - (plyObj->GetOrigin().y * sY) + 4.f));
 			plyObj->SetOnGround(true);
-			break;
+			return;
 		case RDIR:
 			//move to closest point without a collision to remove jittering
 			plyObj->SetPosition(sf::Vector2f((tile->GetRect().getPosition().x - tile->GetRect().getOrigin().x * sX) - (plyObj->GetOrigin().x * sX) + 7.5f, plyObj->GetPosition().y));
-			break;
+			return;
 		case LDIR:
 			//move to closest point without a collision to remove jittering
 			plyObj->SetPosition(sf::Vector2f((tile->GetRect().getPosition().x + tile->GetRect().getOrigin().x * sX) + (plyObj->GetOrigin().x * sX) - 7.5f, plyObj->GetPosition().y));
-			break;
+			return;
 		}
-
-		return;
 	}
 
 	//if travelling up or down a slope
@@ -253,25 +246,16 @@ void Collisions::PlayerToTile(GameObject * ply, Tile * tile)
 			//if collision with slope
 			if (plyObj->GetBBox()->GetSprite()->getGlobalBounds().intersects(tmpSlope[i].getGlobalBounds()))
 			{
-				switch (dir)
-				{
-				case DDIR:
-					//set to slope top
-					plyObj->SetPosition(sf::Vector2f(plyObj->GetPosition().x, tmpSlope[i].getPosition().y - tmpSlope[i].getOrigin().y*sY - (plyObj->GetOrigin().y*sX)));
-					plyObj->SetOnGround(true);
-					colFound = true;
-					break;
-				}
+				//set to slope top
+				plyObj->SetPosition(sf::Vector2f(plyObj->GetPosition().x, tmpSlope[i].getPosition().y - tmpSlope[i].getOrigin().y*sY - (plyObj->GetOrigin().y*sX)));
+				plyObj->SetOnGround(true);
+				colFound = true;
+				return;
 			}
 		}
-
-		if (!colFound)
-		{
-			plyObj->SetOnGround(false);
-		}
-
-		return;
 	}
+
+	plyObj->SetOnGround(false);
 }
 
 void Collisions::PlayerToEnemy(GameObject * ply, GameObject * enmy)
@@ -673,7 +657,7 @@ int Collisions::GetDirTravelling(GameObject * obj)
 {
 	//direction travelling
 	sf::Vector2f dirV = obj->GetPosition() - obj->GetPrevPostion();
-	int dir = -1;
+	int dir = DDIR;
 
 	//if movement in x
 	if (dirV.x != 0)

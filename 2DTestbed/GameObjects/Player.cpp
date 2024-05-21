@@ -34,7 +34,7 @@ Player::Player(std::string filepath, int rows, int cols, float fps, int bTyp, in
 	m_SCrouchBbox = new BoundingBox(filepath.substr(0, strloc + 1) + "c", bTyp);
 
 	m_onGround = false;
-	m_falling = true;
+	m_falling = false;
 	m_airbourne = false;
 	m_spindown = false;
 	ifWasSuper = m_super = false;
@@ -107,291 +107,72 @@ Player::~Player()
 
 void Player::Update(float deltaTime)
 {
-	static bool stop = false;
-	if (m_active)
+	if (!m_active)
+		return;
+
+	ProcessInput();
+
+	if (!GetOnGround())
 	{
-		//adjust position when changing from regular -> super and vice versa
-		if (ifWasSuper != m_super)
-		{
-			if (m_super)
-			{
-				//if current spr and bbox is not super
-				if (m_currSpr != m_SupSpr)
-				{
-					//change spr and bbox
-					m_currSpr = m_SupSpr;
-					m_curBbox = m_SupBbox;
-
-					//adjust postion
-					SetPosition(m_spr->GetPosition() - sf::Vector2f(0, heightDiff));
-				}
-
-				ifWasSuper = true;
-			}
-			else
-			{
-				//if current spr and bbox is not regular
-				if (m_currSpr != m_spr)
-				{
-					//change spr and bbox
-					m_currSpr = m_spr;
-					m_curBbox = m_bbox;
-
-					//adjust position
-					SetPosition(m_SupSpr->GetPosition() + sf::Vector2f(0, heightDiff));
-				}
-
-				ifWasSuper = false;
-			}
-		}//end super
-
-		//start change bbox to crouch bbox
-		//if crouched key held down
-		if (m_keyState[DOWN_KEY])
-		{
-			//if not changed bbox
-			if (justCrouched == false)
-			{
-				//get current position
-				sf::Vector2f pos = GetPosition();
-
-				if (m_super)
-				{
-					m_curBbox = m_SCrouchBbox;
-
-					//adjust bbox position
-					if (m_direction)
-						m_curBbox->Update(sf::Vector2f(m_currSpr->GetPosition().x - 1.f, m_currSpr->GetPosition().y + 22.f));
-					else
-						m_curBbox->Update(sf::Vector2f(m_currSpr->GetPosition().x + 1.f, m_currSpr->GetPosition().y + 22.f));
-				}
-				else
-				{
-					m_curBbox = m_CrouchBbox;
-
-					//adjust bbox position
-					if (m_direction)
-						m_curBbox->Update(sf::Vector2f(m_currSpr->GetPosition().x - 2.f, m_currSpr->GetPosition().y + 12.f));
-					else
-						m_curBbox->Update(sf::Vector2f(m_currSpr->GetPosition().x + 2.f, m_currSpr->GetPosition().y + 12.f));
-				}
-
-				justCrouched = true;
-			}
-		}
-		else //if crouched key is not held down
-		{
-			//if was crouched
-			if (justCrouched)
-			{
-				justCrouched = false;
-
-				if (m_super)
-					m_curBbox = m_SupBbox;
-				else
-					m_curBbox = m_bbox;
-
-				SetPosition(GetPosition());
-			}
-		}//end change bbox to crouch bbox
-
-		//set vulnerability time
-		if (justBeenHit)
-		{
-			m_InvulTime -= deltaTime;
-		}
-
-		//set vulnerable
-		if (m_InvulTime <= 0 && justBeenHit)
-		{
-			justBeenHit = false;
-		}
-
-		//if in the air
 		if (m_airbourne)
 		{
-			//increment airtime
 			m_airtime += deltaTime;
-		}
-
-		//if on ground
-		if (m_onGround)
-		{
-			m_velocity.y = 0;
-			m_airtime = 0;
+			if (m_airtime >= c_maxAirTime)
+			{
+				m_airbourne = false;
+				justCrouched = false;
+			}
 		}
 		else
 		{
-			m_falling = true;
-
-			//if not hovering
-			if (m_noGravTime <= 0)
-			{
-				if (justHitEnemy)	justHitEnemy = false;
-
-				//apply gravity
-				m_velocity.y += gravity;
-			}
-			else //if hovering
-			{
-				m_velocity.y = 0;
-				m_noGravTime -= deltaTime;
-			}
-		}
-
-		//if time run out
-		if (Timer::Get()->CheckEnd())
-		{
-			die = killed = true;
-			m_currSpr->ChangeAnim(DIE);//die
-			//m_dFitness -= 200;
-		}
-
-		ProcessInput();
-
-		if (m_onGround && !m_keyState[SPACE_KEY])
-		{
-			m_airtime = 0;
-			cantjump = false;
-		}
-
-		if (m_onGround && !m_keyState[RCRTL_KEY])
-		{
-			m_airtime = 0;
-			cantSpinJump = false;
-		}
-
-		if (m_airtime >= c_maxAirTime)
-		{
-			m_airbourne = false;
-			m_falling = true;
-			cantjump = true;
-			cantSpinJump = true;
-
-			if (!m_spindown && m_alive) m_currSpr->ChangeAnim(FALL);//fall
-		}
-
-		if (m_velocity.x == 0.0f && m_velocity.y == 0.0f)
-		{
-			if (!m_falling && m_alive)
-			{
-				if (!m_keyState[DOWN_KEY] && !m_keyState[UP_KEY] && !die)
-				{
-					m_currSpr->ChangeAnim(IDLE);
-				}
-			}
-		}
-
-		if (die)
-		{
-			sf::Vector2f currentPos = GetPosition();
-
-			if (goingUp)
-			{
-				if (killed)
-				{
-					if (currentPos.y >= m_deathLoc.y)
-					{
-						m_velocity.y = -3;
-					}
-					else
-					{
-						goingUp = false;
-					}
-				}
-				else
-				{
-					if (currentPos.y >= 525)
-					{
-						m_velocity.y = -3;
-					}
-					else
-					{
-						goingUp = false;
-					}
-				}
-
-			}
-			else
-			{
-				if (Game::GetGameMgr()->GetCamera()->OnScreen(this))
-				{
-					m_velocity.y = 4;
-				}
-				else
-				{
-					if (Automated)
-					{
-						m_alive = false;
-					}
-					else
-					{
-						ReSpawn();
-					}
-				}
-			}
-
-			Move(sf::Vector2f(0, m_velocity.y * FPS * deltaTime));
-		}
-		else
-		{
-			//decomposition of movement
-			if (m_velocity.x != 0)
-			{
-				SetPrevPosition(m_currSpr->GetPosition());
-				Move(sf::Vector2f(m_velocity.x * FPS * deltaTime, 0));
-				Collisions::Get()->ProcessCollisions(this);
-			}
-
-			if (m_velocity.y != 0)
-			{
-				SetPrevPosition(m_currSpr->GetPosition());
-				Move(sf::Vector2f(0, m_velocity.y * FPS * deltaTime));
-				Collisions::Get()->ProcessCollisions(this);
-			}
-		}
-
-		//check for leftmost and rightmost boundary
-		if (m_currSpr->GetPosition().x < m_currSpr->GetOrigin().x || m_currSpr->GetPosition().x > 11776 - m_currSpr->GetOrigin().x)
-		{
-			Move(sf::Vector2f(-m_velocity.x * FPS * deltaTime, 0));
-		}
-
-		//check for exceeded rightmost || or hit the goal
-		if (m_currSpr->GetPosition().x > RightMost || goalHit)
-		{
-			goalHit = false;
-
-			CheckPointHit(false);
-			SetSpawnLoc();
-
-			if (Automated == false)
-			{
-				ReSpawn();
-			}
-		}
-
-		m_currSpr->Update(deltaTime, m_direction);
-		m_prevDirection = m_direction;
-
-		bool inbound = true;
-		if (m_curBbox->GetSprite()->getPosition().y + m_curBbox->GetSprite()->getOrigin().y * 2.5f > 600 - m_curBbox->GetSprite()->getOrigin().y * 2.5f)
-		{
-			inbound = false;
-		}
-
-		if (inbound == false && die == false && killed == false)
-		{
-			die = true;
-			goingUp = true;
-			m_deathLoc = GetPosition();
-			m_currSpr->ChangeAnim(DIE);//die
-			//m_dFitness -= 200;
+			m_velocity.y += gravity;
 		}
 	}
+	else
+	{
+		m_velocity.y = 0;
+		m_airtime = 0;
+	}
+
+	//decomposition of movement
+	if (m_velocity.x != 0)
+	{
+		SetPrevPosition(m_currSpr->GetPosition());
+		Move(sf::Vector2f(m_velocity.x * FPS * deltaTime, 0));
+		Collisions::Get()->ProcessCollisions(this);
+	}
+
+	if (m_velocity.y != 0)
+	{
+		SetPrevPosition(m_currSpr->GetPosition());
+		Move(sf::Vector2f(0, m_velocity.y * FPS * deltaTime));
+		Collisions::Get()->ProcessCollisions(this);
+	}
+
+	//check for leftmost and rightmost boundary
+	if (m_currSpr->GetPosition().x < m_currSpr->GetOrigin().x || m_currSpr->GetPosition().x > 11776 - m_currSpr->GetOrigin().x)
+	{
+		Move(sf::Vector2f(-m_velocity.x * FPS * deltaTime, 0));
+	}
+
+	//check for exceeded rightmost || or hit the goal
+	if (m_currSpr->GetPosition().x > RightMost || goalHit)
+	{
+		goalHit = false;
+
+		CheckPointHit(false);
+		SetSpawnLoc();
+
+		if (Automated == false)
+		{
+			ReSpawn();
+		}
+	}
+
+	m_currSpr->Update(deltaTime, m_direction);
 }
 
-void Player::Render(sf::RenderWindow & window)
+void Player::Render(sf::RenderWindow& window)
 {
 	m_currSpr->Render(window);
 }
@@ -402,7 +183,7 @@ void Player::Move(sf::Vector2f vel)
 	m_curBbox->GetSprite()->move(vel);
 }
 
-BoundingBox * Player::GetBBox()
+BoundingBox* Player::GetBBox()
 {
 	return m_curBbox;
 }
@@ -429,7 +210,7 @@ void Player::SetPosition(sf::Vector2f pos)
 
 void Player::SetPosition(float x, float y)
 {
-	m_currSpr->SetPosition(sf::Vector2f(x,y));
+	m_currSpr->SetPosition(sf::Vector2f(x, y));
 	if (m_direction)
 	{
 		//+
@@ -474,7 +255,7 @@ void Player::SetIsSuper(bool super)
 
 void Player::SetSpawnLoc(sf::Vector2f loc)
 {
-	if (loc == sf::Vector2f(0,0))
+	if (loc == sf::Vector2f(0, 0))
 	{
 		m_spawnLoc = initialPos;
 	}
@@ -486,7 +267,7 @@ void Player::SetSpawnLoc(sf::Vector2f loc)
 
 void Player::IncreaseCoins(int num)
 {
-	m_coinTotal =+ num;
+	m_coinTotal = +num;
 	//m_dFitness += 100;
 }
 
@@ -753,7 +534,7 @@ void Player::EndOfRunCalculations()
 
 void Player::ControllerInput()
 {
-	Game::GetGameMgr()->GetLogger()->AddDebugLog("Player " + std::to_string(CtrlMgr::GetCtrlMgr()->GetController()->GetCurrentPlayerNum()),false);
+	Game::GetGameMgr()->GetLogger()->AddDebugLog("Player " + std::to_string(CtrlMgr::GetCtrlMgr()->GetController()->GetCurrentPlayerNum()), false);
 
 	for (int i = 0; i < outputs.size(); ++i)
 	{
@@ -791,8 +572,8 @@ void Player::ControllerInput()
 		else if (oval >= 0.9) output = true;
 		else output = false;
 
-		Game::GetGameMgr()->GetLogger()->AddDebugLog(move + " = " + std::to_string(oval) + " = " + std::to_string(output),false);
-		Game::GetGameMgr()->GetLogger()->AddDebugLog("\t",false);
+		Game::GetGameMgr()->GetLogger()->AddDebugLog(move + " = " + std::to_string(oval) + " = " + std::to_string(output), false);
+		Game::GetGameMgr()->GetLogger()->AddDebugLog("\t", false);
 		//store output
 		m_keyState[i] = output;
 	}
@@ -801,156 +582,185 @@ void Player::ControllerInput()
 
 void Player::ProcessInput()
 {
-	if (GetIsAlive())
+	if (!GetIsAlive())
+		return;
+
+	if (Automated)
 	{
-		if (Automated)
-		{
-			ControllerInput();
-		}
-		else
-		{
-			HumanInput();
-		}
+		ControllerInput();
+	}
+	else
+	{
+		HumanInput();
+	}
 
-		if (m_keyState[UP_KEY])
+	//move left
+	if (m_keyState[LEFT_KEY])
+	{
+		if (!m_keyState[DOWN_KEY])
 		{
-			//change animation
-			m_currSpr->ChangeAnim(LOOKUP);
-		}
-
-		//move right
-		if (m_keyState[LEFT_KEY])
-		{
-			if (!m_keyState[DOWN_KEY])
+			//change direction
+			if (m_direction)
 			{
-				//change direction
+				m_direction = false;
+			}
+
+			//change animation
+			if (GetOnGround())
+			{
+				m_currSpr->ChangeAnim(LEFT);
+			}
+
+			// right key is pressed: move our character
+			m_velocity.x = -m_moveSpeed;
+		}
+	}
+
+
+	//move right
+	if (m_keyState[RIGHT_KEY])
+	{
+		if (!m_keyState[DOWN_KEY])
+		{
+			//change direction
+			if (!m_direction)
+			{
+				m_direction = true;
+			}
+
+			//change animation
+			if (GetOnGround())
+			{
+				m_currSpr->ChangeAnim(RIGHT);
+			}
+
+			// right key is pressed: move our character
+			m_velocity.x = m_moveSpeed;
+		}
+	}
+
+	if ((m_keyState[LEFT_KEY] == false && m_keyState[RIGHT_KEY] == false))
+	{
+		m_velocity.x = 0.0f;
+	}
+
+	if (m_keyState[UP_KEY])
+	{
+		//change animation
+		m_currSpr->ChangeAnim(LOOKUP);
+	}
+
+	//start change bbox to crouch bbox
+		//if crouched key held down
+	if (m_keyState[DOWN_KEY])
+	{
+		//if not changed bbox
+		if (justCrouched == false)
+		{
+			//get current position
+			sf::Vector2f pos = GetPosition();
+
+			if (m_super)
+			{
+				m_curBbox = m_SCrouchBbox;
+
+				//adjust bbox position
 				if (m_direction)
-				{
-					m_direction = false;
-				}
-
-				//change animation
-				if (!m_falling)
-				{
-					m_currSpr->ChangeAnim(LEFT);
-				}
-
-				// right key is pressed: move our character
-				m_velocity.x = -m_moveSpeed;
+					m_curBbox->Update(sf::Vector2f(m_currSpr->GetPosition().x - 1.f, m_currSpr->GetPosition().y + 22.f));
+				else
+					m_curBbox->Update(sf::Vector2f(m_currSpr->GetPosition().x + 1.f, m_currSpr->GetPosition().y + 22.f));
 			}
-		}
-
-
-		//move right
-		if (m_keyState[RIGHT_KEY])
-		{
-			if (!m_keyState[DOWN_KEY])
+			else
 			{
-				//change direction
-				if (!m_direction)
-				{
-					m_direction = true;
-				}
+				m_curBbox = m_CrouchBbox;
 
-				//change animation
-				if (!m_falling)
-				{
-					m_currSpr->ChangeAnim(RIGHT);
-				}
-
-				// right key is pressed: move our character
-				m_velocity.x = m_moveSpeed;
+				//adjust bbox position
+				if (m_direction)
+					m_curBbox->Update(sf::Vector2f(m_currSpr->GetPosition().x - 2.f, m_currSpr->GetPosition().y + 12.f));
+				else
+					m_curBbox->Update(sf::Vector2f(m_currSpr->GetPosition().x + 2.f, m_currSpr->GetPosition().y + 12.f));
 			}
-		}
 
-
-		if ((m_keyState[LEFT_KEY] == false && m_keyState[RIGHT_KEY] == false))
-		{
-			m_velocity.x = 0.0f;
-		}
-
-		if (m_keyState[DOWN_KEY])
-		{
-			//change animation
+			justCrouched = true;
 			m_currSpr->ChangeAnim(CROUCH);
-			m_velocity.x = 0.0f;
 		}
-
-		//regular jump
-		if (m_keyState[SPACE_KEY])
+	}
+	else //if crouched key is not held down
+	{
+		//if was crouched
+		if (justCrouched)
 		{
-			if (cantjump == false)
+			justCrouched = false;
+
+			if (m_super)
+				m_curBbox = m_SupBbox;
+			else
+				m_curBbox = m_bbox;
+
+			SetPosition(GetPosition());
+			m_currSpr->ChangeAnim(IDLE);
+		}
+	}//end change bbox to crouch bbox
+
+	//regular jump
+	if (m_keyState[SPACE_KEY])
+	{
+		if (cantjump == false)
+		{
+			if (GetOnGround())
 			{
-				if (m_airtime <= c_maxAirTime)
-				{
-					//change animation
+				//change animation
+				if (!m_keyState[DOWN_KEY])
 					m_currSpr->ChangeAnim(JUMP);
-					// up key is pressed: move our character
-					m_velocity.y = -m_jumpSpeed;
-					m_airbourne = true;
-					m_onGround = false;
-				}
+				// up key is pressed: move our character
+				m_airbourne = true;
+				m_onGround = false;
+				m_velocity.y -= m_jumpSpeed;
+				cantjump = true;
 			}
-			//set keystate
-			m_keyState[SPACE_KEY] = true;
 		}
-		else
+	}
+	else
+	{
+		if (m_airbourne && cantjump)
 		{
-
-			if (m_keyState[SPACE_KEY])
-			{
-				//set keystate
-				m_keyState[SPACE_KEY] = false;
-				m_airbourne = false;
-
-				if (m_airtime > 0)
-				{
-					m_airtime = c_maxAirTime;
-					m_currSpr->ChangeAnim(FALL);
-					m_falling = true;
-					cantjump = true;
-					cantSpinJump = true;
-				}
-			}
+			m_currSpr->ChangeAnim(FALL);
+			m_airtime = c_maxAirTime;
 		}
+	}
 
-		//spin jump
-		if (m_keyState[RCRTL_KEY])
+	//spin jump
+	if (m_keyState[RCRTL_KEY])
+	{
+		if (cantSpinJump == false)
 		{
-			if (cantSpinJump == false)
+			if (GetOnGround())
 			{
-				if (m_airtime <= c_maxAirTime)
-				{
-					//change animation
-					m_currSpr->ChangeAnim(SPINJUMP);
-					// up key is pressed: move our character
-					m_velocity.y = -m_jumpSpeed;
-
-					m_airbourne = true;
-					m_spindown = true;
-					m_onGround = false;
-				}
+				//change animation
+				m_currSpr->ChangeAnim(SPINJUMP);
+				// up key is pressed: move our character
+				m_airbourne = true;
+				m_onGround = false;
+				m_velocity.y = -m_jumpSpeed;
+				cantSpinJump = true;
 			}
-
-			//set keystate
-			m_keyState[RCRTL_KEY] = true;
 		}
-		else
+	}
+	else
+	{
+		if (m_airbourne && cantSpinJump)
 		{
-			if (m_keyState[RCRTL_KEY])
-			{
-				//set keystate
-				m_keyState[RCRTL_KEY] = false;
-				m_airbourne = false;
-
-				if (m_airtime > 0)
-				{
-					m_airtime = c_maxAirTime;
-					m_falling = true;
-					cantjump = true;
-					cantSpinJump = true;
-				}
-			}
+			m_currSpr->ChangeAnim(SPINJUMP);
+			m_airtime = c_maxAirTime;
 		}
+	}
+
+	if (!m_keyState[SPACE_KEY] && !m_keyState[RCRTL_KEY])
+		cantjump = cantSpinJump = false;
+
+	if (m_velocity.x == 0.0f && m_velocity.y == 0.0f)
+	{
+		if (!m_keyState[DOWN_KEY] && !m_keyState[UP_KEY])
+			m_currSpr->ChangeAnim(IDLE);
 	}
 }

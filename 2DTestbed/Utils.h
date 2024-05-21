@@ -11,10 +11,10 @@
 #define UtilsH
 
 	//Dcontrol shows debug for the controller
-	#define DControl
+	//#define DControl
 
 	//DRender shows debug for the testbed
-	#define DRender
+	//#define DRender
 
 	//scale factor
 	#define sX 2.34375f
