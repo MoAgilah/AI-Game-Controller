@@ -246,11 +246,15 @@ void Collisions::PlayerToTile(GameObject * ply, Tile * tile)
 			//if collision with slope
 			if (plyObj->GetBBox()->GetSprite()->getGlobalBounds().intersects(tmpSlope[i].getGlobalBounds()))
 			{
-				//set to slope top
-				plyObj->SetPosition(sf::Vector2f(plyObj->GetPosition().x, tmpSlope[i].getPosition().y - tmpSlope[i].getOrigin().y*sY - (plyObj->GetOrigin().y*sX)));
-				plyObj->SetOnGround(true);
-				colFound = true;
-				return;
+				switch (dir)
+				{
+				case DDIR:
+					//set to slope top
+					plyObj->SetPosition(sf::Vector2f(plyObj->GetPosition().x, tmpSlope[i].getPosition().y - tmpSlope[i].getOrigin().y * sY - (plyObj->GetOrigin().y * sX)));
+					plyObj->SetOnGround(true);
+					colFound = true;
+					return;
+				}
 			}
 		}
 	}
