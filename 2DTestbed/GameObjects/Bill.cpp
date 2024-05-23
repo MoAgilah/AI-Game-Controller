@@ -4,8 +4,6 @@
 Bill::Bill(bool dir)
 	:Enemy("bill.png", 1, 1, BILL, dir)
 {
-	m_falling = false;
-
 	colbody.front.setOutlineColor(sf::Color::Red);
 	colbody.front.setOutlineThickness(2.0f);
 	colbody.front.setFillColor(sf::Color::Transparent);
@@ -24,7 +22,6 @@ Bill::Bill(bool dir)
 void Bill::Die()
 {
 	m_alive = false;
-	m_falling = true;
 	timeLeftActive = 2.f;
 }
 

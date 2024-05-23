@@ -37,7 +37,7 @@ public:
 	void SetPosition(sf::Vector2f pos);
 	void SetPosition(float x, float y);
 
-	sf::Vector2f GetVelocity() { return m_velocity; }
+	sf::Vector2f GetVelocity() const { return m_velocity; }
 	void SetVelocity(sf::Vector2f vel) { m_velocity = vel; }
 	void SetVelocity(float x, float y) { m_velocity = sf::Vector2f(x, y); }
 
@@ -48,13 +48,10 @@ public:
 	sf::Vector2f GetPrevPostion() const { return m_prevPos; }
 
 	bool GetOnGround() const { return m_onGround; }
-	virtual void SetOnGround(bool grnd);
+	virtual void SetOnGround(bool grnd) { m_onGround = grnd; }
 
 	bool GetAirbourne() const { return m_airbourne; }
 	void SetAirbourne(bool air) { m_airbourne = air; }
-
-	bool GetFalling() const { return m_falling; }
-	void SetFalling(bool fall) { m_falling = fall; }
 
 	bool GetDirection() const { return m_direction; }
 	void SetDirection(bool dir) { m_direction = dir; }
@@ -79,7 +76,6 @@ protected:
 
 	bool m_direction = true;
 	bool m_onGround = false;
-	bool m_falling = false;
 	bool m_airbourne = false;
 
 	sf::Vector2f m_position;

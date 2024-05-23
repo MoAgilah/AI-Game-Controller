@@ -119,7 +119,6 @@ void Rex::Reset()
 
 	m_resetAllowed = false;
 	m_onGround = false;
-	m_falling = true;
 	m_airbourne = false;
 	m_active = false;
 
@@ -141,7 +140,6 @@ void Rex::Revive()
 
 	m_resetAllowed = false;
 	m_onGround = false;
-	m_falling = true;
 	m_airbourne = false;
 	m_active = false;
 
@@ -176,7 +174,6 @@ void Rex::Animate(float deltaTime)
 	}
 	else
 	{
-		m_falling = true;
 		m_velocity.y += gravity;
 	}
 

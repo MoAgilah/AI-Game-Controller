@@ -55,17 +55,3 @@ void GameObject::SetPosition(float x, float y)
 	}
 }
 
-void GameObject::SetOnGround(bool grnd)
-{
-	if (grnd)
-	{
-		m_onGround = true;
-		m_falling = false;
-	}
-	else
-	{
-		m_onGround = false;
-		m_falling = true;
-	}
-}
-

@@ -35,7 +35,6 @@ Player::Player(std::string filepath, int rows, int cols, bool symmetrical, int i
 	m_SCrouchBbox = new BoundingBox("supCrouch", PLAYER);
 
 	m_onGround = false;
-	m_falling = false;
 	m_airbourne = false;
 	m_spindown = false;
 	ifWasSuper = m_super = false;
@@ -229,7 +228,6 @@ void Player::Reset()
 	m_airtime = 0;
 
 	m_onGround = true;
-	m_falling = false;
 	m_airbourne = false;
 	m_spindown = false;
 	justCrouched = false;
@@ -261,7 +259,6 @@ void Player::ReSpawn()
 	m_airtime = 0;
 
 	m_onGround = true;
-	m_falling = false;
 	m_airbourne = false;
 	m_spindown = false;
 	justCrouched = false;
@@ -333,11 +330,6 @@ void Player::SetCantJump()
 		if (m_airbourne)
 		{
 			m_airbourne = false;
-		}
-
-		if (m_falling == false)
-		{
-			m_falling = true;
 		}
 	}
 }

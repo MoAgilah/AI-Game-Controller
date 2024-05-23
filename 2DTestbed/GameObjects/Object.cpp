@@ -89,7 +89,6 @@ void Object::Animate(float deltaTime)
 		}
 		else
 		{
-			m_falling = true;
 			m_velocity.y += gravity;
 		}
 

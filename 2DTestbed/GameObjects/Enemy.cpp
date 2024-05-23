@@ -130,7 +130,6 @@ void Enemy::Revive()
 
 	m_resetAllowed = false;
 	m_onGround = false;
-	m_falling = true;
 	m_airbourne = false;
 
 	m_tillReset = 0;
@@ -159,7 +158,6 @@ void Enemy::Reset()
 
 	m_resetAllowed = false;
 	m_onGround = false;
-	m_falling = true;
 	m_airbourne = false;
 	m_active = false;
 
