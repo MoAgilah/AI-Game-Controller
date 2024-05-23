@@ -10,8 +10,6 @@ Enemy::Enemy(std::string_view filepath, int rows, int cols, int bTyp, bool dir, 
 	m_enemyNum = s_numOfEnemies++;
 
 	m_initialAnim = initAnim;
-
-	m_CurBox = m_bbox;
 }
 
 Enemy::~Enemy()
@@ -67,30 +65,20 @@ void Enemy::Update(float deltaTime)
 
 		if (m_visible)
 		{
-			if (m_alive || m_bbox->GetID() == BILL)
+			if (m_alive || m_curBBox->GetID() == BILL)
 			{
 				Animate(deltaTime);
 			}
 		}
 
-		m_spr->Update(deltaTime, m_direction);
-
-		if (m_direction)
-		{
-			//+
-			m_CurBox->Update(sf::Vector2f(m_spr->GetPosition().x - 2, m_spr->GetPosition().y));
-		}
-		else
-		{
-			//-
-			m_CurBox->Update(sf::Vector2f(m_spr->GetPosition().x + 2, m_spr->GetPosition().y));
-		}
+		m_curSpr->Update(deltaTime, m_direction);
+		m_curSpr->SetPosition(m_curSpr->GetPosition());
 	}
 }
 
 void Enemy::Render(sf::RenderWindow & window)
 {
-	window.draw(*m_spr->GetSprite());
+	window.draw(*GetSprite());
 }
 
 int Enemy::DecrementLife()
@@ -104,7 +92,7 @@ int Enemy::DecrementLife()
 		}
 		else
 		{
-			if (m_bbox->GetID() == REX)
+			if (m_curBBox->GetID() == REX)
 			{
 
 				((Rex*)this)->Change();
@@ -134,7 +122,7 @@ void Enemy::Change()
 
 BoundingBox * Enemy::GetBBox()
 {
-	return m_CurBox;
+	return m_curBBox;
 }
 
 int Enemy::GetLives()
@@ -144,6 +132,10 @@ int Enemy::GetLives()
 
 void Enemy::Revive()
 {
+	m_curBBox = m_bbox.get();
+	m_curSpr = m_spr.get();
+	m_curSpr->ChangeAnim(m_initialAnim);
+
 	m_direction = m_initialDir;
 	SetPosition(m_initialPos);
 	m_prevPos = GetPosition();
@@ -159,7 +151,6 @@ void Enemy::Revive()
 	timeLeftActive = 0;
 	m_numLives = m_maxLives;
 
-	m_spr->ChangeAnim(m_initialAnim);
 	m_alive = true;
 	m_active = true;
 }
@@ -171,6 +162,10 @@ int Enemy::GetEnemyNum()
 
 void Enemy::Reset()
 {
+	m_curBBox = m_bbox.get();
+	m_curSpr = m_spr.get();
+	m_curSpr->ChangeAnim(m_initialAnim);
+
 	m_direction = m_initialDir;
 	SetPosition(m_initialPos);
 	m_prevPos = GetPosition();
@@ -185,6 +180,4 @@ void Enemy::Reset()
 	m_tillReset = 0;
 
 	m_numLives = m_maxLives;
-
-	m_spr->ChangeAnim(m_initialAnim);
 }

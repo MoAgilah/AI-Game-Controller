@@ -4,8 +4,7 @@
 #include "../GameObjects/Enemy.h"
 
 class BoundingBox;
-class Rex :
-	public Enemy
+class Rex : public Enemy
 {
 public:
 	Rex(bool dir = true, int initAnim = 0, float animSpd = 1);
@@ -17,7 +16,7 @@ public:
 	~Rex();
 private:
 	void Animate(float deltaTime);
-	bool onTheGround;
+
 	BoundingBox* m_SmlBox;
 };
 

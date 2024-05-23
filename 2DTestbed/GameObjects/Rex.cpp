@@ -7,12 +7,10 @@ Rex::Rex(bool dir, int initAnim, float animSpd)
 	:Enemy("rex.png", 3, 2, REX, dir, false, initAnim, animSpd)
 {
 	std::vector<int> frames{ 2, 2, 1 };
-	m_spr->SetFrames(frames);
+	m_curSpr->SetFrames(frames);
 
 	m_type = REX;
 	m_numLives = m_maxLives = 2;
-
-	m_CurBox = m_bbox;
 
 	m_SmlBox = new BoundingBox("rexSml", m_type);
 }
@@ -20,16 +18,16 @@ Rex::Rex(bool dir, int initAnim, float animSpd)
 void Rex::Die()
 {
 	m_alive = false;
-	m_spr->ChangeAnim(2);
+	m_curSpr->ChangeAnim(2);
 	timeLeftActive = 0.5f;
 }
 
 
 void Rex::Change()
 {
-	m_spr->ChangeAnim(1);
+	m_curSpr->ChangeAnim(1);
 
-	m_CurBox = m_SmlBox;
+	m_curBBox = m_SmlBox;
 
 	//change bbox
 	//smaller one
@@ -90,19 +88,19 @@ void Rex::Update(float deltaTime)
 			}
 		}
 
-		m_spr->Update(deltaTime, m_direction);
+		m_curSpr->Update(deltaTime, m_direction);
 
 		if (m_direction)
 		{
 			if (m_numLives == m_maxLives)
 			{
 				//+
-				m_CurBox->Update(sf::Vector2f(m_spr->GetPosition().x - 2.f, m_spr->GetPosition().y));
+				m_curBBox->Update(sf::Vector2f(m_curSpr->GetPosition().x - 2.f, m_curSpr->GetPosition().y));
 			}
 			else
 			{
 				//+
-				m_CurBox->Update(sf::Vector2f(m_spr->GetPosition().x - 4.f, m_spr->GetPosition().y + 18.5f));
+				m_curBBox->Update(sf::Vector2f(m_curSpr->GetPosition().x - 4.f, m_curSpr->GetPosition().y + 18.5f));
 			}
 		}
 		else
@@ -110,12 +108,12 @@ void Rex::Update(float deltaTime)
 			if (m_numLives == m_maxLives)
 			{
 				//+
-				m_CurBox->Update(sf::Vector2f(m_spr->GetPosition().x + 2.f, m_spr->GetPosition().y));
+				m_curBBox->Update(sf::Vector2f(m_curSpr->GetPosition().x + 2.f, m_curSpr->GetPosition().y));
 			}
 			else
 			{
 				//-
-				m_CurBox->Update(sf::Vector2f(m_spr->GetPosition().x + 4.f, m_spr->GetPosition().y + 18.5f));
+				m_curBBox->Update(sf::Vector2f(m_curSpr->GetPosition().x + 4.f, m_curSpr->GetPosition().y + 18.5f));
 			}
 		}
 	}
@@ -123,6 +121,10 @@ void Rex::Update(float deltaTime)
 
 void Rex::Reset()
 {
+	m_curBBox = m_bbox.get();
+	m_curSpr = m_spr.get();
+	m_curSpr->ChangeAnim(m_initialAnim);
+
 	m_direction = m_initialDir;
 	SetPosition(m_initialPos);
 	m_prevPos = GetPosition();
@@ -137,13 +139,14 @@ void Rex::Reset()
 	m_tillReset = 0;
 
 	m_numLives = m_maxLives;
-
-	m_CurBox = m_bbox;
-	m_spr->ChangeAnim(0);
 }
 
 void Rex::Revive()
 {
+	m_curBBox = m_bbox.get();
+	m_curSpr = m_spr.get();
+	m_curSpr->ChangeAnim(m_initialAnim);
+
 	m_direction = m_initialDir;
 	SetPosition(m_initialPos);
 	m_prevPos = GetPosition();
@@ -159,8 +162,6 @@ void Rex::Revive()
 	timeLeftActive = 0;
 	m_numLives = m_maxLives;
 
-	m_CurBox = m_bbox;
-	m_spr->ChangeAnim(m_initialAnim);
 	m_alive = true;
 	m_active = true;
 }
@@ -195,21 +196,21 @@ void Rex::Animate(float deltaTime)
 
 	if (m_velocity.x != 0)
 	{
-		m_spr->Move(m_velocity.x * FPS * deltaTime, 0);
+		m_curSpr->Move(m_velocity.x * FPS * deltaTime, 0);
 		Collisions::Get()->ProcessCollisions(this);
 	}
 
 
 	//check for leftmost and rightmost boundary
-	if (m_spr->GetPosition().x < m_spr->GetOrigin().x || m_spr->GetPosition().x > 11776 - m_spr->GetOrigin().x)
+	if (m_curSpr->GetPosition().x < m_curSpr->GetOrigin().x || m_curSpr->GetPosition().x > 11776 - m_curSpr->GetOrigin().x)
 	{
-		m_spr->Move(-m_velocity.x * FPS * deltaTime, 0);
+		m_curSpr->Move(-m_velocity.x * FPS * deltaTime, 0);
 		m_direction = !m_direction;
 	}
 
 	if (m_velocity.y != 0)
 	{
-		m_spr->Move(0, m_velocity.y * FPS * deltaTime);
+		m_curSpr->Move(0, m_velocity.y * FPS * deltaTime);
 		Collisions::Get()->ProcessCollisions(this);
 	}
 }

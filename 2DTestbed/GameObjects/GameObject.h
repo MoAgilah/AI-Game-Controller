@@ -1,6 +1,7 @@
 #ifndef  GameObjectH
 #define  GameObjectH
 
+#include <memory>
 #include <string>
 #include <SFML/Graphics.hpp>
 #include "Sprite.h"
@@ -22,49 +23,49 @@ class GameObject
 {
 public:
 	GameObject(std::string_view filepath, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd);
-	~GameObject();
+	virtual ~GameObject();
 
 	virtual void Update(float deltaTime) = 0;
 	virtual void Render(sf::RenderWindow& window) = 0;
 
-	sf::Sprite* GetSprite();
-	virtual BoundingBox* GetBBox();
-	AnimatedSprite* GetAnimSpr() { return m_spr; }
+	sf::Sprite* GetSprite() { return m_curSpr->GetSprite(); }
+	BoundingBox* GetBBox() { return m_curBBox; }
+	AnimatedSprite* GetAnimSpr() { return m_curSpr; }
 
-	virtual void Setm_initialPos(sf::Vector2f pos);
-	virtual sf::Vector2f GetPosition() const;
-	virtual void SetPosition(sf::Vector2f);
-	virtual void SetPosition(float x, float y);
+	void SetInitialPos(sf::Vector2f pos) { m_initialPos = pos; }
+	sf::Vector2f GetPosition() const { return m_curSpr->GetPosition(); };
+	void SetPosition(sf::Vector2f pos);
+	void SetPosition(float x, float y);
 
-	virtual sf::Vector2f GetVelocity();
-	virtual void SetVelocity(sf::Vector2f);
-	virtual void SetVelocity(float x, float y);
+	sf::Vector2f GetVelocity() { return m_velocity; }
+	void SetVelocity(sf::Vector2f vel) { m_velocity = vel; }
+	void SetVelocity(float x, float y) { m_velocity = sf::Vector2f(x, y); }
 
-	virtual sf::Vector2f GetOrigin() const;
+	sf::Vector2f GetOrigin() const { return m_curSpr->GetOrigin(); }
 
-	virtual void SetPrevPosition(sf::Vector2f);
-	virtual void SetPrevPosition(float x, float y);
-	virtual sf::Vector2f GetPrevPostion();
+	void SetPrevPosition(sf::Vector2f pos) { m_prevPos = pos; }
+	void SetPrevPosition(float x, float y) { m_prevPos = sf::Vector2f(x, y); }
+	sf::Vector2f GetPrevPostion() const { return m_prevPos; }
 
-	bool GetOnGround();
+	bool GetOnGround() const { return m_onGround; }
 	virtual void SetOnGround(bool grnd);
 
-	bool GetAirbourne();
-	void SetAirbourne(bool air);
+	bool GetAirbourne() const { return m_airbourne; }
+	void SetAirbourne(bool air) { m_airbourne = air; }
 
-	bool GetFalling();
-	void SetFalling(bool fall);
+	bool GetFalling() const { return m_falling; }
+	void SetFalling(bool fall) { m_falling = fall; }
 
-	bool GetDirection();
-	void SetDirection(bool dir);
+	bool GetDirection() const { return m_direction; }
+	void SetDirection(bool dir) { m_direction = dir; }
 
-	bool GetVisible();
+	bool GetVisible() const { return m_visible; }
 	void SetVisible(bool vis);
 
-	int GetObjectNum();
+	int GetObjectNum() const { return m_objectID; }
 
-	void SetActive(bool act);
-	bool GetActive();
+	bool GetActive() const { return m_active; }
+	void SetActive(bool act) { m_active = act; }
 
 protected:
 	int m_type = -1;
@@ -93,10 +94,11 @@ protected:
 
 	const float gravity = 0.981f;
 
-	AnimatedSprite* m_spr;
-	BoundingBox* m_bbox;
+	BoundingBox* m_curBBox;
+	AnimatedSprite* m_curSpr;
 
-
+	std::unique_ptr<AnimatedSprite> m_spr;
+	std::unique_ptr<BoundingBox> m_bbox;
 };
 
 #endif

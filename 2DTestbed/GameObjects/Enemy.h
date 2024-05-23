@@ -39,8 +39,6 @@ protected:
 
 	float timeLeftActive = 0;
 
-	BoundingBox* m_CurBox;
-
 	int m_enemyNum;
 };
 

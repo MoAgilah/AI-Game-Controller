@@ -19,8 +19,7 @@ Player::Player(std::string filepath, int rows, int cols, bool symmetrical, int i
 	m_bbox->GetSprite()->setPosition(sf::Vector2f(m_spr->GetPosition().x - 2, m_spr->GetPosition().y + 4));
 	m_CrouchBbox = new BoundingBox("smlCrouch", m_type);
 
-	m_currSpr = m_spr;
-	m_curBbox = m_bbox;
+	m_curSpr = m_spr.get();
 
 	m_deathLoc = m_velocity = sf::Vector2f(0.0f, 0.0f);
 	m_prevPos = m_spawnLoc = m_initialPos = sf::Vector2f{ 75, 454 };
@@ -139,26 +138,26 @@ void Player::Update(float deltaTime)
 	//decomposition of movement
 	if (m_velocity.x != 0)
 	{
-		SetPrevPosition(m_currSpr->GetPosition());
+		SetPrevPosition(m_curSpr->GetPosition());
 		Move(sf::Vector2f(m_velocity.x * FPS * deltaTime, 0));
 		Collisions::Get()->ProcessCollisions(this);
 	}
 
 	if (m_velocity.y != 0)
 	{
-		SetPrevPosition(m_currSpr->GetPosition());
+		SetPrevPosition(m_curSpr->GetPosition());
 		Move(sf::Vector2f(0, m_velocity.y * FPS * deltaTime));
 		Collisions::Get()->ProcessCollisions(this);
 	}
 
 	//check for leftmost and rightmost boundary
-	if (m_currSpr->GetPosition().x < m_currSpr->GetOrigin().x || m_currSpr->GetPosition().x > 11776 - m_currSpr->GetOrigin().x)
+	if (m_curSpr->GetPosition().x < m_curSpr->GetOrigin().x || m_curSpr->GetPosition().x > 11776 - m_curSpr->GetOrigin().x)
 	{
 		Move(sf::Vector2f(-m_velocity.x * FPS * deltaTime, 0));
 	}
 
 	//check for exceeded rightmost || or hit the goal
-	if (m_currSpr->GetPosition().x > RightMost || goalHit)
+	if (m_curSpr->GetPosition().x > RightMost || goalHit)
 	{
 		goalHit = false;
 
@@ -171,78 +170,18 @@ void Player::Update(float deltaTime)
 		}
 	}
 
-	m_currSpr->Update(deltaTime, m_direction);
+	m_curSpr->Update(deltaTime, m_direction);
 }
 
 void Player::Render(sf::RenderWindow& window)
 {
-	m_currSpr->Render(window);
+	m_curSpr->Render(window);
 }
 
 void Player::Move(sf::Vector2f vel)
 {
-	m_currSpr->Move(vel.x, vel.y);
-	m_curBbox->GetSprite()->move(vel);
-}
-
-BoundingBox* Player::GetBBox()
-{
-	return m_curBbox;
-}
-
-sf::Vector2f Player::GetPosition() const
-{
-	return m_currSpr->GetPosition();
-}
-
-void Player::SetPosition(sf::Vector2f pos)
-{
-	m_currSpr->SetPosition(pos);
-	if (m_direction)
-	{
-		//+
-		m_curBbox->Update(sf::Vector2f(m_currSpr->GetPosition().x - 2.f, m_currSpr->GetPosition().y + 3.5f));
-	}
-	else
-	{
-		//-
-		m_curBbox->Update(sf::Vector2f(m_currSpr->GetPosition().x + 2.f, m_currSpr->GetPosition().y + 3.5f));
-	}
-}
-
-void Player::SetPosition(float x, float y)
-{
-	m_currSpr->SetPosition(sf::Vector2f(x, y));
-	if (m_direction)
-	{
-		//+
-		m_curBbox->Update(sf::Vector2f(m_currSpr->GetPosition().x - 2.f, m_currSpr->GetPosition().y + 3.5f));
-	}
-	else
-	{
-		//-
-		m_curBbox->Update(sf::Vector2f(m_currSpr->GetPosition().x + 2.f, m_currSpr->GetPosition().y + 3.5f));
-	}
-}
-
-sf::Vector2f Player::GetOrigin() const
-{
-	return m_currSpr->GetOrigin();
-}
-
-void Player::SetPrevPosition(sf::Vector2f pos)
-{
-	m_prevPos = pos;
-}
-
-void Player::SetPrevPosition(float x, float y)
-{
-	m_prevPos = sf::Vector2f(x, y);
-}
-
-sf::Vector2f Player::GetPrevPostion()
-{
-	return m_prevPos;
+	m_curSpr->Move(vel.x, vel.y);
+	m_curBBox->GetSprite()->move(vel);
 }
 
 bool Player::GetIsSuper()
@@ -275,10 +214,11 @@ void Player::IncreaseCoins(int num)
 
 void Player::Reset()
 {
-	ifWasSuper = m_super = false;
+	m_curBBox = m_bbox.get();
+	m_curSpr = m_spr.get();
+	m_curSpr->ChangeAnim(m_initialAnim);
 
-	m_currSpr = m_spr;
-	m_curBbox = m_bbox;
+	ifWasSuper = m_super = false;
 
 	m_spawnLoc = m_initialPos;
 
@@ -299,7 +239,6 @@ void Player::Reset()
 	m_alive = true;
 
 	m_active = m_visible = true;
-	m_currSpr->ChangeAnim(m_initialAnim);
 
 	for (size_t i = 0; i < MAXKEYS; i++)
 	{
@@ -309,10 +248,11 @@ void Player::Reset()
 
 void Player::ReSpawn()
 {
-	ifWasSuper = m_super = false;
+	m_curBBox = m_bbox.get();
+	m_curSpr = m_spr.get();
+	m_curSpr->ChangeAnim(m_initialAnim);
 
-	m_currSpr = m_spr;
-	m_curBbox = m_bbox;
+	ifWasSuper = m_super = false;
 
 	SetPosition(m_spawnLoc);
 	SetPrevPosition(m_spawnLoc);
@@ -331,7 +271,7 @@ void Player::ReSpawn()
 	m_alive = true;
 
 	m_active = m_visible = true;
-	m_currSpr->ChangeAnim(m_initialAnim);
+
 	Timer::Get()->ResetTime();
 	Game::GetGameMgr()->GetLevel()->ResetLevel();
 }
@@ -365,7 +305,7 @@ void Player::Kill()
 	m_goingUp = true;
 	die = true;
 	m_alive = false;
-	m_currSpr->ChangeAnim(DIE);//Die
+	m_curSpr->ChangeAnim(DIE);//Die
 	//m_dFitness -= 200;
 }
 
@@ -610,7 +550,7 @@ void Player::ProcessInput()
 			//change animation
 			if (GetOnGround())
 			{
-				m_currSpr->ChangeAnim(LEFT);
+				m_curSpr->ChangeAnim(LEFT);
 			}
 
 			// right key is pressed: move our character
@@ -633,7 +573,7 @@ void Player::ProcessInput()
 			//change animation
 			if (GetOnGround())
 			{
-				m_currSpr->ChangeAnim(RIGHT);
+				m_curSpr->ChangeAnim(RIGHT);
 			}
 
 			// right key is pressed: move our character
@@ -649,7 +589,7 @@ void Player::ProcessInput()
 	if (m_keyState[UP_KEY])
 	{
 		//change animation
-		m_currSpr->ChangeAnim(LOOKUP);
+		m_curSpr->ChangeAnim(LOOKUP);
 	}
 
 	//start change bbox to crouch bbox
@@ -664,27 +604,27 @@ void Player::ProcessInput()
 
 			if (m_super)
 			{
-				m_curBbox = m_SCrouchBbox;
+				m_curBBox = m_SCrouchBbox;
 
 				//adjust bbox position
 				if (m_direction)
-					m_curBbox->Update(sf::Vector2f(m_currSpr->GetPosition().x - 1.f, m_currSpr->GetPosition().y + 22.f));
+					m_curBBox->Update(sf::Vector2f(m_curSpr->GetPosition().x - 1.f, m_curSpr->GetPosition().y + 22.f));
 				else
-					m_curBbox->Update(sf::Vector2f(m_currSpr->GetPosition().x + 1.f, m_currSpr->GetPosition().y + 22.f));
+					m_curBBox->Update(sf::Vector2f(m_curSpr->GetPosition().x + 1.f, m_curSpr->GetPosition().y + 22.f));
 			}
 			else
 			{
-				m_curBbox = m_CrouchBbox;
+				m_curBBox = m_CrouchBbox;
 
 				//adjust bbox position
 				if (m_direction)
-					m_curBbox->Update(sf::Vector2f(m_currSpr->GetPosition().x - 2.f, m_currSpr->GetPosition().y + 12.f));
+					m_curBBox->Update(sf::Vector2f(m_curSpr->GetPosition().x - 2.f, m_curSpr->GetPosition().y + 12.f));
 				else
-					m_curBbox->Update(sf::Vector2f(m_currSpr->GetPosition().x + 2.f, m_currSpr->GetPosition().y + 12.f));
+					m_curBBox->Update(sf::Vector2f(m_curSpr->GetPosition().x + 2.f, m_curSpr->GetPosition().y + 12.f));
 			}
 
 			justCrouched = true;
-			m_currSpr->ChangeAnim(CROUCH);
+			m_curSpr->ChangeAnim(CROUCH);
 		}
 	}
 	else //if crouched key is not held down
@@ -695,12 +635,12 @@ void Player::ProcessInput()
 			justCrouched = false;
 
 			if (m_super)
-				m_curBbox = m_SupBbox;
+				m_curBBox = m_SupBbox;
 			else
-				m_curBbox = m_bbox;
+				m_curBBox = m_bbox.get();
 
 			SetPosition(GetPosition());
-			m_currSpr->ChangeAnim(IDLE);
+			m_curSpr->ChangeAnim(IDLE);
 		}
 	}//end change bbox to crouch bbox
 
@@ -713,7 +653,7 @@ void Player::ProcessInput()
 			{
 				//change animation
 				if (!m_keyState[DOWN_KEY])
-					m_currSpr->ChangeAnim(JUMP);
+					m_curSpr->ChangeAnim(JUMP);
 				// up key is pressed: move our character
 				m_airbourne = true;
 				m_onGround = false;
@@ -726,7 +666,7 @@ void Player::ProcessInput()
 	{
 		if (m_airbourne && cantjump)
 		{
-			m_currSpr->ChangeAnim(FALL);
+			m_curSpr->ChangeAnim(FALL);
 			m_airtime = c_maxAirTime;
 		}
 	}
@@ -739,7 +679,7 @@ void Player::ProcessInput()
 			if (GetOnGround())
 			{
 				//change animation
-				m_currSpr->ChangeAnim(SPINJUMP);
+				m_curSpr->ChangeAnim(SPINJUMP);
 				// up key is pressed: move our character
 				m_airbourne = true;
 				m_onGround = false;
@@ -752,7 +692,7 @@ void Player::ProcessInput()
 	{
 		if (m_airbourne && cantSpinJump)
 		{
-			m_currSpr->ChangeAnim(SPINJUMP);
+			m_curSpr->ChangeAnim(SPINJUMP);
 			m_airtime = c_maxAirTime;
 		}
 	}
@@ -763,6 +703,6 @@ void Player::ProcessInput()
 	if (m_velocity.x == 0.0f && m_velocity.y == 0.0f)
 	{
 		if (!m_keyState[DOWN_KEY] && !m_keyState[UP_KEY])
-			m_currSpr->ChangeAnim(IDLE);
+			m_curSpr->ChangeAnim(IDLE);
 	}
 }

@@ -14,23 +14,13 @@ class Player : public GameObject
 {
 public:
 	Player(std::string filepath, int rows, int cols, bool symmetrical = true, int initAnim = 0, float animSpd = 1);
-	~Player();
+	~Player() final;
 
-	void Update(float deltaTime);
-	void Render(sf::RenderWindow& window);
+	void Update(float deltaTime) final;
+	void Render(sf::RenderWindow& window) final;
 
-	BoundingBox* GetBBox();
 
 	void Move(sf::Vector2f vel);
-	sf::Vector2f GetPosition() const;
-	void SetPosition(sf::Vector2f);
-	void SetPosition(float x, float y);
-
-	sf::Vector2f GetOrigin() const;
-
-	sf::Vector2f GetPrevPostion();
-	void SetPrevPosition(sf::Vector2f);
-	void SetPrevPosition(float x, float y);
 
 	void SetSpawnLoc(sf::Vector2f loc = sf::Vector2f(0, 0));
 	void CheckPointHit(bool hit);
@@ -73,9 +63,6 @@ private:
 
 	sf::Vector2f m_spawnLoc;
 	sf::Vector2f m_deathLoc;
-
-	AnimatedSprite * m_currSpr;
-	BoundingBox * m_curBbox;
 
 	AnimatedSprite * m_SupSpr;
 	BoundingBox * m_SupBbox;
