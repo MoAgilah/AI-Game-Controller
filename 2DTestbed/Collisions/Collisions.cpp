@@ -109,7 +109,7 @@ void Collisions::ProcessCollisions(GameObject* gobj)
 			continue;
 		}
 
-		if (!tile->Getm_visible()) continue;
+		if (!tile->GetActive()) continue;
 
 		numchecks++;
 		Col = gobj->GetBBox()->Intersects(*tile);
@@ -132,12 +132,8 @@ void Collisions::ProcessCollisions(GameObject* gobj)
 		if (gobj->GetObjectNum() == m_collidables[g]->GetObjectNum())
 			continue;
 
-		if (!m_collidables[g]->GetVisible())
-			continue;
-
 		if (!m_collidables[g]->GetActive())
 			continue;
-
 
 		Col = gobj->GetBBox()->Intersects(m_collidables[g]->GetBBox());
 

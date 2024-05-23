@@ -28,7 +28,7 @@ Tile::Tile(sf::Font& font)
 	m_srect.setOutlineThickness(1);
 	m_srect.setScale(sX, sY);
 	m_srect.setOrigin(0.5, 0.5);
-	
+
 	m_text.setFont(font);
 	m_text.setCharacterSize(12);
 	m_text.setOrigin(6, 6);
@@ -58,7 +58,7 @@ void Tile::SetID(int gX, int gY)
 	//numerical id
 	m_colNum = gX;
 	m_rowNum = gY;
-	
+
 	//set tile identifier text
 	m_text.setString(std::to_string(gY) + "\n" + std::to_string(gX));
 }
@@ -139,10 +139,10 @@ void Tile::CreateAscSlope()
 		m_srect.setPosition(m_slope.back().getPosition().x + (m_slope.back().getOrigin().x*sX) * 2.f, m_slope.back().getPosition().y - (m_slope.back().getOrigin().y*sY) * 2.f);
 		m_slope.push_back(m_srect);
 	}
-	
+
 	m_srect.setPosition(m_slope[0].getPosition().x - (m_slope[0].getOrigin().x*sX) * 2.f, m_slope[0].getPosition().y + (m_slope[0].getOrigin().y*sY) * 2.f);
 	m_slope.push_back(m_srect);
-	
+
 	//down from center
 	for (size_t i = 0; i < 6; i++)
 	{
@@ -186,14 +186,14 @@ std::vector<sf::RectangleShape> Tile::GetSlopeBBox()
 	return m_slope;
 }
 
-bool Tile::Getm_visible()
+bool Tile::GetActive()
 {
-	return m_visible;
+	return m_active;
 }
 
-void Tile::Setm_visible(bool vis)
+void Tile::SetActive(bool vis)
 {
-	m_visible = vis;
+	m_active = vis;
 }
 
 int Tile::GetRowNum()

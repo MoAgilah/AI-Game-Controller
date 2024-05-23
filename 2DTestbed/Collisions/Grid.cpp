@@ -77,7 +77,7 @@ void Grid::Render(sf::RenderWindow & window)
 {
 	for (int i = 0; i < m_grid.size(); i++)
 	{
-		if (m_grid[i]->Getm_visible())
+		if (m_grid[i]->GetActive())
 		{
 #if _DEBUG
 	#ifdef DRender

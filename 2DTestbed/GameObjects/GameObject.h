@@ -59,9 +59,6 @@ public:
 	bool GetDirection() const { return m_direction; }
 	void SetDirection(bool dir) { m_direction = dir; }
 
-	bool GetVisible() const { return m_visible; }
-	void SetVisible(bool vis);
-
 	int GetObjectNum() const { return m_objectID; }
 
 	bool GetActive() const { return m_active; }
@@ -78,9 +75,8 @@ protected:
 	bool m_initialDir = true;
 	sf::Vector2f m_initialPos;
 
-	bool m_active = true;
+	bool m_active = false;
 
-	bool m_visible = false;
 	bool m_direction = true;
 	bool m_onGround = false;
 	bool m_falling = false;
@@ -89,7 +85,6 @@ protected:
 	sf::Vector2f m_position;
 	sf::Vector2f m_velocity;
 
-	bool m_prevVisibility = false;
 	sf::Vector2f m_prevPos;
 
 	const float gravity = 0.981f;

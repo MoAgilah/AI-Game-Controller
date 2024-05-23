@@ -84,7 +84,7 @@ void ANNView::Update()
 	{
 		if (cnt == 240) break;
 
-		if (grid[i]->Getm_visible())
+		if (grid[i]->GetActive())
 		{
 			if (cnt == 0) num = grid[i]->GetCowNum();
 

@@ -19,7 +19,7 @@ public:
 	void Render(sf::RenderWindow& window);
 	void SetIsAnimated(bool isAnim);
 	bool IsAnimated();
-	void SetPosition(sf::Vector2f pos);
+
 	void Reset();
 	int GetObjectNum();
 private:

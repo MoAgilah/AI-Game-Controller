@@ -69,9 +69,3 @@ void GameObject::SetOnGround(bool grnd)
 	}
 }
 
-void GameObject::SetVisible(bool vis)
-{
-	m_prevVisibility = m_visible;
-	m_visible = vis;
-}
-

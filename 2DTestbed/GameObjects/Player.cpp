@@ -40,7 +40,6 @@ Player::Player(std::string filepath, int rows, int cols, bool symmetrical, int i
 	m_spindown = false;
 	ifWasSuper = m_super = false;
 	justCrouched = false;
-	m_visible = true;
 	die = false;
 	killed = false;
 	m_alive = true;
@@ -238,7 +237,7 @@ void Player::Reset()
 	killed = false;
 	m_alive = true;
 
-	m_active = m_visible = true;
+	m_active = false;
 
 	for (size_t i = 0; i < MAXKEYS; i++)
 	{
@@ -270,7 +269,7 @@ void Player::ReSpawn()
 	killed = false;
 	m_alive = true;
 
-	m_active = m_visible = true;
+	m_active = false;
 
 	Timer::Get()->ResetTime();
 	Game::GetGameMgr()->GetLevel()->ResetLevel();

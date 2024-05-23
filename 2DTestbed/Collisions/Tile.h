@@ -28,8 +28,8 @@ public:
 	void SetPosition(sf::Vector2f pos);
 	sf::Vector2f GetPosition();
 
-	bool Getm_visible();
-	void Setm_visible(bool vis);
+	bool GetActive();
+	void SetActive(bool vis);
 
 	sf::Vector2f GetOrigin();
 	sf::RectangleShape GetRect();
@@ -38,7 +38,7 @@ public:
 	int GetCowNum();
 
 	void SetFillColour(sf::Color col);
-	
+
 	void Render(sf::RenderWindow& window);
 private:
 	void InvertY(int& y);
@@ -48,7 +48,7 @@ private:
 	int m_colNum;
 	int m_rowNum;
 	int m_type;
-	bool m_visible;
+	bool m_active;
 	bool hasFont;
 	std::string m_id;
 	//Tile
@@ -59,7 +59,7 @@ private:
 	sf::RectangleShape m_srect;
 	std::vector<sf::RectangleShape> m_slope;
 
-	
+
 };
 
 

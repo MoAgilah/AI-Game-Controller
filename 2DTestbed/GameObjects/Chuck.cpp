@@ -75,9 +75,6 @@ void Chuck::Animate(float deltaTime)
 
 	}
 
-
-
-
 	if (m_velocity.y != 0)
 	{
 		m_curSpr->Move(0, m_velocity.y * FPS * deltaTime);

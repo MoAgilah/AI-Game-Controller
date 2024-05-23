@@ -20,59 +20,46 @@ void Enemy::Update(float deltaTime)
 {
 	if (m_active)
 	{
-		if (m_visible)
+		if (timeLeftActive > 0)
 		{
-			if (timeLeftActive > 0)
-			{
-				timeLeftActive -= deltaTime;
-			}
-
-			if (timeLeftActive < 0)
-			{
-				m_active = false;
-			}
-
-			if (m_resetAllowed)
-			{
-				m_resetAllowed = false;
-			}
-		}
-		//if off screen
-		else
-		{
-			//and wasn't previousily off screen
-			if (m_visible != m_prevVisibility)
-			{
-
-				m_tillReset = 1;
-				m_resetAllowed = true;
-			}
+			timeLeftActive -= deltaTime;
 		}
 
+		if (timeLeftActive < 0)
+		{
+			m_active = false;
+		}
 
 		if (m_resetAllowed)
 		{
-			m_tillReset -= deltaTime;
-			if (m_tillReset <= 0)
-			{
-				if (!Game::GetGameMgr()->GetCamera()->IsInView(m_initialPos, GetOrigin()))
-				{
-					Reset();
-				}
-			}
+			m_resetAllowed = false;
 		}
 
-
-		if (m_visible)
+		if (m_alive || m_curBBox->GetID() == BILL)
 		{
-			if (m_alive || m_curBBox->GetID() == BILL)
-			{
-				Animate(deltaTime);
-			}
+			Animate(deltaTime);
 		}
 
 		m_curSpr->Update(deltaTime, m_direction);
 		m_curSpr->SetPosition(m_curSpr->GetPosition());
+	}
+	//if off screen
+	else
+	{
+		m_tillReset = 1;
+		m_resetAllowed = true;
+	}
+
+	if (m_resetAllowed)
+	{
+		m_tillReset -= deltaTime;
+		if (m_tillReset <= 0)
+		{
+			if (!Game::GetGameMgr()->GetCamera()->IsInView(m_initialPos, GetOrigin()))
+			{
+				Reset();
+			}
+		}
 	}
 }
 
@@ -145,14 +132,13 @@ void Enemy::Revive()
 	m_onGround = false;
 	m_falling = true;
 	m_airbourne = false;
-	m_visible = m_prevVisibility = false;
 
 	m_tillReset = 0;
 	timeLeftActive = 0;
 	m_numLives = m_maxLives;
 
 	m_alive = true;
-	m_active = true;
+	m_active = false;
 }
 
 int Enemy::GetEnemyNum()
@@ -175,7 +161,7 @@ void Enemy::Reset()
 	m_onGround = false;
 	m_falling = true;
 	m_airbourne = false;
-	m_visible = m_prevVisibility = false;
+	m_active = false;
 
 	m_tillReset = 0;
 
