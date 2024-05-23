@@ -6,9 +6,7 @@
 
 Enemy::Enemy(std::string_view filepath, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd)
 	:GameObject(filepath, rows, cols, bTyp, dir, symmetrical, initAnim, animSpd)
-{
-	m_enemyNum = s_numOfEnemies++;
-}
+{}
 
 Enemy::~Enemy()
 {
@@ -100,47 +98,9 @@ bool Enemy::GetIsAlive()
 	return m_alive;
 }
 
-void Enemy::Change()
-{
-	return;
-}
-
-BoundingBox * Enemy::GetBBox()
-{
-	return m_curBBox;
-}
-
 int Enemy::GetLives()
 {
 	return m_numLives;
-}
-
-void Enemy::Revive()
-{
-	m_curBBox = m_bbox.get();
-	m_curSpr = m_spr.get();
-	m_curSpr->ChangeAnim(m_spawnData.m_initialAnim);
-
-	m_direction = m_spawnData.m_initialDir;
-	SetPosition(m_spawnData.m_initialPos);
-	m_prevPos = GetPosition();
-	m_velocity = sf::Vector2f(0, 0);
-
-	m_resetAllowed = false;
-	m_onGround = false;
-	m_airbourne = false;
-
-	m_tillReset = 0;
-	timeLeftActive = 0;
-	m_numLives = m_maxLives;
-
-	m_alive = true;
-	m_active = false;
-}
-
-int Enemy::GetEnemyNum()
-{
-	return m_enemyNum;
 }
 
 void Enemy::Reset()
@@ -157,8 +117,11 @@ void Enemy::Reset()
 	m_resetAllowed = false;
 	m_onGround = false;
 	m_airbourne = false;
+	m_alive = true;
 	m_active = false;
 
+	m_tillReset = 0;
+	timeLeftActive = 0;
 	m_tillReset = 0;
 
 	m_numLives = m_maxLives;

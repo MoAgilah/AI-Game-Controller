@@ -156,7 +156,7 @@ void Player::Update(float deltaTime)
 
 		if (Automated == false)
 		{
-			ReSpawn();
+			Reset();
 		}
 	}
 
@@ -218,8 +218,8 @@ void Player::Reset()
 	m_velocity = sf::Vector2f(0.0f, 0.0f);
 
 	m_airtime = 0;
-
-	m_onGround = true;
+	ifWasSuper = m_super = false;
+	m_onGround = false;
 	m_airbourne = false;
 	m_spindown = false;
 	justCrouched = false;
@@ -233,36 +233,11 @@ void Player::Reset()
 	{
 		m_keyState[i] = false;
 	}
-}
-
-void Player::ReSpawn()
-{
-	m_curBBox = m_bbox.get();
-	m_curSpr = m_spr.get();
-	m_curSpr->ChangeAnim(m_spawnData.m_initialAnim);
-
-	ifWasSuper = m_super = false;
-
-	SetPosition(m_spawnLoc);
-	SetPrevPosition(m_spawnLoc);
-
-	m_velocity = sf::Vector2f(0.0f, 0.0f);
-
-	m_airtime = 0;
-
-	m_onGround = true;
-	m_airbourne = false;
-	m_spindown = false;
-	justCrouched = false;
-	die = false;
-	killed = false;
-	m_alive = true;
-
-	m_active = false;
 
 	Timer::Get()->ResetTime();
 	Game::GetGameMgr()->GetLevel()->ResetLevel();
 }
+
 
 void Player::CheckPointHit(bool hit)
 {

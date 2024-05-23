@@ -10,7 +10,6 @@ Object::Object(std::string filepath, int rows, int cols, int bTyp, bool dir, boo
 
 	isAnimating = false;
 	m_goingUp = false;
-	s_objectNum = s_numOfObjects++;
 }
 
 Object::~Object()
@@ -151,9 +150,4 @@ void Object::Reset()
 	m_goingUp = false;
 	m_curSpr->ChangeAnim(m_spawnData.m_initialAnim);
 	m_active = true;
-}
-
-int Object::GetObjectNum()
-{
-	return s_objectNum;
 }

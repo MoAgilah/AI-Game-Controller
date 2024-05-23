@@ -3,8 +3,6 @@
 #include "../Game/Camera.h"
 
 int GameObject::s_objectNum = 0;
-int GameObject::s_numOfEnemies = 0;
-int GameObject::s_numOfObjects = 0;
 
 GameObject::GameObject(std::string_view filepath, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd)
 	: m_type(bTyp),  m_direction(dir)

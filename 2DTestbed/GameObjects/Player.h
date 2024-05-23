@@ -38,7 +38,6 @@ public:
 	void JustBeenHit(bool hit);
 	bool GetIfInvulnerable();
 	void Kill();
-	void ReSpawn();
 
 	void SetAirTime(float val = 1);
 	void SetCantJump();

@@ -126,31 +126,12 @@ void Rex::Reset()
 	m_active = false;
 
 	m_tillReset = 0;
-
-	m_numLives = m_maxLives;
-}
-
-void Rex::Revive()
-{
-	m_curBBox = m_bbox.get();
-	m_curSpr = m_spr.get();
-	m_curSpr->ChangeAnim(m_spawnData.m_initialAnim);
-
-	m_direction = m_spawnData.m_initialDir;
-	SetPosition(m_spawnData.m_initialPos);
-	m_prevPos = GetPosition();
-	m_velocity = sf::Vector2f(0, 0);
-
-	m_resetAllowed = false;
-	m_onGround = false;
-	m_airbourne = false;
-	m_active = false;
-
-	m_tillReset = 0;
 	timeLeftActive = 0;
 	m_numLives = m_maxLives;
 
 	m_alive = true;
+
+	m_numLives = m_maxLives;
 }
 
 Rex::~Rex()

@@ -21,7 +21,6 @@ public:
 	bool IsAnimated();
 
 	void Reset();
-	int GetObjectNum();
 private:
 	virtual void Animate(float deltaTime);
 

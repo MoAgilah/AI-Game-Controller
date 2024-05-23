@@ -15,16 +15,12 @@ public:
 	void ResetLives();
 	virtual void Die() = 0;
 	bool GetIsAlive();
-	virtual void Change();
-	BoundingBox *GetBBox();
 
 	int GetLives();
-	virtual void Revive();
-	int GetEnemyNum();
+
 protected:
 	virtual void Animate(float deltaTime) = 0;
 	virtual void Reset();
-
 
 	float m_tillReset = 0;
 	bool m_resetAllowed = false;
@@ -38,8 +34,6 @@ protected:
 	bool m_alive = true;
 
 	float timeLeftActive = 0;
-
-	int m_enemyNum;
 };
 
 #endif

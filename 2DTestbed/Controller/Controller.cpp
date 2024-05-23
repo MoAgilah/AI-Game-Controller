@@ -115,7 +115,7 @@ bool Controller::Update()
 		if (currPlayer < m_vecMarios.size())
 		{
 			Game::GetGameMgr()->ChangePlayer(m_vecMarios[currPlayer]);
-			Game::GetGameMgr()->GetPlayer()->ReSpawn();
+			Game::GetGameMgr()->GetPlayer()->Reset();
 		}
 	}
 	//if have moved right before timing out
@@ -168,7 +168,7 @@ bool Controller::Update()
 
 		currPlayer = 0;
 		Game::GetGameMgr()->ChangePlayer(m_vecMarios[currPlayer]);
-		Game::GetGameMgr()->GetPlayer()->ReSpawn();
+		Game::GetGameMgr()->GetPlayer()->Reset();
 
 		m_dBestFitness = m_pPop->BestEverFitness();
 

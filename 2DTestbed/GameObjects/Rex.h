@@ -12,7 +12,7 @@ public:
 	void Change();
 	void Update(float deltaTime);
 	void Reset();
-	void Revive();
+
 	~Rex();
 private:
 	void Animate(float deltaTime);

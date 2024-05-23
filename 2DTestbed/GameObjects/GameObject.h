@@ -71,8 +71,6 @@ protected:
 	int m_type = -1;
 	int m_objectID;
 	static int s_objectNum;
-	static int s_numOfEnemies;
-	static int s_numOfObjects;
 
 	SpawnData m_spawnData;
 
