@@ -12,7 +12,7 @@ class Camera;
 class Object : public GameObject
 {
 public:
-	Object(std::string filepath, int rows, int cols, float fps, int bTyp, int strloc = 1, bool dir = true, bool symmetrical = true, int initAnim = 0, float animSpd = 1);
+	Object(std::string filepath, int rows, int cols, int bTyp, bool dir = true, bool symmetrical = true, int initAnim = 0, float animSpd = 1);
 	~Object();
 	void Initialise(bool hasAnim, float moveSpd, float jmpSpeed);
 	void Update(float deltaTime);
@@ -25,7 +25,7 @@ public:
 private:
 	virtual void Animate(float deltaTime);
 
-	bool goingUp;
+	bool m_goingUp;
 
 	float animLength;
 
@@ -37,7 +37,7 @@ private:
 
 	float m_airtime;
 	const float c_maxAirTime = 1.0f;
-	int m_objectNum;
+	int s_objectNum;
 };
 
 #endif

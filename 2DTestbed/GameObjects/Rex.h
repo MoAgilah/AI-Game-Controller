@@ -8,7 +8,7 @@ class Rex :
 	public Enemy
 {
 public:
-	Rex(std::string filepath, int rows, int cols, float fps, int bTyp, int strloc = 1, bool dir = true, bool symmetrical = true, int initAnim = 0, float animSpd = 1);
+	Rex(bool dir = true, int initAnim = 0, float animSpd = 1);
 	void Die();
 	void Change();
 	void Update(float deltaTime);

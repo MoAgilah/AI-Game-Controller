@@ -2,13 +2,13 @@
 #include "../../Collisions/Collisions.h"
 #include "../Game/Camera.h"
 
-Object::Object(std::string filepath, int rows, int cols, float fps, int bTyp, int strloc, bool dir, bool symmetrical, int initAnim, float animSpd)
-	:GameObject(filepath, rows, cols, fps, bTyp, strloc, dir, symmetrical, initAnim, animSpd)
+Object::Object(std::string filepath, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd)
+	:GameObject(filepath, rows, cols, bTyp, dir, symmetrical, initAnim, animSpd)
 {
 	isAnimating = false;
-	goingUp = false;
-	initialAnim = initAnim;
-	m_objectNum = s_numOfObjects++;
+	m_goingUp = false;
+	m_initialAnim = initAnim;
+	s_objectNum = s_numOfObjects++;
 }
 
 Object::~Object()
@@ -35,7 +35,7 @@ void Object::Update(float deltaTime)
 				}
 			}
 
-			if (visible)
+			if (m_visible)
 			{
 				Animate(deltaTime);
 			}
@@ -75,7 +75,7 @@ void Object::Animate(float deltaTime)
 	if (this->GetBBox()->GetID() == SHROOM)
 	{
 		SetPrevPosition(GetPosition());
-	
+
 		if (m_direction)
 		{
 			m_velocity.x = 2;
@@ -84,7 +84,7 @@ void Object::Animate(float deltaTime)
 		{
 			m_velocity.x = -2;
 		}
-	
+
 		if (m_onGround)
 		{
 			m_velocity.y = 0;
@@ -95,20 +95,20 @@ void Object::Animate(float deltaTime)
 			m_falling = true;
 			m_velocity.y += gravity;
 		}
-	
+
 		if (m_velocity.x != 0)
 		{
 			m_spr->Move(m_velocity.x * FPS * deltaTime, 0);
 			Collisions::Get()->ProcessCollisions(this);
 		}
-	
+
 		//check for leftmost and rightmost boundary
 		if (m_spr->GetPosition().x < m_spr->GetOrigin().x || m_spr->GetPosition().x > 11776 - m_spr->GetOrigin().x)
 		{
 			m_spr->Move(-m_velocity.x * FPS * deltaTime, 0);
 			m_direction = !m_direction;
 		}
-	
+
 		if (m_velocity.y != 0)
 		{
 			m_spr->Move(0, m_velocity.y * FPS * deltaTime);
@@ -118,7 +118,7 @@ void Object::Animate(float deltaTime)
 
 	if (this->GetBBox()->GetID() == GOAL)
 	{
-		if (goingUp)
+		if (m_goingUp)
 		{
 			m_velocity.y = 2.5;
 		}
@@ -135,12 +135,12 @@ void Object::Animate(float deltaTime)
 		sf::Vector2f currentPos = GetPosition();
 		if (currentPos.y > 470)
 		{
-			goingUp = false;
+			m_goingUp = false;
 		}
 
 		if (currentPos.y < 150)
 		{
-			goingUp = true;
+			m_goingUp = true;
 		}
 
 		Collisions::Get()->ProcessCollisions(this);
@@ -165,12 +165,12 @@ void Object::SetPosition(sf::Vector2f pos)
 void Object::Reset()
 {
 	isAnimating = false;
-	goingUp = false;
-	m_spr->ChangeAnim(initialAnim);
+	m_goingUp = false;
+	m_spr->ChangeAnim(m_initialAnim);
 	m_active = true;
 }
 
 int Object::GetObjectNum()
 {
-	return m_objectNum;
+	return s_objectNum;
 }

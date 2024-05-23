@@ -13,7 +13,7 @@ class Camera;
 class Player : public GameObject
 {
 public:
-	Player(std::string filepath, int rows, int cols, float fps, int bTyp, int strloc = 1, bool dir = true, bool symmetrical = true, int initAnim = 0, float animSpd = 1);
+	Player(std::string filepath, int rows, int cols, bool symmetrical = true, int initAnim = 0, float animSpd = 1);
 	~Player();
 
 	void Update(float deltaTime);
@@ -94,7 +94,7 @@ private:
 	bool justBeenHit;
 	bool die;
 	bool killed;
-	bool goingUp;
+	bool m_goingUp;
 	bool m_alive;
 	bool cantjump;
 	bool cantSpinJump;

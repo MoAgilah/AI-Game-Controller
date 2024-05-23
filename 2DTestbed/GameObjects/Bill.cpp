@@ -1,13 +1,10 @@
 #include "../GameObjects/Bill.h"
 #include "../../Collisions/Collisions.h"
 
-Bill::Bill(std::string filepath, int rows, int cols, float fps, int bTyp, int strloc, bool dir, bool symmetrical, int initAnim, float animSpd)
-	:Enemy(filepath, rows, cols, fps, bTyp, strloc, dir, symmetrical, initAnim, animSpd)
+Bill::Bill(bool dir)
+	:Enemy("bill.png", 1, 1, BILL, dir)
 {
-	m_type = BILL;
-	numLives = maxLives = 1;
 	m_falling = false;
-
 
 	colbody.front.setOutlineColor(sf::Color::Red);
 	colbody.front.setOutlineThickness(2.0f);
@@ -16,12 +13,10 @@ Bill::Bill(std::string filepath, int rows, int cols, float fps, int bTyp, int st
 	colbody.front.setPointCount((size_t)30);
 	colbody.front.setOrigin(74.f, 74.f);
 
-
 	colbody.back.setOutlineColor(sf::Color::Red);
 	colbody.back.setOutlineThickness(2.0f);
 	colbody.back.setSize(sf::Vector2f(15.f, (float)m_bbox->GetSprite()->getTexture()->getSize().y-2.f));
-	colbody.back.setOrigin(sf::Vector2f(7.f,
-		(float)m_spr->GetTextureSize().y / 2.f));
+	colbody.back.setOrigin(sf::Vector2f(7.f, (float)m_spr->GetTextureSize().y / 2.f));
 	colbody.back.setScale(sX, sY);
 	colbody.back.setFillColor(sf::Color::Transparent);
 }

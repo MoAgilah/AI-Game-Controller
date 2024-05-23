@@ -3,13 +3,11 @@
 
 
 
-PPlant::PPlant(std::string filepath, int rows, int cols, float fps, int bTyp, int strloc, bool dir, bool symmetrical, int initAnim, float animSpd)
-	:Enemy(filepath, rows, cols, fps, bTyp, strloc, dir, symmetrical, initAnim, animSpd)
+PPlant::PPlant(int initAnim, float animSpd)
+	:Enemy("pplant.png", 2, 2, PPLANT, false, false)
 {
 	std::vector<int> cframes{ 1, 2};
 	m_spr->SetFrames(cframes);
-	m_type = PPLANT;
-	numLives = maxLives = 1;
 }
 
 void PPlant::Die()
@@ -55,5 +53,5 @@ void PPlant::Animate(float deltaTime)
 		m_spr->ChangeAnim(1);
 		//go down
 	}
-	
+
 }

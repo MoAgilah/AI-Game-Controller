@@ -7,12 +7,12 @@ class Chuck :
 	public Enemy
 {
 public:
-	Chuck(std::string filepath, int rows, int cols, float fps, int bTyp, int strloc = 1, bool dir = true, bool symmetrical = true, int initAnim = 0, float animSpd = 1);
+	Chuck(bool dir, int initAnim, float animSpd);
 	~Chuck();
 	void Die();
 	bool Jumping();
 private:
-	bool goingUp;
+	bool m_goingUp;
 	float m_waitTime;
 	void Animate(float deltaTime);
 };

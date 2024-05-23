@@ -77,14 +77,14 @@ void ANNView::Update()
 	m_text[2]->setString(std::format("Highest fitness: {}", ctrl->BestFitness()));
 	m_text[2]->setPosition(m_view.getCenter() - sf::Vector2f(400, -330));
 
-	//extract visible tiles
+	//extract m_visible tiles
 	int num(0),cnt(0);
 	std::vector<Tile*> grid = Collisions::Get()->GetGrid();
 	for (int i = 0; i < grid.size(); i++)
 	{
 		if (cnt == 240) break;
 
-		if (grid[i]->GetVisible())
+		if (grid[i]->Getm_visible())
 		{
 			if (cnt == 0) num = grid[i]->GetCowNum();
 
@@ -96,7 +96,7 @@ void ANNView::Update()
 		}
 	}
 
-	//colour visible tiles
+	//colour m_visible tiles
 	sf::RectangleShape tmp;
 	std::vector<GameObject*> gobj = Collisions::Get()->GetCollidables();
 	for (int i = 0; i < m_vecView.size(); i++)

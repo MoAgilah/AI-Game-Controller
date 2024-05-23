@@ -7,7 +7,7 @@ class Camera;
 class Enemy : public GameObject
 {
 public:
-	Enemy(std::string filepath, int rows, int cols, float fps, int bTyp, int strloc = 1, bool dir = true, bool symmetrical = true, int initAnim = 0, float animSpd = 1);
+	Enemy(std::string_view filepath, int rows, int cols, int bTyp, bool dir = true, bool symmetrical = true, int initAnim = 0, float animSpd = 1);
 	~Enemy();
 	virtual void Update(float deltaTime);
 	virtual void Render(sf::RenderWindow& window);
@@ -26,18 +26,18 @@ protected:
 	virtual void Reset();
 
 
-	float m_tillReset;
-	bool resetAllowed;
+	float m_tillReset = 0;
+	bool m_resetAllowed = false;
 
-	float m_airtime;
+	float m_airtime = 0;
 	const float c_maxAirTime = 1.0f;
-	bool m_crouched;
+	bool m_crouched = false;
 
-	int numLives;
-	int maxLives;
-	bool m_alive;
+	int m_numLives = 1;
+	int m_maxLives = m_numLives;
+	bool m_alive = true;
 
-	float timeLeftActive;
+	float timeLeftActive = 0;
 
 	BoundingBox* m_CurBox;
 

@@ -7,31 +7,33 @@
 
 bool Player::s_playerInserted = false;
 
-Player::Player(std::string filepath, int rows, int cols, float fps, int bTyp, int strloc, bool dir, bool symmetrical, int initAnim, float animSpd)
-	:GameObject(filepath, rows, cols, fps, bTyp, strloc, dir, symmetrical, initAnim, animSpd)
+Player::Player(std::string filepath, int rows, int cols, bool symmetrical, int initAnim, float animSpd)
+	: GameObject(filepath, rows, cols, PLAYER, true, symmetrical, initAnim, animSpd)
 {
+	m_type = PLAYER;
+
 	std::vector<int> frames{ 1, 1, 1, 2, 1, 2, 1, 2 };
 	//regular mario
 	m_spr->SetFrames(frames);
 	m_spr->SetPosition(sf::Vector2f(75, 454));
 	m_bbox->GetSprite()->setPosition(sf::Vector2f(m_spr->GetPosition().x - 2, m_spr->GetPosition().y + 4));
-	m_CrouchBbox = new BoundingBox(filepath.substr(0, strloc) + "c", bTyp);
+	m_CrouchBbox = new BoundingBox("smlCrouch", m_type);
 
 	m_currSpr = m_spr;
 	m_curBbox = m_bbox;
 
 	m_deathLoc = m_velocity = sf::Vector2f(0.0f, 0.0f);
-	m_prevPos = m_spawnLoc = initialPos = sf::Vector2f{ 75, 454 };
+	m_prevPos = m_spawnLoc = m_initialPos = sf::Vector2f{ 75, 454 };
 
 	//super mario
 	filepath = "s" + filepath;
 	frames = std::vector<int>{ 1, 1, 1, 3, 1, 2, 1, 2 };
-	m_SupSpr = new AnimatedSprite(filepath, rows, cols + 1, fps, symmetrical, initAnim, animSpd);
+	m_SupSpr = new AnimatedSprite(filepath, rows, cols + 1, FPS, symmetrical, initAnim, animSpd);
 	m_SupSpr->SetFrames(frames);
 	m_SupSpr->SetPosition(sf::Vector2f(m_SupSpr->GetOrigin().x * 2, 481));
 
-	m_SupBbox = new BoundingBox(filepath.substr(0, strloc + 1), bTyp);
-	m_SCrouchBbox = new BoundingBox(filepath.substr(0, strloc + 1) + "c", bTyp);
+	m_SupBbox = new BoundingBox(filepath.substr(0, filepath.find(".")), PLAYER);
+	m_SCrouchBbox = new BoundingBox("supCrouch", PLAYER);
 
 	m_onGround = false;
 	m_falling = false;
@@ -39,7 +41,7 @@ Player::Player(std::string filepath, int rows, int cols, float fps, int bTyp, in
 	m_spindown = false;
 	ifWasSuper = m_super = false;
 	justCrouched = false;
-	visible = true;
+	m_visible = true;
 	die = false;
 	killed = false;
 	m_alive = true;
@@ -55,7 +57,7 @@ Player::Player(std::string filepath, int rows, int cols, float fps, int bTyp, in
 
 	heightDiff = m_SupSpr->GetOrigin().y * sY - m_spr->GetOrigin().y * sY;
 
-	m_type = PLAYER;
+
 
 	//if automated
 	if (Automated)
@@ -257,7 +259,7 @@ void Player::SetSpawnLoc(sf::Vector2f loc)
 {
 	if (loc == sf::Vector2f(0, 0))
 	{
-		m_spawnLoc = initialPos;
+		m_spawnLoc = m_initialPos;
 	}
 	else
 	{
@@ -278,7 +280,7 @@ void Player::Reset()
 	m_currSpr = m_spr;
 	m_curBbox = m_bbox;
 
-	m_spawnLoc = initialPos;
+	m_spawnLoc = m_initialPos;
 
 	SetPosition(m_spawnLoc);
 	SetPrevPosition(m_spawnLoc);
@@ -296,8 +298,8 @@ void Player::Reset()
 	killed = false;
 	m_alive = true;
 
-	m_active = visible = true;
-	m_currSpr->ChangeAnim(initialAnim);
+	m_active = m_visible = true;
+	m_currSpr->ChangeAnim(m_initialAnim);
 
 	for (size_t i = 0; i < MAXKEYS; i++)
 	{
@@ -328,8 +330,8 @@ void Player::ReSpawn()
 	killed = false;
 	m_alive = true;
 
-	m_active = visible = true;
-	m_currSpr->ChangeAnim(initialAnim);
+	m_active = m_visible = true;
+	m_currSpr->ChangeAnim(m_initialAnim);
 	Timer::Get()->ResetTime();
 	Game::GetGameMgr()->GetLevel()->ResetLevel();
 }
@@ -360,7 +362,7 @@ void Player::Kill()
 {
 	m_deathLoc = GetPosition() - sf::Vector2f(0, 20);
 	killed = true;
-	goingUp = true;
+	m_goingUp = true;
 	die = true;
 	m_alive = false;
 	m_currSpr->ChangeAnim(DIE);//Die

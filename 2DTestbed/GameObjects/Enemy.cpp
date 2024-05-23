@@ -4,19 +4,14 @@
 #include "../Game/Camera.h"
 #include "../GameObjects/Rex.h"
 
-Enemy::Enemy(std::string filepath, int rows, int cols, float fps, int bTyp, int strloc, bool dir, bool symmetrical, int initAnim, float animSpd)
-	:GameObject(filepath, rows, cols, fps, bTyp, strloc, dir, symmetrical, initAnim, animSpd)
+Enemy::Enemy(std::string_view filepath, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd)
+	:GameObject(filepath, rows, cols, bTyp, dir, symmetrical, initAnim, animSpd)
 {
 	m_enemyNum = s_numOfEnemies++;
-	m_tillReset = 0;
-	resetAllowed = false;
-	m_alive = true;
 
-	initialAnim = initAnim;
+	m_initialAnim = initAnim;
 
 	m_CurBox = m_bbox;
-
-	m_type;
 }
 
 Enemy::~Enemy()
@@ -27,7 +22,7 @@ void Enemy::Update(float deltaTime)
 {
 	if (m_active)
 	{
-		if (visible)
+		if (m_visible)
 		{
 			if (timeLeftActive > 0)
 			{
@@ -39,30 +34,30 @@ void Enemy::Update(float deltaTime)
 				m_active = false;
 			}
 
-			if (resetAllowed)
+			if (m_resetAllowed)
 			{
-				resetAllowed = false;
+				m_resetAllowed = false;
 			}
 		}
 		//if off screen
 		else
 		{
 			//and wasn't previousily off screen
-			if (visible != prevVisibility)
+			if (m_visible != m_prevVisibility)
 			{
 
 				m_tillReset = 1;
-				resetAllowed = true;
+				m_resetAllowed = true;
 			}
 		}
 
 
-		if (resetAllowed)
+		if (m_resetAllowed)
 		{
 			m_tillReset -= deltaTime;
 			if (m_tillReset <= 0)
 			{
-				if (!Game::GetGameMgr()->GetCamera()->IsInView(initialPos, GetOrigin()))
+				if (!Game::GetGameMgr()->GetCamera()->IsInView(m_initialPos, GetOrigin()))
 				{
 					Reset();
 				}
@@ -70,7 +65,7 @@ void Enemy::Update(float deltaTime)
 		}
 
 
-		if (visible)
+		if (m_visible)
 		{
 			if (m_alive || m_bbox->GetID() == BILL)
 			{
@@ -100,10 +95,10 @@ void Enemy::Render(sf::RenderWindow & window)
 
 int Enemy::DecrementLife()
 {
-	if(numLives > 0)
+	if(m_numLives > 0)
 	{
-		--numLives;
-		if (numLives == 0)
+		--m_numLives;
+		if (m_numLives == 0)
 		{
 			Die();
 		}
@@ -119,12 +114,12 @@ int Enemy::DecrementLife()
 
 	}
 
-	return numLives;
+	return m_numLives;
 }
 
 void Enemy::ResetLives()
 {
-	numLives = maxLives;
+	m_numLives = m_maxLives;
 }
 
 bool Enemy::GetIsAlive()
@@ -144,27 +139,27 @@ BoundingBox * Enemy::GetBBox()
 
 int Enemy::GetLives()
 {
-	return numLives;
+	return m_numLives;
 }
 
 void Enemy::Revive()
 {
-	m_direction = initialDir;
-	SetPosition(initialPos);
+	m_direction = m_initialDir;
+	SetPosition(m_initialPos);
 	m_prevPos = GetPosition();
 	m_velocity = sf::Vector2f(0, 0);
 
-	resetAllowed = false;
+	m_resetAllowed = false;
 	m_onGround = false;
 	m_falling = true;
 	m_airbourne = false;
-	visible = prevVisibility = false;
+	m_visible = m_prevVisibility = false;
 
 	m_tillReset = 0;
 	timeLeftActive = 0;
-	numLives = maxLives;
+	m_numLives = m_maxLives;
 
-	m_spr->ChangeAnim(initialAnim);
+	m_spr->ChangeAnim(m_initialAnim);
 	m_alive = true;
 	m_active = true;
 }
@@ -176,20 +171,20 @@ int Enemy::GetEnemyNum()
 
 void Enemy::Reset()
 {
-	m_direction = initialDir;
-	SetPosition(initialPos);
+	m_direction = m_initialDir;
+	SetPosition(m_initialPos);
 	m_prevPos = GetPosition();
 	m_velocity = sf::Vector2f(0,0);
 
-	resetAllowed = false;
+	m_resetAllowed = false;
 	m_onGround = false;
 	m_falling = true;
 	m_airbourne = false;
-	visible = prevVisibility = false;
+	m_visible = m_prevVisibility = false;
 
 	m_tillReset = 0;
 
-	numLives = maxLives;
+	m_numLives = m_maxLives;
 
-	m_spr->ChangeAnim(initialAnim);
+	m_spr->ChangeAnim(m_initialAnim);
 }

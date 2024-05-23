@@ -55,13 +55,13 @@
     <Filter Include="Header Files\Controller\NEAT">
       <UniqueIdentifier>{f0a9290e-e72d-413d-b1fc-1b9b36609e29}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Sprites">
+      <UniqueIdentifier>{ca5aec02-5173-4b4b-8679-34e9380b75f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Marlo.cpp">
-      <Filter>Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="Collisions\Collisions.cpp">
       <Filter>Source Files\Collisions</Filter>

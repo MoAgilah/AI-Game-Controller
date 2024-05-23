@@ -21,7 +21,7 @@ class BoundingBox;
 class GameObject
 {
 public:
-	GameObject(std::string filepath, int rows, int cols, float fps, int bTyp, int strloc, bool dir, bool symmetrical, int initAnim, float animSpd);
+	GameObject(std::string_view filepath, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd);
 	~GameObject();
 
 	virtual void Update(float deltaTime) = 0;
@@ -31,7 +31,7 @@ public:
 	virtual BoundingBox* GetBBox();
 	AnimatedSprite* GetAnimSpr() { return m_spr; }
 
-	virtual void SetInitialPos(sf::Vector2f pos);
+	virtual void Setm_initialPos(sf::Vector2f pos);
 	virtual sf::Vector2f GetPosition() const;
 	virtual void SetPosition(sf::Vector2f);
 	virtual void SetPosition(float x, float y);
@@ -67,32 +67,36 @@ public:
 	bool GetActive();
 
 protected:
-	int objectID;
-	int initialAnim;
-	int m_type;
-	int m_state;
-	static int m_objectNum;
+	int m_type = -1;
+	int m_objectID;
+	static int s_objectNum;
 	static int s_numOfEnemies;
 	static int s_numOfObjects;
 
-	bool m_active;
-	bool prevVisibility;
-	bool visible;
-	bool m_direction;
-	bool m_onGround;
-	bool m_falling;
-	bool m_airbourne;
-	bool initialDir;
+	int m_initialAnim = 0;
+	bool m_initialDir = true;
+	sf::Vector2f m_initialPos;
+
+	bool m_active = true;
+
+	bool m_visible = false;
+	bool m_direction = true;
+	bool m_onGround = false;
+	bool m_falling = false;
+	bool m_airbourne = false;
+
+	sf::Vector2f m_position;
+	sf::Vector2f m_velocity;
+
+	bool m_prevVisibility = false;
+	sf::Vector2f m_prevPos;
 
 	const float gravity = 0.981f;
 
 	AnimatedSprite* m_spr;
 	BoundingBox* m_bbox;
 
-	sf::Vector2f m_position;
-	sf::Vector2f m_prevPos;
-	sf::Vector2f m_velocity;
-	sf::Vector2f initialPos;
+
 };
 
 #endif

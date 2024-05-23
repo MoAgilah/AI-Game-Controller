@@ -178,9 +178,6 @@
     <ClCompile Include="Game\Logger.cpp" />
     <ClCompile Include="Game\Timer.cpp" />
     <ClCompile Include="Game\World.cpp" />
-    <ClCompile Include="Marlo.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NEAT\Cga.cpp" />
     <ClCompile Include="NEAT\CInnovation.cpp" />

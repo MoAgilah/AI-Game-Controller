@@ -2,29 +2,19 @@
 #include "../../Collisions/Collisions.h"
 #include "../Game/Camera.h"
 
-int GameObject::m_objectNum = 0;
+int GameObject::s_objectNum = 0;
 int GameObject::s_numOfEnemies = 0;
 int GameObject::s_numOfObjects = 0;
 
-GameObject::GameObject(std::string filepath, int rows, int cols, float fps, int bTyp, int strloc, bool dir, bool symmetrical, int initAnim, float animSpd)
+GameObject::GameObject(std::string_view filepath, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd)
+	: m_type(bTyp), m_initialDir(dir), m_direction(m_initialDir)
 {
-	m_spr = new AnimatedSprite(filepath, rows, cols, fps, symmetrical, initAnim, animSpd);
+	m_spr = new AnimatedSprite(filepath, rows, cols, FPS, symmetrical, initAnim, animSpd);
 
-	//extract id for bounding box
-	std::string s_id = filepath.substr(0, strloc);
-
-	m_bbox = new BoundingBox(s_id, bTyp);
-
-	initialDir = m_direction = dir;
-
-	m_onGround = false;
-	m_falling = true;
-	m_airbourne = false;
-	visible = prevVisibility = false;
+	m_bbox = new BoundingBox(filepath.substr(0, filepath.find(".")), bTyp);
 
 	Collisions::Get()->AddCollidable(this);
-	objectID = m_objectNum++;
-	m_active = true;
+	m_objectID = s_objectNum++;
 }
 
 GameObject::~GameObject()
@@ -52,9 +42,9 @@ BoundingBox * GameObject::GetBBox()
 	return m_bbox;
 }
 
-void GameObject::SetInitialPos(sf::Vector2f pos)
+void GameObject::Setm_initialPos(sf::Vector2f pos)
 {
-	initialPos = pos;
+	m_initialPos = pos;
 }
 
 sf::Vector2f GameObject::GetPosition() const
@@ -158,18 +148,18 @@ void GameObject::SetDirection(bool dir)
 
 bool GameObject::GetVisible()
 {
-	return visible;
+	return m_visible;
 }
 
 void GameObject::SetVisible(bool vis)
 {
-	prevVisibility = visible;
-	visible = vis;
+	m_prevVisibility = m_visible;
+	m_visible = vis;
 }
 
 int GameObject::GetObjectNum()
 {
-	return objectID;
+	return m_objectID;
 }
 
 void GameObject::SetActive(bool act)

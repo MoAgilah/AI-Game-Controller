@@ -50,7 +50,7 @@ struct Range
 class AnimatedSprite : public Sprite
 {
 public:
-	AnimatedSprite(std::string_view filePath, int rows, int columns, float framesPerSec, bool symmetrical, int initialAnim, float animationSpeed);
+	AnimatedSprite(std::string_view filePath, int rows, int columns, float framesPerSec, bool symmetrical, int m_initialAnim, float animationSpeed);
 	~AnimatedSprite() final = default;
 
 	void Update(float dt, bool direction = true);

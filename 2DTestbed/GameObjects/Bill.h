@@ -13,7 +13,7 @@ class Bill :
 	public Enemy
 {
 public:
-	Bill(std::string filepath, int rows, int cols, float fps, int bTyp, int strloc = 1, bool dir = true, bool symmetrical = true, int initAnim = 0, float animSpd = 1);
+	Bill(bool dir = true);
 	void Die();
 	~Bill();
 	void Render(sf::RenderWindow & window);

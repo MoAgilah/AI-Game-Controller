@@ -186,14 +186,14 @@ std::vector<sf::RectangleShape> Tile::GetSlopeBBox()
 	return m_slope;
 }
 
-bool Tile::GetVisible()
+bool Tile::Getm_visible()
 {
-	return visible;
+	return m_visible;
 }
 
-void Tile::SetVisible(bool vis)
+void Tile::Setm_visible(bool vis)
 {
-	visible = vis;
+	m_visible = vis;
 }
 
 int Tile::GetRowNum()

@@ -21,10 +21,10 @@ void Sprite::Init(std::string_view filePath)
 	SetOrigin(sf::Vector2f((float)m_texture.getSize().x * 0.5f, (float)m_texture.getSize().y * 0.5f));
 }
 
-AnimatedSprite::AnimatedSprite(std::string_view filePath, int rows, int columns, float framesPerSec, bool symmetrical, int initialAnim, float animSpeed)
+AnimatedSprite::AnimatedSprite(std::string_view filePath, int rows, int columns, float framesPerSec, bool symmetrical, int m_initialAnim, float animSpeed)
 	: Sprite(filePath), m_animSpeed(animSpeed), m_framesPerSecond(framesPerSec / 1000.0f), m_symmetrical(symmetrical)
 {
-	ChangeAnim(initialAnim);
+	ChangeAnim(m_initialAnim);
 
 	//set single frame size
 	m_frameSize = sf::Vector2u(GetTextureSize().x / columns, GetTextureSize().y / rows);

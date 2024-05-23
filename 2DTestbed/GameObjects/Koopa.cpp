@@ -2,15 +2,15 @@
 #include "../../Collisions/Collisions.h"
 
 
-Koopa::Koopa(std::string filepath, int rows, int cols, float fps, int bTyp, int strloc, bool dir, bool symmetrical, int initAnim, float animSpd)
-	:Enemy(filepath, rows, cols, fps, bTyp, strloc, dir, symmetrical, initAnim, animSpd)
+Koopa::Koopa(int rows, int cols, bool dir, bool symmetrical, int initAnim, float animSpd)
+	:Enemy("koopa.png", rows, cols, KOOPA, dir, symmetrical, initAnim, animSpd)
 {
 	std::vector<int> frames{ 1, 2, 1};
 	m_spr->SetFrames(frames);
 
 	m_spr->SetPosition(sf::Vector2f(400, 524));
 	m_type = KOOPA;
-	numLives = maxLives = 1;
+	m_numLives = m_maxLives = 1;
 }
 
 void Koopa::Die()
@@ -55,7 +55,7 @@ void Koopa::Animate(float deltaTime)
 		Collisions::Get()->ProcessCollisions(this);
 	}
 
-	
+
 	//check for leftmost and rightmost boundary
 	if (m_spr->GetPosition().x < m_spr->GetOrigin().x || m_spr->GetPosition().x > 11776 - m_spr->GetOrigin().x)
 	{

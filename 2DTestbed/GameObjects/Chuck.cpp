@@ -2,20 +2,19 @@
 #include "../../Collisions/Collisions.h"
 
 
-Chuck::Chuck(std::string filepath, int rows, int cols, float fps, int bTyp, int strloc, bool dir, bool symmetrical, int initAnim, float animSpd)
-	:Enemy(filepath, rows, cols, fps, bTyp, strloc, dir, symmetrical, initAnim, animSpd)
+Chuck::Chuck(bool dir, int initAnim, float animSpd)
+	:Enemy("chuck.png", 6, 2, CHUCK, dir, false, initAnim, animSpd)
 {
 	std::vector<int> cframes{ 1, 2, 1, 1, 1, 1 };
 	m_spr->SetFrames(cframes);
 
 	m_spr->SetPosition(sf::Vector2f(400, 519));
-	m_type = CHUCK;
-	numLives = maxLives = 2;
+	m_numLives = m_maxLives = 2;
 
 	m_airtime = 0;
 	m_waitTime = 0;
 
-	goingUp = true;
+	m_goingUp = true;
 }
 
 Chuck::~Chuck()
@@ -24,7 +23,7 @@ Chuck::~Chuck()
 
 void Chuck::Die()
 {
-	numLives = 0;
+	m_numLives = 0;
 	m_alive = false;
 	timeLeftActive = 0.5f;
 	m_spr->ChangeAnim(5);
@@ -39,7 +38,7 @@ void Chuck::Animate(float deltaTime)
 {
 	m_waitTime += deltaTime;
 
-	if (goingUp)
+	if (m_goingUp)
 	{
 		if (m_waitTime > 0.5f)
 		{
@@ -61,22 +60,22 @@ void Chuck::Animate(float deltaTime)
 	if (currentPos.y < 357)
 	{
 		m_spr->ChangeAnim(4);
-		if(goingUp) goingUp = false;
-		
+		if(m_goingUp) m_goingUp = false;
+
 	}
 
 	if (currentPos.y > 447)
 	{
-		if (goingUp == false)
+		if (m_goingUp == false)
 		{
 			m_spr->ChangeAnim(3);
 			m_waitTime = 0;
-			goingUp = true;
+			m_goingUp = true;
 		}
-		
+
 	}
 
-	
+
 
 
 	if (m_velocity.y != 0)

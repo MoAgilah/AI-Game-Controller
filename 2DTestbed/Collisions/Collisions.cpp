@@ -109,7 +109,7 @@ void Collisions::ProcessCollisions(GameObject* gobj)
 			continue;
 		}
 
-		if (!tile->GetVisible()) continue;
+		if (!tile->Getm_visible()) continue;
 
 		numchecks++;
 		Col = gobj->GetBBox()->Intersects(*tile);
@@ -689,7 +689,7 @@ void Collisions::QBoxHit(Player * ply, Object * obj)
 		{
 			//ply->UpdateFitness(100);
 			//spawn a mushroom
-			Object* spawn = new Object("boshroom.png", 1, 1, FPS, SHROOM, 2, true, true, 0, 1.f);
+			Object* spawn = new Object("boshroom.png", 1, 1, SHROOM, true, true, 0, 1.f);
 			//at this position
 			spawn->SetPosition(obj->GetPosition() - sf::Vector2f(0, (obj->GetOrigin().y * sY) * 2.f - 20.f));
 			spawn->SetOnGround(true);

@@ -16,7 +16,7 @@ Game::Game()
 	if (Automated)
 		m_player.reset(CtrlMgr::GetCtrlMgr()->GetController()->GetCurrentPlayer());
 	else
-		m_player = std::make_unique<Player>("mario.png", 8, 2, FPS, PLAYER, 1, true, false, 0, .5f);
+		m_player = std::make_unique<Player>("mario.png", 8, 2, false, 0, .5f);
 
 	m_world = std::make_unique<World>();
 	m_logger = std::make_unique<Logger>();
@@ -62,11 +62,11 @@ void Game::CheckInView()
 	m_player->SetVisible(m_camera->IsInView(m_player->GetBBox()->GetSprite()));
 
 	for (auto& tile : Collisions::Get()->GetGrid())
-		tile->SetVisible(m_camera->IsinView(tile->GetRect()));
+		tile->Setm_visible(m_camera->IsinView(tile->GetRect()));
 
 	/*for (auto& enemy : m_world->GetEnemies())
-		enemy->SetVisible(m_camera->IsInView(enemy->GetBBox()->GetSprite()));
+		enemy->Setm_visible(m_camera->IsInView(enemy->GetBBox()->GetSprite()));
 
 	for (auto& object : m_level->GetObjects())
-		object->SetVisible(m_camera->IsInView(object->GetBBox()->GetSprite()));*/
+		object->Setm_visible(m_camera->IsInView(object->GetBBox()->GetSprite()));*/
 }

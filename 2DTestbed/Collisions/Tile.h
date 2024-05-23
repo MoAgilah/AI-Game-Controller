@@ -28,8 +28,8 @@ public:
 	void SetPosition(sf::Vector2f pos);
 	sf::Vector2f GetPosition();
 
-	bool GetVisible();
-	void SetVisible(bool vis);
+	bool Getm_visible();
+	void Setm_visible(bool vis);
 
 	sf::Vector2f GetOrigin();
 	sf::RectangleShape GetRect();
@@ -48,7 +48,7 @@ private:
 	int m_colNum;
 	int m_rowNum;
 	int m_type;
-	bool visible;
+	bool m_visible;
 	bool hasFont;
 	std::string m_id;
 	//Tile
