@@ -373,7 +373,6 @@ void Collisions::PlayerToObject(Player * ply, Object * obj)
 		SpinBoxHit(ply, obj);
 		break;
 	case CHKPOINT://check point
-		ply->CheckPointHit(true);
 		ply->SetSpawnLoc(obj->GetPosition());
 		//ply->UpdateFitness(200);
 		ply->SetIsSuper(true);

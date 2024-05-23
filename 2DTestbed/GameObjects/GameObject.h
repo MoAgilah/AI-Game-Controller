@@ -35,6 +35,8 @@ public:
 	virtual void Update(float deltaTime) = 0;
 	virtual void Render(sf::RenderWindow& window) = 0;
 
+	virtual void Reset();
+
 	sf::Sprite* GetSprite() { return m_curSpr->GetSprite(); }
 	BoundingBox* GetBBox() { return m_curBBox; }
 	AnimatedSprite* GetAnimSpr() { return m_curSpr; }

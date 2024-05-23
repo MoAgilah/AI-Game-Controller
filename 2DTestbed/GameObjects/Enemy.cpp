@@ -16,12 +16,12 @@ void Enemy::Update(float deltaTime)
 {
 	if (m_active)
 	{
-		if (timeLeftActive > 0)
+		if (m_timeLeftActive > 0)
 		{
-			timeLeftActive -= deltaTime;
+			m_timeLeftActive -= deltaTime;
 		}
 
-		if (timeLeftActive < 0)
+		if (m_timeLeftActive < 0)
 		{
 			m_active = false;
 		}
@@ -105,24 +105,16 @@ int Enemy::GetLives()
 
 void Enemy::Reset()
 {
-	m_curBBox = m_bbox.get();
-	m_curSpr = m_spr.get();
-	m_curSpr->ChangeAnim(m_spawnData.m_initialAnim);
+	GameObject::Reset();
 
-	m_direction = m_spawnData.m_initialDir;
-	SetPosition(m_spawnData.m_initialPos);
-	m_prevPos = GetPosition();
-	m_velocity = sf::Vector2f(0,0);
-
+	m_tillReset = 0;
 	m_resetAllowed = false;
-	m_onGround = false;
-	m_airbourne = false;
+
+	m_airtime = 0;
+	m_crouched = false;
+
+	m_maxLives = m_numLives;
 	m_alive = true;
-	m_active = false;
 
-	m_tillReset = 0;
-	timeLeftActive = 0;
-	m_tillReset = 0;
-
-	m_numLives = m_maxLives;
+	m_timeLeftActive = 0;
 }

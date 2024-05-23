@@ -25,7 +25,7 @@ Bill::Bill(bool dir, const sf::Vector2f& initPos)
 void Bill::Die()
 {
 	m_alive = false;
-	timeLeftActive = 2.f;
+	m_timeLeftActive = 2.f;
 }
 
 Bill::~Bill()

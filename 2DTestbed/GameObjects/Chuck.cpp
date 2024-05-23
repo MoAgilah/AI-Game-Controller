@@ -23,11 +23,18 @@ Chuck::~Chuck()
 {
 }
 
+void Chuck::Reset()
+{
+	Enemy::Reset();
+	m_goingUp = false;
+	m_waitTime = 0;
+}
+
 void Chuck::Die()
 {
 	m_numLives = 0;
 	m_alive = false;
-	timeLeftActive = 0.5f;
+	m_timeLeftActive = 0.5f;
 	m_curSpr->ChangeAnim(5);
 }
 

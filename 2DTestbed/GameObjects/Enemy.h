@@ -11,6 +11,8 @@ public:
 	~Enemy();
 	virtual void Update(float deltaTime);
 	virtual void Render(sf::RenderWindow& window);
+	void Reset() override;
+
 	int DecrementLife();
 	void ResetLives();
 	virtual void Die() = 0;
@@ -20,7 +22,6 @@ public:
 
 protected:
 	virtual void Animate(float deltaTime) = 0;
-	virtual void Reset();
 
 	float m_tillReset = 0;
 	bool m_resetAllowed = false;
@@ -33,7 +34,7 @@ protected:
 	int m_maxLives = m_numLives;
 	bool m_alive = true;
 
-	float timeLeftActive = 0;
+	float m_timeLeftActive = 0;
 };
 
 #endif

@@ -28,25 +28,7 @@ Player::Player(std::string filepath, int rows, int cols, bool symmetrical, int i
 	m_SupBbox = new BoundingBox(filepath.substr(0, filepath.find(".")), PLAYER);
 	m_SCrouchBbox = new BoundingBox("supCrouch", PLAYER);
 
-	m_onGround = false;
-	m_airbourne = false;
-	m_spindown = false;
-	ifWasSuper = m_super = false;
-	justCrouched = false;
-	die = false;
-	killed = false;
-	m_alive = true;
-	cantjump = false;
-	cantSpinJump = false;
-	justBeenHit = false;
-	justHitEnemy = false;
-	goalHit = false;
-
-	m_airtime = 0;
-	m_noGravTime = -1;
-	m_InvulTime = -1;
-
-	heightDiff = m_SupSpr->GetOrigin().y * sY - m_spr->GetOrigin().y * sY;
+	m_heightDiff = m_SupSpr->GetOrigin().y * sY - m_spr->GetOrigin().y * sY;
 
 	//if automated
 	if (Automated)
@@ -111,7 +93,7 @@ void Player::Update(float deltaTime)
 			if (m_airtime >= c_maxAirTime)
 			{
 				m_airbourne = false;
-				justCrouched = false;
+				m_justCrouched = false;
 			}
 		}
 		else
@@ -147,11 +129,8 @@ void Player::Update(float deltaTime)
 	}
 
 	//check for exceeded rightmost || or hit the goal
-	if (m_curSpr->GetPosition().x > RightMost || goalHit)
+	if (m_curSpr->GetPosition().x > RightMost)
 	{
-		goalHit = false;
-
-		CheckPointHit(false);
 		SetSpawnLoc();
 
 		if (Automated == false)
@@ -204,82 +183,67 @@ void Player::IncreaseCoins(int num)
 
 void Player::Reset()
 {
-	m_curBBox = m_bbox.get();
-	m_curSpr = m_spr.get();
-	m_curSpr->ChangeAnim(m_spawnData.m_initialAnim);
-
-	ifWasSuper = m_super = false;
+	GameObject::Reset();
 
 	m_spawnLoc = m_spawnData.m_initialPos;
 
-	SetPosition(m_spawnLoc);
-	SetPrevPosition(m_spawnLoc);
-
 	m_velocity = sf::Vector2f(0.0f, 0.0f);
 
-	m_airtime = 0;
-	ifWasSuper = m_super = false;
-	m_onGround = false;
-	m_airbourne = false;
-	m_spindown = false;
-	justCrouched = false;
-	die = false;
-	killed = false;
+	m_super = false;
+	m_justCrouched = false;
+	m_justBeenHit = false;
 	m_alive = true;
-
-	m_active = false;
+	m_cantjump = false;
+	m_cantSpinJump = false;
+	m_cantSpinJump = false;
+	m_goalHit = false;
 
 	for (size_t i = 0; i < MAXKEYS; i++)
 	{
 		m_keyState[i] = false;
 	}
 
+	m_heightDiff = 0;
+	m_noGravTime = 0;
+	m_InvulTime = 0;
+	m_airtime = 0;
+
 	Timer::Get()->ResetTime();
 	Game::GetGameMgr()->GetLevel()->ResetLevel();
 }
 
-
-void Player::CheckPointHit(bool hit)
+bool Player::GetGoalHit()
 {
-	hitChkPnt = hit;
+	return m_goalHit;
 }
 
 void Player::SetAirTime(float val)
 {
-	justHitEnemy = true;
+	m_cantSpinJump = true;
 	m_noGravTime = val;
 }
 
 void Player::JustBeenHit(bool hit)
 {
-	justBeenHit = hit;
+	m_justBeenHit = hit;
 	m_InvulTime = 1;
 }
 
 bool Player::GetIfInvulnerable()
 {
-	return justBeenHit;
+	return m_justBeenHit;
 }
 
 void Player::Kill()
 {
 	m_deathLoc = GetPosition() - sf::Vector2f(0, 20);
-	killed = true;
-	m_goingUp = true;
-	die = true;
 	m_alive = false;
 	m_curSpr->ChangeAnim(DIE);//Die
-	//m_dFitness -= 200;
-}
-
-bool Player::GetGoalHit()
-{
-	return goalHit;
 }
 
 void Player::GoalHit()
 {
-	goalHit = true;;
+	m_goalHit = true;
 }
 
 bool Player::GetIsAlive()
@@ -289,10 +253,10 @@ bool Player::GetIsAlive()
 
 void Player::SetCantJump()
 {
-	if (cantjump == false || cantSpinJump == false)
+	if (m_cantjump == false || m_cantSpinJump == false)
 	{
-		cantjump = true;
-		cantSpinJump = true;
+		m_cantjump = true;
+		m_cantSpinJump = true;
 
 		if (m_airbourne)
 		{
@@ -406,7 +370,7 @@ void Player::EndOfRunCalculations()
 {
 	float percent = ((GetPosition().x - 18.f) / RightMost) * 100;
 	//completed level
-	if (goalHit)
+	if (m_goalHit)
 	{
 		Game::GetGameMgr()->GetLogger()->AddExperimentLog(" Completed the level");
 		m_dFitness += 1000;
@@ -555,7 +519,7 @@ void Player::ProcessInput()
 	if (m_keyState[DOWN_KEY])
 	{
 		//if not changed bbox
-		if (justCrouched == false)
+		if (m_justCrouched == false)
 		{
 			//get current position
 			sf::Vector2f pos = GetPosition();
@@ -581,16 +545,16 @@ void Player::ProcessInput()
 					m_curBBox->Update(sf::Vector2f(m_curSpr->GetPosition().x + 2.f, m_curSpr->GetPosition().y + 12.f));
 			}
 
-			justCrouched = true;
+			m_justCrouched = true;
 			m_curSpr->ChangeAnim(CROUCH);
 		}
 	}
 	else //if crouched key is not held down
 	{
 		//if was crouched
-		if (justCrouched)
+		if (m_justCrouched)
 		{
-			justCrouched = false;
+			m_justCrouched = false;
 
 			if (m_super)
 				m_curBBox = m_SupBbox;
@@ -605,7 +569,7 @@ void Player::ProcessInput()
 	//regular jump
 	if (m_keyState[SPACE_KEY])
 	{
-		if (cantjump == false)
+		if (m_cantjump == false)
 		{
 			if (GetOnGround())
 			{
@@ -616,13 +580,13 @@ void Player::ProcessInput()
 				m_airbourne = true;
 				m_onGround = false;
 				m_velocity.y -= m_jumpSpeed;
-				cantjump = true;
+				m_cantjump = true;
 			}
 		}
 	}
 	else
 	{
-		if (m_airbourne && cantjump)
+		if (m_airbourne && m_cantjump)
 		{
 			m_curSpr->ChangeAnim(FALL);
 			m_airtime = c_maxAirTime;
@@ -632,7 +596,7 @@ void Player::ProcessInput()
 	//spin jump
 	if (m_keyState[RCRTL_KEY])
 	{
-		if (cantSpinJump == false)
+		if (m_cantSpinJump == false)
 		{
 			if (GetOnGround())
 			{
@@ -642,13 +606,13 @@ void Player::ProcessInput()
 				m_airbourne = true;
 				m_onGround = false;
 				m_velocity.y = -m_jumpSpeed;
-				cantSpinJump = true;
+				m_cantSpinJump = true;
 			}
 		}
 	}
 	else
 	{
-		if (m_airbourne && cantSpinJump)
+		if (m_airbourne && m_cantSpinJump)
 		{
 			m_curSpr->ChangeAnim(SPINJUMP);
 			m_airtime = c_maxAirTime;
@@ -656,7 +620,7 @@ void Player::ProcessInput()
 	}
 
 	if (!m_keyState[SPACE_KEY] && !m_keyState[RCRTL_KEY])
-		cantjump = cantSpinJump = false;
+		m_cantjump = m_cantSpinJump = false;
 
 	if (m_velocity.x == 0.0f && m_velocity.y == 0.0f)
 	{

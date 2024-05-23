@@ -11,7 +11,6 @@ public:
 	void Die();
 	void Change();
 	void Update(float deltaTime);
-	void Reset();
 
 	~Rex();
 private:

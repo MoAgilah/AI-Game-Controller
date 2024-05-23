@@ -19,18 +19,16 @@ public:
 	void Update(float deltaTime) final;
 	void Render(sf::RenderWindow& window) final;
 
-
 	void Move(sf::Vector2f vel);
 
 	void SetSpawnLoc(sf::Vector2f loc = sf::Vector2f(0, 0));
-	void CheckPointHit(bool hit);
 
 	bool GetIsSuper();
 	void SetIsSuper(bool super);
 
 	void IncreaseCoins(int num);
 
-	void Reset();
+	void Reset() final;
 
 	bool GetGoalHit();
 	void GoalHit();
@@ -71,27 +69,19 @@ private:
 
 	int m_coinTotal;
 
-	bool hitChkPnt;
-	bool ifWasSuper;
-	bool m_spindown;
-	bool m_super;
-	bool justCrouched;
-	bool m_prevDirection;
-	bool justBeenHit;
-	bool die;
-	bool killed;
-	bool m_goingUp;
-	bool m_alive;
-	bool cantjump;
-	bool cantSpinJump;
-	bool justHitEnemy;
-	bool goalHit;
+	bool m_super = false;
+	bool m_justCrouched = false;
+	bool m_justBeenHit = false;
+	bool m_alive = true;
+	bool m_cantjump = false;
+	bool m_cantSpinJump = false;
+	bool m_goalHit = false;
 	bool m_keyState[MAXKEYS] = { false };
 
-	float heightDiff;
-	float m_noGravTime;
-	float m_InvulTime;
-	float m_airtime;
+	float m_heightDiff = 0;
+	float m_noGravTime = 0;
+	float m_InvulTime = 0;
+	float m_airtime = 0;
 	const float c_maxAirTime = .9f;
 	const float m_moveSpeed = 3.0f;
 	const float m_jumpSpeed = 3.0f;

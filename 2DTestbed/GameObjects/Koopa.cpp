@@ -18,7 +18,7 @@ void Koopa::Die()
 {
 	m_alive = false;
 	m_curSpr->ChangeAnim(2);
-	timeLeftActive = 0.5f;
+	m_timeLeftActive = 0.5f;
 }
 
 

@@ -26,6 +26,21 @@ GameObject::~GameObject()
 	m_curBBox = nullptr;
 }
 
+void GameObject::Reset()
+{
+	m_curBBox = m_bbox.get();
+	m_curSpr = m_spr.get();
+	m_curSpr->ChangeAnim(m_spawnData.m_initialAnim);
+
+	SetPosition(m_spawnData.m_initialPos);
+	SetPrevPosition(m_spawnData.m_initialPos);
+
+	m_active = false;
+	m_direction = m_spawnData.m_initialDir;
+	m_onGround = false;
+	m_airbourne = false;
+}
+
 void GameObject::SetPosition(sf::Vector2f pos)
 {
 	m_curSpr->SetPosition(pos);
