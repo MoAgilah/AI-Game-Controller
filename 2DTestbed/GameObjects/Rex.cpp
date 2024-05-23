@@ -3,9 +3,12 @@
 #include "../Game/Camera.h"
 #include "../Game/Game.h"
 
-Rex::Rex(bool dir, int initAnim, float animSpd)
+Rex::Rex(bool dir, int initAnim, float animSpd, const sf::Vector2f& initPos)
 	:Enemy("rex.png", 3, 2, REX, dir, false, initAnim, animSpd)
 {
+	m_spawnData.m_initialPos = initPos;
+	SetPosition(m_spawnData.m_initialPos);
+
 	std::vector<int> frames{ 2, 2, 1 };
 	m_curSpr->SetFrames(frames);
 
@@ -98,7 +101,7 @@ void Rex::Update(float deltaTime)
 		m_tillReset -= deltaTime;
 		if (m_tillReset <= 0)
 		{
-			if (!Game::GetGameMgr()->GetCamera()->IsInView(m_initialPos,GetOrigin()))
+			if (!Game::GetGameMgr()->GetCamera()->IsInView(m_spawnData.m_initialPos,GetOrigin()))
 			{
 				Reset();
 			}
@@ -110,10 +113,10 @@ void Rex::Reset()
 {
 	m_curBBox = m_bbox.get();
 	m_curSpr = m_spr.get();
-	m_curSpr->ChangeAnim(m_initialAnim);
+	m_curSpr->ChangeAnim(m_spawnData.m_initialAnim);
 
-	m_direction = m_initialDir;
-	SetPosition(m_initialPos);
+	m_direction = m_spawnData.m_initialDir;
+	SetPosition(m_spawnData.m_initialPos);
 	m_prevPos = GetPosition();
 	m_velocity = sf::Vector2f(0, 0);
 
@@ -131,10 +134,10 @@ void Rex::Revive()
 {
 	m_curBBox = m_bbox.get();
 	m_curSpr = m_spr.get();
-	m_curSpr->ChangeAnim(m_initialAnim);
+	m_curSpr->ChangeAnim(m_spawnData.m_initialAnim);
 
-	m_direction = m_initialDir;
-	SetPosition(m_initialPos);
+	m_direction = m_spawnData.m_initialDir;
+	SetPosition(m_spawnData.m_initialPos);
 	m_prevPos = GetPosition();
 	m_velocity = sf::Vector2f(0, 0);
 

@@ -7,7 +7,7 @@ class Chuck :
 	public Enemy
 {
 public:
-	Chuck(bool dir, int initAnim, float animSpd);
+	Chuck(bool dir, int initAnim, float animSpd, const sf::Vector2f& initPos);
 	~Chuck();
 	void Die();
 	bool Jumping();

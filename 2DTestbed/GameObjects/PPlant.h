@@ -7,7 +7,7 @@ class PPlant :
 	public Enemy
 {
 public:
-	PPlant(int initAnim = 0, float animSpd = 1);
+	PPlant(const sf::Vector2f& initPos);
 	void Die();
 	~PPlant();
 private:

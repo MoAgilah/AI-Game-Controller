@@ -12,7 +12,7 @@ class Camera;
 class Object : public GameObject
 {
 public:
-	Object(std::string filepath, int rows, int cols, int bTyp, bool dir = true, bool symmetrical = true, int initAnim = 0, float animSpd = 1);
+	Object(std::string filepath, int rows, int cols, int bTyp, bool dir = true, bool symmetrical = true, int initAnim = 0, float animSpd = 1, const sf::Vector2f& initPos = sf::Vector2f());
 	~Object();
 	void Initialise(bool hasAnim, float moveSpd, float jmpSpeed);
 	void Update(float deltaTime);

@@ -8,8 +8,6 @@ Enemy::Enemy(std::string_view filepath, int rows, int cols, int bTyp, bool dir, 
 	:GameObject(filepath, rows, cols, bTyp, dir, symmetrical, initAnim, animSpd)
 {
 	m_enemyNum = s_numOfEnemies++;
-
-	m_initialAnim = initAnim;
 }
 
 Enemy::~Enemy()
@@ -55,7 +53,7 @@ void Enemy::Update(float deltaTime)
 		m_tillReset -= deltaTime;
 		if (m_tillReset <= 0)
 		{
-			if (!Game::GetGameMgr()->GetCamera()->IsInView(m_initialPos, GetOrigin()))
+			if (!Game::GetGameMgr()->GetCamera()->IsInView(m_spawnData.m_initialPos, GetOrigin()))
 			{
 				Reset();
 			}
@@ -121,10 +119,10 @@ void Enemy::Revive()
 {
 	m_curBBox = m_bbox.get();
 	m_curSpr = m_spr.get();
-	m_curSpr->ChangeAnim(m_initialAnim);
+	m_curSpr->ChangeAnim(m_spawnData.m_initialAnim);
 
-	m_direction = m_initialDir;
-	SetPosition(m_initialPos);
+	m_direction = m_spawnData.m_initialDir;
+	SetPosition(m_spawnData.m_initialPos);
 	m_prevPos = GetPosition();
 	m_velocity = sf::Vector2f(0, 0);
 
@@ -149,10 +147,10 @@ void Enemy::Reset()
 {
 	m_curBBox = m_bbox.get();
 	m_curSpr = m_spr.get();
-	m_curSpr->ChangeAnim(m_initialAnim);
+	m_curSpr->ChangeAnim(m_spawnData.m_initialAnim);
 
-	m_direction = m_initialDir;
-	SetPosition(m_initialPos);
+	m_direction = m_spawnData.m_initialDir;
+	SetPosition(m_spawnData.m_initialPos);
 	m_prevPos = GetPosition();
 	m_velocity = sf::Vector2f(0,0);
 

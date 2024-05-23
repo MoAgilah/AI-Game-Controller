@@ -7,8 +7,11 @@ int GameObject::s_numOfEnemies = 0;
 int GameObject::s_numOfObjects = 0;
 
 GameObject::GameObject(std::string_view filepath, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd)
-	: m_type(bTyp), m_initialDir(dir), m_direction(m_initialDir)
+	: m_type(bTyp),  m_direction(dir)
 {
+	m_spawnData.m_initialDir = m_direction;
+	m_spawnData.m_initialAnim = initAnim;
+
 	m_spr = std::make_unique<AnimatedSprite>(filepath, rows, cols, FPS, symmetrical, initAnim, animSpd);
 	m_curSpr = m_spr.get();
 

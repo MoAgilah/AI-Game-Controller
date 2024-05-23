@@ -2,12 +2,14 @@
 #include "../../Collisions/Collisions.h"
 #include "../Game/Camera.h"
 
-Object::Object(std::string filepath, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd)
+Object::Object(std::string filepath, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd, const sf::Vector2f& initPos)
 	:GameObject(filepath, rows, cols, bTyp, dir, symmetrical, initAnim, animSpd)
 {
+	m_spawnData.m_initialPos = initPos;
+	SetPosition(m_spawnData.m_initialPos);
+
 	isAnimating = false;
 	m_goingUp = false;
-	m_initialAnim = initAnim;
 	s_objectNum = s_numOfObjects++;
 }
 
@@ -147,7 +149,7 @@ void Object::Reset()
 {
 	isAnimating = false;
 	m_goingUp = false;
-	m_curSpr->ChangeAnim(m_initialAnim);
+	m_curSpr->ChangeAnim(m_spawnData.m_initialAnim);
 	m_active = true;
 }
 

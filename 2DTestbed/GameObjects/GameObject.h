@@ -17,6 +17,13 @@ enum GOTYPE
 	ObjBgn = YCOIN, ObjEnd = GOAL
 };
 
+struct SpawnData
+{
+	int m_initialAnim = 0;
+	bool m_initialDir = true;
+	sf::Vector2f m_initialPos;
+};
+
 class Camera;
 class BoundingBox;
 class GameObject
@@ -32,7 +39,6 @@ public:
 	BoundingBox* GetBBox() { return m_curBBox; }
 	AnimatedSprite* GetAnimSpr() { return m_curSpr; }
 
-	void SetInitialPos(sf::Vector2f pos) { m_initialPos = pos; }
 	sf::Vector2f GetPosition() const { return m_curSpr->GetPosition(); };
 	void SetPosition(sf::Vector2f pos);
 	void SetPosition(float x, float y);
@@ -68,9 +74,7 @@ protected:
 	static int s_numOfEnemies;
 	static int s_numOfObjects;
 
-	int m_initialAnim = 0;
-	bool m_initialDir = true;
-	sf::Vector2f m_initialPos;
+	SpawnData m_spawnData;
 
 	bool m_active = false;
 

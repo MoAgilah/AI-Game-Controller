@@ -11,25 +11,19 @@ Player::Player(std::string filepath, int rows, int cols, bool symmetrical, int i
 	: GameObject(filepath, rows, cols, PLAYER, true, symmetrical, initAnim, animSpd)
 {
 	m_type = PLAYER;
+	m_spawnData.m_initialPos = sf::Vector2f(75, 454);
 
 	std::vector<int> frames{ 1, 1, 1, 2, 1, 2, 1, 2 };
 	//regular mario
-	m_spr->SetFrames(frames);
-	m_spr->SetPosition(sf::Vector2f(75, 454));
-	m_bbox->GetSprite()->setPosition(sf::Vector2f(m_spr->GetPosition().x - 2, m_spr->GetPosition().y + 4));
+	m_curSpr->SetFrames(frames);
+	SetPosition(m_spawnData.m_initialPos);
 	m_CrouchBbox = new BoundingBox("smlCrouch", m_type);
-
-	m_curSpr = m_spr.get();
-
-	m_deathLoc = m_velocity = sf::Vector2f(0.0f, 0.0f);
-	m_prevPos = m_spawnLoc = m_initialPos = sf::Vector2f{ 75, 454 };
 
 	//super mario
 	filepath = "s" + filepath;
 	frames = std::vector<int>{ 1, 1, 1, 3, 1, 2, 1, 2 };
 	m_SupSpr = new AnimatedSprite(filepath, rows, cols + 1, FPS, symmetrical, initAnim, animSpd);
 	m_SupSpr->SetFrames(frames);
-	m_SupSpr->SetPosition(sf::Vector2f(m_SupSpr->GetOrigin().x * 2, 481));
 
 	m_SupBbox = new BoundingBox(filepath.substr(0, filepath.find(".")), PLAYER);
 	m_SCrouchBbox = new BoundingBox("supCrouch", PLAYER);
@@ -53,8 +47,6 @@ Player::Player(std::string filepath, int rows, int cols, bool symmetrical, int i
 	m_InvulTime = -1;
 
 	heightDiff = m_SupSpr->GetOrigin().y * sY - m_spr->GetOrigin().y * sY;
-
-
 
 	//if automated
 	if (Automated)
@@ -196,7 +188,7 @@ void Player::SetSpawnLoc(sf::Vector2f loc)
 {
 	if (loc == sf::Vector2f(0, 0))
 	{
-		m_spawnLoc = m_initialPos;
+		m_spawnLoc = m_spawnData.m_initialPos;
 	}
 	else
 	{
@@ -214,11 +206,11 @@ void Player::Reset()
 {
 	m_curBBox = m_bbox.get();
 	m_curSpr = m_spr.get();
-	m_curSpr->ChangeAnim(m_initialAnim);
+	m_curSpr->ChangeAnim(m_spawnData.m_initialAnim);
 
 	ifWasSuper = m_super = false;
 
-	m_spawnLoc = m_initialPos;
+	m_spawnLoc = m_spawnData.m_initialPos;
 
 	SetPosition(m_spawnLoc);
 	SetPrevPosition(m_spawnLoc);
@@ -247,7 +239,7 @@ void Player::ReSpawn()
 {
 	m_curBBox = m_bbox.get();
 	m_curSpr = m_spr.get();
-	m_curSpr->ChangeAnim(m_initialAnim);
+	m_curSpr->ChangeAnim(m_spawnData.m_initialAnim);
 
 	ifWasSuper = m_super = false;
 

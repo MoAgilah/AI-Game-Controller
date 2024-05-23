@@ -1,6 +1,7 @@
 #ifndef BillH
 #define BillH
 
+#include <SFML/Graphics.hpp>
 #include "../GameObjects/Enemy.h"
 
 struct Body
@@ -13,7 +14,7 @@ class Bill :
 	public Enemy
 {
 public:
-	Bill(bool dir = true);
+	Bill(bool dir = true, const sf::Vector2f& initPos = sf::Vector2f());
 	void Die();
 	~Bill();
 	void Render(sf::RenderWindow & window);

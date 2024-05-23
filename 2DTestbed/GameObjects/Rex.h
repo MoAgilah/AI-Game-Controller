@@ -7,7 +7,7 @@ class BoundingBox;
 class Rex : public Enemy
 {
 public:
-	Rex(bool dir = true, int initAnim = 0, float animSpd = 1);
+	Rex(bool dir, int initAnim, float animSpd, const sf::Vector2f& initPos);
 	void Die();
 	void Change();
 	void Update(float deltaTime);

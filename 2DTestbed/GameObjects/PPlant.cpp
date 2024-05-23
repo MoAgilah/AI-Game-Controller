@@ -3,9 +3,12 @@
 
 
 
-PPlant::PPlant(int initAnim, float animSpd)
+PPlant::PPlant(const sf::Vector2f& initPos)
 	:Enemy("pplant.png", 2, 2, PPLANT, false, false)
 {
+	m_spawnData.m_initialPos = initPos;
+	SetPosition(m_spawnData.m_initialPos);
+
 	std::vector<int> cframes{ 1, 2};
 	m_curSpr->SetFrames(cframes);
 }

@@ -2,13 +2,14 @@
 #include "../../Collisions/Collisions.h"
 
 
-Koopa::Koopa(int rows, int cols, bool dir, bool symmetrical, int initAnim, float animSpd)
+Koopa::Koopa(int rows, int cols, bool dir, bool symmetrical, int initAnim, float animSpd, const sf::Vector2f& initPos)
 	:Enemy("koopa.png", rows, cols, KOOPA, dir, symmetrical, initAnim, animSpd)
 {
 	std::vector<int> frames{ 1, 2, 1};
 	m_curSpr->SetFrames(frames);
 
-	m_curSpr->SetPosition(sf::Vector2f(400, 524));
+	m_spawnData.m_initialPos = sf::Vector2f(400, 524);
+	m_curSpr->SetPosition(m_spawnData.m_initialPos);
 	m_type = KOOPA;
 	m_numLives = m_maxLives = 1;
 }

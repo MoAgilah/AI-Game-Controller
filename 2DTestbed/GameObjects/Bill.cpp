@@ -1,9 +1,12 @@
 #include "../GameObjects/Bill.h"
 #include "../../Collisions/Collisions.h"
 
-Bill::Bill(bool dir)
+Bill::Bill(bool dir, const sf::Vector2f& initPos)
 	:Enemy("bill.png", 1, 1, BILL, dir)
 {
+	m_spawnData.m_initialPos = initPos;
+	SetPosition(m_spawnData.m_initialPos);
+
 	colbody.front.setOutlineColor(sf::Color::Red);
 	colbody.front.setOutlineThickness(2.0f);
 	colbody.front.setFillColor(sf::Color::Transparent);
