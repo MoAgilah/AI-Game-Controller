@@ -163,6 +163,7 @@ std::vector<GameObject*> Collisions::GetCollidables()
 void Collisions::PlayerToTile(GameObject * ply, Tile * tile)
 {
 	Player* plyObj = (Player*)ply;
+
 	int dir = GetDirTravelling(plyObj);
 
 	if (tile->GetType() == GRND)

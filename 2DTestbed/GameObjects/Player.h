@@ -72,6 +72,7 @@ private:
 	bool m_super = false;
 	bool m_justCrouched = false;
 	bool m_justBeenHit = false;
+	bool m_justHitEnemy = false;
 	bool m_alive = true;
 	bool m_cantjump = false;
 	bool m_cantSpinJump = false;

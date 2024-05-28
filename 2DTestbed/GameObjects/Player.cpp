@@ -16,6 +16,8 @@ Player::Player(std::string filepath, int rows, int cols, bool symmetrical, int i
 	std::vector<int> frames{ 1, 1, 1, 2, 1, 2, 1, 2 };
 	//regular mario
 	m_curSpr->SetFrames(frames);
+	auto tmp = Collisions::Get()->GetTile(151, 5);
+
 	SetPosition(m_spawnData.m_initialPos);
 	m_CrouchBbox = new BoundingBox("smlCrouch", m_type);
 
@@ -83,49 +85,138 @@ void Player::Update(float deltaTime)
 	if (!m_active)
 		return;
 
+	//adjust position when changing from regular -> super and vice versa
+	if (m_super)
+	{
+		//if current spr and bbox is not super
+		if (m_curSpr != m_SupSpr)
+		{
+			//change spr and bbox
+			m_curSpr = m_SupSpr;
+			m_curBBox = m_SupBbox;
+
+			//adjust postion
+			SetPosition(m_spr->GetPosition() - sf::Vector2f(0, m_heightDiff));
+		}
+	}
+	else
+	{
+		//if current spr and bbox is not regular
+		if (m_curSpr != m_spr.get())
+		{
+			//change spr and bbox
+			m_curSpr = m_spr.get();
+			m_curBBox = m_bbox.get();
+
+			//adjust position
+			SetPosition(m_SupSpr->GetPosition() + sf::Vector2f(0, m_heightDiff));
+		}
+
+	}//end super
+
 	ProcessInput();
 
-	if (!GetOnGround())
+	//set vulnerability time
+	if (m_justBeenHit)
+	{
+		m_InvulTime -= deltaTime;
+
+		if (m_InvulTime <= 0)
+		{
+			m_justBeenHit = false;
+		}
+	}
+
+	if (m_justHitEnemy)
+	{
+		//if not hovering
+		if (m_noGravTime <= 0)
+		{
+			if (m_justHitEnemy)
+				m_justHitEnemy = false;
+		}
+		else //if hovering
+		{
+			m_velocity.y = 0;
+			m_noGravTime -= deltaTime;
+		}
+	}
+
+	if (!GetIsAlive())
 	{
 		if (m_airbourne)
 		{
+			m_velocity.y = -m_jumpSpeed;
 			m_airtime += deltaTime;
 			if (m_airtime >= c_maxAirTime)
 			{
 				m_airbourne = false;
-				m_justCrouched = false;
 			}
 		}
 		else
 		{
 			m_velocity.y += gravity;
+			if (!Game::GetGameMgr()->GetCamera()->OnScreen(this))
+			{
+				if (!Automated)
+				{
+					Reset();
+				}
+			}
 		}
+
+		Move(sf::Vector2f(0, m_velocity.y * FPS * deltaTime));
 	}
 	else
 	{
-		m_velocity.y = 0;
-		m_airtime = 0;
-	}
+		if (!GetOnGround())
+		{
+			if (m_airbourne)
+			{
+				m_airtime += deltaTime;
+				if (m_airtime >= c_maxAirTime)
+				{
+					m_airbourne = false;
+					m_justCrouched = false;
+				}
+			}
+			else
+			{
+				m_velocity.y += gravity;
+			}
+		}
+		else
+		{
+			m_velocity.y = 0;
+			m_airtime = 0;
+		}
 
-	//decomposition of movement
-	if (m_velocity.x != 0)
-	{
-		SetPrevPosition(m_curSpr->GetPosition());
-		Move(sf::Vector2f(m_velocity.x * FPS * deltaTime, 0));
-		Collisions::Get()->ProcessCollisions(this);
-	}
+		//decomposition of movement
+		if (m_velocity.x != 0)
+		{
+			SetPrevPosition(m_curSpr->GetPosition());
+			Move(sf::Vector2f(m_velocity.x * FPS * deltaTime, 0));
+			Collisions::Get()->ProcessCollisions(this);
+		}
 
-	if (m_velocity.y != 0)
-	{
-		SetPrevPosition(m_curSpr->GetPosition());
-		Move(sf::Vector2f(0, m_velocity.y * FPS * deltaTime));
-		Collisions::Get()->ProcessCollisions(this);
+		if (m_velocity.y != 0)
+		{
+			SetPrevPosition(m_curSpr->GetPosition());
+			Move(sf::Vector2f(0, m_velocity.y * FPS * deltaTime));
+			Collisions::Get()->ProcessCollisions(this);
+		}
 	}
 
 	//check for leftmost and rightmost boundary
 	if (m_curSpr->GetPosition().x < m_curSpr->GetOrigin().x || m_curSpr->GetPosition().x > 11776 - m_curSpr->GetOrigin().x)
 	{
 		Move(sf::Vector2f(-m_velocity.x * FPS * deltaTime, 0));
+	}
+
+	if (m_curBBox->GetSprite()->getPosition().y /*+ m_curBBox->GetSprite()->getOrigin().y*/ > 600 - m_curBBox->GetSprite()->getOrigin().y)
+	{
+		if (GetIsAlive())
+			Kill();
 	}
 
 	//check for exceeded rightmost || or hit the goal
@@ -145,6 +236,7 @@ void Player::Update(float deltaTime)
 void Player::Render(sf::RenderWindow& window)
 {
 	m_curSpr->Render(window);
+	m_curBBox->Render(window);
 }
 
 void Player::Move(sf::Vector2f vel)
@@ -236,7 +328,9 @@ bool Player::GetIfInvulnerable()
 
 void Player::Kill()
 {
-	m_deathLoc = GetPosition() - sf::Vector2f(0, 20);
+	m_airtime = 0.33f;
+	m_airbourne = true;
+	m_onGround = false;
 	m_alive = false;
 	m_curSpr->ChangeAnim(DIE);//Die
 }
