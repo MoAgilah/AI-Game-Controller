@@ -1,5 +1,5 @@
 #include "../GameObjects/Chuck.h"
-#include "../../Collisions/Collisions.h"
+#include "../Collisions/Collisions.h"
 #include "../Game/Constants.h"
 
 Chuck::Chuck(bool dir, int initAnim, float animSpd, const sf::Vector2f& initPos = sf::Vector2f())

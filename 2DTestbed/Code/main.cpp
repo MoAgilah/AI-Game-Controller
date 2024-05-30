@@ -3,12 +3,12 @@
 #include <SFML/Graphics.hpp>
 #include "Game/Constants.h"
 
-#include "../2DTestbed/Game/Game.h"
-#include "../2DTestbed/GameObjects/Player.h"
-#include "../2DTestbed/Game/Camera.h"
-#include "../2DTestbed/Controller/ANNView.h"
-#include "../2DTestbed/Controller/CtrlMgr.h"
-#include "../2DTestbed/NEAT/CParams.h"
+#include "Game/Game.h"
+#include "GameObjects/Player.h"
+#include "Game/Camera.h"
+#include "Controller/ANNView.h"
+#include "Controller/CtrlMgr.h"
+#include "NEAT/CParams.h"
 
 int main()
 {

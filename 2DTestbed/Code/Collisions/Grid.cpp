@@ -9,7 +9,7 @@
 
 Grid::Grid()
 {
-	font.loadFromFile("Fonts/arial.ttf");
+	font.loadFromFile("Resources/Fonts/arial.ttf");
 
 	Tile tile(font);
 	//create grid for entire level

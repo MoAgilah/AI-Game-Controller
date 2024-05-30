@@ -14,8 +14,8 @@ Sprite::Sprite(std::string_view filePath)
 
 void Sprite::Init(std::string_view filePath)
 {
-	if (!m_texture.loadFromFile(std::format("Sprites/{}", filePath)))
-		std::cout << std::format("failed to load Sprites/{}", filePath) << std::endl;
+	if (!m_texture.loadFromFile(std::format("Resources/Sprites/{}", filePath)))
+		std::cout << std::format("failed to load Resources/Sprites/{}", filePath) << std::endl;
 
 	m_texture.setSmooth(true);
 	m_sprite.setTexture(m_texture);

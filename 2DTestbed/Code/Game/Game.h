@@ -7,7 +7,7 @@
 #include "World.h"
 #include "Logger.h"
 #include "Timer.h"
-#include "../Drawables/TextureManager.h"
+#include "TextureManager.h"
 
 class Player;
 class Game

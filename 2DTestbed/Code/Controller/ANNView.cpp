@@ -10,7 +10,7 @@
 
 ANNView::ANNView()
 {
-	m_font.loadFromFile("Fonts/arial.ttf");
+	m_font.loadFromFile("Resources/Fonts/arial.ttf");
 
 	m_text.push_back(new sf::Text());
 	m_text.back()->setFont(m_font);

@@ -5,11 +5,11 @@ const std::string pID("_GridInputs");
 
 Logger::Logger()
 {
-	std::string path = "Debug(20_01_2018)";
+	std::string path = "Resources/Outputs/Debug(20_01_2018)";
 	debugfile.open(path + ".csv");
 	debugfile << path << GetTimeStamp() << std::endl;
 
-	path = "Experiment(20_01_2018)"  + pID;
+	path = "Resources/Outputs/Experiment(20_01_2018)"  + pID;
 	experifile.open(path + ".csv");
 	experifile << path << std::endl << GetTimeStamp() << std::endl;
 }

@@ -1,5 +1,5 @@
 #include "../GameObjects/Object.h"
-#include "../../Collisions/Collisions.h"
+#include "../Collisions/Collisions.h"
 #include "../Game/Camera.h"
 #include "../Game/Constants.h"
 

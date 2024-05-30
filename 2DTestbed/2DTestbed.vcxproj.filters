@@ -64,212 +64,225 @@
     <Filter Include="Header Files\Drawables">
       <UniqueIdentifier>{e2be84d4-4877-4e24-bebd-d30c0ed37566}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Fonts">
+      <UniqueIdentifier>{25c37512-0103-4fcc-9812-6af5e97cde83}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Collisions\Collisions.cpp">
+    <ClCompile Include="Code\Collisions\BoundingBox.cpp">
       <Filter>Source Files\Collisions</Filter>
     </ClCompile>
-    <ClCompile Include="Collisions\BoundingBox.cpp">
+    <ClCompile Include="Code\Collisions\Collisions.cpp">
       <Filter>Source Files\Collisions</Filter>
     </ClCompile>
-    <ClCompile Include="Collisions\Grid.cpp">
+    <ClCompile Include="Code\Collisions\Grid.cpp">
       <Filter>Source Files\Collisions</Filter>
     </ClCompile>
-    <ClCompile Include="Collisions\Tile.cpp">
+    <ClCompile Include="Code\Collisions\Tile.cpp">
       <Filter>Source Files\Collisions</Filter>
     </ClCompile>
-    <ClCompile Include="Controller\Controller.cpp">
+    <ClCompile Include="Code\NEAT\Cga.cpp">
+      <Filter>Source Files\Controller\NEAT</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\NEAT\CInnovation.cpp">
+      <Filter>Source Files\Controller\NEAT</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\NEAT\CParams.cpp">
+      <Filter>Source Files\Controller\NEAT</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\NEAT\CSpecies.cpp">
+      <Filter>Source Files\Controller\NEAT</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\NEAT\CTimer.cpp">
+      <Filter>Source Files\Controller\NEAT</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\NEAT\genotype.cpp">
+      <Filter>Source Files\Controller\NEAT</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\NEAT\phenotype.cpp">
+      <Filter>Source Files\Controller\NEAT</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Controller\ANNView.cpp">
       <Filter>Source Files\Controller</Filter>
     </ClCompile>
-    <ClCompile Include="Controller\CtrlMgr.cpp">
+    <ClCompile Include="Code\Controller\Controller.cpp">
       <Filter>Source Files\Controller</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Camera.cpp">
+    <ClCompile Include="Code\Controller\CtrlMgr.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Game\Camera.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Game.cpp">
+    <ClCompile Include="Code\Game\Game.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Timer.cpp">
+    <ClCompile Include="Code\Game\Logger.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\Bill.cpp">
+    <ClCompile Include="Code\Game\TextureManager.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Game\Timer.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Game\World.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameObjects\GameObject.cpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameObjects\Object.cpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameObjects\Bill.cpp">
       <Filter>Source Files\GameObjects\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\Chuck.cpp">
+    <ClCompile Include="Code\GameObjects\Chuck.cpp">
       <Filter>Source Files\GameObjects\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\Enemy.cpp">
+    <ClCompile Include="Code\GameObjects\Enemy.cpp">
       <Filter>Source Files\GameObjects\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\Koopa.cpp">
+    <ClCompile Include="Code\GameObjects\Koopa.cpp">
       <Filter>Source Files\GameObjects\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\PPlant.cpp">
-      <Filter>Source Files\GameObjects\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObjects\Rex.cpp">
-      <Filter>Source Files\GameObjects\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObjects\Player.cpp">
+    <ClCompile Include="Code\GameObjects\Player.cpp">
       <Filter>Source Files\GameObjects\Player</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\Object.cpp">
-      <Filter>Source Files\GameObjects</Filter>
+    <ClCompile Include="Code\GameObjects\PPlant.cpp">
+      <Filter>Source Files\GameObjects\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\GameObject.cpp">
-      <Filter>Source Files\GameObjects</Filter>
+    <ClCompile Include="Code\GameObjects\Rex.cpp">
+      <Filter>Source Files\GameObjects\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="NEAT\Cga.cpp">
-      <Filter>Source Files\Controller\NEAT</Filter>
-    </ClCompile>
-    <ClCompile Include="NEAT\CInnovation.cpp">
-      <Filter>Source Files\Controller\NEAT</Filter>
-    </ClCompile>
-    <ClCompile Include="NEAT\CParams.cpp">
-      <Filter>Source Files\Controller\NEAT</Filter>
-    </ClCompile>
-    <ClCompile Include="NEAT\CSpecies.cpp">
-      <Filter>Source Files\Controller\NEAT</Filter>
-    </ClCompile>
-    <ClCompile Include="NEAT\CTimer.cpp">
-      <Filter>Source Files\Controller\NEAT</Filter>
-    </ClCompile>
-    <ClCompile Include="NEAT\genotype.cpp">
-      <Filter>Source Files\Controller\NEAT</Filter>
-    </ClCompile>
-    <ClCompile Include="NEAT\phenotype.cpp">
-      <Filter>Source Files\Controller\NEAT</Filter>
-    </ClCompile>
-    <ClCompile Include="Controller\ANNView.cpp">
-      <Filter>Source Files\Controller</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Logger.cpp">
-      <Filter>Source Files\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\World.cpp">
-      <Filter>Source Files\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Drawables\Sprite.cpp">
+    <ClCompile Include="Code\Drawables\Sprite.cpp">
       <Filter>Source Files\Drawables</Filter>
     </ClCompile>
-    <ClCompile Include="Drawables\TextureManager.cpp">
-      <Filter>Source Files\Drawables</Filter>
+    <ClCompile Include="Code\main.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Collisions\BoundingBox.h">
+    <ClInclude Include="Code\Collisions\BoundingBox.h">
       <Filter>Header Files\Collisions</Filter>
     </ClInclude>
-    <ClInclude Include="Collisions\Collisions.h">
+    <ClInclude Include="Code\Collisions\Collisions.h">
       <Filter>Header Files\Collisions</Filter>
     </ClInclude>
-    <ClInclude Include="Collisions\Grid.h">
+    <ClInclude Include="Code\Collisions\Grid.h">
       <Filter>Header Files\Collisions</Filter>
     </ClInclude>
-    <ClInclude Include="Collisions\Tile.h">
+    <ClInclude Include="Code\Collisions\Tile.h">
       <Filter>Header Files\Collisions</Filter>
     </ClInclude>
-    <ClInclude Include="Controller\Controller.h">
+    <ClInclude Include="Code\NEAT\Cga.h">
+      <Filter>Header Files\Controller\NEAT</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\NEAT\CInnovation.h">
+      <Filter>Header Files\Controller\NEAT</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\NEAT\CParams.h">
+      <Filter>Header Files\Controller\NEAT</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\NEAT\CSpecies.h">
+      <Filter>Header Files\Controller\NEAT</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\NEAT\CTimer.h">
+      <Filter>Header Files\Controller\NEAT</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\NEAT\defines.h">
+      <Filter>Header Files\Controller\NEAT</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\NEAT\genes.h">
+      <Filter>Header Files\Controller\NEAT</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\NEAT\genotype.h">
+      <Filter>Header Files\Controller\NEAT</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\NEAT\phenotype.h">
+      <Filter>Header Files\Controller\NEAT</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\NEAT\resource.h">
+      <Filter>Header Files\Controller\NEAT</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\NEAT\Utils.h">
+      <Filter>Header Files\Controller\NEAT</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Controller\ANNView.h">
       <Filter>Header Files\Controller</Filter>
     </ClInclude>
-    <ClInclude Include="Controller\CtrlMgr.h">
+    <ClInclude Include="Code\Controller\Controller.h">
       <Filter>Header Files\Controller</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Camera.h">
+    <ClInclude Include="Code\Controller\CtrlMgr.h">
+      <Filter>Header Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Game\Camera.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Game.h">
+    <ClInclude Include="Code\Game\Constants.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Timer.h">
+    <ClInclude Include="Code\Game\Game.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\Bill.h">
+    <ClInclude Include="Code\Game\Logger.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Game\Timer.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Game\World.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Game\TextureManager.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameObjects\GameObject.h">
+      <Filter>Header Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameObjects\Object.h">
+      <Filter>Header Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameObjects\Bill.h">
       <Filter>Header Files\GameObjects\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\Chuck.h">
+    <ClInclude Include="Code\GameObjects\Chuck.h">
       <Filter>Header Files\GameObjects\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\Enemy.h">
+    <ClInclude Include="Code\GameObjects\Enemy.h">
       <Filter>Header Files\GameObjects\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\Koopa.h">
+    <ClInclude Include="Code\GameObjects\Koopa.h">
       <Filter>Header Files\GameObjects\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\PPlant.h">
+    <ClInclude Include="Code\GameObjects\PPlant.h">
       <Filter>Header Files\GameObjects\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\Rex.h">
+    <ClInclude Include="Code\GameObjects\Rex.h">
       <Filter>Header Files\GameObjects\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\Player.h">
+    <ClInclude Include="Code\GameObjects\Player.h">
       <Filter>Header Files\GameObjects\Player</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\GameObject.h">
-      <Filter>Header Files\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObjects\Object.h">
-      <Filter>Header Files\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="NEAT\Cga.h">
-      <Filter>Header Files\Controller\NEAT</Filter>
-    </ClInclude>
-    <ClInclude Include="NEAT\CInnovation.h">
-      <Filter>Header Files\Controller\NEAT</Filter>
-    </ClInclude>
-    <ClInclude Include="NEAT\CParams.h">
-      <Filter>Header Files\Controller\NEAT</Filter>
-    </ClInclude>
-    <ClInclude Include="NEAT\CSpecies.h">
-      <Filter>Header Files\Controller\NEAT</Filter>
-    </ClInclude>
-    <ClInclude Include="NEAT\CTimer.h">
-      <Filter>Header Files\Controller\NEAT</Filter>
-    </ClInclude>
-    <ClInclude Include="NEAT\defines.h">
-      <Filter>Header Files\Controller\NEAT</Filter>
-    </ClInclude>
-    <ClInclude Include="NEAT\genes.h">
-      <Filter>Header Files\Controller\NEAT</Filter>
-    </ClInclude>
-    <ClInclude Include="NEAT\genotype.h">
-      <Filter>Header Files\Controller\NEAT</Filter>
-    </ClInclude>
-    <ClInclude Include="NEAT\phenotype.h">
-      <Filter>Header Files\Controller\NEAT</Filter>
-    </ClInclude>
-    <ClInclude Include="NEAT\resource.h">
-      <Filter>Header Files\Controller\NEAT</Filter>
-    </ClInclude>
-    <ClInclude Include="Controller\ANNView.h">
-      <Filter>Header Files\Controller</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Logger.h">
-      <Filter>Header Files\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\World.h">
-      <Filter>Header Files\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Drawables\TextureManager.h">
+    <ClInclude Include="Code\Drawables\Sprite.h">
       <Filter>Header Files\Drawables</Filter>
-    </ClInclude>
-    <ClInclude Include="Drawables\Sprite.h">
-      <Filter>Header Files\Drawables</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Constants.h">
-      <Filter>Header Files\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="NEAT\Utils.h">
-      <Filter>Header Files\Controller\NEAT</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Resources\TileTypes.txt">
       <Filter>Resource Files</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Code\NEAT\params.ini">
+      <Filter>Header Files\Controller\NEAT</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Resources\Fonts\arial.ttf">
+      <Filter>Resource Files\Fonts</Filter>
+    </Font>
   </ItemGroup>
 </Project>

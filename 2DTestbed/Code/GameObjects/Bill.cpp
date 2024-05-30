@@ -1,5 +1,5 @@
 #include "../GameObjects/Bill.h"
-#include "../../Collisions/Collisions.h"
+#include "../Collisions/Collisions.h"
 #include "../Game/Constants.h"
 
 Bill::Bill(bool dir, const sf::Vector2f& initPos)

@@ -1,5 +1,5 @@
 #include "../GameObjects/Koopa.h"
-#include "../../Collisions/Collisions.h"
+#include "../Collisions/Collisions.h"
 #include "../Game/Constants.h"
 
 

@@ -46,7 +46,7 @@ void World::AddObject()
 
 void World::AddGUI()
 {
-	m_font.loadFromFile("Fonts/arial.ttf");
+	m_font.loadFromFile("Resources/Fonts/arial.ttf");
 
 	std::vector<std::string> filenames{ "name.png", "time.png" };
 

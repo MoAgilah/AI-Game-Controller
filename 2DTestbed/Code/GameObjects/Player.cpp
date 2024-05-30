@@ -1,5 +1,6 @@
 #include "../GameObjects/Player.h"
-#include "../../Collisions/Collisions.h"
+#include "../Collisions/Collisions.h"
+#include "../Game/Constants.h"
 #include "../Game/Camera.h"
 #include "../Game/Timer.h"
 #include "../Game/Game.h"

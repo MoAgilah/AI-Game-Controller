@@ -1,4 +1,4 @@
-#include "../../Collisions/Collisions.h"
+#include "Collisions.h"
 
 #include "../Game/Camera.h"
 #include "../Game/Game.h"
