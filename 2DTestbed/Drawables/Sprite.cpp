@@ -1,6 +1,7 @@
 #include "Sprite.h"
 #include <format>
 #include <iostream>
+#include "../Game/Constants.h"
 
 Sprite::Sprite()
 {

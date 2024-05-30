@@ -1,6 +1,7 @@
 #include "../GameObjects/Object.h"
 #include "../../Collisions/Collisions.h"
 #include "../Game/Camera.h"
+#include "../Game/Constants.h"
 
 Object::Object(std::string filepath, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd, const sf::Vector2f& initPos)
 	:GameObject(filepath, rows, cols, bTyp, dir, symmetrical, initAnim, animSpd)

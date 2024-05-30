@@ -163,7 +163,8 @@
     <ClCompile Include="Controller\ANNView.cpp" />
     <ClCompile Include="Controller\Controller.cpp" />
     <ClCompile Include="Controller\CtrlMgr.cpp" />
-    <ClCompile Include="GameObjects\Sprite.cpp" />
+    <ClCompile Include="Drawables\Sprite.cpp" />
+    <ClCompile Include="Drawables\TextureManager.cpp" />
     <ClCompile Include="GameObjects\Bill.cpp" />
     <ClCompile Include="GameObjects\Chuck.cpp" />
     <ClCompile Include="GameObjects\Enemy.cpp" />
@@ -195,7 +196,8 @@
     <ClInclude Include="Controller\ANNView.h" />
     <ClInclude Include="Controller\Controller.h" />
     <ClInclude Include="Controller\CtrlMgr.h" />
-    <ClInclude Include="GameObjects\Sprite.h" />
+    <ClInclude Include="Drawables\Sprite.h" />
+    <ClInclude Include="Drawables\TextureManager.h" />
     <ClInclude Include="GameObjects\Bill.h" />
     <ClInclude Include="GameObjects\Chuck.h" />
     <ClInclude Include="GameObjects\Enemy.h" />
@@ -209,6 +211,7 @@
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Game\Logger.h" />
     <ClInclude Include="Game\Timer.h" />
+    <ClInclude Include="Game\Constants.h" />
     <ClInclude Include="Game\World.h" />
     <ClInclude Include="NEAT\Cga.h" />
     <ClInclude Include="NEAT\CInnovation.h" />
@@ -220,7 +223,7 @@
     <ClInclude Include="NEAT\genotype.h" />
     <ClInclude Include="NEAT\phenotype.h" />
     <ClInclude Include="NEAT\resource.h" />
-    <ClInclude Include="Utils.h" />
+    <ClInclude Include="NEAT\Utils.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Resources\TileTypes.txt" />

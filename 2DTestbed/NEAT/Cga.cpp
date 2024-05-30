@@ -1,5 +1,5 @@
 #include "Cga.h"
-
+#include <cmath>
 
 //-------------------------------------------------------------------------
 //	this constructor creates a base genome from supplied values and creates
@@ -170,7 +170,7 @@ std::vector<CNeuralNet*> Cga::Epoch(const std::vector<double> &FitnessScores)
 	{
 	  //this is the amount of offspring this species is required to
 	  // spawn. Rounded simply rounds the double up or down.
-	  int NumToSpawn = Rounded(m_vecSpecies[spc].NumToSpawn());
+	  int NumToSpawn = std::round(m_vecSpecies[spc].NumToSpawn());
 
 	  bool bChosenBestYet = false;
 

@@ -1,7 +1,7 @@
 #include "Logger.h"
 #include "Timer.h"
 
-std::string pID("_SensorInputs");
+const std::string pID("_GridInputs");
 
 Logger::Logger()
 {

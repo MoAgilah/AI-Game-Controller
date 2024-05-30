@@ -4,6 +4,7 @@
 #include "../Game/Game.h"
 #include "../GameObjects/Player.h"
 #include <assert.h>
+#include "../Game/Constants.h"
 
 Camera::Camera()
 {

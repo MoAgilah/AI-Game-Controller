@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <SFML\Graphics.hpp>
-#include "../Utils.h"
 
 class Tile;
 class Sensors;

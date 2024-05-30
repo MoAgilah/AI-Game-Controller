@@ -2,13 +2,12 @@
 #define CollisionsH
 
 #include <SFML\Graphics.hpp>
-#include "../Utils.h"
 
 #include "../Collisions/Tile.h"
 #include "../Collisions/BoundingBox.h"
 #include "../Collisions/Grid.h"
 
-enum Direction 
+enum Direction
 {
 	LDIR, RDIR, UDIR, DDIR
 };

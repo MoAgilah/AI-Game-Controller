@@ -1,6 +1,6 @@
 #include "../Collisions/Grid.h"
 #include "../Game/Camera.h"
-
+#include "../Game/Constants.h"
 #include "../Collisions/Tile.h"
 #include <fstream>
 #include <sstream>
@@ -38,7 +38,7 @@ Grid::~Grid()
 
 		m_grid.clear();
 	}
-		
+
 }
 
 void Grid::SetTilePosition()
@@ -119,7 +119,7 @@ void Grid::SetTileTypes()
 
 std::vector<Tile*> Grid::GetGrid()
 {
- 	return m_grid;
+	return m_grid;
 }
 
 

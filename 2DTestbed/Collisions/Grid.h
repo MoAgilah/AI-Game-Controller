@@ -6,8 +6,6 @@
 #include <vector>
 
 #include <sfml/Graphics.hpp>
-#include "../Utils.h"
-
 
 class Tile;
 class Camera;

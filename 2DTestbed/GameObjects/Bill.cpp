@@ -1,5 +1,6 @@
 #include "../GameObjects/Bill.h"
 #include "../../Collisions/Collisions.h"
+#include "../Game/Constants.h"
 
 Bill::Bill(bool dir, const sf::Vector2f& initPos)
 	:Enemy("bill.png", 1, 1, BILL, dir)

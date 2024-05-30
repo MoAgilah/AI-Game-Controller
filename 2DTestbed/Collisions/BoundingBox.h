@@ -1,7 +1,7 @@
 #ifndef BoundingBoxH
 #define BoundingBoxH
 
-#include "../GameObjects/Sprite.h"
+#include "../Drawables/Sprite.h"
 #include <SFML\Graphics.hpp>
 #include <string>
 

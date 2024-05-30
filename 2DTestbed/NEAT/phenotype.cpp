@@ -1,4 +1,5 @@
 #include "phenotype.h"
+#include <algorithm>
 
 //------------------------------------Sigmoid function------------------------
 //
@@ -275,7 +276,7 @@ void CNeuralNet::DrawNet(HDC &surface, int Left, int Right, int Top, int Bottom)
 	  {
 		int thickness = (int)(fabs(m_vecpNeurons[cNeuron]->vecLinksOut[cLnk].dWeight));
 
-		Clamp(thickness, 0, MaxThickness);
+		thickness = std::clamp(thickness, 0, MaxThickness);
 
 		HPEN Pen;
 
@@ -319,7 +320,7 @@ void CNeuralNet::DrawNet(HDC &surface, int Left, int Right, int Top, int Bottom)
 
 		  int thickness = (int)(fabs(m_vecpNeurons[cNeuron]->vecLinksOut[cLnk].dWeight));
 
-		  Clamp(thickness, 0, MaxThickness);
+		  thickness = std::clamp(thickness, 0, MaxThickness);
 
 		  HPEN Pen;
 
@@ -352,7 +353,7 @@ void CNeuralNet::DrawNet(HDC &surface, int Left, int Right, int Top, int Bottom)
 		{
 		  int thickness = (int)(fabs(m_vecpNeurons[cNeuron]->vecLinksOut[cLnk].dWeight));
 
-		  Clamp(thickness, 0, MaxThickness);
+		  thickness = std::clamp(thickness, 0, MaxThickness);
 
 		  HPEN Pen;
 

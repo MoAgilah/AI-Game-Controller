@@ -1,6 +1,6 @@
 #include "../GameObjects/Chuck.h"
 #include "../../Collisions/Collisions.h"
-
+#include "../Game/Constants.h"
 
 Chuck::Chuck(bool dir, int initAnim, float animSpd, const sf::Vector2f& initPos = sf::Vector2f())
 	:Enemy("chuck.png", 6, 2, CHUCK, dir, false, initAnim, animSpd)

@@ -6,11 +6,13 @@
 #include "../Collisions/Collisions.h"
 #include "../Collisions/Grid.h"
 #include "../Controller/CtrlMgr.h"
+#include "../Game/Constants.h"
 
 std::unique_ptr<Game> Game::m_instance = nullptr;
 
 Game::Game()
 {
+	m_texureManager = std::make_unique<TextureManager>();
 	m_camera = std::make_unique<Camera>();
 
 	if (Automated)
@@ -21,12 +23,6 @@ Game::Game()
 	m_world = std::make_unique<World>();
 	m_logger = std::make_unique<Logger>();
 	m_instance.reset(this);
-}
-
-Game::~Game()
-{
-	if (m_instance)
-		m_instance = nullptr;
 }
 
 void Game::ChangePlayer(Player * ply)

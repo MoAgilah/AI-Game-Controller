@@ -14,6 +14,8 @@
 
 #include "../Controller/CtrlMgr.h"
 
+#include "../Game/Constants.h"
+
 #include <algorithm>
 
 Collisions* Collisions::instance = nullptr;

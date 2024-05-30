@@ -1,5 +1,5 @@
 #include "CParams.h"
-#include "../Utils.h"
+#include "../Game/Constants.h"
 
 double CParams::dPi = 0;//
 double CParams::dHalfPi = 0;//

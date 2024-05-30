@@ -3,18 +3,18 @@
 #include <memory>
 #include <SFML\Graphics.hpp>
 
-#include "../Utils.h"
 #include "Camera.h"
 #include "World.h"
 #include "Logger.h"
 #include "Timer.h"
+#include "../Drawables/TextureManager.h"
 
 class Player;
 class Game
 {
 public:
 	Game();
-	~Game();
+	~Game() = default;
 
 	static Game* GetGameMgr() { return m_instance.get(); }
 
@@ -30,9 +30,10 @@ public:
 private:
 	void CheckInView();
 
-	static std::unique_ptr<Game> m_instance;
-	std::unique_ptr<Camera>		 m_camera;
-	std::unique_ptr<Player>		 m_player;
-	std::unique_ptr<World>		 m_world;
-	std::unique_ptr<Logger>		 m_logger;
+	static std::unique_ptr<Game>	m_instance;
+	std::unique_ptr<TextureManager>	m_texureManager;
+	std::unique_ptr<Camera>			m_camera;
+	std::unique_ptr<Player>			m_player;
+	std::unique_ptr<World>			m_world;
+	std::unique_ptr<Logger>			m_logger;
 };

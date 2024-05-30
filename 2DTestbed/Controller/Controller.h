@@ -2,10 +2,6 @@
 #define ControllerH
 
 #include <SFML/Graphics.hpp>
-#include "../Utils.h"
-
-
-
 #include "../NEAT/Cga.h"
 
 class ANNView;

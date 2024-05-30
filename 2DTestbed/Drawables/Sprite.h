@@ -7,8 +7,6 @@
 #include <vector>
 #include <span>
 
-#include "../Utils.h"
-
 class Sprite
 {
 public:

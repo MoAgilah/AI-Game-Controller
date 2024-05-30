@@ -2,7 +2,7 @@
 
 #include <array>
 #include <SFML/Graphics.hpp>
-#include "../GameObjects/Sprite.h"
+#include "../Drawables/Sprite.h"
 
 enum class GUI { NAME, TIME, MAX };
 

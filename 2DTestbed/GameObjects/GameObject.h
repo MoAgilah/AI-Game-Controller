@@ -4,7 +4,7 @@
 #include <memory>
 #include <string>
 #include <SFML/Graphics.hpp>
-#include "Sprite.h"
+#include "../Drawables/Sprite.h"
 
 enum GOTYPE
 {

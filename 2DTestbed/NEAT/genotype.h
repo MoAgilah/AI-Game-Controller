@@ -12,7 +12,7 @@
 #include <vector>
 
 #include "phenotype.h"
-#include "../Utils.h"
+#include "Utils.h"
 #include "CInnovation.h"
 #include "genes.h"
 

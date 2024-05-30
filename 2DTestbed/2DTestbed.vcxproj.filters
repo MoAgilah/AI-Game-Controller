@@ -58,6 +58,12 @@
     <Filter Include="Resource Files\Sprites">
       <UniqueIdentifier>{ca5aec02-5173-4b4b-8679-34e9380b75f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Drawables">
+      <UniqueIdentifier>{4af45122-8b6b-4ec2-a4ad-87425d99f196}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Drawables">
+      <UniqueIdentifier>{e2be84d4-4877-4e24-bebd-d30c0ed37566}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -147,8 +153,11 @@
     <ClCompile Include="Game\World.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\Sprite.cpp">
-      <Filter>Source Files\GameObjects</Filter>
+    <ClCompile Include="Drawables\Sprite.cpp">
+      <Filter>Source Files\Drawables</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawables\TextureManager.cpp">
+      <Filter>Source Files\Drawables</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -242,14 +251,20 @@
     <ClInclude Include="Game\Logger.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="Utils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObjects\Sprite.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Game\World.h">
       <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawables\TextureManager.h">
+      <Filter>Header Files\Drawables</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawables\Sprite.h">
+      <Filter>Header Files\Drawables</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Constants.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="NEAT\Utils.h">
+      <Filter>Header Files\Controller\NEAT</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

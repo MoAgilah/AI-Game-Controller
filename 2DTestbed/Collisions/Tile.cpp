@@ -1,5 +1,6 @@
 #include "../Collisions/Tile.h"
 #include "../Game/Camera.h"
+#include "../Game/Constants.h"
 
 Tile::Tile()
 {

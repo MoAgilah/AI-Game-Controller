@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include <SFML/Graphics.hpp>
-#include "Utils.h"
+#include "Game/Constants.h"
 
 #include "../2DTestbed/Game/Game.h"
 #include "../2DTestbed/GameObjects/Player.h"

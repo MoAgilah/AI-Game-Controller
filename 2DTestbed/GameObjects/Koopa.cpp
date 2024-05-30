@@ -1,5 +1,6 @@
 #include "../GameObjects/Koopa.h"
 #include "../../Collisions/Collisions.h"
+#include "../Game/Constants.h"
 
 
 Koopa::Koopa(int rows, int cols, bool dir, bool symmetrical, int initAnim, float animSpd, const sf::Vector2f& initPos)

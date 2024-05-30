@@ -1,9 +1,6 @@
 #ifndef LoggerH
 #define LoggerH
 
-#include <SFML\Graphics.hpp>
-#include "../Utils.h"
-
 #include <vector>
 #include <string>
 #include <fstream>

@@ -2,6 +2,7 @@
 #include "../../Collisions/Collisions.h"
 #include "../Game/Camera.h"
 #include "../Game/Game.h"
+#include "../Game/Constants.h"
 
 Rex::Rex(bool dir, int initAnim, float animSpd, const sf::Vector2f& initPos)
 	:Enemy("rex.png", 3, 2, REX, dir, false, initAnim, animSpd)

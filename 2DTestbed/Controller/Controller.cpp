@@ -3,6 +3,7 @@
 #include "../GameObjects/Player.h"
 #include "../Controller/ANNView.h"
 #include "../Game/Game.h"
+#include "../Game/Constants.h"
 
 Controller::Controller()
 {
