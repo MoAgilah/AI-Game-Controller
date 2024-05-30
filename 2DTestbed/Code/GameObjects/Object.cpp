@@ -3,8 +3,8 @@
 #include "../Game/Camera.h"
 #include "../Game/Constants.h"
 
-Object::Object(std::string filepath, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd, const sf::Vector2f& initPos)
-	:GameObject(filepath, rows, cols, bTyp, dir, symmetrical, initAnim, animSpd)
+Object::Object(TexID id, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd, const sf::Vector2f& initPos)
+	:GameObject(id, rows, cols, bTyp, dir, symmetrical, initAnim, animSpd)
 {
 	m_spawnData.m_initialPos = initPos;
 	SetPosition(m_spawnData.m_initialPos);
@@ -28,7 +28,7 @@ void Object::Update(float deltaTime)
 {
 	if (m_active)
 	{
-		if (isAnimating && this->GetBBox()->GetID() == SPBOX)
+		if (isAnimating && this->GetBBox()->GetID() == (int)TexID::Box)
 		{
 			if (m_curSpr->PlayedNumTimes(2))
 			{

@@ -4,7 +4,7 @@
 
 
 Koopa::Koopa(int rows, int cols, bool dir, bool symmetrical, int initAnim, float animSpd, const sf::Vector2f& initPos)
-	:Enemy("koopa.png", rows, cols, KOOPA, dir, symmetrical, initAnim, animSpd)
+	:Enemy(TexID::Koopa, rows, cols, (int)TexID::KoopaBB, dir, symmetrical, initAnim, animSpd)
 {
 	std::vector<int> frames{ 1, 2, 1};
 	m_curSpr->SetFrames(frames);

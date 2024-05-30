@@ -22,6 +22,7 @@ public:
 	Player* GetPlayer() { return m_player.get(); }
 	World* GetLevel() { return m_world.get(); }
 	Logger* GetLogger() { return m_logger.get(); }
+	TextureManager* GetTexturMgr() { return m_texureManager.get(); }
 
 	void ChangePlayer(Player* ply);
 

@@ -7,7 +7,7 @@
 
 World::World()
 {
-	m_backgroundSprite.Init("background.png");
+	m_backgroundSprite.Init(TexID::Background);
 	m_backgroundSprite.SetScale(sf::Vector2f(sX, sY));
 	m_backgroundSprite.SetOrigin(sf::Vector2f(0, 0));
 	m_backgroundSprite.SetPosition(sf::Vector2f(0, -480));
@@ -48,11 +48,11 @@ void World::AddGUI()
 {
 	m_font.loadFromFile("Resources/Fonts/arial.ttf");
 
-	std::vector<std::string> filenames{ "name.png", "time.png" };
+	std::vector<TexID> ids{ TexID::Name, TexID::Time };
 
 	for (int i = 0; i < (int)GUI::MAX; i++)
 	{
-		m_sprites[i].Init(filenames[i]);
+		m_sprites[i].Init(ids[i]);
 		m_text[i].setFont(m_font);
 		m_text[i].setCharacterSize(15);
 		m_text[i].setOutlineColor(sf::Color::Black);

@@ -13,7 +13,7 @@ class Camera;
 class Player : public GameObject
 {
 public:
-	Player(std::string filepath, int rows, int cols, bool symmetrical = true, int initAnim = 0, float animSpd = 1);
+	Player(int rows, int cols, bool symmetrical = true, int initAnim = 0, float animSpd = 1);
 	~Player() final;
 
 	void Update(float deltaTime) final;

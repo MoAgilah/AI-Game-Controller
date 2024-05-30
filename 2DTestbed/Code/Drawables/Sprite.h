@@ -2,6 +2,7 @@
 #define AnimatedSpriteH
 
 #include <SFML/Graphics.hpp>
+#include "../Game/TextureManager.h"
 #include <string>
 
 #include <vector>
@@ -11,10 +12,10 @@ class Sprite
 {
 public:
 	Sprite();
-	explicit Sprite(std::string_view filePath);
+	explicit Sprite(TexID id);
 	virtual ~Sprite() = default;
 
-	void Init(std::string_view filePath);
+	void Init(TexID id);
 
 	void Render(sf::RenderWindow& window) const { window.draw(m_sprite); }
 
@@ -48,7 +49,7 @@ struct Range
 class AnimatedSprite : public Sprite
 {
 public:
-	AnimatedSprite(std::string_view filePath, int rows, int columns, float framesPerSec, bool symmetrical, int m_initialAnim, float animationSpeed);
+	AnimatedSprite(TexID id, int rows, int columns, float framesPerSec, bool symmetrical, int m_initialAnim, float animationSpeed);
 	~AnimatedSprite() final = default;
 
 	void Update(float dt, bool direction = true);

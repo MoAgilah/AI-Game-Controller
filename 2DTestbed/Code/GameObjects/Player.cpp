@@ -8,8 +8,8 @@
 
 bool Player::s_playerInserted = false;
 
-Player::Player(std::string filepath, int rows, int cols, bool symmetrical, int initAnim, float animSpd)
-	: GameObject(filepath, rows, cols, PLAYER, true, symmetrical, initAnim, animSpd)
+Player::Player(int rows, int cols, bool symmetrical, int initAnim, float animSpd)
+	: GameObject(TexID::Mario, rows, cols, (int)TexID::MarioBB, true, symmetrical, initAnim, animSpd)
 {
 	m_type = PLAYER;
 	m_spawnData.m_initialPos = sf::Vector2f(75, 454);
@@ -20,16 +20,15 @@ Player::Player(std::string filepath, int rows, int cols, bool symmetrical, int i
 	auto tmp = Collisions::Get()->GetTile(151, 5);
 
 	SetPosition(m_spawnData.m_initialPos);
-	m_CrouchBbox = new BoundingBox("smlCrouch", m_type);
+	m_CrouchBbox = new BoundingBox(TexID::MarioSmlBB);
 
 	//super mario
-	filepath = "s" + filepath;
 	frames = std::vector<int>{ 1, 1, 1, 3, 1, 2, 1, 2 };
-	m_SupSpr = new AnimatedSprite(filepath, rows, cols + 1, FPS, symmetrical, initAnim, animSpd);
+	m_SupSpr = new AnimatedSprite(TexID::Super, rows, cols + 1, FPS, symmetrical, initAnim, animSpd);
 	m_SupSpr->SetFrames(frames);
 
-	m_SupBbox = new BoundingBox(filepath.substr(0, filepath.find(".")), PLAYER);
-	m_SCrouchBbox = new BoundingBox("supCrouch", PLAYER);
+	m_SupBbox = new BoundingBox(TexID::SuperBB);
+	m_SCrouchBbox = new BoundingBox(TexID::SuperSmlBB);
 
 	m_heightDiff = m_SupSpr->GetOrigin().y * sY - m_spr->GetOrigin().y * sY;
 

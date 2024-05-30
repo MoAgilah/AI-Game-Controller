@@ -5,7 +5,7 @@
 #include "../Game/Constants.h"
 
 Rex::Rex(bool dir, int initAnim, float animSpd, const sf::Vector2f& initPos)
-	:Enemy("rex.png", 3, 2, REX, dir, false, initAnim, animSpd)
+	:Enemy(TexID::Rex, 3, 2, (int)TexID::RexBB, dir, false, initAnim, animSpd)
 {
 	m_spawnData.m_initialPos = initPos;
 	SetPosition(m_spawnData.m_initialPos);
@@ -16,7 +16,7 @@ Rex::Rex(bool dir, int initAnim, float animSpd, const sf::Vector2f& initPos)
 	m_type = REX;
 	m_numLives = m_maxLives = 2;
 
-	m_SmlBox = new BoundingBox("rexSml", m_type);
+	m_SmlBox = new BoundingBox(TexID::RexSmlBB);
 }
 
 void Rex::Die()

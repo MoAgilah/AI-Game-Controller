@@ -18,7 +18,7 @@ Controller::Controller()
 		//let's create the players
 		for (int i = 0; i< iNumPlayers; ++i)
 		{
-			m_vecMarios.push_back(new Player("mario.png", 8, 2, false, 0, .5f));
+			m_vecMarios.push_back(new Player(8, 2, false, 0, .5f));
 		}
 
 		m_pPop = new Cga(CParams::iNumPlayers,

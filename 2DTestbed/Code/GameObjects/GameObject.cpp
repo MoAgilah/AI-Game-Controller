@@ -5,16 +5,16 @@
 
 int GameObject::s_objectNum = 0;
 
-GameObject::GameObject(std::string_view filepath, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd)
-	: m_type(bTyp),  m_direction(dir)
+GameObject::GameObject(TexID id, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd)
+	: m_type((int)id),  m_direction(dir)
 {
 	m_spawnData.m_initialDir = m_direction;
 	m_spawnData.m_initialAnim = initAnim;
 
-	m_spr = std::make_unique<AnimatedSprite>(filepath, rows, cols, FPS, symmetrical, initAnim, animSpd);
+	m_spr = std::make_unique<AnimatedSprite>(id, rows, cols, FPS, symmetrical, initAnim, animSpd);
 	m_curSpr = m_spr.get();
 
-	m_bbox = std::make_unique<BoundingBox>(filepath.substr(0, filepath.find(".")), bTyp);
+	m_bbox = std::make_unique<BoundingBox>((TexID)bTyp);
 	m_curBBox = m_bbox.get();
 
 	Collisions::Get()->AddCollidable(this);

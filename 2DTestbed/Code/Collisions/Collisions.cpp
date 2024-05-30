@@ -687,7 +687,7 @@ void Collisions::QBoxHit(Player * ply, Object * obj)
 		{
 			//ply->UpdateFitness(100);
 			//spawn a mushroom
-			Object* spawn = new Object("boshroom.png", 1, 1, SHROOM, true, true, 0, 1.f);
+			Object* spawn = new Object(TexID::Shroom, 1, 1, (int)TexID::ShroomBB, true, true, 0, 1.f);
 			//at this position
 			spawn->SetPosition(obj->GetPosition() - sf::Vector2f(0, (obj->GetOrigin().y * sY) * 2.f - 20.f));
 			spawn->SetOnGround(true);

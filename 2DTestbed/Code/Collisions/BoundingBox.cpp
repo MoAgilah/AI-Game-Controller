@@ -8,8 +8,8 @@
 
 int BoundingBox::numOn = 0;
 
-BoundingBox::BoundingBox(std::string_view filepath, int id)
-	:m_id(id), m_bbox(std::format("{}{}",filepath, "Box.png"))
+BoundingBox::BoundingBox(TexID id)
+	:m_id((int)id), m_bbox(id)
 {
 	m_bbox.SetScale(sf::Vector2f(sX, sY));
 	m_bbox.SetOrigin(sf::Vector2f((float)m_bbox.GetTextureSize().x * 0.5f, (float)m_bbox.GetTextureSize().y * 0.5f));

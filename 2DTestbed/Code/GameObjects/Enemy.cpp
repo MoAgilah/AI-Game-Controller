@@ -4,8 +4,8 @@
 #include "../Game/Camera.h"
 #include "../GameObjects/Rex.h"
 
-Enemy::Enemy(std::string_view filepath, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd)
-	:GameObject(filepath, rows, cols, bTyp, dir, symmetrical, initAnim, animSpd)
+Enemy::Enemy(TexID id, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd)
+	:GameObject(id, rows, cols, bTyp, dir, symmetrical, initAnim, animSpd)
 {}
 
 Enemy::~Enemy()

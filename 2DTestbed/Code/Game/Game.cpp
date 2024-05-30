@@ -12,17 +12,17 @@ std::unique_ptr<Game> Game::m_instance = nullptr;
 
 Game::Game()
 {
+	m_instance.reset(this);
 	m_texureManager = std::make_unique<TextureManager>();
 	m_camera = std::make_unique<Camera>();
 
 	if (Automated)
 		m_player.reset(CtrlMgr::GetCtrlMgr()->GetController()->GetCurrentPlayer());
 	else
-		m_player = std::make_unique<Player>("mario.png", 8, 2, false, 0, .5f);
+		m_player = std::make_unique<Player>(8, 2, false, 0, .5f);
 
 	m_world = std::make_unique<World>();
 	m_logger = std::make_unique<Logger>();
-	m_instance.reset(this);
 }
 
 void Game::ChangePlayer(Player * ply)

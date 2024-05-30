@@ -29,7 +29,7 @@ class BoundingBox;
 class GameObject
 {
 public:
-	GameObject(std::string_view filepath, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd);
+	GameObject(TexID id, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd);
 	virtual ~GameObject();
 
 	virtual void Update(float deltaTime) = 0;

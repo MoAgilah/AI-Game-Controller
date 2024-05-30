@@ -4,7 +4,7 @@
 
 
 PPlant::PPlant(const sf::Vector2f& initPos)
-	:Enemy("pplant.png", 2, 2, PPLANT, false, false)
+	:Enemy(TexID::PPlant, 2, 2, (int)TexID::PPlantBB, false, false)
 {
 	m_spawnData.m_initialPos = initPos;
 	SetPosition(m_spawnData.m_initialPos);

@@ -10,7 +10,7 @@ class Tile;
 class BoundingBox
 {
 public:
-	BoundingBox(std::string_view filepath, int id);
+	BoundingBox(TexID id);
 	~BoundingBox() = default;
 
 	void Update(sf::Vector2f pos);

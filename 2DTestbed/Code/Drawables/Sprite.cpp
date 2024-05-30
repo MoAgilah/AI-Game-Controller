@@ -2,28 +2,32 @@
 #include <format>
 #include <iostream>
 #include "../Game/Constants.h"
+#include "../Game/Game.h"
 
 Sprite::Sprite()
 {
 }
 
-Sprite::Sprite(std::string_view filePath)
+Sprite::Sprite(TexID id)
 {
-	Init(filePath);
+	Init(id);
 }
 
-void Sprite::Init(std::string_view filePath)
+void Sprite::Init(TexID id)
 {
-	if (!m_texture.loadFromFile(std::format("Resources/Sprites/{}", filePath)))
-		std::cout << std::format("failed to load Resources/Sprites/{}", filePath) << std::endl;
+	try
+	{
+		m_sprite.setTexture(Game::GetGameMgr()->GetTexturMgr()->GetTexture(id));
+	}
+	catch (const std::exception& e)
+	{
+	}
 
-	m_texture.setSmooth(true);
-	m_sprite.setTexture(m_texture);
 	SetOrigin(sf::Vector2f((float)m_texture.getSize().x * 0.5f, (float)m_texture.getSize().y * 0.5f));
 }
 
-AnimatedSprite::AnimatedSprite(std::string_view filePath, int rows, int columns, float framesPerSec, bool symmetrical, int m_initialAnim, float animSpeed)
-	: Sprite(filePath), m_animSpeed(animSpeed), m_framesPerSecond(framesPerSec / 1000.0f), m_symmetrical(symmetrical)
+AnimatedSprite::AnimatedSprite(TexID id, int rows, int columns, float framesPerSec, bool symmetrical, int m_initialAnim, float animSpeed)
+	: Sprite(id), m_animSpeed(animSpeed), m_framesPerSecond(framesPerSec / 1000.0f), m_symmetrical(symmetrical)
 {
 	ChangeAnim(m_initialAnim);
 

@@ -7,7 +7,7 @@ class Camera;
 class Enemy : public GameObject
 {
 public:
-	Enemy(std::string_view filepath, int rows, int cols, int bTyp, bool dir = true, bool symmetrical = true, int initAnim = 0, float animSpd = 1);
+	Enemy(TexID id, int rows, int cols, int bTyp, bool dir = true, bool symmetrical = true, int initAnim = 0, float animSpd = 1);
 	~Enemy();
 	virtual void Update(float deltaTime);
 	virtual void Render(sf::RenderWindow& window);

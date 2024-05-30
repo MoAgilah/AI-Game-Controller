@@ -3,7 +3,7 @@
 #include "../Game/Constants.h"
 
 Chuck::Chuck(bool dir, int initAnim, float animSpd, const sf::Vector2f& initPos = sf::Vector2f())
-	:Enemy("chuck.png", 6, 2, CHUCK, dir, false, initAnim, animSpd)
+	:Enemy(TexID::Chuck, 6, 2, (int)TexID::ChuckBB, dir, false, initAnim, animSpd)
 {
 	std::vector<int> cframes{ 1, 2, 1, 1, 1, 1 };
 	m_curSpr->SetFrames(cframes);
