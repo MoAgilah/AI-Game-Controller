@@ -31,9 +31,6 @@ void Rex::Change()
 	m_curSpr->ChangeAnim(1);
 
 	m_curBBox = m_SmlBox;
-
-	//change bbox
-	//smaller one
 }
 
 void Rex::Update(float deltaTime)

@@ -311,7 +311,7 @@ bool Player::GetGoalHit()
 
 void Player::SetAirTime(float val)
 {
-	m_cantSpinJump = true;
+	m_justHitEnemy = true;
 	m_noGravTime = val;
 }
 

@@ -84,7 +84,7 @@ int Enemy::DecrementLife()
 		}
 		else
 		{
-			if (m_curBBox->GetID() == REX)
+			if (m_curBBox->GetID() == (int)TexID::RexBB)
 			{
 
 				((Rex*)this)->Change();
