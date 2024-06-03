@@ -66,8 +66,8 @@ public:
 
 	int GetObjectNum() const { return m_objectID; }
 
-	bool GetActive() const { return m_active; }
-	void SetActive(bool act) { m_active = act; }
+	virtual bool GetActive() const { return m_visible; }
+	void SetVisible(bool act) { m_visible = act; }
 
 	TexID GetID() { return (TexID)m_type; }
 protected:
@@ -77,7 +77,7 @@ protected:
 
 	SpawnData m_spawnData;
 
-	bool m_active = false;
+	bool m_visible = false;
 
 	bool m_direction = true;
 	bool m_onGround = false;

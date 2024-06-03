@@ -32,7 +32,8 @@ public:
 
 	bool GetGoalHit();
 	void GoalHit();
-	bool GetIsAlive();
+	bool GetIsAlive() const;
+	virtual bool GetActive() const { return m_visible && GetIsAlive(); }
 	void JustBeenHit(bool hit);
 	bool GetIfInvulnerable();
 	void Kill();

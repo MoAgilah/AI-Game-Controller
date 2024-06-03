@@ -14,7 +14,7 @@ Enemy::~Enemy()
 
 void Enemy::Update(float deltaTime)
 {
-	if (m_active)
+	if (GetActive())
 	{
 		if (m_timeLeftActive > 0)
 		{
@@ -23,7 +23,7 @@ void Enemy::Update(float deltaTime)
 
 		if (m_timeLeftActive < 0)
 		{
-			m_active = false;
+			SetVisible(false);
 		}
 
 		if (m_resetAllowed)
@@ -102,7 +102,7 @@ void Enemy::ResetLives()
 	m_numLives = m_maxLives;
 }
 
-bool Enemy::GetIsAlive()
+bool Enemy::GetIsAlive() const
 {
 	return m_alive;
 }

@@ -36,7 +36,7 @@ void GameObject::Reset()
 	SetPosition(m_spawnData.m_initialPos);
 	SetPrevPosition(m_spawnData.m_initialPos);
 
-	m_active = false;
+	m_visible = false;
 	m_direction = m_spawnData.m_initialDir;
 	m_onGround = false;
 	m_airbourne = false;

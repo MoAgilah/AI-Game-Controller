@@ -38,7 +38,7 @@ void Rex::Change()
 
 void Rex::Update(float deltaTime)
 {
-	if (m_active)
+	if (GetActive())
 	{
 		if (m_timeLeftActive > 0)
 		{
@@ -47,7 +47,7 @@ void Rex::Update(float deltaTime)
 
 		if (m_timeLeftActive < 0)
 		{
-			m_active = false;
+			m_alive = false;
 		}
 
 		if (m_resetAllowed)

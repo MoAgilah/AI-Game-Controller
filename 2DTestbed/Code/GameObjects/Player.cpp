@@ -82,7 +82,7 @@ Player::~Player()
 
 void Player::Update(float deltaTime)
 {
-	if (!m_active)
+	if (!GetActive())
 		return;
 
 	//adjust position when changing from regular -> super and vice versa
@@ -340,7 +340,7 @@ void Player::GoalHit()
 	m_goalHit = true;
 }
 
-bool Player::GetIsAlive()
+bool Player::GetIsAlive() const
 {
 	return m_alive;
 }

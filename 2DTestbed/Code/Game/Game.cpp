@@ -55,14 +55,14 @@ void Game::Render(sf::RenderWindow & window)
 
 void Game::CheckInView()
 {
-	m_player->SetActive(m_camera->IsInView(m_player->GetBBox()->GetSprite()));
+	m_player->SetVisible(m_camera->IsInView(m_player->GetBBox()->GetSprite()));
 
 	for (auto& tile : Collisions::Get()->GetGrid())
-		tile->SetActive(m_camera->IsinView(tile->GetRect()));
+		tile->SetVisible(m_camera->IsinView(tile->GetRect()));
 
 	for (auto& enemy : m_world->GetEnemies())
-		enemy->SetActive(m_camera->IsInView(enemy->GetSprite()));
+		enemy->SetVisible(m_camera->IsInView(enemy->GetSprite()));
 
 	for (auto& object : m_world->GetObjects())
-		object->SetActive(m_camera->IsInView(object->GetSprite()));
+		object->SetVisible(m_camera->IsInView(object->GetSprite()));
 }

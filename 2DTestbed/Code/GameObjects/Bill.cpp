@@ -78,8 +78,16 @@ void Bill::Animate(float deltaTime)
 		Collisions::Get()->ProcessCollisions(this);
 	}
 
-	colbody.front.setPosition(GetPosition());
-	colbody.back.setPosition(GetPosition() + sf::Vector2f(m_curBBox->GetSprite()->getOrigin().x*sX -17, 7));
+	if (m_direction)
+	{
+		colbody.front.setPosition(GetPosition());
+		colbody.back.setPosition(GetPosition() - sf::Vector2f(m_curBBox->GetSprite()->getOrigin().x * sX - 17, -7));
+	}
+	else
+	{
+		colbody.front.setPosition(GetPosition());
+		colbody.back.setPosition(GetPosition() + sf::Vector2f(m_curBBox->GetSprite()->getOrigin().x * sX - 17, 7));
+	}
 
 	//check for leftmost and rightmost boundary
 	if (m_curSpr->GetPosition().x < m_curSpr->GetOrigin().x || m_curSpr->GetPosition().x > 11776 - m_curSpr->GetOrigin().x)

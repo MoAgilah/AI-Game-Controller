@@ -26,7 +26,7 @@ void Object::Initialise(bool hasAnim, float moveSpd, float jmpSpeed)
 
 void Object::Update(float deltaTime)
 {
-	if (m_active)
+	if (GetActive())
 	{
 		if (isAnimating && this->GetBBox()->GetID() == (int)TexID::Box)
 		{
@@ -150,5 +150,5 @@ void Object::Reset()
 	isAnimating = false;
 	m_goingUp = false;
 	m_curSpr->ChangeAnim(m_spawnData.m_initialAnim);
-	m_active = true;
+	m_visible = false;
 }

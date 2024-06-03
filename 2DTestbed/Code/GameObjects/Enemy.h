@@ -16,8 +16,8 @@ public:
 	int DecrementLife();
 	void ResetLives();
 	virtual void Die() = 0;
-	bool GetIsAlive();
-
+	bool GetIsAlive() const;
+	virtual bool GetActive() const { return m_visible && GetIsAlive(); }
 	int GetLives();
 
 protected:

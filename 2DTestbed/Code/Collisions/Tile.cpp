@@ -189,12 +189,12 @@ std::vector<sf::RectangleShape> Tile::GetSlopeBBox()
 
 bool Tile::GetActive()
 {
-	return m_active;
+	return m_visible;
 }
 
-void Tile::SetActive(bool vis)
+void Tile::SetVisible(bool vis)
 {
-	m_active = vis;
+	m_visible = vis;
 }
 
 int Tile::GetRowNum()

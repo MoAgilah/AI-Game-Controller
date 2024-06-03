@@ -358,13 +358,13 @@ void Collisions::PlayerToObject(Player * ply, Object * obj)
 	{
 	case TexID::Shroom://super mushroom
 		ply->SetIsSuper(true);
-		obj->SetActive(false);
+		obj->SetVisible(false);
 		//ply->UpdateFitness(200);
 		break;
 	case TexID::YCoin://yoshi coin
 		ply->IncreaseCoins(5);
 		//ply->UpdateFitness(100);
-		obj->SetActive(false);
+		obj->SetVisible(false);
 		break;
 	case TexID::QBox://question mark box
 		QBoxHit(ply, obj);
@@ -379,7 +379,7 @@ void Collisions::PlayerToObject(Player * ply, Object * obj)
 		ply->SetSpawnLoc(obj->GetPosition());
 		//ply->UpdateFitness(200);
 		ply->SetIsSuper(true);
-		obj->SetActive(false);
+		obj->SetVisible(false);
 		break;
 	case TexID::Goal://end goal
 		//ply->UpdateFitness(200);

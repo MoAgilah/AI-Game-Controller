@@ -107,9 +107,9 @@ void World::AddEnemies()
 	Tile tmp = Collisions::Get()->GetTile(32, 5);
 	m_enemies.push_back(std::make_unique<Bill>(false, sf::Vector2f(tmp.GetPosition().x + tmp.GetOrigin().x * sX - 10.f, tmp.GetPosition().y - tmp.GetOrigin().y * sY + 3.f)));
 
-	/*tmp = Collisions::Get()->GetTile(33, 3);
+	tmp = Collisions::Get()->GetTile(33, 3);
 	m_enemies.push_back(std::make_unique<Rex>(false, 0, .5f, sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY)));
-
+	/*
 	tmp = Collisions::Get()->GetTile(47, 3);
 	m_enemies.push_back(std::make_unique<Rex>(false, 0, .5f, sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY)));
 
