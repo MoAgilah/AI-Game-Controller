@@ -295,10 +295,10 @@ void Collisions::PlayerToEnemy(GameObject * ply, GameObject * enmy)
 		if (etmp->GetIsAlive())
 		{
 			//if player is not above enemy and enemy is piranha plant
-			if (pBot > eTop || etmp->GetBBox()->GetID() == PPLANT)
+			if (pBot > eTop || etmp->GetID() == TexID::PPlant)
 			{
 				//if not vulnerable
-				if (!ptmp->GetIfInvulnerable())
+					if (!ptmp->GetIfInvulnerable())
 				{
 					if (ptmp->GetIsAlive())
 					{

@@ -71,6 +71,7 @@ void Enemy::Update(float deltaTime)
 void Enemy::Render(sf::RenderWindow & window)
 {
 	window.draw(*GetSprite());
+	window.draw(*GetBBox()->GetSprite());
 }
 
 int Enemy::DecrementLife()

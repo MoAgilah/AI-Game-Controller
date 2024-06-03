@@ -17,7 +17,6 @@ Player::Player(int rows, int cols, bool symmetrical, int initAnim, float animSpd
 	std::vector<int> frames{ 1, 1, 1, 2, 1, 2, 1, 2 };
 	//regular mario
 	m_curSpr->SetFrames(frames);
-	auto tmp = Collisions::Get()->GetTile(151, 5);
 
 	SetPosition(m_spawnData.m_initialPos);
 	m_CrouchBbox = new BoundingBox(TexID::MarioSmlBB);

@@ -109,7 +109,7 @@ void World::AddEnemies()
 
 	tmp = Collisions::Get()->GetTile(33, 3);
 	m_enemies.push_back(std::make_unique<Rex>(false, 0, .5f, sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY)));
-	/*
+
 	tmp = Collisions::Get()->GetTile(47, 3);
 	m_enemies.push_back(std::make_unique<Rex>(false, 0, .5f, sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY)));
 
@@ -186,7 +186,7 @@ void World::AddEnemies()
 	m_enemies.push_back(std::make_unique<Rex>(false, 0, .5f, sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY)));
 
 	tmp = Collisions::Get()->GetTile(298, 3);
-	m_enemies.push_back(std::make_unique<Chuck>(false, 3, 0.5f, sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY + 6.f)));*/
+	m_enemies.push_back(std::make_unique<Chuck>(false, 3, 0.5f, sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY + 6.f)));
 }
 
 void World::AddObjects()
@@ -245,23 +245,17 @@ void World::AddObjects()
 
 void World::AddForeGroundSprites()
 {
-	/*auto& spr = m_foregroundSprites[0].second;
-	spr.Init(TexID::Pipe1);
-	spr.SetScale(sf::Vector2f(sX, sY));
-	spr.SetOrigin(sf::Vector2f((float)spr.GetTextureSize().x / 2.f, (float)spr.GetTextureSize().y / 2.f));
-	spr.SetPosition(m_enemies[m_foregroundSprites[0].first]->GetPosition() + sf::Vector2f(0.f, 40.f));
+	m_foregroundSprites[0].second.Init(TexID::Pipe1);
+	m_foregroundSprites[0].second.SetScale(sf::Vector2f(sX, sY));
+	m_foregroundSprites[0].second.SetPosition(m_enemies[m_foregroundSprites[0].first]->GetPosition() + sf::Vector2f(-37.f, 0.f));
 
-	spr = m_foregroundSprites[1].second;
-	spr.Init(TexID::Pipe2);
-	spr.SetScale(sf::Vector2f(sX, sY));
-	spr.SetOrigin(sf::Vector2f((float)spr.GetTextureSize().x / 2.f, (float)spr.GetTextureSize().y / 2.f));
-	spr.SetPosition(m_enemies[m_foregroundSprites[1].first]->GetPosition() + sf::Vector2f(0.f, 40.f));
+	m_foregroundSprites[1].second.Init(TexID::Pipe2);
+	m_foregroundSprites[1].second.SetScale(sf::Vector2f(sX, sY));
+	m_foregroundSprites[1].second.SetPosition(m_enemies[m_foregroundSprites[1].first]->GetPosition() + sf::Vector2f(-37.f, 0.f));
 
-	spr = m_foregroundSprites[2].second;
-	spr.Init(TexID::Pipe3);
-	spr.SetScale(sf::Vector2f(sX, sY));
-	spr.SetOrigin(sf::Vector2f((float)spr.GetTextureSize().x / 2.f, (float)spr.GetTextureSize().y / 2.f));
-	spr.SetPosition(m_enemies[m_foregroundSprites[2].first]->GetPosition() + sf::Vector2f(0.f, 40.f));*/
+	m_foregroundSprites[2].second.Init(TexID::Pipe3);
+	m_foregroundSprites[2].second.SetScale(sf::Vector2f(sX, sY));
+	m_foregroundSprites[2].second.SetPosition(m_enemies[m_foregroundSprites[2].first]->GetPosition() + sf::Vector2f(-37.f, 0.f));
 }
 
 void World::AddGUI()
