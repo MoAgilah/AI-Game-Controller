@@ -38,12 +38,10 @@ void Bill::Render(sf::RenderWindow & window)
 {
 	window.draw(*GetSprite());
 
-#ifdef DEBUG
-	#ifdef DRender
-		window.draw(colbody.front);
-		window.draw(colbody.back);
-	#endif // DRender
-#endif // DEBUG
+
+	window.draw(colbody.front);
+	window.draw(colbody.back);
+
 }
 
 Body Bill::GetBody()

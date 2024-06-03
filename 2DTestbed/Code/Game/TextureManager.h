@@ -11,7 +11,11 @@ enum class TexID
 	Mario, MarioBB, MarioSmlBB, Super, SuperBB, SuperSmlBB,
 	Koopa, KoopaBB, Bill, BillBB, Rex, RexBB, RexSmlBB, PPlant, PPlantBB, Chuck, ChuckBB,
 	YCoin, YcoinBB, QBox, SBox, Box, BoxBB, Shroom, ShroomBB, Pipe1, Pipe2, Pipe3, ChkPnt, ChkPntBB, Goal, GoalBB,
-	Name, Time, Max
+	Name, Time, Max,
+
+	PlyBgn = Mario, PlyEnd = SuperSmlBB,
+	EnmyBgn = Koopa, EnmyEnd = ChuckBB,
+	ObjBgn = YCoin, ObjEnd = GoalBB
 };
 
 class TextureManager

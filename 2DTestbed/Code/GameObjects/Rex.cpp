@@ -13,7 +13,6 @@ Rex::Rex(bool dir, int initAnim, float animSpd, const sf::Vector2f& initPos)
 	std::vector<int> frames{ 2, 2, 1 };
 	m_curSpr->SetFrames(frames);
 
-	m_type = REX;
 	m_numLives = m_maxLives = 2;
 
 	m_SmlBox = new BoundingBox(TexID::RexSmlBB);
@@ -67,25 +66,26 @@ void Rex::Update(float deltaTime)
 				if (m_numLives == m_maxLives)
 				{
 					//+
-					m_curBBox->Update(sf::Vector2f(m_curSpr->GetPosition().x - 2.f, m_curSpr->GetPosition().y));
+					m_curBBox->Update(sf::Vector2f(m_spr->GetPosition().x - 2.f, m_spr->GetPosition().y));
 				}
 				else
 				{
 					//+
-					m_curBBox->Update(sf::Vector2f(m_curSpr->GetPosition().x - 4.f, m_curSpr->GetPosition().y + 18.5f));
+					m_curBBox->Update(sf::Vector2f(m_spr->GetPosition().x - 4.f, m_spr->GetPosition().y + 18.5f));
 				}
+
 			}
 			else
 			{
 				if (m_numLives == m_maxLives)
 				{
 					//+
-					m_curBBox->Update(sf::Vector2f(m_curSpr->GetPosition().x + 2.f, m_curSpr->GetPosition().y));
+					m_curBBox->Update(sf::Vector2f(m_spr->GetPosition().x + 2.f, m_spr->GetPosition().y));
 				}
 				else
 				{
 					//-
-					m_curBBox->Update(sf::Vector2f(m_curSpr->GetPosition().x + 4.f, m_curSpr->GetPosition().y + 18.5f));
+					m_curBBox->Update(sf::Vector2f(m_spr->GetPosition().x + 4.f, m_spr->GetPosition().y + 18.5f));
 				}
 			}
 		}

@@ -37,7 +37,7 @@ void Object::Update(float deltaTime)
 			}
 		}
 
-		//Animate(deltaTime);
+		Animate(deltaTime);
 
 		m_curSpr->Update(deltaTime, m_direction);
 

@@ -69,6 +69,7 @@ public:
 	bool GetActive() const { return m_active; }
 	void SetActive(bool act) { m_active = act; }
 
+	TexID GetID() { return (TexID)m_type; }
 protected:
 	int m_type = -1;
 	int m_objectID;

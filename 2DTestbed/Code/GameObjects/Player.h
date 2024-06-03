@@ -83,7 +83,7 @@ private:
 	float m_noGravTime = 0;
 	float m_InvulTime = 0;
 	float m_airtime = 0;
-	const float c_maxAirTime = .9f;
+	const float c_maxAirTime = 1.f;
 	const float m_moveSpeed = 3.0f;
 	const float m_jumpSpeed = 3.0f;
 };

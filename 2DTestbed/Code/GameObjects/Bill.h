@@ -17,7 +17,7 @@ public:
 	Bill(bool dir = true, const sf::Vector2f& initPos = sf::Vector2f());
 	void Die();
 	~Bill();
-	void Render(sf::RenderWindow & window);
+	void Render(sf::RenderWindow & window) final;
 	Body GetBody();
 private:
 	Body colbody;

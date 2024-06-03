@@ -31,13 +31,22 @@ void Enemy::Update(float deltaTime)
 			m_resetAllowed = false;
 		}
 
-		if (m_alive || m_curBBox->GetID() == BILL)
+		if (m_alive || m_curBBox->GetID() == (int)TexID::BillBB)
 		{
 			Animate(deltaTime);
 		}
 
 		m_curSpr->Update(deltaTime, m_direction);
-		m_curSpr->SetPosition(m_curSpr->GetPosition());
+		if (m_direction)
+		{
+			//+
+			m_curBBox->Update(sf::Vector2f(m_spr->GetPosition().x - 2, m_spr->GetPosition().y));
+		}
+		else
+		{
+			//-
+			m_curBBox->Update(sf::Vector2f(m_spr->GetPosition().x + 2, m_spr->GetPosition().y));
+		}
 	}
 	//if off screen
 	else

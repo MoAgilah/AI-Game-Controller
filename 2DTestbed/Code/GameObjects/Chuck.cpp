@@ -8,7 +8,7 @@ Chuck::Chuck(bool dir, int initAnim, float animSpd, const sf::Vector2f& initPos 
 	std::vector<int> cframes{ 1, 2, 1, 1, 1, 1 };
 	m_curSpr->SetFrames(cframes);
 
-	m_spawnData.m_initialPos = sf::Vector2f(400, 519);
+	m_spawnData.m_initialPos = initPos;
 
 	m_curSpr->SetPosition(m_spawnData.m_initialPos);
 	m_numLives = m_maxLives = 2;

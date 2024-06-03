@@ -106,7 +106,7 @@ void Collisions::ProcessCollisions(GameObject* gobj)
 	{
 		Tile* tile = m_grid[t];
 
-		if (tile->GetType() == EMPTY || gobj->GetBBox()->GetID() == CHKPOINT || gobj->GetBBox()->GetID() == GOAL)
+		if (tile->GetType() == EMPTY || gobj->GetID() == TexID::ChkPnt || gobj->GetID() == TexID::Goal)
 		{
 			continue;
 		}
@@ -354,34 +354,34 @@ void Collisions::PlayerToEnemy(GameObject * ply, GameObject * enmy)
 void Collisions::PlayerToObject(Player * ply, Object * obj)
 {
 	sf::Vector2f pos;
-	switch (obj->GetBBox()->GetID())
+	switch (obj->GetID())
 	{
-	case SHROOM://super mushroom
+	case TexID::Shroom://super mushroom
 		ply->SetIsSuper(true);
 		obj->SetActive(false);
 		//ply->UpdateFitness(200);
 		break;
-	case YCOIN://yoshi coin
+	case TexID::YCoin://yoshi coin
 		ply->IncreaseCoins(5);
 		//ply->UpdateFitness(100);
 		obj->SetActive(false);
 		break;
-	case QBOX://question mark box
+	case TexID::QBox://question mark box
 		QBoxHit(ply, obj);
 		break;
-	case SMBOX://smashable box
+	case TexID::Box://smashable box
 		SmashBoxHit(ply, obj);
 		break;
-	case SPBOX://spin box
+	case TexID::SBox://spin box
 		SpinBoxHit(ply, obj);
 		break;
-	case CHKPOINT://check point
+	case TexID::ChkPnt://check point
 		ply->SetSpawnLoc(obj->GetPosition());
 		//ply->UpdateFitness(200);
 		ply->SetIsSuper(true);
 		obj->SetActive(false);
 		break;
-	case GOAL://end goal
+	case TexID::Goal://end goal
 		//ply->UpdateFitness(200);
 		ply->GoalHit();
 		break;
@@ -543,15 +543,15 @@ void Collisions::ObjectToTile(GameObject * obj, Tile * tile)
 void Collisions::ColObjectToTile(GameObject * c_obj, Tile * tile)
 {
 	int id = c_obj->GetBBox()->GetID();
-	if (id == PLAYER)
+	if (id >= (int)TexID::PlyBgn && id <= (int)TexID::PlyEnd)
 	{
 		PlayerToTile(c_obj, tile);
 	}
-	else if (id >= EnmyBgn && id <= EnmyEnd)
+	else if (id >= (int)TexID::EnmyBgn && id <= (int)TexID::EnmyEnd)
 	{
 		ObjectToTile(c_obj, tile);
 	}
-	else if (id >= ObjBgn)
+	else if (id >= (int)TexID::ObjBgn)
 	{
 		if (id == SHROOM)
 			ObjectToTile(c_obj, tile);
@@ -567,9 +567,9 @@ void Collisions::EnemyToEnemy(GameObject * enmy1, GameObject * enmy2)
 	switch (GetDirTravelling(enmy1))
 	{
 	case RDIR:
-		if (enmy1->GetBBox()->GetID() == REX)
+		if (enmy1->GetBBox()->GetID() == (int)TexID::RexBB)
 		{
-			if (enmy2->GetBBox()->GetID() == REX)//regular
+			if (enmy2->GetBBox()->GetID() == (int)TexID::RexBB)//regular
 			{
 				//resolve collision
 				enmy1->SetPosition(sf::Vector2f((enmy2->GetPosition().x - enmy2->GetOrigin().x * sX) - (enmy1->GetOrigin().x * sX) + 8, enmy1->GetPosition().y));
@@ -587,9 +587,9 @@ void Collisions::EnemyToEnemy(GameObject * enmy1, GameObject * enmy2)
 		}
 		break;
 	case LDIR:
-		if (enmy1->GetBBox()->GetID() == REX)
+		if (enmy1->GetBBox()->GetID() == (int)TexID::RexBB)
 		{
-			if (enmy2->GetBBox()->GetID() == REX)//regular
+			if (enmy2->GetBBox()->GetID() == (int)TexID::RexBB)//regular
 			{
 				//resolve collision
 				enmy1->SetPosition(sf::Vector2f((enmy2->GetPosition().x - enmy2->GetOrigin().x * sX) - (enmy1->GetOrigin().x * sX) - 8.f, enmy1->GetPosition().y));
@@ -617,27 +617,27 @@ void Collisions::ColObjectToColObject(GameObject * colObj1, GameObject * colObj2
 	int isPlayer = -1;
 
 	//if either is a player assign id num
-	if (col1Typ == PLAYER) isPlayer = 1;
-	else if(col2Typ == PLAYER) isPlayer = 2;
+	if (col1Typ >= (int)TexID::PlyBgn && col1Typ <= (int)TexID::PlyEnd) isPlayer = 1;
+	else if (col2Typ >= (int)TexID::PlyBgn && col2Typ <= (int)TexID::PlyEnd) isPlayer = 2;
 
 	if (isPlayer == 1)//if player is obj 1
 	{
-		if (col2Typ >= EnmyBgn && col2Typ <= EnmyEnd)
+		if (col2Typ >= (int)TexID::EnmyBgn && col2Typ <= (int)TexID::EnmyBgn)
 		{
 			PlayerToEnemy(colObj1, colObj2);
 		}
-		else if (col2Typ >= ObjBgn)
+		else if (col2Typ >= (int)TexID::ObjBgn)
 		{
 			PlayerToObject((Player*)colObj1, (Object*)colObj2);
 		}
 	}
 	else if (isPlayer == 2)//if player is obj 2
 	{
-		if (col1Typ >= EnmyBgn && col1Typ <= EnmyEnd)
+		if (col1Typ >= (int)TexID::EnmyBgn && col1Typ <= (int)TexID::EnmyEnd)
 		{
 			PlayerToEnemy(colObj2, colObj1);
 		}
-		else if (col1Typ >= ObjBgn)
+		else if (col1Typ >= (int)TexID::ObjBgn)
 		{
 			PlayerToObject((Player*)colObj2, (Object*)colObj1);
 		}
@@ -645,7 +645,7 @@ void Collisions::ColObjectToColObject(GameObject * colObj1, GameObject * colObj2
 	else // if neither are the player
 	{
 		//if both are enemies
-		if ((col1Typ >= EnmyBgn && col1Typ < BILL) && (col2Typ >= EnmyBgn && col2Typ < BILL))
+		if ((col1Typ >= (int)TexID::EnmyBgn && col1Typ <= (int)TexID::EnmyEnd) && (col2Typ >= (int)TexID::EnmyBgn && col2Typ <= (int)TexID::EnmyEnd))
 		{
 			if (colObj1->GetActive() && colObj2->GetActive())
 			{
@@ -686,14 +686,8 @@ void Collisions::QBoxHit(Player * ply, Object * obj)
 		if (obj->IsAnimated() == false)//if not yet been hit
 		{
 			//ply->UpdateFitness(100);
-			//spawn a mushroom
-			Object* spawn = new Object(TexID::Shroom, 1, 1, (int)TexID::ShroomBB, true, true, 0, 1.f);
-			//at this position
-			spawn->SetPosition(obj->GetPosition() - sf::Vector2f(0, (obj->GetOrigin().y * sY) * 2.f - 20.f));
-			spawn->SetOnGround(true);
-
 			//add to the level
-			//Game::GetGameMgr()->GetLevel()->AddObject(spawn);
+			Game::GetGameMgr()->GetLevel()->AddObject(obj->GetPosition() - sf::Vector2f(0, (obj->GetOrigin().y * sY) * 2.f - 20.f));
 
 			obj->GetAnimSpr()->ChangeAnim(1);//change to inactive box
 			obj->SetIsAnimated(true);//set can be hit to false
