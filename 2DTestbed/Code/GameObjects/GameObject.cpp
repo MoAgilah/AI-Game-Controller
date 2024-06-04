@@ -11,10 +11,26 @@ GameObject::GameObject(TexID id, int rows, int cols, int bTyp, bool dir, bool sy
 	m_spawnData.m_initialDir = m_direction;
 	m_spawnData.m_initialAnim = initAnim;
 
-	m_spr = std::make_unique<AnimatedSprite>(id, rows, cols, FPS, symmetrical, initAnim, animSpd);
+	m_spr = std::make_shared<AnimatedSprite>(id, rows, cols, FPS, symmetrical, initAnim, animSpd);
 	m_curSpr = m_spr.get();
 
-	m_bbox = std::make_unique<BoundingBox>((TexID)bTyp);
+	m_bbox = std::make_shared<BoundingBox>((TexID)bTyp);
+	m_curBBox = m_bbox.get();
+
+	Collisions::Get()->AddCollidable(this);
+	m_objectID = s_objectNum++;
+}
+
+GameObject::GameObject(TexID id, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd)
+	: m_type((int)id), m_direction(dir)
+{
+	m_spawnData.m_initialDir = m_direction;
+	m_spawnData.m_initialAnim = initAnim;
+
+	m_spr = std::make_shared<AnimatedSprite>(id, FPS, symmetrical, initAnim, animSpd);
+	m_curSpr = m_spr.get();
+
+	m_bbox = std::make_shared<BoundingBox>((TexID)bTyp);
 	m_curBBox = m_bbox.get();
 
 	Collisions::Get()->AddCollidable(this);
@@ -25,6 +41,12 @@ GameObject::~GameObject()
 {
 	m_curSpr = nullptr;
 	m_curBBox = nullptr;
+}
+
+void GameObject::Render(sf::RenderWindow& window)
+{
+	m_spr->Render(window);
+	m_bbox->Render(window);
 }
 
 void GameObject::Reset()

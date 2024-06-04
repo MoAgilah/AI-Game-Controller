@@ -16,6 +16,13 @@ BoundingBox::BoundingBox(TexID id)
 	number = numOn++;
 }
 
+void BoundingBox::SetTexture(TexID id)
+{
+	m_bbox.SetTexture(id);
+	m_bbox.SetScale(sf::Vector2f(sX, sY));
+	m_bbox.SetOrigin(sf::Vector2f((float)m_bbox.GetTextureSize().x * 0.5f, (float)m_bbox.GetTextureSize().y * 0.5f));
+}
+
 void BoundingBox::Update(sf::Vector2f pos)
 {
 	m_bbox.SetPosition(pos);

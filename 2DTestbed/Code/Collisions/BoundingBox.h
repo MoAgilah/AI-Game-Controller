@@ -13,6 +13,8 @@ public:
 	BoundingBox(TexID id);
 	~BoundingBox() = default;
 
+	void SetTexture(TexID id);
+
 	void Update(sf::Vector2f pos);
 	void Render(sf::RenderWindow& window);
 

@@ -30,10 +30,11 @@ class GameObject
 {
 public:
 	GameObject(TexID id, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd);
+	GameObject(TexID id, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd);
 	virtual ~GameObject();
 
 	virtual void Update(float deltaTime) = 0;
-	virtual void Render(sf::RenderWindow& window) = 0;
+	virtual void Render(sf::RenderWindow& window);
 
 	virtual void Reset();
 
@@ -93,8 +94,8 @@ protected:
 	BoundingBox* m_curBBox;
 	AnimatedSprite* m_curSpr;
 
-	std::unique_ptr<AnimatedSprite> m_spr;
-	std::unique_ptr<BoundingBox> m_bbox;
+	std::shared_ptr<AnimatedSprite> m_spr;
+	std::shared_ptr<BoundingBox> m_bbox;
 };
 
 #endif

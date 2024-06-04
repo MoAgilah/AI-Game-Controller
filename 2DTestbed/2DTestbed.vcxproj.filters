@@ -67,6 +67,12 @@
     <Filter Include="Resource Files\Fonts">
       <UniqueIdentifier>{25c37512-0103-4fcc-9812-6af5e97cde83}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GameStates">
+      <UniqueIdentifier>{c3a5d95f-eeb9-48e0-a3d4-8e89830b636c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameStates">
+      <UniqueIdentifier>{2af2cd57-0d93-476b-877f-13fbbc91894e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Collisions\BoundingBox.cpp">

@@ -2,12 +2,13 @@
 #define PlayerH
 
 #include <string>
+#include "../Game/Constants.h"
 #include "../GameObjects/GameObject.h"
 #include "../NEAT/phenotype.h"
 
 enum Anims { IDLE, CROUCH, JUMP, LEFT, RIGHT = LEFT, LOOKUP, SPINJUMP, FALL, DIE, MAXANIM };
 
-enum Actions { LEFT_KEY, RIGHT_KEY, UP_KEY, DOWN_KEY, SPACE_KEY, RCRTL_KEY, MAXKEYS };
+enum Actions { LEFT_KEY, RIGHT_KEY, UP_KEY, DOWN_KEY, SPACE_KEY, RCRTL_KEY };
 
 class Camera;
 class Player : public GameObject
@@ -83,9 +84,6 @@ private:
 	float m_noGravTime = 0;
 	float m_InvulTime = 0;
 	float m_airtime = 0;
-	const float c_maxAirTime = 1.f;
-	const float m_moveSpeed = 3.0f;
-	const float m_jumpSpeed = 3.0f;
 };
 
 #endif

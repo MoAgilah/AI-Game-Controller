@@ -15,7 +15,7 @@
 
 World::World()
 {
-	m_backgroundSprite.Init(TexID::Background);
+	m_backgroundSprite.SetTexture(TexID::Background);
 	m_backgroundSprite.SetScale(sf::Vector2f(sX, sY));
 	m_backgroundSprite.SetOrigin(sf::Vector2f(0, 0));
 	m_backgroundSprite.SetPosition(sf::Vector2f(0, -480));
@@ -245,17 +245,17 @@ void World::AddObjects()
 
 void World::AddForeGroundSprites()
 {
-	m_foregroundSprites[0].second.Init(TexID::Pipe1);
+	/*m_foregroundSprites[0].second.SetTexture(TexID::Pipe1);
 	m_foregroundSprites[0].second.SetScale(sf::Vector2f(sX, sY));
 	m_foregroundSprites[0].second.SetPosition(m_enemies[m_foregroundSprites[0].first]->GetPosition() + sf::Vector2f(-37.f, 0.f));
 
-	m_foregroundSprites[1].second.Init(TexID::Pipe2);
+	m_foregroundSprites[1].second.SetTexture(TexID::Pipe2);
 	m_foregroundSprites[1].second.SetScale(sf::Vector2f(sX, sY));
 	m_foregroundSprites[1].second.SetPosition(m_enemies[m_foregroundSprites[1].first]->GetPosition() + sf::Vector2f(-37.f, 0.f));
 
-	m_foregroundSprites[2].second.Init(TexID::Pipe3);
+	m_foregroundSprites[2].second.SetTexture(TexID::Pipe3);
 	m_foregroundSprites[2].second.SetScale(sf::Vector2f(sX, sY));
-	m_foregroundSprites[2].second.SetPosition(m_enemies[m_foregroundSprites[2].first]->GetPosition() + sf::Vector2f(-37.f, 0.f));
+	m_foregroundSprites[2].second.SetPosition(m_enemies[m_foregroundSprites[2].first]->GetPosition() + sf::Vector2f(-37.f, 0.f));*/
 }
 
 void World::AddGUI()
@@ -266,7 +266,7 @@ void World::AddGUI()
 
 	for (int i = 0; i < (int)GUI::MAX; i++)
 	{
-		m_sprites[i].Init(ids[i]);
+		m_sprites[i].SetTexture (ids[i]);
 		m_text[i].setFont(m_font);
 		m_text[i].setCharacterSize(15);
 		m_text[i].setOutlineColor(sf::Color::Black);

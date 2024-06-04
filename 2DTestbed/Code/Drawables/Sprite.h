@@ -15,7 +15,7 @@ public:
 	explicit Sprite(TexID id);
 	virtual ~Sprite() = default;
 
-	void Init(TexID id);
+	void SetTexture(TexID id);
 
 	void Render(sf::RenderWindow& window) const { window.draw(m_sprite); }
 
@@ -34,10 +34,14 @@ public:
 
 	void SetScale(const sf::Vector2f& factors) { m_sprite.setScale(factors); }
 
+	sf::Vector2u GetFrameSize() const { return m_frameSize; }
+	void SetFrameSize(const sf::Vector2u& size, int currentFrame = 1, int currentAnim = 1);
+
 private:
 
 	sf::Sprite m_sprite;
 	sf::Texture m_texture;
+	sf::Vector2u m_frameSize;
 };
 
 struct Range
@@ -50,6 +54,7 @@ class AnimatedSprite : public Sprite
 {
 public:
 	AnimatedSprite(TexID id, int rows, int columns, float framesPerSec, bool symmetrical, int m_initialAnim, float animationSpeed);
+	AnimatedSprite(TexID id, float framesPerSec, bool symmetrical, int m_initialAnim, float animationSpeed);
 	~AnimatedSprite() final = default;
 
 	void Update(float dt, bool direction = true);
@@ -57,6 +62,7 @@ public:
 	void ChangeAnim(int animNum);
 
 	void SetFrames(std::span<int> numFrames);
+	void SetFrameData(int rows, int columns, std::span<int> numFrames);
 
 	bool PlayedNumTimes(int val) const { return m_animEnd == val; }
 	bool playedOnce() const { return m_animEnd > 0; }
@@ -71,7 +77,7 @@ private:
 	Range m_frame;
 	Range m_animation;
 
-	sf::Vector2u m_frameSize;
+
 	std::vector<int> m_numFrames;
 };
 

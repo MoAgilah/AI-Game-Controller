@@ -10,10 +10,10 @@ Sprite::Sprite()
 
 Sprite::Sprite(TexID id)
 {
-	Init(id);
+	SetTexture(id);
 }
 
-void Sprite::Init(TexID id)
+void Sprite::SetTexture(TexID id)
 {
 	try
 	{
@@ -26,18 +26,29 @@ void Sprite::Init(TexID id)
 	SetOrigin(sf::Vector2f((float)m_texture.getSize().x * 0.5f, (float)m_texture.getSize().y * 0.5f));
 }
 
+void Sprite::SetFrameSize(const sf::Vector2u& size, int currentFrame, int currentAnim)
+{
+	m_frameSize = size;
+
+	//set first frame to display
+	SetTextureRect(sf::IntRect(currentFrame * m_frameSize.x, currentAnim * m_frameSize.y, m_frameSize.x, m_frameSize.y));
+	SetScale(sf::Vector2f(sX, sY));
+	SetOrigin(sf::Vector2f((float)m_frameSize.x / 2.f, (float)m_frameSize.y / 2.f));
+}
+
 AnimatedSprite::AnimatedSprite(TexID id, int rows, int columns, float framesPerSec, bool symmetrical, int m_initialAnim, float animSpeed)
 	: Sprite(id), m_animSpeed(animSpeed), m_framesPerSecond(framesPerSec / 1000.0f), m_symmetrical(symmetrical)
 {
 	ChangeAnim(m_initialAnim);
 
 	//set single frame size
-	m_frameSize = sf::Vector2u(GetTextureSize().x / columns, GetTextureSize().y / rows);
+	SetFrameSize(sf::Vector2u(GetTextureSize().x / columns, GetTextureSize().y / rows), m_frame.m_current, m_animation.m_current);
+}
 
-	//set first frame to display
-	SetTextureRect(sf::IntRect(m_frame.m_current * m_frameSize.x, m_animation.m_current * m_frameSize.y, m_frameSize.x, m_frameSize.y));
-	SetScale(sf::Vector2f(sX, sY));
-	SetOrigin(sf::Vector2f((float)m_frameSize.x / 2.f, (float)m_frameSize.y  / 2.f));
+AnimatedSprite::AnimatedSprite(TexID id, float framesPerSec, bool symmetrical, int m_initialAnim, float animSpeed)
+	: Sprite(id), m_animSpeed(animSpeed), m_framesPerSecond(framesPerSec / 1000.0f), m_symmetrical(symmetrical)
+{
+	ChangeAnim(m_initialAnim);
 }
 
 void AnimatedSprite::Update(float dt, bool direction)
@@ -67,7 +78,7 @@ void AnimatedSprite::Update(float dt, bool direction)
 		}
 
 		//set new frame
-		SetTextureRect(sf::IntRect(m_frame.m_current * m_frameSize.x, m_animation.m_current * m_frameSize.y, m_frameSize.x, m_frameSize.y));
+		SetTextureRect(sf::IntRect(m_frame.m_current * GetFrameSize().x, m_animation.m_current * GetFrameSize().y, GetFrameSize().x, GetFrameSize().y));
 
 		//if going left flip animation
 		if (direction == false)
@@ -92,6 +103,15 @@ void  AnimatedSprite::ChangeAnim(int animNum)
 
 void AnimatedSprite::SetFrames(std::span<int> numFrames)
 {
+	m_numFrames.assign(numFrames.begin(), numFrames.end());
+	m_animation.m_max = m_numFrames[m_animation.m_current];
+}
+
+void AnimatedSprite::SetFrameData(int rows, int columns, std::span<int> numFrames)
+{
+	//set single frame size
+	SetFrameSize(sf::Vector2u(GetTextureSize().x / columns, GetTextureSize().y / rows), m_frame.m_current, m_animation.m_current);
+
 	m_numFrames.assign(numFrames.begin(), numFrames.end());
 	m_animation.m_max = m_numFrames[m_animation.m_current];
 }
