@@ -36,16 +36,16 @@ void Enemy::Update(float deltaTime)
 			Animate(deltaTime);
 		}
 
-		m_curSpr->Update(deltaTime, m_direction);
-		if (m_direction)
+		m_curSpr->Update(deltaTime);
+		if (GetDirection())
 		{
 			//+
-			m_curBBox->Update(sf::Vector2f(m_spr->GetPosition().x - 2, m_spr->GetPosition().y));
+			m_curBBox->Update(sf::Vector2f(m_curSpr->GetPosition().x - 2, m_curSpr->GetPosition().y));
 		}
 		else
 		{
 			//-
-			m_curBBox->Update(sf::Vector2f(m_spr->GetPosition().x + 2, m_spr->GetPosition().y));
+			m_curBBox->Update(sf::Vector2f(m_curSpr->GetPosition().x + 2, m_curSpr->GetPosition().y));
 		}
 	}
 	//if off screen

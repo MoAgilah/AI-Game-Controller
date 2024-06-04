@@ -4,6 +4,7 @@
 #include "../Game/Timer.h"
 #include "../Game/Game.h"
 #include "../Controller/CtrlMgr.h"
+#include <format>
 
 bool Player::s_playerInserted = false;
 
@@ -211,7 +212,7 @@ void Player::Update(float deltaTime)
 		Move(sf::Vector2f(-m_velocity.x * FPS * deltaTime, 0));
 	}
 
-	if (m_curBBox->GetSprite()->getPosition().y /*+ m_curBBox->GetSprite()->getOrigin().y*/ > 600 - m_curBBox->GetSprite()->getOrigin().y)
+	if (m_curBBox->GetSprite()->getPosition().y > 600 - m_curBBox->GetSprite()->getOrigin().y)
 	{
 		if (GetIsAlive())
 			Kill();
@@ -228,7 +229,7 @@ void Player::Update(float deltaTime)
 		}
 	}
 
-	m_curSpr->Update(deltaTime, m_direction);
+	m_curSpr->Update(deltaTime);
 }
 
 void Player::Render(sf::RenderWindow& window)
@@ -464,7 +465,7 @@ void Player::EndOfRunCalculations()
 	//completed level
 	if (m_goalHit)
 	{
-		Game::GetGameMgr()->GetLogger()->AddExperimentLog(" Completed the level");
+		Game::GetGameMgr()->GetLogger()->AddExperimentLog("Completed the level");
 		m_dFitness += 1000;
 	}
 	else if (GetPosition().x <= 75.f)
@@ -473,24 +474,24 @@ void Player::EndOfRunCalculations()
 
 		if (GetPosition().x == 75.f)
 		{
-			Game::GetGameMgr()->GetLogger()->AddExperimentLog(" Did not move = " + std::to_string(percent) + "% Completed");
+			Game::GetGameMgr()->GetLogger()->AddExperimentLog(std::format("Did not move = {}% Completed", percent));
 		}
 		else
 		{
-			Game::GetGameMgr()->GetLogger()->AddExperimentLog(" Moved left  = " + std::to_string(percent) + "% Completed");
+			Game::GetGameMgr()->GetLogger()->AddExperimentLog(std::format("Moved left  = {}% Completed", percent));
 		}
 	}
 	//moved right some
 	else
 	{
-		Game::GetGameMgr()->GetLogger()->AddExperimentLog(" " + std::to_string(percent) + "% Completed");
+		Game::GetGameMgr()->GetLogger()->AddExperimentLog(std::format("{}% Completed", percent));
 		m_dFitness += percent;
 	}
 }
 
 void Player::ControllerInput()
 {
-	Game::GetGameMgr()->GetLogger()->AddDebugLog("Player " + std::to_string(CtrlMgr::GetCtrlMgr()->GetController()->GetCurrentPlayerNum()), false);
+	Game::GetGameMgr()->GetLogger()->AddDebugLog(std::format("Player ", CtrlMgr::GetCtrlMgr()->GetController()->GetCurrentPlayerNum()), false);
 
 	for (int i = 0; i < outputs.size(); ++i)
 	{
@@ -528,7 +529,7 @@ void Player::ControllerInput()
 		else if (oval >= 0.9) output = true;
 		else output = false;
 
-		Game::GetGameMgr()->GetLogger()->AddDebugLog(move + " = " + std::to_string(oval) + " = " + std::to_string(output), false);
+		Game::GetGameMgr()->GetLogger()->AddDebugLog(std::format("{} = {} = {}", move, oval, output), false);
 		Game::GetGameMgr()->GetLogger()->AddDebugLog("\t", false);
 		//store output
 		m_keyState[i] = output;
@@ -556,10 +557,8 @@ void Player::ProcessInput()
 		if (!m_keyState[DOWN_KEY])
 		{
 			//change direction
-			if (m_direction)
-			{
-				m_direction = false;
-			}
+			if (GetDirection())
+				SetDirection(false);
 
 			//change animation
 			if (GetOnGround())
@@ -579,10 +578,8 @@ void Player::ProcessInput()
 		if (!m_keyState[DOWN_KEY])
 		{
 			//change direction
-			if (!m_direction)
-			{
-				m_direction = true;
-			}
+			if (!GetDirection())
+				SetDirection(true);
 
 			//change animation
 			if (GetOnGround())
@@ -621,7 +618,7 @@ void Player::ProcessInput()
 				m_curBBox = m_SCrouchBbox;
 
 				//adjust bbox position
-				if (m_direction)
+				if (GetDirection())
 					m_curBBox->Update(sf::Vector2f(m_curSpr->GetPosition().x - 1.f, m_curSpr->GetPosition().y + 22.f));
 				else
 					m_curBBox->Update(sf::Vector2f(m_curSpr->GetPosition().x + 1.f, m_curSpr->GetPosition().y + 22.f));
@@ -631,7 +628,7 @@ void Player::ProcessInput()
 				m_curBBox = m_CrouchBbox;
 
 				//adjust bbox position
-				if (m_direction)
+				if (GetDirection())
 					m_curBBox->Update(sf::Vector2f(m_curSpr->GetPosition().x - 2.f, m_curSpr->GetPosition().y + 12.f));
 				else
 					m_curBBox->Update(sf::Vector2f(m_curSpr->GetPosition().x + 2.f, m_curSpr->GetPosition().y + 12.f));

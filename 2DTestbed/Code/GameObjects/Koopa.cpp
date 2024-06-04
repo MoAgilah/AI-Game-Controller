@@ -31,7 +31,7 @@ void Koopa::Animate(float deltaTime)
 {
 	SetPrevPosition(GetPosition());
 
-	if (m_direction)
+	if (GetDirection())
 	{
 		m_velocity.x = 2;
 	}
@@ -56,12 +56,11 @@ void Koopa::Animate(float deltaTime)
 		Collisions::Get()->ProcessCollisions(this);
 	}
 
-
 	//check for leftmost and rightmost boundary
 	if (m_curSpr->GetPosition().x < m_curSpr->GetOrigin().x || m_curSpr->GetPosition().x > 11776 - m_curSpr->GetOrigin().x)
 	{
 		m_curSpr->Move(-m_velocity.x * FPS * deltaTime, 0);
-		m_direction = !m_direction;
+		SetDirection(!m_direction);
 	}
 
 	if (m_velocity.y != 0)

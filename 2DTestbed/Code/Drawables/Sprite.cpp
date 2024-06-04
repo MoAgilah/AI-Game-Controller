@@ -51,7 +51,7 @@ AnimatedSprite::AnimatedSprite(TexID id, float framesPerSec, bool symmetrical, i
 	ChangeAnim(m_initialAnim);
 }
 
-void AnimatedSprite::Update(float dt, bool direction)
+void AnimatedSprite::Update(float dt)
 {
 	m_currentTime += m_animSpeed * dt;
 
@@ -79,19 +79,6 @@ void AnimatedSprite::Update(float dt, bool direction)
 
 		//set new frame
 		SetTextureRect(sf::IntRect(m_frame.m_current * GetFrameSize().x, m_animation.m_current * GetFrameSize().y, GetFrameSize().x, GetFrameSize().y));
-
-		//if going left flip animation
-		if (direction == false)
-		{
-			// flip X
-			SetScale({ -sX, sY });
-		}
-		else
-		{
-			//unflip x
-			SetScale({ sX, sY });
-		}
-
 	}
 }
 

@@ -39,9 +39,9 @@ void Object::Update(float deltaTime)
 
 		Animate(deltaTime);
 
-		m_curSpr->Update(deltaTime, m_direction);
+		m_curSpr->Update(deltaTime);
 
-		if (m_direction)
+		if (GetDirection())
 		{
 			//+
 			m_curBBox->Update(sf::Vector2f(m_curSpr->GetPosition().x - 2, m_curSpr->GetPosition().y));
@@ -75,7 +75,7 @@ void Object::Animate(float deltaTime)
 	{
 		SetPrevPosition(GetPosition());
 
-		if (m_direction)
+		if (GetDirection())
 		{
 			m_velocity.x = 2;
 		}
@@ -104,7 +104,7 @@ void Object::Animate(float deltaTime)
 		if (m_curSpr->GetPosition().x < m_curSpr->GetOrigin().x || m_curSpr->GetPosition().x > 11776 - m_curSpr->GetOrigin().x)
 		{
 			m_curSpr->Move(-m_velocity.x * FPS * deltaTime, 0);
-			m_direction = !m_direction;
+			SetDirection(!m_direction);
 		}
 
 		if (m_velocity.y != 0)

@@ -18,7 +18,7 @@ Bill::Bill(bool dir, const sf::Vector2f& initPos)
 
 	colbody.back.setOutlineColor(sf::Color::Red);
 	colbody.back.setOutlineThickness(2.0f);
-	colbody.back.setSize(sf::Vector2f(15.f, (float)m_curBBox->GetSprite()->getTexture()->getSize().y-2.f));
+	colbody.back.setSize(sf::Vector2f(15.f, (float)m_curBBox->GetSprite()->getTexture()->getSize().y - 2.f));
 	colbody.back.setOrigin(sf::Vector2f(7.f, (float)m_curSpr->GetTextureSize().y / 2.f));
 	colbody.back.setScale(sX, sY);
 	colbody.back.setFillColor(sf::Color::Transparent);
@@ -54,7 +54,7 @@ void Bill::Animate(float deltaTime)
 {
 	SetPrevPosition(GetPosition());
 
-	if (m_direction)
+	if (GetDirection())
 	{
 		m_velocity.x = 3;
 	}
@@ -63,7 +63,7 @@ void Bill::Animate(float deltaTime)
 		m_velocity.x = -3;
 	}
 
-	if (m_alive == false)
+	if (!GetIsAlive())
 	{
 		m_velocity.y = + 3;
 
@@ -78,7 +78,7 @@ void Bill::Animate(float deltaTime)
 		Collisions::Get()->ProcessCollisions(this);
 	}
 
-	if (m_direction)
+	if (GetDirection())
 	{
 		colbody.front.setPosition(GetPosition());
 		colbody.back.setPosition(GetPosition() - sf::Vector2f(m_curBBox->GetSprite()->getOrigin().x * sX - 17, -7));
@@ -93,6 +93,6 @@ void Bill::Animate(float deltaTime)
 	if (m_curSpr->GetPosition().x < m_curSpr->GetOrigin().x || m_curSpr->GetPosition().x > 11776 - m_curSpr->GetOrigin().x)
 	{
 		m_curSpr->Move(-m_velocity.x * FPS * deltaTime, 0);
-		m_direction = !m_direction;
+		SetDirection(!m_direction);
 	}
 }

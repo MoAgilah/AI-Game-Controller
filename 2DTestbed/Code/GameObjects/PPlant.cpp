@@ -26,7 +26,7 @@ void PPlant::Animate(float deltaTime)
 {
 	SetPrevPosition(GetPosition());
 
-	if (m_direction)
+	if (GetDirection())
 	{
 		m_velocity.y = 1.5;
 	}
@@ -45,7 +45,7 @@ void PPlant::Animate(float deltaTime)
 
 	if (currentPos.y > 390)
 	{
-		m_direction = false;
+		SetDirection(false);
 		m_curSpr->ChangeAnim(0);
 		//set wait timer
 		//go up
@@ -53,7 +53,7 @@ void PPlant::Animate(float deltaTime)
 
 	if (currentPos.y < 160)
 	{
-		m_direction = true;
+		SetDirection(true);
 		m_curSpr->ChangeAnim(1);
 		//go down
 	}

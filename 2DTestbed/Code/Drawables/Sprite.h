@@ -57,7 +57,7 @@ public:
 	AnimatedSprite(TexID id, float framesPerSec, bool symmetrical, int m_initialAnim, float animationSpeed);
 	~AnimatedSprite() final = default;
 
-	void Update(float dt, bool direction = true);
+	void Update(float dt);
 
 	void ChangeAnim(int animNum);
 

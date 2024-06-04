@@ -63,7 +63,7 @@ public:
 	void SetAirbourne(bool air) { m_airbourne = air; }
 
 	bool GetDirection() const { return m_direction; }
-	void SetDirection(bool dir) { m_direction = dir; }
+	void SetDirection(bool dir);
 
 	int GetObjectNum() const { return m_objectID; }
 

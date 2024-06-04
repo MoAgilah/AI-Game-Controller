@@ -17,6 +17,8 @@ GameObject::GameObject(TexID id, int rows, int cols, int bTyp, bool dir, bool sy
 	m_bbox = std::make_shared<BoundingBox>((TexID)bTyp);
 	m_curBBox = m_bbox.get();
 
+	SetDirection(m_spawnData.m_initialDir);
+
 	Collisions::Get()->AddCollidable(this);
 	m_objectID = s_objectNum++;
 }
@@ -33,10 +35,11 @@ GameObject::GameObject(TexID id, int bTyp, bool dir, bool symmetrical, int initA
 	m_bbox = std::make_shared<BoundingBox>((TexID)bTyp);
 	m_curBBox = m_bbox.get();
 
+	SetDirection(m_spawnData.m_initialDir);
+
 	Collisions::Get()->AddCollidable(this);
 	m_objectID = s_objectNum++;
 }
-
 GameObject::~GameObject()
 {
 	m_curSpr = nullptr;
@@ -59,7 +62,7 @@ void GameObject::Reset()
 	SetPrevPosition(m_spawnData.m_initialPos);
 
 	m_visible = false;
-	m_direction = m_spawnData.m_initialDir;
+	SetDirection(m_spawnData.m_initialDir);
 	m_onGround = false;
 	m_airbourne = false;
 }
@@ -67,7 +70,7 @@ void GameObject::Reset()
 void GameObject::SetPosition(sf::Vector2f pos)
 {
 	m_curSpr->SetPosition(pos);
-	if (m_direction)
+	if (GetDirection())
 	{
 		//+
 		m_curBBox->Update(sf::Vector2f(m_curSpr->GetPosition().x - 2.f, m_curSpr->GetPosition().y + 3.5f));
@@ -82,7 +85,7 @@ void GameObject::SetPosition(sf::Vector2f pos)
 void GameObject::SetPosition(float x, float y)
 {
 	m_curSpr->SetPosition(sf::Vector2f(x, y));
-	if (m_direction)
+	if (GetDirection())
 	{
 		//+
 		m_curBBox->Update(sf::Vector2f(m_curSpr->GetPosition().x - 2.f, m_curSpr->GetPosition().y + 3.5f));
@@ -91,6 +94,21 @@ void GameObject::SetPosition(float x, float y)
 	{
 		//-
 		m_curBBox->Update(sf::Vector2f(m_curSpr->GetPosition().x + 2.f, m_curSpr->GetPosition().y + 3.5f));
+	}
+}
+
+void GameObject::SetDirection(bool dir)
+{
+	m_direction = dir;
+	if (m_direction)
+	{
+		// flip X
+		m_spr->SetScale({ sX, sY });
+	}
+	else
+	{
+		//unflip x
+		m_spr->SetScale({ -sX, sY });
 	}
 }
 
