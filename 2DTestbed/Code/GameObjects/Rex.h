@@ -10,18 +10,15 @@ public:
 	Rex(bool dir, int initAnim, float animSpd, const sf::Vector2f& initPos);
 	~Rex() final = default;
 
-
+	void Update(float deltaTime) final;
+	void Reset() final;
+	void Die() final;
 
 	bool Tall() const { return m_numLives == m_maxLives; }
-
-	void Die();
 	void Change();
-	void Update(float deltaTime);
 
 private:
-	void Animate(float deltaTime);
-
-	BoundingBox* m_SmlBox;
+	void Animate(float deltaTime) final;
 };
 
 #endif

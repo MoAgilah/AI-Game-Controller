@@ -15,9 +15,10 @@ Sprite::Sprite(TexID id)
 
 void Sprite::SetTexture(TexID id)
 {
+	m_texID = id;
 	try
 	{
-		m_sprite.setTexture(Game::GetGameMgr()->GetTexturMgr()->GetTexture(id));
+		m_sprite.setTexture(Game::GetGameMgr()->GetTexturMgr()->GetTexture(m_texID),true);
 	}
 	catch (const std::exception& e)
 	{

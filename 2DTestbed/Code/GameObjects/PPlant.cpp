@@ -10,7 +10,7 @@ PPlant::PPlant(const sf::Vector2f& initPos)
 	SetPosition(m_spawnData.m_initialPos);
 
 	std::vector<int> cframes{ 1, 2};
-	m_curSpr->SetFrames(cframes);
+	m_spr->SetFrames(cframes);
 }
 
 void PPlant::Animate(float deltaTime)
@@ -28,7 +28,7 @@ void PPlant::Animate(float deltaTime)
 
 	if (m_velocity.y != 0)
 	{
-		m_curSpr->Move(0, m_velocity.y * FPS * deltaTime);
+		m_spr->Move(0, m_velocity.y * FPS * deltaTime);
 		Collisions::Get()->ProcessCollisions(this);
 	}
 
@@ -37,7 +37,7 @@ void PPlant::Animate(float deltaTime)
 	if (currentPos.y > 390)
 	{
 		SetDirection(false);
-		m_curSpr->ChangeAnim(0);
+		m_spr->ChangeAnim(0);
 		//set wait timer
 		//go up
 	}
@@ -45,7 +45,7 @@ void PPlant::Animate(float deltaTime)
 	if (currentPos.y < 160)
 	{
 		SetDirection(true);
-		m_curSpr->ChangeAnim(1);
+		m_spr->ChangeAnim(1);
 		//go down
 	}
 

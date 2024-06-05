@@ -31,18 +31,18 @@ class GameObject
 public:
 	GameObject(TexID id, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd);
 	GameObject(TexID id, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd);
-	virtual ~GameObject();
+	virtual ~GameObject() = default;
 
 	virtual void Update(float deltaTime) = 0;
 	virtual void Render(sf::RenderWindow& window);
 
 	virtual void Reset();
 
-	sf::Sprite* GetSprite() { return m_curSpr->GetSprite(); }
-	BoundingBox* GetBBox() { return m_curBBox; }
-	AnimatedSprite* GetAnimSpr() { return m_curSpr; }
+	sf::Sprite* GetSprite() { return m_spr->GetSprite(); }
+	BoundingBox* GetBBox() { return m_bbox.get(); }
+	AnimatedSprite* GetAnimSpr() { return m_spr.get(); }
 
-	sf::Vector2f GetPosition() const { return m_curSpr->GetPosition(); };
+	sf::Vector2f GetPosition() const { return m_spr->GetPosition(); };
 	void SetPosition(sf::Vector2f pos);
 	void SetPosition(float x, float y);
 
@@ -50,7 +50,7 @@ public:
 	void SetVelocity(sf::Vector2f vel) { m_velocity = vel; }
 	void SetVelocity(float x, float y) { m_velocity = sf::Vector2f(x, y); }
 
-	sf::Vector2f GetOrigin() const { return m_curSpr->GetOrigin(); }
+	sf::Vector2f GetOrigin() const { return m_spr->GetOrigin(); }
 
 	void SetPrevPosition(sf::Vector2f pos) { m_prevPos = pos; }
 	void SetPrevPosition(float x, float y) { m_prevPos = sf::Vector2f(x, y); }
@@ -90,9 +90,6 @@ protected:
 	sf::Vector2f m_prevPos;
 
 	const float gravity = 0.981f;
-
-	BoundingBox* m_curBBox;
-	AnimatedSprite* m_curSpr;
 
 	std::shared_ptr<AnimatedSprite> m_spr;
 	std::shared_ptr<BoundingBox> m_bbox;

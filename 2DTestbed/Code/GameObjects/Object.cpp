@@ -16,40 +16,40 @@ void Object::Update(float deltaTime)
 	{
 		if (m_isAnimating && this->GetBBox()->GetID() == (int)TexID::Box)
 		{
-			if (m_curSpr->PlayedNumTimes(2))
+			if (m_spr->PlayedNumTimes(2))
 			{
 				m_isAnimating = false;
-				m_curSpr->ChangeAnim(0);
+				m_spr->ChangeAnim(0);
 			}
 		}
 
 		Animate(deltaTime);
 
-		m_curSpr->Update(deltaTime);
+		m_spr->Update(deltaTime);
 
 		if (GetDirection())
 		{
 			//+
-			m_curBBox->Update(sf::Vector2f(m_curSpr->GetPosition().x - 2, m_curSpr->GetPosition().y));
+			m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x - 2, m_spr->GetPosition().y));
 		}
 		else
 		{
 			//-
-			m_bbox->Update(sf::Vector2f(m_curSpr->GetPosition().x + 2, m_curSpr->GetPosition().y));
+			m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x + 2, m_spr->GetPosition().y));
 		}
 	}
 }
 
 void Object::Render(sf::RenderWindow & window)
 {
-	window.draw(*m_curSpr->GetSprite());
+	window.draw(*m_spr->GetSprite());
 }
 
 void Object::Reset()
 {
 	m_isAnimating = false;
 	m_goingUp = false;
-	m_curSpr->ChangeAnim(m_spawnData.m_initialAnim);
+	m_spr->ChangeAnim(m_spawnData.m_initialAnim);
 	m_visible = false;
 }
 
@@ -80,20 +80,20 @@ void Object::Animate(float deltaTime)
 
 		if (m_velocity.x != 0)
 		{
-			m_curSpr->Move(m_velocity.x * FPS * deltaTime, 0);
+			m_spr->Move(m_velocity.x * FPS * deltaTime, 0);
 			Collisions::Get()->ProcessCollisions(this);
 		}
 
 		//check for leftmost and rightmost boundary
-		if (m_curSpr->GetPosition().x < m_curSpr->GetOrigin().x || m_curSpr->GetPosition().x > 11776 - m_curSpr->GetOrigin().x)
+		if (m_spr->GetPosition().x < m_spr->GetOrigin().x || m_spr->GetPosition().x > 11776 - m_spr->GetOrigin().x)
 		{
-			m_curSpr->Move(-m_velocity.x * FPS * deltaTime, 0);
+			m_spr->Move(-m_velocity.x * FPS * deltaTime, 0);
 			SetDirection(!m_direction);
 		}
 
 		if (m_velocity.y != 0)
 		{
-			m_curSpr->Move(0, m_velocity.y * FPS * deltaTime);
+			m_spr->Move(0, m_velocity.y * FPS * deltaTime);
 			Collisions::Get()->ProcessCollisions(this);
 		}
 	}
@@ -111,7 +111,7 @@ void Object::Animate(float deltaTime)
 
 		if (m_velocity.y != 0)
 		{
-			m_curSpr->Move(0, m_velocity.y * FPS * deltaTime);
+			m_spr->Move(0, m_velocity.y * FPS * deltaTime);
 		}
 
 		sf::Vector2f currentPos = GetPosition();

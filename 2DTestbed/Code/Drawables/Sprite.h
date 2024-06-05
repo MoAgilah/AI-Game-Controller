@@ -37,8 +37,9 @@ public:
 	sf::Vector2u GetFrameSize() const { return m_frameSize; }
 	void SetFrameSize(const sf::Vector2u& size, int currentFrame = 1, int currentAnim = 1);
 
+	TexID GetTexID() const { return m_texID; }
 private:
-
+	TexID m_texID;
 	sf::Sprite m_sprite;
 	sf::Texture m_texture;
 	sf::Vector2u m_frameSize;

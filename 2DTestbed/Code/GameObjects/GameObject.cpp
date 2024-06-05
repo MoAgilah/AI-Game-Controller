@@ -12,10 +12,7 @@ GameObject::GameObject(TexID id, int rows, int cols, int bTyp, bool dir, bool sy
 	m_spawnData.m_initialAnim = initAnim;
 
 	m_spr = std::make_shared<AnimatedSprite>(id, rows, cols, FPS, symmetrical, initAnim, animSpd);
-	m_curSpr = m_spr.get();
-
 	m_bbox = std::make_shared<BoundingBox>((TexID)bTyp);
-	m_curBBox = m_bbox.get();
 
 	SetDirection(m_spawnData.m_initialDir);
 
@@ -30,20 +27,12 @@ GameObject::GameObject(TexID id, int bTyp, bool dir, bool symmetrical, int initA
 	m_spawnData.m_initialAnim = initAnim;
 
 	m_spr = std::make_shared<AnimatedSprite>(id, FPS, symmetrical, initAnim, animSpd);
-	m_curSpr = m_spr.get();
-
 	m_bbox = std::make_shared<BoundingBox>((TexID)bTyp);
-	m_curBBox = m_bbox.get();
 
 	SetDirection(m_spawnData.m_initialDir);
 
 	Collisions::Get()->AddCollidable(this);
 	m_objectID = s_objectNum++;
-}
-GameObject::~GameObject()
-{
-	m_curSpr = nullptr;
-	m_curBBox = nullptr;
 }
 
 void GameObject::Render(sf::RenderWindow& window)
@@ -54,9 +43,7 @@ void GameObject::Render(sf::RenderWindow& window)
 
 void GameObject::Reset()
 {
-	m_curBBox = m_bbox.get();
-	m_curSpr = m_spr.get();
-	m_curSpr->ChangeAnim(m_spawnData.m_initialAnim);
+	m_spr->ChangeAnim(m_spawnData.m_initialAnim);
 
 	SetPosition(m_spawnData.m_initialPos);
 	SetPrevPosition(m_spawnData.m_initialPos);
@@ -69,31 +56,31 @@ void GameObject::Reset()
 
 void GameObject::SetPosition(sf::Vector2f pos)
 {
-	m_curSpr->SetPosition(pos);
+	m_spr->SetPosition(pos);
 	if (GetDirection())
 	{
 		//+
-		m_curBBox->Update(sf::Vector2f(m_curSpr->GetPosition().x - 2.f, m_curSpr->GetPosition().y + 3.5f));
+		m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x - 2.f, m_spr->GetPosition().y + 3.5f));
 	}
 	else
 	{
 		//-
-		m_curBBox->Update(sf::Vector2f(m_curSpr->GetPosition().x + 2.f, m_curSpr->GetPosition().y + 3.5f));
+		m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x + 2.f, m_spr->GetPosition().y + 3.5f));
 	}
 }
 
 void GameObject::SetPosition(float x, float y)
 {
-	m_curSpr->SetPosition(sf::Vector2f(x, y));
+	m_spr->SetPosition(sf::Vector2f(x, y));
 	if (GetDirection())
 	{
 		//+
-		m_curBBox->Update(sf::Vector2f(m_curSpr->GetPosition().x - 2.f, m_curSpr->GetPosition().y + 3.5f));
+		m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x - 2.f, m_spr->GetPosition().y + 3.5f));
 	}
 	else
 	{
 		//-
-		m_curBBox->Update(sf::Vector2f(m_curSpr->GetPosition().x + 2.f, m_curSpr->GetPosition().y + 3.5f));
+		m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x + 2.f, m_spr->GetPosition().y + 3.5f));
 	}
 }
 

@@ -16,7 +16,7 @@ class Player : public GameObject
 {
 public:
 	Player(int rows, int cols, bool symmetrical = true, int initAnim = 0, float animSpd = 1);
-	~Player() final;
+	~Player() final = default;
 
 	void Update(float deltaTime) final;
 	void Render(sf::RenderWindow& window) final;
@@ -60,7 +60,6 @@ private:
 	void HumanInput();
 
 private:
-	//Controller code
 	static bool s_playerInserted;
 	bool m_super = false;
 	bool m_justCrouched = false;
@@ -84,11 +83,6 @@ private:
 	std::vector<double> outputs;
 
 	sf::Vector2f m_spawnLoc;
-
-	AnimatedSprite* m_SupSpr;
-	BoundingBox*	m_SupBbox;
-	BoundingBox*	m_CrouchBbox;
-	BoundingBox*	m_SCrouchBbox;
 
 	CNeuralNet* m_itsBrain;
 };

@@ -21,19 +21,19 @@ void Enemy::Update(float deltaTime)
 		if (m_resetAllowed)
 			m_resetAllowed = false;
 
-		if (GetIsAlive() || m_curBBox->GetID() == (int)TexID::BillBB)
+		if (GetIsAlive() || m_bbox->GetID() == (int)TexID::BillBB)
 			Animate(deltaTime);
 
-		m_curSpr->Update(deltaTime);
+		m_spr->Update(deltaTime);
 		if (GetDirection())
 		{
 			//+
-			m_curBBox->Update(sf::Vector2f(m_curSpr->GetPosition().x - 2, m_curSpr->GetPosition().y));
+			m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x - 2, m_spr->GetPosition().y));
 		}
 		else
 		{
 			//-
-			m_curBBox->Update(sf::Vector2f(m_curSpr->GetPosition().x + 2, m_curSpr->GetPosition().y));
+			m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x + 2, m_spr->GetPosition().y));
 		}
 	}
 	//if off screen
@@ -85,7 +85,7 @@ void Enemy::DecrementLife()
 	}
 	else
 	{
-		if (m_curBBox->GetID() == (int)TexID::RexBB)
+		if (m_bbox->GetID() == (int)TexID::RexBB)
 			((Rex*)this)->Change();
 	}
 }
