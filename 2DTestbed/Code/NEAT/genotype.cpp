@@ -7,7 +7,7 @@
 //------------------------------------------------------------------------
 CGenome::CGenome():m_pPhenotype(NULL),
 				   m_GenomeID(0),
-				   m_dFitness(0),
+				   m_fitness(0),
 				   m_dAdjustedFitness(0),
 				   m_iNumInputs(0),
 				   m_iNumOutPuts(0),
@@ -21,7 +21,7 @@ CGenome::CGenome():m_pPhenotype(NULL),
 //------------------------------------------------------------------------
 CGenome::CGenome(int id, int inputs, int outputs):m_pPhenotype(NULL),
 												  m_GenomeID(id),
-												  m_dFitness(0),
+												  m_fitness(0),
 												  m_dAdjustedFitness(0),
 												  m_iNumInputs(inputs),
 												  m_iNumOutPuts(outputs),
@@ -78,7 +78,7 @@ CGenome::CGenome(int                 id,
 												  m_vecLinks(genes),
 												  m_vecNeurons(neurons),
 												  m_dAmountToSpawn(0),
-												  m_dFitness(0),
+												  m_fitness(0),
 												  m_dAdjustedFitness(0),
 												  m_iNumInputs(inputs),
 												  m_iNumOutPuts(outputs)
@@ -107,7 +107,7 @@ CGenome::CGenome(const CGenome& g)
 	m_vecNeurons   = g.m_vecNeurons;
 	m_vecLinks   = g.m_vecLinks;
 	m_pPhenotype = NULL;              //no need to perform a deep copy
-	m_dFitness   = g.m_dFitness;
+	m_fitness   = g.m_fitness;
 	m_dAdjustedFitness = g.m_dAdjustedFitness;
 	m_iNumInputs  = g.m_iNumInputs;
 	m_iNumOutPuts = g.m_iNumOutPuts;
@@ -126,7 +126,7 @@ CGenome& CGenome::operator =(const CGenome& g)
 	  m_vecNeurons         = g.m_vecNeurons;
 	  m_vecLinks         = g.m_vecLinks;
 	  m_pPhenotype       = NULL;        //no need to perform a deep copy
-	  m_dFitness         = g.m_dFitness;
+	  m_fitness         = g.m_fitness;
 	  m_dAdjustedFitness = g.m_dAdjustedFitness;
 	  m_iNumInputs        = g.m_iNumInputs;
 	  m_iNumOutPuts       = g.m_iNumOutPuts;

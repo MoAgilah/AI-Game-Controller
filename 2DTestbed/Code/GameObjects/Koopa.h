@@ -8,10 +8,11 @@ class Koopa :
 {
 public:
 	Koopa(int rows, int cols, bool dir = true, bool symmetrical = true, int initAnim = 0, float animSpd = 1, const sf::Vector2f & initPos = sf::Vector2f());
-	void Die();
-	~Koopa();
+	~Koopa() final = default;
+	void Die() final;
+
 private:
-	void Animate(float deltaTime);
+	void Animate(float deltaTime) final;
 };
 
 #endif

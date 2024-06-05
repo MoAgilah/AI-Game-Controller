@@ -9,46 +9,32 @@ Bill::Bill(bool dir, const sf::Vector2f& initPos)
 	m_spawnData.m_initialPos = initPos;
 	SetPosition(m_spawnData.m_initialPos);
 
-	colbody.front.setOutlineColor(sf::Color::Red);
-	colbody.front.setOutlineThickness(2.0f);
-	colbody.front.setFillColor(sf::Color::Transparent);
-	colbody.front.setRadius(74.f);
-	colbody.front.setPointCount((size_t)30);
-	colbody.front.setOrigin(74.f, 74.f);
+	m_colbody.front.setOutlineColor(sf::Color::Red);
+	m_colbody.front.setOutlineThickness(2.0f);
+	m_colbody.front.setFillColor(sf::Color::Transparent);
+	m_colbody.front.setRadius(74.f);
+	m_colbody.front.setPointCount((size_t)30);
+	m_colbody.front.setOrigin(74.f, 74.f);
 
-	colbody.back.setOutlineColor(sf::Color::Red);
-	colbody.back.setOutlineThickness(2.0f);
-	colbody.back.setSize(sf::Vector2f(15.f, (float)m_curBBox->GetSprite()->getTexture()->getSize().y - 2.f));
-	colbody.back.setOrigin(sf::Vector2f(7.f, (float)m_curSpr->GetTextureSize().y / 2.f));
-	colbody.back.setScale(sX, sY);
-	colbody.back.setFillColor(sf::Color::Transparent);
+	m_colbody.back.setOutlineColor(sf::Color::Red);
+	m_colbody.back.setOutlineThickness(2.0f);
+	m_colbody.back.setSize(sf::Vector2f(15.f, (float)m_curBBox->GetSprite()->getTexture()->getSize().y - 2.f));
+	m_colbody.back.setOrigin(sf::Vector2f(7.f, (float)m_curSpr->GetTextureSize().y / 2.f));
+	m_colbody.back.setScale(sX, sY);
+	m_colbody.back.setFillColor(sf::Color::Transparent);
+}
+
+void Bill::Render(sf::RenderWindow& window)
+{
+	window.draw(*GetSprite());
+	window.draw(m_colbody.front);
+	window.draw(m_colbody.back);
 }
 
 void Bill::Die()
 {
-	m_alive = false;
 	m_timeLeftActive = 2.f;
 }
-
-Bill::~Bill()
-{
-}
-
-void Bill::Render(sf::RenderWindow & window)
-{
-	window.draw(*GetSprite());
-
-
-	window.draw(colbody.front);
-	window.draw(colbody.back);
-
-}
-
-Body Bill::GetBody()
-{
-	return colbody;
-}
-
 
 void Bill::Animate(float deltaTime)
 {
@@ -80,13 +66,13 @@ void Bill::Animate(float deltaTime)
 
 	if (GetDirection())
 	{
-		colbody.front.setPosition(GetPosition());
-		colbody.back.setPosition(GetPosition() - sf::Vector2f(m_curBBox->GetSprite()->getOrigin().x * sX - 17, -7));
+		m_colbody.front.setPosition(GetPosition());
+		m_colbody.back.setPosition(GetPosition() - sf::Vector2f(m_curBBox->GetSprite()->getOrigin().x * sX - 17, -7));
 	}
 	else
 	{
-		colbody.front.setPosition(GetPosition());
-		colbody.back.setPosition(GetPosition() + sf::Vector2f(m_curBBox->GetSprite()->getOrigin().x * sX - 17, 7));
+		m_colbody.front.setPosition(GetPosition());
+		m_colbody.back.setPosition(GetPosition() + sf::Vector2f(m_curBBox->GetSprite()->getOrigin().x * sX - 17, 7));
 	}
 
 	//check for leftmost and rightmost boundary

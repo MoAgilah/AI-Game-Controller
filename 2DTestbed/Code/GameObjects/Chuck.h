@@ -8,15 +8,16 @@ class Chuck :
 {
 public:
 	Chuck(bool dir, int initAnim, float animSpd, const sf::Vector2f& initPos);
-	~Chuck();
+	~Chuck() final = default;
 
-	virtual void Reset() final;
-	void Die();
-	bool Jumping();
+	void Reset() final;
+	void Die() final;
+	bool Jumping() const { return m_waitTime > 0 && m_waitTime < 0.5f; }
 private:
-	bool m_goingUp = false;
+	void Animate(float deltaTime) final;
+
+	bool m_goingUp = true;
 	float m_waitTime = 0;
-	void Animate(float deltaTime);
 };
 
 #endif

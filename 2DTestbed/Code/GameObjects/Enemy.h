@@ -8,32 +8,25 @@ class Enemy : public GameObject
 {
 public:
 	Enemy(TexID id, int rows, int cols, int bTyp, bool dir = true, bool symmetrical = true, int initAnim = 0, float animSpd = 1);
-	~Enemy();
-	virtual void Update(float deltaTime);
-	virtual void Render(sf::RenderWindow& window);
+	~Enemy() override = default;
+	void Update(float deltaTime) override;
+	void Render(sf::RenderWindow& window) override;
 	void Reset() override;
+	virtual void Die() {};
 
-	int DecrementLife();
-	void ResetLives();
-	virtual void Die() = 0;
-	bool GetIsAlive() const;
-	virtual bool GetActive() const { return m_visible && GetIsAlive(); }
-	int GetLives();
+	bool GetIsAlive() const { return m_numLives <= 0; }
+	bool GetActive() const final { return m_visible && GetIsAlive(); }
+	void DecrementLife();
 
 protected:
 	virtual void Animate(float deltaTime) = 0;
 
-	float m_tillReset = 0;
-	bool m_resetAllowed = false;
-
-	float m_airtime = 0;
-	const float c_maxAirTime = 1.0f;
 	bool m_crouched = false;
-
+	bool m_resetAllowed = false;
 	int m_numLives = 1;
 	int m_maxLives = m_numLives;
-	bool m_alive = true;
-
+	float m_airtime = 0;
+	float m_tillReset = 0;
 	float m_timeLeftActive = 0;
 };
 

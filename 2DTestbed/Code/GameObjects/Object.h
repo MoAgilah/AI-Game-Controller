@@ -13,30 +13,23 @@ class Object : public GameObject
 {
 public:
 	Object(TexID id, int rows, int cols, int bTyp, bool dir = true, bool symmetrical = true, int initAnim = 0, float animSpd = 1, const sf::Vector2f& initPos = sf::Vector2f());
-	~Object();
-	void Initialise(bool hasAnim, float moveSpd, float jmpSpeed);
-	void Update(float deltaTime);
-	void Render(sf::RenderWindow& window);
-	void SetIsAnimated(bool isAnim);
-	bool IsAnimated();
+	~Object() final = default;
 
-	void Reset();
+	void Update(float deltaTime) final;
+	void Render(sf::RenderWindow& window) final;
+	void Reset() final;
+
+	void SetIsAnimated(bool isAnim) { m_isAnimating = isAnim; }
+	bool IsAnimated() const { return m_isAnimating; }
+
 private:
 	virtual void Animate(float deltaTime);
 
-	bool m_goingUp;
-
-	float animLength;
-
-	bool isAnimating;
-
-	bool m_hasAnim;
-	float m_moveSpeed;
-	float m_jumpSpeed;
-
-	float m_airtime;
-	const float c_maxAirTime = 1.0f;
+	bool m_goingUp = false;
+	bool m_isAnimating = false;
 	int s_objectNum;
+	float m_airtime;
+	float m_animLength;
 };
 
 #endif

@@ -7,11 +7,11 @@ class PPlant :
 	public Enemy
 {
 public:
-	PPlant(const sf::Vector2f& initPos);
-	void Die();
-	~PPlant();
+	explicit PPlant(const sf::Vector2f& initPos);
+	~PPlant() final = default;
+
 private:
-	void Animate(float deltaTime);
+	void Animate(float deltaTime) final;
 };
 
 #endif

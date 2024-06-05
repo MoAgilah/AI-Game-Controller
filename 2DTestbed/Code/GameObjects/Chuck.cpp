@@ -12,15 +12,6 @@ Chuck::Chuck(bool dir, int initAnim, float animSpd, const sf::Vector2f& initPos 
 
 	m_curSpr->SetPosition(m_spawnData.m_initialPos);
 	m_numLives = m_maxLives = 2;
-
-	m_airtime = 0;
-	m_waitTime = 0;
-
-	m_goingUp = true;
-}
-
-Chuck::~Chuck()
-{
 }
 
 void Chuck::Reset()
@@ -33,14 +24,8 @@ void Chuck::Reset()
 void Chuck::Die()
 {
 	m_numLives = 0;
-	m_alive = false;
 	m_timeLeftActive = 0.5f;
 	m_curSpr->ChangeAnim(5);
-}
-
-bool Chuck::Jumping()
-{
-	return m_waitTime > 0 && m_waitTime < 0.5f;
 }
 
 void Chuck::Animate(float deltaTime)
@@ -69,13 +54,14 @@ void Chuck::Animate(float deltaTime)
 	if (currentPos.y < 357)
 	{
 		m_curSpr->ChangeAnim(4);
-		if(m_goingUp) m_goingUp = false;
+		if(m_goingUp)
+			m_goingUp = false;
 
 	}
 
 	if (currentPos.y > 447)
 	{
-		if (m_goingUp == false)
+		if (!m_goingUp)
 		{
 			m_curSpr->ChangeAnim(3);
 			m_waitTime = 0;

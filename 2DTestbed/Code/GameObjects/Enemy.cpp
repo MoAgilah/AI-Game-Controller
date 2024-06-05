@@ -8,33 +8,21 @@ Enemy::Enemy(TexID id, int rows, int cols, int bTyp, bool dir, bool symmetrical,
 	:GameObject(id, rows, cols, bTyp, dir, symmetrical, initAnim, animSpd)
 {}
 
-Enemy::~Enemy()
-{
-}
-
 void Enemy::Update(float deltaTime)
 {
 	if (GetActive())
 	{
 		if (m_timeLeftActive > 0)
-		{
 			m_timeLeftActive -= deltaTime;
-		}
 
 		if (m_timeLeftActive < 0)
-		{
 			SetVisible(false);
-		}
 
 		if (m_resetAllowed)
-		{
 			m_resetAllowed = false;
-		}
 
-		if (m_alive || m_curBBox->GetID() == (int)TexID::BillBB)
-		{
+		if (GetIsAlive() || m_curBBox->GetID() == (int)TexID::BillBB)
 			Animate(deltaTime);
-		}
 
 		m_curSpr->Update(deltaTime);
 		if (GetDirection())
@@ -74,45 +62,6 @@ void Enemy::Render(sf::RenderWindow & window)
 	window.draw(*GetBBox()->GetSprite());
 }
 
-int Enemy::DecrementLife()
-{
-	if(m_numLives > 0)
-	{
-		--m_numLives;
-		if (m_numLives == 0)
-		{
-			Die();
-		}
-		else
-		{
-			if (m_curBBox->GetID() == (int)TexID::RexBB)
-			{
-
-				((Rex*)this)->Change();
-			}
-
-		}
-
-	}
-
-	return m_numLives;
-}
-
-void Enemy::ResetLives()
-{
-	m_numLives = m_maxLives;
-}
-
-bool Enemy::GetIsAlive() const
-{
-	return m_alive;
-}
-
-int Enemy::GetLives()
-{
-	return m_numLives;
-}
-
 void Enemy::Reset()
 {
 	GameObject::Reset();
@@ -124,7 +73,19 @@ void Enemy::Reset()
 	m_crouched = false;
 
 	m_maxLives = m_numLives;
-	m_alive = true;
 
 	m_timeLeftActive = 0;
+}
+
+void Enemy::DecrementLife()
+{
+	if (--m_numLives == 0)
+	{
+		Die();
+	}
+	else
+	{
+		if (m_curBBox->GetID() == (int)TexID::RexBB)
+			((Rex*)this)->Change();
+	}
 }

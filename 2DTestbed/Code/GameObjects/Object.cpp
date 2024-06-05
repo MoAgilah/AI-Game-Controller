@@ -8,31 +8,17 @@ Object::Object(TexID id, int rows, int cols, int bTyp, bool dir, bool symmetrica
 {
 	m_spawnData.m_initialPos = initPos;
 	SetPosition(m_spawnData.m_initialPos);
-
-	isAnimating = false;
-	m_goingUp = false;
-}
-
-Object::~Object()
-{
-}
-
-void Object::Initialise(bool hasAnim, float moveSpd, float jmpSpeed)
-{
-	m_hasAnim = hasAnim;
-	m_moveSpeed = moveSpd;
-	m_jumpSpeed = jmpSpeed;
 }
 
 void Object::Update(float deltaTime)
 {
 	if (GetActive())
 	{
-		if (isAnimating && this->GetBBox()->GetID() == (int)TexID::Box)
+		if (m_isAnimating && this->GetBBox()->GetID() == (int)TexID::Box)
 		{
 			if (m_curSpr->PlayedNumTimes(2))
 			{
-				isAnimating = false;
+				m_isAnimating = false;
 				m_curSpr->ChangeAnim(0);
 			}
 		}
@@ -59,14 +45,12 @@ void Object::Render(sf::RenderWindow & window)
 	window.draw(*m_curSpr->GetSprite());
 }
 
-void Object::SetIsAnimated(bool isAnim)
+void Object::Reset()
 {
-	isAnimating = isAnim;
-}
-
-bool Object::IsAnimated()
-{
-	return isAnimating;
+	m_isAnimating = false;
+	m_goingUp = false;
+	m_curSpr->ChangeAnim(m_spawnData.m_initialAnim);
+	m_visible = false;
 }
 
 void Object::Animate(float deltaTime)
@@ -145,10 +129,4 @@ void Object::Animate(float deltaTime)
 	}
 }
 
-void Object::Reset()
-{
-	isAnimating = false;
-	m_goingUp = false;
-	m_curSpr->ChangeAnim(m_spawnData.m_initialAnim);
-	m_visible = false;
-}
+

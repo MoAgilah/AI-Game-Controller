@@ -20,7 +20,6 @@ Rex::Rex(bool dir, int initAnim, float animSpd, const sf::Vector2f& initPos)
 
 void Rex::Die()
 {
-	m_alive = false;
 	m_curSpr->ChangeAnim(2);
 	m_timeLeftActive = 0.5f;
 }
@@ -44,7 +43,7 @@ void Rex::Update(float deltaTime)
 
 		if (m_timeLeftActive < 0)
 		{
-			m_alive = false;
+			m_numLives = 0;
 		}
 
 		if (m_resetAllowed)
@@ -52,7 +51,7 @@ void Rex::Update(float deltaTime)
 			m_resetAllowed = false;
 		}
 
-		if (m_alive)
+		if (GetIsAlive())
 		{
 			Animate(deltaTime);
 
@@ -105,10 +104,6 @@ void Rex::Update(float deltaTime)
 			}
 		}
 	}
-}
-
-Rex::~Rex()
-{
 }
 
 void Rex::Animate(float deltaTime)

@@ -17,14 +17,8 @@ Koopa::Koopa(int rows, int cols, bool dir, bool symmetrical, int initAnim, float
 
 void Koopa::Die()
 {
-	m_alive = false;
 	m_curSpr->ChangeAnim(2);
 	m_timeLeftActive = 0.5f;
-}
-
-
-Koopa::~Koopa()
-{
 }
 
 void Koopa::Animate(float deltaTime)

@@ -15,13 +15,16 @@ class Bill :
 {
 public:
 	Bill(bool dir = true, const sf::Vector2f& initPos = sf::Vector2f());
-	void Die();
-	~Bill();
-	void Render(sf::RenderWindow & window) final;
-	Body GetBody();
+	~Bill() final = default;
+	void Render(sf::RenderWindow& window) final;
+	void Die() final;
+
+	Body GetBody() const { return m_colbody; }
 private:
-	Body colbody;
-	void Animate(float deltaTime);
+
+	void Animate(float deltaTime) final;
+
+	Body m_colbody;
 };
 
 #endif

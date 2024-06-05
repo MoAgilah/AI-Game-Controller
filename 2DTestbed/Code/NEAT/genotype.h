@@ -43,7 +43,7 @@ private:
   CNeuralNet*             m_pPhenotype;
 
   //its raw fitness score
-  double                  m_dFitness;
+  double                  m_fitness;
 
   //its fitness score after it has been placed into a
   //species and adjusted accordingly
@@ -133,7 +133,7 @@ public:
   //overload '<' used for sorting. From fittest to poorest.
   friend bool operator<(const CGenome& lhs, const CGenome& rhs)
   {
-	return (lhs.m_dFitness > rhs.m_dFitness);
+	return (lhs.m_fitness > rhs.m_fitness);
   }
 
 
@@ -149,9 +149,9 @@ public:
   double  AmountToSpawn()const{return m_dAmountToSpawn;}
   void    SetAmountToSpawn(double num){m_dAmountToSpawn = num;}
 
-  void    SetFitness(const double num){m_dFitness = num;}
+  void    SetFitness(const double num){m_fitness = num;}
   void    SetAdjFitness(const double num){m_dAdjustedFitness = num;}
-  double  Fitness()const{return m_dFitness;}
+  double  Fitness()const{return m_fitness;}
   double  GetAdjFitness()const{return m_dAdjustedFitness;}
 
   int     GetSpecies()const{return m_iSpecies;}

@@ -14,6 +14,8 @@ Player::Player(int rows, int cols, bool symmetrical, int initAnim, float animSpd
 	m_type = PLAYER;
 	m_spawnData.m_initialPos = sf::Vector2f(75, 454);
 
+	m_keyStates.fill(false);
+
 	std::vector<int> frames{ 1, 1, 1, 2, 1, 2, 1, 2 };
 	//regular mario
 	m_curSpr->SetFrames(frames);
@@ -238,40 +240,6 @@ void Player::Render(sf::RenderWindow& window)
 	m_curBBox->Render(window);
 }
 
-void Player::Move(sf::Vector2f vel)
-{
-	m_curSpr->Move(vel.x, vel.y);
-	m_curBBox->GetSprite()->move(vel);
-}
-
-bool Player::GetIsSuper()
-{
-	return m_super;
-}
-
-void Player::SetIsSuper(bool super)
-{
-	m_super = super;
-}
-
-void Player::SetSpawnLoc(sf::Vector2f loc)
-{
-	if (loc == sf::Vector2f(0, 0))
-	{
-		m_spawnLoc = m_spawnData.m_initialPos;
-	}
-	else
-	{
-		m_spawnLoc.x = loc.x;
-	}
-}
-
-void Player::IncreaseCoins(int num)
-{
-	m_coinTotal = +num;
-	//m_dFitness += 100;
-}
-
 void Player::Reset()
 {
 	GameObject::Reset();
@@ -289,10 +257,7 @@ void Player::Reset()
 	m_cantSpinJump = false;
 	m_goalHit = false;
 
-	for (size_t i = 0; i < MAXKEYS; i++)
-	{
-		m_keyState[i] = false;
-	}
+	m_keyStates.fill(false);
 
 	m_heightDiff = 0;
 	m_noGravTime = 0;
@@ -303,45 +268,31 @@ void Player::Reset()
 	Game::GetGameMgr()->GetLevel()->ResetLevel();
 }
 
-bool Player::GetGoalHit()
-{
-	return m_goalHit;
-}
-
-void Player::SetAirTime(float val)
-{
-	m_justHitEnemy = true;
-	m_noGravTime = val;
-}
-
-void Player::JustBeenHit(bool hit)
-{
-	m_justBeenHit = hit;
-	m_InvulTime = 1;
-}
-
-bool Player::GetIfInvulnerable()
-{
-	return m_justBeenHit;
-}
-
 void Player::Kill()
 {
 	m_airtime = 0.33f;
 	m_airbourne = true;
 	m_onGround = false;
 	m_alive = false;
-	m_curSpr->ChangeAnim(DIE);//Die
+	m_curSpr->ChangeAnim(DIE);
 }
 
-void Player::GoalHit()
+void Player::Move(sf::Vector2f vel)
 {
-	m_goalHit = true;
+	m_curSpr->Move(vel.x, vel.y);
+	m_curBBox->GetSprite()->move(vel);
 }
 
-bool Player::GetIsAlive() const
+void Player::SetSpawnLoc(sf::Vector2f loc)
 {
-	return m_alive;
+	if (loc == sf::Vector2f(0, 0))
+	{
+		m_spawnLoc = m_spawnData.m_initialPos;
+	}
+	else
+	{
+		m_spawnLoc.x = loc.x;
+	}
 }
 
 void Player::SetCantJump()
@@ -358,79 +309,16 @@ void Player::SetCantJump()
 	}
 }
 
-void Player::HumanInput()
+void Player::SetAirTime(float val)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-	{
-		m_keyState[LEFT_KEY] = true;
-	}
-	else
-	{
-		if (m_keyState[LEFT_KEY])
-		{
-			m_keyState[LEFT_KEY] = false;
-		}
-	}
+	m_justHitEnemy = true;
+	m_noGravTime = val;
+}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-	{
-		m_keyState[RIGHT_KEY] = true;
-	}
-	else
-	{
-		if (m_keyState[RIGHT_KEY])
-		{
-			m_keyState[RIGHT_KEY] = false;
-		}
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-	{
-		m_keyState[SPACE_KEY] = true;
-	}
-	else
-	{
-		if (m_keyState[SPACE_KEY])
-		{
-			m_keyState[SPACE_KEY] = false;
-		}
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::RControl))
-	{
-		m_keyState[RCRTL_KEY] = true;
-	}
-	else
-	{
-		if (m_keyState[RCRTL_KEY])
-		{
-			m_keyState[RCRTL_KEY] = false;
-		}
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-	{
-		m_keyState[UP_KEY] = true;
-	}
-	else
-	{
-		if (m_keyState[UP_KEY])
-		{
-			m_keyState[UP_KEY] = false;
-		}
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-	{
-		m_keyState[DOWN_KEY] = true;
-	}
-	else
-	{
-		if (m_keyState[DOWN_KEY])
-		{
-			m_keyState[DOWN_KEY] = false;
-		}
-	}
+void Player::JustBeenHit(bool hit)
+{
+	m_justBeenHit = hit;
+	m_InvulTime = 1;
 }
 
 bool Player::UpdateANN()
@@ -439,24 +327,12 @@ bool Player::UpdateANN()
 
 	inputs = CtrlMgr::GetCtrlMgr()->GetController()->GetGridInputs();
 
-	outputs = m_pItsBrain->Update(inputs, CNeuralNet::active);
+	outputs = m_itsBrain->Update(inputs, CNeuralNet::active);
 
 	if (outputs.size() < CParams::iNumOutputs)
-	{
 		return false;
-	}
 
 	return true;
-}
-
-double Player::Fitness() const
-{
-	return m_dFitness;
-}
-
-void Player::UpdateFitness(float fitness)
-{
-	m_dFitness += fitness;
 }
 
 void Player::EndOfRunCalculations()
@@ -466,11 +342,11 @@ void Player::EndOfRunCalculations()
 	if (m_goalHit)
 	{
 		Game::GetGameMgr()->GetLogger()->AddExperimentLog("Completed the level");
-		m_dFitness += 1000;
+		m_fitness += 1000;
 	}
 	else if (GetPosition().x <= 75.f)
 	{
-		m_dFitness -= percent;
+		m_fitness -= percent;
 
 		if (GetPosition().x == 75.f)
 		{
@@ -485,7 +361,7 @@ void Player::EndOfRunCalculations()
 	else
 	{
 		Game::GetGameMgr()->GetLogger()->AddExperimentLog(std::format("{}% Completed", percent));
-		m_dFitness += percent;
+		m_fitness += percent;
 	}
 }
 
@@ -532,9 +408,84 @@ void Player::ControllerInput()
 		Game::GetGameMgr()->GetLogger()->AddDebugLog(std::format("{} = {} = {}", move, oval, output), false);
 		Game::GetGameMgr()->GetLogger()->AddDebugLog("\t", false);
 		//store output
-		m_keyState[i] = output;
+		m_keyStates[i] = output;
 	}
 	Game::GetGameMgr()->GetLogger()->AddDebugLog("");
+}
+
+void Player::HumanInput()
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	{
+		m_keyStates[LEFT_KEY] = true;
+	}
+	else
+	{
+		if (m_keyStates[LEFT_KEY])
+		{
+			m_keyStates[LEFT_KEY] = false;
+		}
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	{
+		m_keyStates[RIGHT_KEY] = true;
+	}
+	else
+	{
+		if (m_keyStates[RIGHT_KEY])
+		{
+			m_keyStates[RIGHT_KEY] = false;
+		}
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	{
+		m_keyStates[SPACE_KEY] = true;
+	}
+	else
+	{
+		if (m_keyStates[SPACE_KEY])
+		{
+			m_keyStates[SPACE_KEY] = false;
+		}
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::RControl))
+	{
+		m_keyStates[RCRTL_KEY] = true;
+	}
+	else
+	{
+		if (m_keyStates[RCRTL_KEY])
+		{
+			m_keyStates[RCRTL_KEY] = false;
+		}
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	{
+		m_keyStates[UP_KEY] = true;
+	}
+	else
+	{
+		if (m_keyStates[UP_KEY])
+		{
+			m_keyStates[UP_KEY] = false;
+		}
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	{
+		m_keyStates[DOWN_KEY] = true;
+	}
+	else
+	{
+		if (m_keyStates[DOWN_KEY])
+		{
+			m_keyStates[DOWN_KEY] = false;
+		}
+	}
 }
 
 void Player::ProcessInput()
@@ -552,9 +503,9 @@ void Player::ProcessInput()
 	}
 
 	//move left
-	if (m_keyState[LEFT_KEY])
+	if (m_keyStates[LEFT_KEY])
 	{
-		if (!m_keyState[DOWN_KEY])
+		if (!m_keyStates[DOWN_KEY])
 		{
 			//change direction
 			if (GetDirection())
@@ -573,9 +524,9 @@ void Player::ProcessInput()
 
 
 	//move right
-	if (m_keyState[RIGHT_KEY])
+	if (m_keyStates[RIGHT_KEY])
 	{
-		if (!m_keyState[DOWN_KEY])
+		if (!m_keyStates[DOWN_KEY])
 		{
 			//change direction
 			if (!GetDirection())
@@ -592,12 +543,12 @@ void Player::ProcessInput()
 		}
 	}
 
-	if ((m_keyState[LEFT_KEY] == false && m_keyState[RIGHT_KEY] == false))
+	if ((m_keyStates[LEFT_KEY] == false && m_keyStates[RIGHT_KEY] == false))
 	{
 		m_velocity.x = 0.0f;
 	}
 
-	if (m_keyState[UP_KEY])
+	if (m_keyStates[UP_KEY])
 	{
 		//change animation
 		m_curSpr->ChangeAnim(LOOKUP);
@@ -605,7 +556,7 @@ void Player::ProcessInput()
 
 	//start change bbox to crouch bbox
 		//if crouched key held down
-	if (m_keyState[DOWN_KEY])
+	if (m_keyStates[DOWN_KEY])
 	{
 		//if not changed bbox
 		if (m_justCrouched == false)
@@ -656,14 +607,14 @@ void Player::ProcessInput()
 	}//end change bbox to crouch bbox
 
 	//regular jump
-	if (m_keyState[SPACE_KEY])
+	if (m_keyStates[SPACE_KEY])
 	{
 		if (m_cantjump == false)
 		{
 			if (GetOnGround())
 			{
 				//change animation
-				if (!m_keyState[DOWN_KEY])
+				if (!m_keyStates[DOWN_KEY])
 					m_curSpr->ChangeAnim(JUMP);
 				// up key is pressed: move our character
 				m_airbourne = true;
@@ -683,7 +634,7 @@ void Player::ProcessInput()
 	}
 
 	//spin jump
-	if (m_keyState[RCRTL_KEY])
+	if (m_keyStates[RCRTL_KEY])
 	{
 		if (m_cantSpinJump == false)
 		{
@@ -708,12 +659,12 @@ void Player::ProcessInput()
 		}
 	}
 
-	if (!m_keyState[SPACE_KEY] && !m_keyState[RCRTL_KEY])
+	if (!m_keyStates[SPACE_KEY] && !m_keyStates[RCRTL_KEY])
 		m_cantjump = m_cantSpinJump = false;
 
 	if (m_velocity.x == 0.0f && m_velocity.y == 0.0f)
 	{
-		if (!m_keyState[DOWN_KEY] && !m_keyState[UP_KEY])
+		if (!m_keyStates[DOWN_KEY] && !m_keyStates[UP_KEY])
 			m_curSpr->ChangeAnim(IDLE);
 	}
 }

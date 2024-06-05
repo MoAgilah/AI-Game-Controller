@@ -321,30 +321,7 @@ void Collisions::PlayerToEnemy(GameObject * ply, GameObject * enmy)
 				{
 					//set hover time
 					ptmp->SetAirTime(0.1f);
-
-					//if enemy is chuck
-					if (etmp->GetBBox()->GetID() == CHUCK)
-					{
-						if (etmp->DecrementLife() == 0)
-						{
-							//ptmp->UpdateFitness(200);
-						}
-						else
-						{
-							//ptmp->UpdateFitness(100);
-						}
-					}
-					else
-					{
-						if (etmp->DecrementLife() == 0)
-						{
-							//ptmp->UpdateFitness(200);
-						}
-						else
-						{
-							//ptmp->UpdateFitness(100);
-						}
-					}
+					etmp->DecrementLife();
 				}
 			}
 		}
@@ -401,7 +378,7 @@ void Collisions::ObjectToTile(GameObject * obj, Tile * tile)
 			if (obj->GetBBox()->GetID() == REX || tile->GetType() == OWAY)
 			{
 				Rex* rtmp = (Rex*)obj;
-				if (rtmp->GetLives() == 2)//if regular
+				if (rtmp->Tall())//if regular
 				{
 					//set to tile top
 					rtmp->SetPosition(sf::Vector2f(obj->GetPosition().x, (tile->GetRect().getPosition().y - tile->GetRect().getOrigin().y * sY) - (obj->GetOrigin().y * sY) + 3.5f));
@@ -433,7 +410,7 @@ void Collisions::ObjectToTile(GameObject * obj, Tile * tile)
 			if (obj->GetBBox()->GetID() == REX)
 			{
 				Rex* rtmp = (Rex*)obj;
-				if (rtmp->GetLives() == 2)//regular
+				if (rtmp->Tall())//regular
 				{
 					//set to minimum closest dist
 					rtmp->SetPosition(sf::Vector2f((tile->GetRect().getPosition().x - tile->GetRect().getOrigin().x * sX) - (obj->GetOrigin().x * sX) + 7, obj->GetPosition().y));
@@ -470,7 +447,7 @@ void Collisions::ObjectToTile(GameObject * obj, Tile * tile)
 			if (obj->GetBBox()->GetID() == REX)
 			{
 				Rex* rtmp = (Rex*)obj;
-				if (rtmp->GetLives() == 2)//regular
+				if (rtmp->Tall())//regular
 				{
 					//set to minimum closest dist
 					rtmp->SetPosition(sf::Vector2f((tile->GetRect().getPosition().x + tile->GetRect().getOrigin().x * sX) + (obj->GetOrigin().x * sX) - 7.f, obj->GetPosition().y));

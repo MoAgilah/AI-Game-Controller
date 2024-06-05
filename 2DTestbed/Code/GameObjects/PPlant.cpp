@@ -13,15 +13,6 @@ PPlant::PPlant(const sf::Vector2f& initPos)
 	m_curSpr->SetFrames(cframes);
 }
 
-void PPlant::Die()
-{
-}
-
-
-PPlant::~PPlant()
-{
-}
-
 void PPlant::Animate(float deltaTime)
 {
 	SetPrevPosition(GetPosition());

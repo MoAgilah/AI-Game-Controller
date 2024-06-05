@@ -1,6 +1,7 @@
 #ifndef PlayerH
 #define PlayerH
 
+#include <array>
 #include <string>
 #include "../Game/Constants.h"
 #include "../GameObjects/GameObject.h"
@@ -20,56 +21,47 @@ public:
 	void Update(float deltaTime) final;
 	void Render(sf::RenderWindow& window) final;
 
+	void Reset() final;
+
+	void Kill();
+
 	void Move(sf::Vector2f vel);
+
+	bool GetIsSuper() const { return m_super; }
+	void SetIsSuper(bool super) { m_super = super; }
+
+	bool GetGoalHit() const { return m_goalHit; }
+	void GoalHit() { m_goalHit = true; }
+
+	void UpdateFitness(float fitness) { m_fitness += fitness; }
+	double Fitness() const { return m_fitness; }
+
+	bool GetIsAlive() const { return m_alive; }
+
+	void IncreaseCoins(int num) { m_coinTotal = +num; }
+
+	bool GetIfInvulnerable() const { return m_justBeenHit; }
 
 	void SetSpawnLoc(sf::Vector2f loc = sf::Vector2f(0, 0));
 
-	bool GetIsSuper();
-	void SetIsSuper(bool super);
-
-	void IncreaseCoins(int num);
-
-	void Reset() final;
-
-	bool GetGoalHit();
-	void GoalHit();
-	bool GetIsAlive() const;
-	void JustBeenHit(bool hit);
-	bool GetIfInvulnerable();
-	void Kill();
-
-	void SetAirTime(float val = 1);
 	void SetCantJump();
 
-	void UpdateFitness(float fitness);
+	void JustBeenHit(bool hit);
+
+	void SetAirTime(float val = 1);
+
 	void EndOfRunCalculations();
-	void InsertNewBrain(CNeuralNet* brain) { m_pItsBrain = brain; }
+	void InsertNewBrain(CNeuralNet* brain) { m_itsBrain = brain; }
 	bool UpdateANN();
-	double Fitness() const;
+
+private:
+	void ProcessInput();
+	void ControllerInput();
+	void HumanInput();
+
 private:
 	//Controller code
 	static bool s_playerInserted;
-	CNeuralNet*  m_pItsBrain;
-	//the players fitness score.
-	double			m_dFitness;
-	std::vector<double> outputs;
-	void ControllerInput();
-	//Controller code
-
-	void HumanInput();
-	void ProcessInput();
-
-	sf::Vector2f m_spawnLoc;
-	sf::Vector2f m_deathLoc;
-
-	AnimatedSprite * m_SupSpr;
-	BoundingBox * m_SupBbox;
-
-	BoundingBox * m_CrouchBbox;
-	BoundingBox * m_SCrouchBbox;
-
-	int m_coinTotal;
-
 	bool m_super = false;
 	bool m_justCrouched = false;
 	bool m_justBeenHit = false;
@@ -78,12 +70,27 @@ private:
 	bool m_cantjump = false;
 	bool m_cantSpinJump = false;
 	bool m_goalHit = false;
-	bool m_keyState[MAXKEYS] = { false };
+
+	std::array<bool, MAXKEYS> m_keyStates;
+
+	int m_coinTotal = 0;
 
 	float m_heightDiff = 0;
 	float m_noGravTime = 0;
 	float m_InvulTime = 0;
 	float m_airtime = 0;
+
+	double	m_fitness;
+	std::vector<double> outputs;
+
+	sf::Vector2f m_spawnLoc;
+
+	AnimatedSprite* m_SupSpr;
+	BoundingBox*	m_SupBbox;
+	BoundingBox*	m_CrouchBbox;
+	BoundingBox*	m_SCrouchBbox;
+
+	CNeuralNet* m_itsBrain;
 };
 
 #endif
