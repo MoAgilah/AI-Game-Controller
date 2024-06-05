@@ -37,16 +37,16 @@ void Chuck::Animate(float deltaTime)
 		if (m_waitTime > 0.5f)
 		{
 			m_spr->ChangeAnim(2);
-			m_velocity.y = -2;
+			SetYVelocity(-2);
 		}
 		else
 		{
-			m_velocity.y = 0;
+			SetYVelocity(0);
 		}
 	}
 	else
 	{
-		m_velocity.y = 3;
+		SetYVelocity(3);
 	}
 
 	sf::Vector2f currentPos = GetPosition();
@@ -70,8 +70,8 @@ void Chuck::Animate(float deltaTime)
 
 	}
 
-	if (m_velocity.y != 0)
+	if (GetYVelocity() != 0)
 	{
-		m_spr->Move(0, m_velocity.y * FPS * deltaTime);
+		m_spr->Move(0, GetYVelocity() * FPS * deltaTime);
 	}
 }

@@ -1,5 +1,4 @@
-#ifndef TimerH
-#define TimerH
+#pragma once
 
 class Timer
 {
@@ -22,5 +21,3 @@ private:
 	float m_time;
 	bool stopped;
 };
-
-#endif	//TimerH

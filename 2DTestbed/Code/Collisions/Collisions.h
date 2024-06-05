@@ -1,7 +1,6 @@
-#ifndef CollisionsH
-#define CollisionsH
+#pragma once
 
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 
 #include "../Collisions/Tile.h"
 #include "../Collisions/BoundingBox.h"
@@ -55,5 +54,3 @@ private:
 	std::vector<Tile*> m_grid;
 	std::vector<GameObject*> m_collidables;
 };
-
-#endif

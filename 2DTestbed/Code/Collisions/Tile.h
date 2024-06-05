@@ -1,7 +1,6 @@
-#ifndef TileH
-#define TileH
+#pragma once
 
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 
 #include <vector>
 
@@ -58,6 +57,3 @@ private:
 	sf::RectangleShape m_srect;
 	std::vector<sf::RectangleShape> m_slope;
 };
-
-
-#endif

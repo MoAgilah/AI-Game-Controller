@@ -50,7 +50,7 @@ void Object::Reset()
 	m_isAnimating = false;
 	m_goingUp = false;
 	m_spr->ChangeAnim(m_spawnData.m_initialAnim);
-	m_visible = false;
+	SetVisible(false);
 }
 
 void Object::Animate(float deltaTime)
@@ -61,39 +61,39 @@ void Object::Animate(float deltaTime)
 
 		if (GetDirection())
 		{
-			m_velocity.x = 2;
+			SetXVelocity(2);
 		}
 		else
 		{
-			m_velocity.x = -2;
+			SetXVelocity(-2);
 		}
 
-		if (m_onGround)
+		if (GetOnGround())
 		{
-			m_velocity.y = 0;
+			SetYVelocity(0);
 			m_airtime = 0;
 		}
 		else
 		{
-			m_velocity.y += gravity;
+			SetYVelocity(c_gravity);
 		}
 
-		if (m_velocity.x != 0)
+		if (GetXVelocity() != 0)
 		{
-			m_spr->Move(m_velocity.x * FPS * deltaTime, 0);
+			m_spr->Move(GetXVelocity() * FPS * deltaTime, 0);
 			Collisions::Get()->ProcessCollisions(this);
 		}
 
 		//check for leftmost and rightmost boundary
 		if (m_spr->GetPosition().x < m_spr->GetOrigin().x || m_spr->GetPosition().x > 11776 - m_spr->GetOrigin().x)
 		{
-			m_spr->Move(-m_velocity.x * FPS * deltaTime, 0);
-			SetDirection(!m_direction);
+			m_spr->Move(-GetXVelocity() * FPS * deltaTime, 0);
+			SetDirection(!GetDirection());
 		}
 
-		if (m_velocity.y != 0)
+		if (GetYVelocity() != 0)
 		{
-			m_spr->Move(0, m_velocity.y * FPS * deltaTime);
+			m_spr->Move(0, GetYVelocity() * FPS * deltaTime);
 			Collisions::Get()->ProcessCollisions(this);
 		}
 	}
@@ -102,16 +102,16 @@ void Object::Animate(float deltaTime)
 	{
 		if (m_goingUp)
 		{
-			m_velocity.y = 2.5;
+			SetYVelocity(2.5);
 		}
 		else
 		{
-			m_velocity.y = -2.5;
+			SetYVelocity(-2.5);
 		}
 
-		if (m_velocity.y != 0)
+		if (GetYVelocity() != 0)
 		{
-			m_spr->Move(0, m_velocity.y * FPS * deltaTime);
+			m_spr->Move(0, GetYVelocity() * FPS * deltaTime);
 		}
 
 		sf::Vector2f currentPos = GetPosition();

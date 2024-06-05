@@ -1,6 +1,4 @@
-#ifndef KoopaH
-#define KoopaH
-
+#pragma once
 #include "../GameObjects/Enemy.h"
 
 class Koopa :
@@ -14,5 +12,3 @@ public:
 private:
 	void Animate(float deltaTime) final;
 };
-
-#endif

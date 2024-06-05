@@ -1,5 +1,4 @@
-#ifndef RexH
-#define RexH
+#pragma once
 
 #include "../GameObjects/Enemy.h"
 
@@ -20,5 +19,3 @@ public:
 private:
 	void Animate(float deltaTime) final;
 };
-
-#endif

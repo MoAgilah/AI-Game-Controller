@@ -1,5 +1,4 @@
-#ifndef LoggerH
-#define LoggerH
+#pragma once
 
 #include <vector>
 #include <string>
@@ -20,5 +19,3 @@ private:
 	std::ofstream debugfile;
 	std::ofstream experifile;
 };
-
-#endif

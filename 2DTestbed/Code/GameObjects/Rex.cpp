@@ -109,14 +109,14 @@ void Rex::Animate(float deltaTime)
 		m_velocity.x = -2;
 	}
 
-	if (m_onGround)
+	if (GetOnGround())
 	{
 		m_velocity.y = 0;
 		m_airtime = 0;
 	}
 	else
 	{
-		m_velocity.y += gravity;
+		m_velocity.y += c_gravity;
 	}
 
 	if (m_velocity.x != 0)
@@ -129,7 +129,7 @@ void Rex::Animate(float deltaTime)
 	if (m_spr->GetPosition().x < m_spr->GetOrigin().x || m_spr->GetPosition().x > 11776 - m_spr->GetOrigin().x)
 	{
 		m_spr->Move(-m_velocity.x * FPS * deltaTime, 0);
-		SetDirection(!m_direction);
+		SetDirection(!GetDirection());
 	}
 
 	if (m_velocity.y != 0)

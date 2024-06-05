@@ -1,5 +1,4 @@
-#ifndef PlayerH
-#define PlayerH
+#pragma once
 
 #include <array>
 #include <string>
@@ -86,5 +85,3 @@ private:
 
 	CNeuralNet* m_itsBrain;
 };
-
-#endif

@@ -21,6 +21,7 @@ constexpr float FPS = 60.0f;
 
 constexpr int MAXKEYS = 6;
 
+const float c_gravity = 0.981f;
 constexpr float c_maxAirTime = 1.f;
-constexpr float m_moveSpeed = 3.0f;
-constexpr float m_jumpSpeed = 3.0f;
+constexpr float c_moveSpeed = 3.0f;
+constexpr float c_jumpSpeed = 3.0f;

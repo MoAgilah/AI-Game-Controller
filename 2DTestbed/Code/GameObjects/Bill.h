@@ -1,5 +1,4 @@
-#ifndef BillH
-#define BillH
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include "../GameObjects/Enemy.h"
@@ -26,5 +25,3 @@ private:
 
 	Body m_colbody;
 };
-
-#endif

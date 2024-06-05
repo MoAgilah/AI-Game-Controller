@@ -1,5 +1,4 @@
-#ifndef EnemyH
-#define EnemyH
+#pragma once
 
 #include "../GameObjects/GameObject.h"
 
@@ -15,7 +14,7 @@ public:
 	virtual void Die() {};
 
 	bool GetIsAlive() const { return m_numLives <= 0; }
-	bool GetActive() const final { return m_visible && GetIsAlive(); }
+	bool GetActive() const final { return GameObject::GetActive() && GetIsAlive(); }
 	void DecrementLife();
 
 protected:
@@ -29,5 +28,3 @@ protected:
 	float m_tillReset = 0;
 	float m_timeLeftActive = 0;
 };
-
-#endif

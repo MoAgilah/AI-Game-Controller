@@ -1,8 +1,7 @@
-#ifndef BoundingBoxH
-#define BoundingBoxH
+#pragma once
 
 #include "../Drawables/Sprite.h"
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include <string>
 
 class Camera;
@@ -10,7 +9,7 @@ class Tile;
 class BoundingBox
 {
 public:
-	BoundingBox(TexID id);
+	explicit BoundingBox(TexID id);
 	~BoundingBox() = default;
 
 	void SetTexture(TexID id);
@@ -37,5 +36,3 @@ private:
 	int number;
 	static int numOn;
 };
-
-#endif

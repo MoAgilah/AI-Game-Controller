@@ -106,25 +106,25 @@ void Player::Update(float deltaTime)
 		}
 		else //if hovering
 		{
-			m_velocity.y = 0;
+			SetYVelocity(0);
 			m_noGravTime -= deltaTime;
 		}
 	}
 
 	if (!GetIsAlive())
 	{
-		if (m_airbourne)
+		if (GetAirbourne())
 		{
-			m_velocity.y = -m_jumpSpeed;
+			SetYVelocity(-c_jumpSpeed);
 			m_airtime += deltaTime;
 			if (m_airtime >= c_maxAirTime)
 			{
-				m_airbourne = false;
+				SetAirbourne(false);
 			}
 		}
 		else
 		{
-			m_velocity.y += gravity;
+			SetYVelocity(c_gravity);
 			if (!Game::GetGameMgr()->GetCamera()->OnScreen(this))
 			{
 				if (!Automated)
@@ -134,44 +134,45 @@ void Player::Update(float deltaTime)
 			}
 		}
 
-		Move(sf::Vector2f(0, m_velocity.y * FPS * deltaTime));
+		Move(sf::Vector2f(0, GetYVelocity() * FPS * deltaTime));
 	}
 	else
 	{
 		if (!GetOnGround())
 		{
-			if (m_airbourne)
+			if (GetAirbourne())
 			{
 				m_airtime += deltaTime;
 				if (m_airtime >= c_maxAirTime)
 				{
-					m_airbourne = false;
+					SetAirbourne(false);
 					m_justCrouched = false;
 				}
 			}
 			else
 			{
-				m_velocity.y += gravity;
+				SetYVelocity(c_gravity);
 			}
 		}
 		else
 		{
+			SetYVelocity(0);
 			m_velocity.y = 0;
 			m_airtime = 0;
 		}
 
 		//decomposition of movement
-		if (m_velocity.x != 0)
+		if (GetXVelocity() != 0)
 		{
 			SetPrevPosition(m_spr->GetPosition());
-			Move(sf::Vector2f(m_velocity.x * FPS * deltaTime, 0));
+			Move(sf::Vector2f(GetXVelocity() * FPS * deltaTime, 0));
 			Collisions::Get()->ProcessCollisions(this);
 		}
 
-		if (m_velocity.y != 0)
+		if (GetYVelocity() != 0)
 		{
 			SetPrevPosition(m_spr->GetPosition());
-			Move(sf::Vector2f(0, m_velocity.y * FPS * deltaTime));
+			Move(sf::Vector2f(0, GetYVelocity() * FPS * deltaTime));
 			Collisions::Get()->ProcessCollisions(this);
 		}
 	}
@@ -179,7 +180,7 @@ void Player::Update(float deltaTime)
 	//check for leftmost and rightmost boundary
 	if (m_spr->GetPosition().x < m_spr->GetOrigin().x || m_spr->GetPosition().x > 11776 - m_spr->GetOrigin().x)
 	{
-		Move(sf::Vector2f(-m_velocity.x * FPS * deltaTime, 0));
+		Move(sf::Vector2f(-GetXVelocity() * FPS * deltaTime, 0));
 	}
 
 	if (m_bbox->GetSprite()->getPosition().y > 600 - m_bbox->GetSprite()->getOrigin().y)
@@ -226,7 +227,7 @@ void Player::Reset()
 
 	m_spawnLoc = m_spawnData.m_initialPos;
 
-	m_velocity = sf::Vector2f(0.0f, 0.0f);
+	SetVelocity(sf::Vector2f(0.0f, 0.0f));
 
 	m_super = false;
 	m_justCrouched = false;
@@ -251,8 +252,8 @@ void Player::Reset()
 void Player::Kill()
 {
 	m_airtime = 0.33f;
-	m_airbourne = true;
-	m_onGround = false;
+	SetAirbourne(true);
+	SetOnGround(false);
 	m_alive = false;
 	m_spr->ChangeAnim(DIE);
 }
@@ -282,9 +283,9 @@ void Player::SetCantJump()
 		m_cantjump = true;
 		m_cantSpinJump = true;
 
-		if (m_airbourne)
+		if (GetAirbourne())
 		{
-			m_airbourne = false;
+			SetAirbourne(false);
 		}
 	}
 }
@@ -498,7 +499,7 @@ void Player::ProcessInput()
 			}
 
 			// right key is pressed: move our character
-			m_velocity.x = -m_moveSpeed;
+			m_velocity.x = -c_moveSpeed;
 		}
 	}
 
@@ -519,7 +520,7 @@ void Player::ProcessInput()
 			}
 
 			// right key is pressed: move our character
-			m_velocity.x = m_moveSpeed;
+			m_velocity.x = c_moveSpeed;
 		}
 	}
 
@@ -597,16 +598,16 @@ void Player::ProcessInput()
 				if (!m_keyStates[DOWN_KEY])
 					m_spr->ChangeAnim(JUMP);
 				// up key is pressed: move our character
-				m_airbourne = true;
-				m_onGround = false;
-				m_velocity.y -= m_jumpSpeed;
+				SetAirbourne(true);
+				SetOnGround(false);
+				m_velocity.y -= c_jumpSpeed;
 				m_cantjump = true;
 			}
 		}
 	}
 	else
 	{
-		if (m_airbourne && m_cantjump)
+		if (GetAirbourne() && m_cantjump)
 		{
 			m_spr->ChangeAnim(FALL);
 			m_airtime = c_maxAirTime;
@@ -623,16 +624,16 @@ void Player::ProcessInput()
 				//change animation
 				m_spr->ChangeAnim(SPINJUMP);
 				// up key is pressed: move our character
-				m_airbourne = true;
-				m_onGround = false;
-				m_velocity.y = -m_jumpSpeed;
+				SetAirbourne(true);
+				SetOnGround(false);
+				m_velocity.y = -c_jumpSpeed;
 				m_cantSpinJump = true;
 			}
 		}
 	}
 	else
 	{
-		if (m_airbourne && m_cantSpinJump)
+		if (GetAirbourne() && m_cantSpinJump)
 		{
 			m_spr->ChangeAnim(SPINJUMP);
 			m_airtime = c_maxAirTime;

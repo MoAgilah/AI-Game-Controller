@@ -1,6 +1,4 @@
-#ifndef ChuckH
-#define ChuckH
-
+#pragma once
 #include "../GameObjects/Enemy.h"
 
 class Chuck :
@@ -19,5 +17,3 @@ private:
 	bool m_goingUp = true;
 	float m_waitTime = 0;
 };
-
-#endif

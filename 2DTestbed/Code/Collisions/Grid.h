@@ -1,11 +1,10 @@
-#ifndef GridH
-#define GridH
+#pragma once
 
 #include <iostream>
 #include <string>
 #include <vector>
 
-#include <sfml/Graphics.hpp>
+#include <SFML/Graphics.hpp>
 
 class Tile;
 class Camera;
@@ -24,5 +23,3 @@ private:
 	std::vector<Tile*> m_grid;
 	sf::Font font;
 };
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef AnimatedSpriteH
-#define AnimatedSpriteH
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include "../Game/TextureManager.h"
@@ -81,5 +80,3 @@ private:
 
 	std::vector<int> m_numFrames;
 };
-
-#endif

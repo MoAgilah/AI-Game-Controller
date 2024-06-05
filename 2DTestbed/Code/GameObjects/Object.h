@@ -1,5 +1,4 @@
-#ifndef ObjectH
-#define ObjectH
+#pragma once
 
 #include "../GameObjects/GameObject.h"
 
@@ -31,6 +30,4 @@ private:
 	float m_airtime;
 	float m_animLength;
 };
-
-#endif
 

@@ -50,6 +50,12 @@ public:
 	void SetVelocity(sf::Vector2f vel) { m_velocity = vel; }
 	void SetVelocity(float x, float y) { m_velocity = sf::Vector2f(x, y); }
 
+	float GetXVelocity() const { return m_velocity.x; }
+	void SetXVelocity(float x) { m_velocity.x = x; }
+
+	float GetYVelocity() const { return m_velocity.y; }
+	void SetYVelocity(float y) { m_velocity.y = y; }
+
 	sf::Vector2f GetOrigin() const { return m_spr->GetOrigin(); }
 
 	void SetPrevPosition(sf::Vector2f pos) { m_prevPos = pos; }
@@ -70,7 +76,8 @@ public:
 	virtual bool GetActive() const { return m_visible; }
 	void SetVisible(bool act) { m_visible = act; }
 
-	TexID GetID() { return (TexID)m_type; }
+	TexID GetID() const { return (TexID)m_type; }
+
 protected:
 	int m_type = -1;
 	int m_objectID;
@@ -88,8 +95,6 @@ protected:
 	sf::Vector2f m_velocity;
 
 	sf::Vector2f m_prevPos;
-
-	const float gravity = 0.981f;
 
 	std::shared_ptr<AnimatedSprite> m_spr;
 	std::shared_ptr<BoundingBox> m_bbox;

@@ -1,5 +1,4 @@
-#ifndef PPlantH
-#define	PPlantH
+#pragma once
 
 #include "../GameObjects/Enemy.h"
 
@@ -13,5 +12,3 @@ public:
 private:
 	void Animate(float deltaTime) final;
 };
-
-#endif

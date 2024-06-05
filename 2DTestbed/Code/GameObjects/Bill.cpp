@@ -42,25 +42,23 @@ void Bill::Animate(float deltaTime)
 
 	if (GetDirection())
 	{
-		m_velocity.x = 3;
+		SetXVelocity(3);
 	}
 	else
 	{
-		m_velocity.x = -3;
+		SetXVelocity(-3);
 	}
 
 	if (!GetIsAlive())
 	{
-		m_velocity.y = + 3;
+		SetVelocity(0, 3);
 
-		m_velocity.x = 0;
-
-		m_spr->Move(0, m_velocity.y * FPS * deltaTime);
+		m_spr->Move(0, GetYVelocity() * FPS * deltaTime);
 	}
 
-	if (m_velocity.x != 0)
+	if (GetXVelocity() != 0)
 	{
-		m_spr->Move(m_velocity.x * FPS * deltaTime, 0);
+		m_spr->Move(GetXVelocity() * FPS * deltaTime, 0);
 		Collisions::Get()->ProcessCollisions(this);
 	}
 
@@ -78,7 +76,7 @@ void Bill::Animate(float deltaTime)
 	//check for leftmost and rightmost boundary
 	if (m_spr->GetPosition().x < m_spr->GetOrigin().x || m_spr->GetPosition().x > 11776 - m_spr->GetOrigin().x)
 	{
-		m_spr->Move(-m_velocity.x * FPS * deltaTime, 0);
-		SetDirection(!m_direction);
+		m_spr->Move(-GetXVelocity() * FPS * deltaTime, 0);
+		SetDirection(!GetDirection());
 	}
 }

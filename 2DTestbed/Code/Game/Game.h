@@ -1,7 +1,7 @@
 #pragma once
 
 #include <memory>
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 
 #include "Camera.h"
 #include "World.h"
