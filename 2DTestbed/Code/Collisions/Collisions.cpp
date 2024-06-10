@@ -671,7 +671,7 @@ void Collisions::QBoxHit(Player * ply, Object * obj)
 		}
 		//resove collision
 		ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (obj->GetPosition().y + obj->GetOrigin().y * sY) + (ply->GetOrigin().y * sY) + 4.f));
-		ply->SetCantJump();//make mario fall
+		ply->ForceFall();//make mario fall
 		break;
 	case DDIR:
 		//set to top of qbox

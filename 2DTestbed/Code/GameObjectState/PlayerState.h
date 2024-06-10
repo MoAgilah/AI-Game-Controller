@@ -32,6 +32,7 @@ public:
 	~GroundedState() override = default;
 
 	void Initialise() override;
+	void Resume() override;
 	void ProcessInputs() override;
 	void Update(float deltaTime) override;
 };
@@ -56,6 +57,7 @@ public:
 	~CrouchingState() override = default;
 
 	void Initialise() override;
+	void Resume() override;
 	void ProcessInputs() override;
 	void Update(float deltaTime) override;
 };

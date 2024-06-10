@@ -6,7 +6,7 @@
 #include "../GameObjects/GameObject.h"
 #include "../NEAT/phenotype.h"
 
-enum Anims { IDLE, CROUCH, JUMP, LEFT, RIGHT = LEFT, LOOKUP, SPINJUMP, FALL, DIE, MAXANIM };
+enum Anims { IDLE, CROUCH, JUMP, MOVING, LOOKUP, SPINJUMP, FALL, DIE, MAXANIM };
 
 enum Actions { LEFT_KEY, RIGHT_KEY, UP_KEY, DOWN_KEY, SPACE_KEY, RCRTL_KEY };
 
@@ -19,6 +19,8 @@ public:
 
 	void Update(float deltaTime) final;
 	void Render(sf::RenderWindow& window) final;
+
+	const std::array<bool, MAXKEYS>& GetKeyStates() const { return m_keyStates; }
 
 	void Reset() final;
 
@@ -43,11 +45,19 @@ public:
 
 	void SetSpawnLoc(sf::Vector2f loc = sf::Vector2f(0, 0));
 
-	void SetCantJump();
+	bool GetCantJump() const { return m_cantjump; }
+	void SetCantJump(bool val) { m_cantjump = val; }
+
+	bool GetCantSpinJump() const { return m_cantSpinJump; }
+	void SetCantSpinJump(bool val) { m_cantSpinJump = val; }
+
+	void ForceFall();
 
 	void JustBeenHit(bool hit);
 
+	float GetAirTime() const { return m_airtime; }
 	void SetAirTime(float val = 1);
+	void IncAirTime(float val) { m_airtime += val; }
 
 	void EndOfRunCalculations();
 	void InsertNewBrain(CNeuralNet* brain) { m_itsBrain = brain; }

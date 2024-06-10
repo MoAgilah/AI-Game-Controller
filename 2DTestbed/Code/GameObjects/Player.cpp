@@ -124,7 +124,7 @@ void Player::Update(float deltaTime)
 		}
 		else
 		{
-			IncrementYVelocity(c_gravity);
+			 
 			if (!Game::GetGameMgr()->GetCamera()->OnScreen(this))
 			{
 				if (!Automated)
@@ -275,7 +275,7 @@ void Player::SetSpawnLoc(sf::Vector2f loc)
 	}
 }
 
-void Player::SetCantJump()
+void Player::ForceFall()
 {
 	if (m_cantjump == false || m_cantSpinJump == false)
 	{
@@ -494,7 +494,7 @@ void Player::ProcessInput()
 			//change animation
 			if (GetOnGround())
 			{
-				GetAnimSpr()->ChangeAnim(LEFT);
+				GetAnimSpr()->ChangeAnim(MOVING);
 			}
 
 			// right key is pressed: move our character
@@ -515,7 +515,7 @@ void Player::ProcessInput()
 			//change animation
 			if (GetOnGround())
 			{
-				GetAnimSpr()->ChangeAnim(RIGHT);
+				GetAnimSpr()->ChangeAnim(MOVING);
 			}
 
 			// right key is pressed: move our character
