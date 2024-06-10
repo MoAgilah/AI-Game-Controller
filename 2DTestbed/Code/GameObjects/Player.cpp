@@ -115,7 +115,7 @@ void Player::Update(float deltaTime)
 	{
 		if (GetAirbourne())
 		{
-			SetYVelocity(-c_jumpSpeed);
+			DecrementYVelocity(c_jumpSpeed);
 			m_airtime += deltaTime;
 			if (m_airtime >= c_maxAirTime)
 			{
@@ -124,7 +124,7 @@ void Player::Update(float deltaTime)
 		}
 		else
 		{
-			SetYVelocity(c_gravity);
+			IncrementYVelocity(c_gravity);
 			if (!Game::GetGameMgr()->GetCamera()->OnScreen(this))
 			{
 				if (!Automated)
@@ -151,13 +151,12 @@ void Player::Update(float deltaTime)
 			}
 			else
 			{
-				SetYVelocity(c_gravity);
+				IncrementYVelocity(c_gravity);
 			}
 		}
 		else
 		{
 			SetYVelocity(0);
-			m_velocity.y = 0;
 			m_airtime = 0;
 		}
 
@@ -499,7 +498,7 @@ void Player::ProcessInput()
 			}
 
 			// right key is pressed: move our character
-			m_velocity.x = -c_moveSpeed;
+			SetXVelocity(-c_moveSpeed);
 		}
 	}
 
@@ -520,7 +519,7 @@ void Player::ProcessInput()
 			}
 
 			// right key is pressed: move our character
-			m_velocity.x = c_moveSpeed;
+			SetXVelocity(c_moveSpeed);
 		}
 	}
 
@@ -600,7 +599,7 @@ void Player::ProcessInput()
 				// up key is pressed: move our character
 				SetAirbourne(true);
 				SetOnGround(false);
-				m_velocity.y -= c_jumpSpeed;
+				DecrementYVelocity(c_jumpSpeed);
 				m_cantjump = true;
 			}
 		}
@@ -626,7 +625,7 @@ void Player::ProcessInput()
 				// up key is pressed: move our character
 				SetAirbourne(true);
 				SetOnGround(false);
-				m_velocity.y = -c_jumpSpeed;
+				DecrementYVelocity(c_jumpSpeed);
 				m_cantSpinJump = true;
 			}
 		}
@@ -643,7 +642,7 @@ void Player::ProcessInput()
 	if (!m_keyStates[SPACE_KEY] && !m_keyStates[RCRTL_KEY])
 		m_cantjump = m_cantSpinJump = false;
 
-	if (m_velocity.x == 0.0f && m_velocity.y == 0.0f)
+	if (GetVelocity() == sf::Vector2f())
 	{
 		if (!m_keyStates[DOWN_KEY] && !m_keyStates[UP_KEY])
 			m_spr->ChangeAnim(IDLE);

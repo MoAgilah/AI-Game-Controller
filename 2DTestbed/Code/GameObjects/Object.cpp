@@ -75,7 +75,7 @@ void Object::Animate(float deltaTime)
 		}
 		else
 		{
-			SetYVelocity(c_gravity);
+			IncrementYVelocity(c_gravity);
 		}
 
 		if (GetXVelocity() != 0)

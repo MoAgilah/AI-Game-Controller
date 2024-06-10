@@ -52,9 +52,13 @@ public:
 
 	float GetXVelocity() const { return m_velocity.x; }
 	void SetXVelocity(float x) { m_velocity.x = x; }
+	void IncrementXVelocity(float x) { m_velocity.x += x; }
+	void DecrementXVelocity(float x) { m_velocity.x -= x; }
 
 	float GetYVelocity() const { return m_velocity.y; }
 	void SetYVelocity(float y) { m_velocity.y = y; }
+	void IncrementYVelocity(float y) { m_velocity.y += y; }
+	void DecrementYVelocity(float y) { m_velocity.y -= y; }
 
 	sf::Vector2f GetOrigin() const { return m_spr->GetOrigin(); }
 
