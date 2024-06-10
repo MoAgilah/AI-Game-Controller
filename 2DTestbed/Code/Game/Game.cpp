@@ -33,6 +33,7 @@ void Game::ChangePlayer(Player * ply)
 
 void Game::Update(float deltaTime)
 {
+	m_camera->Update();
 	Timer::Get()->UpdateTime(deltaTime);
 
 	if (Automated)

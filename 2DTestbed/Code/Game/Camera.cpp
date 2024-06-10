@@ -21,6 +21,24 @@ Camera::Camera()
 	m_curScrBounds.height = scrY;
 }
 
+void Camera::Update()
+{
+	//scroll the screen view with the player
+	float posX = Game::GetGameMgr()->GetPlayer()->GetPosition().x - scrX * 0.5f;
+
+	if (posX < 0)
+		posX = 0;
+
+	//reset the m_camera position
+	m_camera.reset(sf::FloatRect(posX, 0, scrX, scrY));
+
+	m_curScrBounds.left = m_camera.getCenter().x - scrX * 0.5f;
+	m_curScrBounds.width = scrX;
+
+	m_curScrBounds.top = m_camera.getCenter().y - scrY * 0.5f;
+	m_curScrBounds.height = scrY;
+}
+
 bool Camera::OnScreen(const Player* ply) const
 {
 	float screenBot = m_curScrBounds.top + m_curScrBounds.height;
@@ -93,20 +111,5 @@ bool Camera::IsinView(const sf::RectangleShape& rect) const
 
 void Camera::Reset(sf::RenderWindow& window)
 {
-	//scroll the screen view with the player
-	float posX = Game::GetGameMgr()->GetPlayer()->GetPosition().x - scrX * 0.5f;
-
-	if (posX < 0)
-		posX = 0;
-
-	//reset the m_camera position
-	m_camera.reset(sf::FloatRect(posX, 0, scrX, scrY));
-
 	window.setView(m_camera);
-
-	m_curScrBounds.left = m_camera.getCenter().x - scrX * 0.5f;
-	m_curScrBounds.width = scrX;
-
-	m_curScrBounds.top = m_camera.getCenter().y - scrY * 0.5f;
-	m_curScrBounds.height = scrY;
 }

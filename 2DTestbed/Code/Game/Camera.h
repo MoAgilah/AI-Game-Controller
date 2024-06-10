@@ -10,6 +10,8 @@ public:
 	Camera();
 	~Camera() = default;
 
+	void Update();
+
 	sf::View GetView() const { return m_camera; }
 	sf::Rect<float> GetCurrentScreenBounds() const { return m_curScrBounds; }
 

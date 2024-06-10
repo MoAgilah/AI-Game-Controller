@@ -7,7 +7,8 @@
 #include "../GameObjects/Enemy.h"
 #include "../GameObjects/Object.h"
 
-enum class GUI { NAME, TIME, MAX };
+enum class Texts { Name, Time, Max };
+enum class Sprites { BackGround, Pipe1, Pipe2, Pipe3, Name, Time, Max};
 
 class Camera;
 
@@ -34,14 +35,10 @@ private:
 	void UpdateGUI();
 
 private:
-	Sprite m_backgroundSprite;
-	std::vector<std::pair<int,Sprite>> m_foregroundSprites;
 
+	sf::Font m_font;
+	std::array<sf::Text, (int)Texts::Max> m_texts;
+	std::array<Sprite, (int)Sprites::Max> m_sprites;
 	std::vector<std::unique_ptr<Enemy>> m_enemies;
 	std::vector<std::unique_ptr<Object>> m_objects;
-
-	// GUI
-	sf::Font m_font;
-	std::array<Sprite, (int)GUI::MAX> m_sprites;
-	std::array<sf::Text, (int)GUI::MAX> m_text;
 };

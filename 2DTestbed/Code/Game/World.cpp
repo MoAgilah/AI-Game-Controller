@@ -15,10 +15,10 @@
 
 World::World()
 {
-	m_backgroundSprite.SetTexture(TexID::Background);
-	m_backgroundSprite.SetScale(sf::Vector2f(sX, sY));
-	m_backgroundSprite.SetOrigin(sf::Vector2f(0, 0));
-	m_backgroundSprite.SetPosition(sf::Vector2f(0, -480));
+	m_sprites[(int)Sprites::BackGround].SetTexture(TexID::Background);
+	m_sprites[(int)Sprites::BackGround].SetScale(sf::Vector2f(sX, sY));
+	m_sprites[(int)Sprites::BackGround].SetOrigin(sf::Vector2f(0, 0));
+	m_sprites[(int)Sprites::BackGround].SetPosition(sf::Vector2f(0, -480));
 
 	AddEnemies();
 	AddObjects();
@@ -50,7 +50,7 @@ void World::Update(float deltaTime)
 
 void World::Render(sf::RenderWindow& window)
 {
-	m_backgroundSprite.Render(window);
+	m_sprites[(int)Sprites::BackGround].Render(window);
 
 	for (const auto& enemy : m_enemies)
 	{
@@ -69,19 +69,18 @@ void World::Render(sf::RenderWindow& window)
 	}
 
 	auto camera = Game::GetGameMgr()->GetCamera();
-	for (auto& sprite : m_foregroundSprites)
+	for (auto i = (int)Sprites::Pipe1; i <= (int)Sprites::Pipe3; i++)
 	{
-		if (!camera->IsInView(sprite.second.GetSprite()))
+		if (!camera->IsInView(m_sprites[i].GetSprite()))
 			continue;
 
-		window.draw(*sprite.second.GetSprite());
+		m_sprites[i].Render(window);
 	}
 
-	// render GUI
-	for (auto& sprite : m_sprites)
-		window.draw(*sprite.GetSprite());
+	for (auto i = (int)Sprites::Name; i < (int)Sprites::Max; i++)
+		m_sprites[i].Render(window);
 
-	for (const auto& text : m_text)
+	for (const auto& text : m_texts)
 		window.draw(text);
 }
 
@@ -131,15 +130,11 @@ void World::AddEnemies()
 	tmp = Collisions::Get()->GetTile(113, 5);
 	m_enemies.push_back(std::make_unique<PPlant>(sf::Vector2f(tmp.GetPosition().x + tmp.GetOrigin().x * sX, tmp.GetPosition().y - tmp.GetOrigin().y * sY)));
 
-	m_foregroundSprites.emplace_back(m_enemies.size() - 1, Sprite());
-
 	tmp = Collisions::Get()->GetTile(138, 3);
 	m_enemies.push_back(std::make_unique<Rex>(false, 0, .5f, sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY)));
 
 	tmp = Collisions::Get()->GetTile(139, 6);
 	m_enemies.push_back(std::make_unique<PPlant>(sf::Vector2f(tmp.GetPosition().x + tmp.GetOrigin().x * sX, tmp.GetPosition().y - tmp.GetOrigin().y * sY)));
-
-	m_foregroundSprites.emplace_back(m_enemies.size() - 1, Sprite());
 
 	tmp = Collisions::Get()->GetTile(172, 3);
 	m_enemies.push_back(std::make_unique<Rex>(false, 0, .5f, sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY)));
@@ -179,8 +174,6 @@ void World::AddEnemies()
 
 	tmp = Collisions::Get()->GetTile(284, 6);
 	m_enemies.push_back(std::make_unique<PPlant>(sf::Vector2f(tmp.GetPosition().x + tmp.GetOrigin().x * sX, tmp.GetPosition().y - tmp.GetOrigin().y * sY)));
-
-	m_foregroundSprites.emplace_back(m_enemies.size() - 1, Sprite());
 
 	tmp = Collisions::Get()->GetTile(290, 6);
 	m_enemies.push_back(std::make_unique<Rex>(false, 0, .5f, sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY)));
@@ -245,37 +238,40 @@ void World::AddObjects()
 
 void World::AddForeGroundSprites()
 {
-	/*m_foregroundSprites[0].second.SetTexture(TexID::Pipe1);
-	m_foregroundSprites[0].second.SetScale(sf::Vector2f(sX, sY));
-	m_foregroundSprites[0].second.SetPosition(m_enemies[m_foregroundSprites[0].first]->GetPosition() + sf::Vector2f(-37.f, 0.f));
+	auto tmp = Collisions::Get()->GetTile(113, 5);
+	m_sprites[(int)Sprites::Pipe1].SetTexture(TexID::Pipe1);
+	m_sprites[(int)Sprites::Pipe1].SetScale(sf::Vector2f(sX, sY));
+	m_sprites[(int)Sprites::Pipe1].SetPosition(sf::Vector2f(tmp.GetPosition().x + tmp.GetOrigin().x * sX, tmp.GetPosition().y - tmp.GetOrigin().y * sY) + sf::Vector2f(-37.f, 0.f));
 
-	m_foregroundSprites[1].second.SetTexture(TexID::Pipe2);
-	m_foregroundSprites[1].second.SetScale(sf::Vector2f(sX, sY));
-	m_foregroundSprites[1].second.SetPosition(m_enemies[m_foregroundSprites[1].first]->GetPosition() + sf::Vector2f(-37.f, 0.f));
+	tmp = Collisions::Get()->GetTile(139, 6);
+	m_sprites[(int)Sprites::Pipe2].SetTexture(TexID::Pipe2);
+	m_sprites[(int)Sprites::Pipe2].SetScale(sf::Vector2f(sX, sY));
+	m_sprites[(int)Sprites::Pipe2].SetPosition(sf::Vector2f(tmp.GetPosition().x + tmp.GetOrigin().x * sX, tmp.GetPosition().y - tmp.GetOrigin().y * sY) + sf::Vector2f(-37.f, 0.f));
 
-	m_foregroundSprites[2].second.SetTexture(TexID::Pipe3);
-	m_foregroundSprites[2].second.SetScale(sf::Vector2f(sX, sY));
-	m_foregroundSprites[2].second.SetPosition(m_enemies[m_foregroundSprites[2].first]->GetPosition() + sf::Vector2f(-37.f, 0.f));*/
+	tmp = Collisions::Get()->GetTile(284, 6);
+	m_sprites[(int)Sprites::Pipe3].SetTexture(TexID::Pipe3);
+	m_sprites[(int)Sprites::Pipe3].SetScale(sf::Vector2f(sX, sY));
+	m_sprites[(int)Sprites::Pipe3].SetPosition(sf::Vector2f(tmp.GetPosition().x + tmp.GetOrigin().x * sX, tmp.GetPosition().y - tmp.GetOrigin().y * sY) + sf::Vector2f(-37.f, 0.f));
 }
 
 void World::AddGUI()
 {
 	m_font.loadFromFile("Resources/Fonts/arial.ttf");
 
-	std::vector<TexID> ids{ TexID::Name, TexID::Time };
+	m_sprites[(int)Sprites::Name].SetTexture(TexID::Name);
+	m_sprites[(int)Sprites::Time].SetTexture(TexID::Time);
 
-	for (int i = 0; i < (int)GUI::MAX; i++)
+	for (int i = 0; i < (int)Texts::Max; i++)
 	{
-		m_sprites[i].SetTexture (ids[i]);
-		m_text[i].setFont(m_font);
-		m_text[i].setCharacterSize(15);
-		m_text[i].setOutlineColor(sf::Color::Black);
-		m_text[i].setOutlineThickness(1.f);
-		m_text[i].setFillColor(sf::Color::Yellow);
+		m_texts[i].setFont(m_font);
+		m_texts[i].setCharacterSize(15);
+		m_texts[i].setOutlineColor(sf::Color::Black);
+		m_texts[i].setOutlineThickness(1.f);
+		m_texts[i].setFillColor(sf::Color::Yellow);
 	}
 
-	m_text[(int)GUI::NAME].setString("x 00");
-	m_text[(int)GUI::TIME].setString(std::to_string((int)Timer::Get()->CurrentTime()));
+	m_texts[(int)Texts::Name].setString("x 00");
+	m_texts[(int)Texts::Time].setString(std::to_string((int)Timer::Get()->CurrentTime()));
 }
 
 void World::UpdateGUI()
@@ -283,14 +279,13 @@ void World::UpdateGUI()
 	auto curScrBounds = Game::GetGameMgr()->GetCamera()->GetCurrentScreenBounds();
 	auto view = Game::GetGameMgr()->GetCamera()->GetView();
 
-	m_sprites[(int)GUI::NAME].SetPosition(sf::Vector2f(curScrBounds.left + m_sprites[(int)GUI::NAME].GetOrigin().x + 20,
-		curScrBounds.top + m_sprites[(int)GUI::NAME].GetOrigin().y + 20));
+	m_sprites[(int)Sprites::Name].SetPosition(sf::Vector2f(curScrBounds.left + 20, 20));
 
-	m_sprites[(int)GUI::TIME].SetPosition(sf::Vector2f(view.getCenter().x,
-		curScrBounds.top + m_sprites[(int)GUI::TIME].GetOrigin().y + 20));
+	m_texts[(int)Texts::Name].setPosition(m_sprites[(int)Sprites::Name].GetPosition() + sf::Vector2f((float)m_sprites[(int)Sprites::Name].GetTextureSize().x * 0.5f + 25, 0));
 
-	for (int i = 0; i < (int)GUI::MAX; i++)
-		m_text[i].setPosition(m_sprites[i].GetPosition() + sf::Vector2f(m_sprites[i].GetOrigin().x + 10, -9));
+	m_sprites[(int)Sprites::Time].SetPosition(sf::Vector2f(view.getCenter().x + 20, 20));
 
-	m_text[(int)GUI::TIME].setString(std::to_string((int)Timer::Get()->CurrentTime()));
+	m_texts[(int)Texts::Time].setPosition(m_sprites[(int)Sprites::Time].GetPosition() + sf::Vector2f((float)m_sprites[(int)Sprites::Time].GetTextureSize().x * 0.5f + 25, 0));
+
+	m_texts[(int)Texts::Time].setString(std::to_string((int)Timer::Get()->CurrentTime()));
 }
