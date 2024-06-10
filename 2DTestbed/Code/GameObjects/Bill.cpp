@@ -42,16 +42,16 @@ void Bill::Animate(float deltaTime)
 
 	if (GetDirection())
 	{
-		SetXVelocity(3);
+		SetXVelocity(c_moveSpeed);
 	}
 	else
 	{
-		SetXVelocity(-3);
+		SetXVelocity(-c_moveSpeed);
 	}
 
 	if (!GetIsAlive())
 	{
-		SetVelocity(0, 3);
+		SetVelocity(0, c_jumpSpeed);
 
 		m_spr->Move(0, GetYVelocity() * FPS * deltaTime);
 	}

@@ -19,11 +19,11 @@ void PPlant::Animate(float deltaTime)
 
 	if (GetDirection())
 	{
-		SetYVelocity(1.5);
+		SetYVelocity(c_jumpSpeed * 0.5f);
 	}
 	else
 	{
-		SetYVelocity(-3);
+		SetYVelocity(-c_jumpSpeed);
 	}
 
 	if (GetYVelocity() != 0)
