@@ -164,6 +164,8 @@
     <ClCompile Include="Code\Controller\Controller.cpp" />
     <ClCompile Include="Code\Controller\CtrlMgr.cpp" />
     <ClCompile Include="Code\Drawables\Sprite.cpp" />
+    <ClCompile Include="Code\GameObjectState\GameObjectStateMgr.cpp" />
+    <ClCompile Include="Code\GameObjectState\PlayerState.cpp" />
     <ClCompile Include="Code\GameObjects\Bill.cpp" />
     <ClCompile Include="Code\GameObjects\Chuck.cpp" />
     <ClCompile Include="Code\GameObjects\Enemy.cpp" />
@@ -197,6 +199,9 @@
     <ClInclude Include="Code\Controller\Controller.h" />
     <ClInclude Include="Code\Controller\CtrlMgr.h" />
     <ClInclude Include="Code\Drawables\Sprite.h" />
+    <ClInclude Include="Code\GameObjectState\GameObjectState.h" />
+    <ClInclude Include="Code\GameObjectState\GameObjectStateMgr.h" />
+    <ClInclude Include="Code\GameObjectState\PlayerState.h" />
     <ClInclude Include="Code\GameObjects\Bill.h" />
     <ClInclude Include="Code\GameObjects\Chuck.h" />
     <ClInclude Include="Code\GameObjects\Enemy.h" />
