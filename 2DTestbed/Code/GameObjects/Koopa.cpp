@@ -7,7 +7,7 @@ Koopa::Koopa(int rows, int cols, bool dir, bool symmetrical, int initAnim, float
 	:Enemy(TexID::Koopa, rows, cols, (int)TexID::KoopaBB, dir, symmetrical, initAnim, animSpd)
 {
 	std::vector<int> frames{ 1, 2, 1};
-	m_spr->SetFrames(frames);
+	GetAnimSpr()->SetFrames(frames);
 
 	m_spawnData.m_initialPos = sf::Vector2f(400, 524);
 	m_spr->SetPosition(m_spawnData.m_initialPos);
@@ -17,7 +17,7 @@ Koopa::Koopa(int rows, int cols, bool dir, bool symmetrical, int initAnim, float
 
 void Koopa::Die()
 {
-	m_spr->ChangeAnim(2);
+	GetAnimSpr()->ChangeAnim(2);
 	m_timeLeftActive = 0.5f;
 }
 

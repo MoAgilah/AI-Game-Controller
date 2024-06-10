@@ -5,29 +5,26 @@
 
 int GameObject::s_objectNum = 0;
 
-GameObject::GameObject(TexID id, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd)
-	: m_type((int)id),  m_direction(dir)
+GameObject::GameObject(TexID boxId)
+	: m_direction(true)
 {
 	m_spawnData.m_initialDir = m_direction;
-	m_spawnData.m_initialAnim = initAnim;
+	m_spawnData.m_initialAnim = 0;
 
-	m_spr = std::make_shared<AnimatedSprite>(id, rows, cols, FPS, symmetrical, initAnim, animSpd);
-	m_bbox = std::make_shared<BoundingBox>((TexID)bTyp);
-
-	SetDirection(m_spawnData.m_initialDir);
+	m_bbox = std::make_shared<BoundingBox>(boxId);
 
 	Collisions::Get()->AddCollidable(this);
 	m_objectID = s_objectNum++;
 }
 
-GameObject::GameObject(TexID id, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd)
-	: m_type((int)id), m_direction(dir)
+GameObject::GameObject(TexID sprId, TexID boxId)
+	: m_type((int)sprId), m_direction(true)
 {
 	m_spawnData.m_initialDir = m_direction;
-	m_spawnData.m_initialAnim = initAnim;
+	m_spawnData.m_initialAnim = 0;
 
-	m_spr = std::make_shared<AnimatedSprite>(id, FPS, symmetrical, initAnim, animSpd);
-	m_bbox = std::make_shared<BoundingBox>((TexID)bTyp);
+	m_spr = std::make_shared<Sprite>(sprId);
+	m_bbox = std::make_shared<BoundingBox>(boxId);
 
 	SetDirection(m_spawnData.m_initialDir);
 
@@ -43,8 +40,6 @@ void GameObject::Render(sf::RenderWindow& window)
 
 void GameObject::Reset()
 {
-	m_spr->ChangeAnim(m_spawnData.m_initialAnim);
-
 	SetPosition(m_spawnData.m_initialPos);
 	SetPrevPosition(m_spawnData.m_initialPos);
 
@@ -99,3 +94,26 @@ void GameObject::SetDirection(bool dir)
 	}
 }
 
+AnimatedGameObject::AnimatedGameObject(TexID id, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd)
+	: GameObject((TexID)bTyp)
+{
+	m_type = (int)id;
+	m_spr = std::make_shared<AnimatedSprite>(id, rows, cols, FPS, symmetrical, initAnim, animSpd);
+	m_spawnData.m_initialAnim = initAnim;
+	SetDirection(m_spawnData.m_initialDir);
+}
+
+AnimatedGameObject::AnimatedGameObject(TexID id, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd)
+	: GameObject((TexID)bTyp)
+{
+	m_type = (int)id;
+	m_spr = std::make_shared<AnimatedSprite>(id, FPS, symmetrical, initAnim, animSpd);
+	m_spawnData.m_initialAnim = initAnim;
+	SetDirection(m_spawnData.m_initialDir);
+}
+
+void AnimatedGameObject::Reset()
+{
+	GetAnimSpr()->ChangeAnim(m_spawnData.m_initialAnim);
+	GameObject::Reset();
+}

@@ -4,7 +4,7 @@
 #include "../Game/Constants.h"
 
 Object::Object(TexID id, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd, const sf::Vector2f& initPos)
-	:GameObject(id, rows, cols, bTyp, dir, symmetrical, initAnim, animSpd)
+	:AnimatedGameObject(id, rows, cols, bTyp, dir, symmetrical, initAnim, animSpd)
 {
 	m_spawnData.m_initialPos = initPos;
 	SetPosition(m_spawnData.m_initialPos);
@@ -16,16 +16,16 @@ void Object::Update(float deltaTime)
 	{
 		if (m_isAnimating && this->GetBBox()->GetID() == (int)TexID::Box)
 		{
-			if (m_spr->PlayedNumTimes(2))
+			if (GetAnimSpr()->PlayedNumTimes(2))
 			{
 				m_isAnimating = false;
-				m_spr->ChangeAnim(0);
+				GetAnimSpr()->ChangeAnim(0);
 			}
 		}
 
 		Animate(deltaTime);
 
-		m_spr->Update(deltaTime);
+		GetAnimSpr()->Update(deltaTime);
 
 		if (GetDirection())
 		{
@@ -49,7 +49,7 @@ void Object::Reset()
 {
 	m_isAnimating = false;
 	m_goingUp = false;
-	m_spr->ChangeAnim(m_spawnData.m_initialAnim);
+	GetAnimSpr()->ChangeAnim(m_spawnData.m_initialAnim);
 	SetVisible(false);
 }
 

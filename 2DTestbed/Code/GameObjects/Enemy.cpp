@@ -5,7 +5,7 @@
 #include "../GameObjects/Rex.h"
 
 Enemy::Enemy(TexID id, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd)
-	:GameObject(id, rows, cols, bTyp, dir, symmetrical, initAnim, animSpd)
+	: AnimatedGameObject(id, rows, cols, bTyp, dir, symmetrical, initAnim, animSpd)
 {}
 
 void Enemy::Update(float deltaTime)
@@ -24,7 +24,7 @@ void Enemy::Update(float deltaTime)
 		if (GetIsAlive() || m_bbox->GetID() == (int)TexID::BillBB)
 			Animate(deltaTime);
 
-		m_spr->Update(deltaTime);
+		GetAnimSpr()->Update(deltaTime);
 		if (GetDirection())
 		{
 			//+

@@ -10,7 +10,7 @@ PPlant::PPlant(const sf::Vector2f& initPos)
 	SetPosition(m_spawnData.m_initialPos);
 
 	std::vector<int> cframes{ 1, 2};
-	m_spr->SetFrames(cframes);
+	GetAnimSpr()->SetFrames(cframes);
 }
 
 void PPlant::Animate(float deltaTime)
@@ -37,7 +37,7 @@ void PPlant::Animate(float deltaTime)
 	if (currentPos.y > 390)
 	{
 		SetDirection(false);
-		m_spr->ChangeAnim(0);
+		GetAnimSpr()->ChangeAnim(0);
 		//set wait timer
 		//go up
 	}
@@ -45,7 +45,7 @@ void PPlant::Animate(float deltaTime)
 	if (currentPos.y < 160)
 	{
 		SetDirection(true);
-		m_spr->ChangeAnim(1);
+		GetAnimSpr()->ChangeAnim(1);
 		//go down
 	}
 

@@ -11,7 +11,7 @@ enum Anims { IDLE, CROUCH, JUMP, LEFT, RIGHT = LEFT, LOOKUP, SPINJUMP, FALL, DIE
 enum Actions { LEFT_KEY, RIGHT_KEY, UP_KEY, DOWN_KEY, SPACE_KEY, RCRTL_KEY };
 
 class Camera;
-class Player : public GameObject
+class Player : public AnimatedGameObject
 {
 public:
 	Player(int rows, int cols, bool symmetrical = true, int initAnim = 0, float animSpd = 1);

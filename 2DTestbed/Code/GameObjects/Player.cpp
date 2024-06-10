@@ -9,7 +9,7 @@
 bool Player::s_playerInserted = false;
 
 Player::Player(int rows, int cols, bool symmetrical, int initAnim, float animSpd)
-	: GameObject(TexID::Mario, rows, cols, (int)TexID::MarioBB, true, symmetrical, initAnim, animSpd)
+	: AnimatedGameObject(TexID::Mario, rows, cols, (int)TexID::MarioBB, true, symmetrical, initAnim, animSpd)
 {
 	m_type = (int)TexID::Mario;
 	m_spawnData.m_initialPos = sf::Vector2f(75, 454);
@@ -18,7 +18,7 @@ Player::Player(int rows, int cols, bool symmetrical, int initAnim, float animSpd
 
 	std::vector<int> frames{ 1, 1, 1, 2, 1, 2, 1, 2 };
 	//regular mario
-	m_spr->SetFrames(frames);
+	GetAnimSpr()->SetFrames(frames);
 
 	SetPosition(m_spawnData.m_initialPos);
 
@@ -59,7 +59,7 @@ void Player::Update(float deltaTime)
 			//change spr and bbox
 			m_spr->SetTexture(TexID::Super);
 			auto frames = std::vector<int>{ 1, 1, 1, 3, 1, 2, 1, 2 };
-			m_spr->SetFrameData(8, 3, frames);
+			GetAnimSpr()->SetFrameData(8, 3, frames);
 			m_bbox->SetTexture(TexID::SuperBB);
 
 			//adjust postion
@@ -74,7 +74,7 @@ void Player::Update(float deltaTime)
 			//change spr and bbox
 			m_spr->SetTexture(TexID::Mario);
 			std::vector<int> frames{ 1, 1, 1, 2, 1, 2, 1, 2 };
-			m_spr->SetFrameData(8, 2, frames);
+			GetAnimSpr()->SetFrameData(8, 2, frames);
 			m_bbox->SetTexture(TexID::MarioBB);
 
 			//adjust position
@@ -199,7 +199,7 @@ void Player::Update(float deltaTime)
 		}
 	}
 
-	m_spr->Update(deltaTime);
+	GetAnimSpr()->Update(deltaTime);
 }
 
 void Player::Render(sf::RenderWindow& window)
@@ -215,7 +215,7 @@ void Player::Reset()
 		//change spr and bbox
 		m_spr->SetTexture(TexID::Mario);
 		std::vector<int> frames{ 1, 1, 1, 2, 1, 2, 1, 2 };
-		m_spr->SetFrameData(8, 2, frames);
+		GetAnimSpr()->SetFrameData(8, 2, frames);
 		m_bbox->SetTexture(TexID::MarioBB);
 
 		//adjust position
@@ -254,7 +254,7 @@ void Player::Kill()
 	SetAirbourne(true);
 	SetOnGround(false);
 	m_alive = false;
-	m_spr->ChangeAnim(DIE);
+	GetAnimSpr()->ChangeAnim(DIE);
 }
 
 void Player::Move(sf::Vector2f vel)
@@ -494,7 +494,7 @@ void Player::ProcessInput()
 			//change animation
 			if (GetOnGround())
 			{
-				m_spr->ChangeAnim(LEFT);
+				GetAnimSpr()->ChangeAnim(LEFT);
 			}
 
 			// right key is pressed: move our character
@@ -515,7 +515,7 @@ void Player::ProcessInput()
 			//change animation
 			if (GetOnGround())
 			{
-				m_spr->ChangeAnim(RIGHT);
+				GetAnimSpr()->ChangeAnim(RIGHT);
 			}
 
 			// right key is pressed: move our character
@@ -531,7 +531,7 @@ void Player::ProcessInput()
 	if (m_keyStates[UP_KEY])
 	{
 		//change animation
-		m_spr->ChangeAnim(LOOKUP);
+		GetAnimSpr()->ChangeAnim(LOOKUP);
 	}
 
 	//start change bbox to crouch bbox
@@ -566,7 +566,7 @@ void Player::ProcessInput()
 			}
 
 			m_justCrouched = true;
-			m_spr->ChangeAnim(CROUCH);
+			GetAnimSpr()->ChangeAnim(CROUCH);
 		}
 	}
 	else //if crouched key is not held down
@@ -582,7 +582,7 @@ void Player::ProcessInput()
 				m_bbox->SetTexture(TexID::MarioBB);
 
 			SetPosition(GetPosition());
-			m_spr->ChangeAnim(IDLE);
+			GetAnimSpr()->ChangeAnim(IDLE);
 		}
 	}//end change bbox to crouch bbox
 
@@ -595,7 +595,7 @@ void Player::ProcessInput()
 			{
 				//change animation
 				if (!m_keyStates[DOWN_KEY])
-					m_spr->ChangeAnim(JUMP);
+					GetAnimSpr()->ChangeAnim(JUMP);
 				// up key is pressed: move our character
 				SetAirbourne(true);
 				SetOnGround(false);
@@ -608,7 +608,7 @@ void Player::ProcessInput()
 	{
 		if (GetAirbourne() && m_cantjump)
 		{
-			m_spr->ChangeAnim(FALL);
+			GetAnimSpr()->ChangeAnim(FALL);
 			m_airtime = c_maxAirTime;
 		}
 	}
@@ -621,7 +621,7 @@ void Player::ProcessInput()
 			if (GetOnGround())
 			{
 				//change animation
-				m_spr->ChangeAnim(SPINJUMP);
+				GetAnimSpr()->ChangeAnim(SPINJUMP);
 				// up key is pressed: move our character
 				SetAirbourne(true);
 				SetOnGround(false);
@@ -634,7 +634,7 @@ void Player::ProcessInput()
 	{
 		if (GetAirbourne() && m_cantSpinJump)
 		{
-			m_spr->ChangeAnim(SPINJUMP);
+			GetAnimSpr()->ChangeAnim(SPINJUMP);
 			m_airtime = c_maxAirTime;
 		}
 	}
@@ -645,6 +645,6 @@ void Player::ProcessInput()
 	if (GetVelocity() == sf::Vector2f())
 	{
 		if (!m_keyStates[DOWN_KEY] && !m_keyStates[UP_KEY])
-			m_spr->ChangeAnim(IDLE);
+			GetAnimSpr()->ChangeAnim(IDLE);
 	}
 }

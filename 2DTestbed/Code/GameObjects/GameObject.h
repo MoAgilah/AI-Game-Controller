@@ -29,8 +29,8 @@ class BoundingBox;
 class GameObject
 {
 public:
-	GameObject(TexID id, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd);
-	GameObject(TexID id, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd);
+	explicit GameObject(TexID boxId);
+	GameObject(TexID sprId, TexID boxId);
 	virtual ~GameObject() = default;
 
 	virtual void Update(float deltaTime) = 0;
@@ -40,7 +40,6 @@ public:
 
 	sf::Sprite* GetSprite() { return m_spr->GetSprite(); }
 	BoundingBox* GetBBox() { return m_bbox.get(); }
-	AnimatedSprite* GetAnimSpr() { return m_spr.get(); }
 
 	sf::Vector2f GetPosition() const { return m_spr->GetPosition(); };
 	void SetPosition(sf::Vector2f pos);
@@ -100,8 +99,20 @@ protected:
 
 	sf::Vector2f m_prevPos;
 
-	std::shared_ptr<AnimatedSprite> m_spr;
+	std::shared_ptr<Sprite> m_spr;
 	std::shared_ptr<BoundingBox> m_bbox;
+};
+
+class AnimatedGameObject : public GameObject
+{
+public:
+	AnimatedGameObject(TexID id, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd);
+	AnimatedGameObject(TexID id, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd);
+	~AnimatedGameObject() override = default;
+
+	void Reset() override;
+
+	AnimatedSprite* GetAnimSpr() { return static_cast<AnimatedSprite*>(m_spr.get()); }
 };
 
 #endif

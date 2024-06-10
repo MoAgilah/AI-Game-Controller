@@ -3,7 +3,7 @@
 #include "../GameObjects/GameObject.h"
 
 class Camera;
-class Enemy : public GameObject
+class Enemy : public AnimatedGameObject
 {
 public:
 	Enemy(TexID id, int rows, int cols, int bTyp, bool dir = true, bool symmetrical = true, int initAnim = 0, float animSpd = 1);

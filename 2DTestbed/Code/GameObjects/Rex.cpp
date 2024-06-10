@@ -11,7 +11,7 @@ Rex::Rex(bool dir, int initAnim, float animSpd, const sf::Vector2f& initPos)
 	SetPosition(m_spawnData.m_initialPos);
 
 	std::vector<int> frames{ 2, 2, 1 };
-	m_spr->SetFrames(frames);
+	GetAnimSpr()->SetFrames(frames);
 
 	m_numLives = m_maxLives = 2;
 }
@@ -39,7 +39,7 @@ void Rex::Update(float deltaTime)
 		{
 			Animate(deltaTime);
 
-			m_spr->Update(deltaTime);
+			GetAnimSpr()->Update(deltaTime);
 
 			if (GetDirection())
 			{
@@ -141,12 +141,12 @@ void Rex::Animate(float deltaTime)
 
 void Rex::Die()
 {
-	m_spr->ChangeAnim(2);
+	GetAnimSpr()->ChangeAnim(2);
 	m_timeLeftActive = 0.5f;
 }
 
 void Rex::Change()
 {
-	m_spr->ChangeAnim(1);
+	GetAnimSpr()->ChangeAnim(1);
 	m_bbox->SetTexture(TexID::RexSmlBB);
 }

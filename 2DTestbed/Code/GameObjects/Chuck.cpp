@@ -6,7 +6,7 @@ Chuck::Chuck(bool dir, int initAnim, float animSpd, const sf::Vector2f& initPos 
 	:Enemy(TexID::Chuck, 6, 2, (int)TexID::ChuckBB, dir, false, initAnim, animSpd)
 {
 	std::vector<int> cframes{ 1, 2, 1, 1, 1, 1 };
-	m_spr->SetFrames(cframes);
+	GetAnimSpr()->SetFrames(cframes);
 
 	m_spawnData.m_initialPos = initPos;
 
@@ -25,7 +25,7 @@ void Chuck::Die()
 {
 	m_numLives = 0;
 	m_timeLeftActive = 0.5f;
-	m_spr->ChangeAnim(5);
+	GetAnimSpr()->ChangeAnim(5);
 }
 
 void Chuck::Animate(float deltaTime)
@@ -36,7 +36,7 @@ void Chuck::Animate(float deltaTime)
 	{
 		if (m_waitTime > 0.5f)
 		{
-			m_spr->ChangeAnim(2);
+			GetAnimSpr()->ChangeAnim(2);
 			SetYVelocity(-c_jumpSpeed);
 		}
 		else
@@ -53,7 +53,7 @@ void Chuck::Animate(float deltaTime)
 
 	if (currentPos.y < 357)
 	{
-		m_spr->ChangeAnim(4);
+		GetAnimSpr()->ChangeAnim(4);
 		if(m_goingUp)
 			m_goingUp = false;
 
@@ -63,7 +63,7 @@ void Chuck::Animate(float deltaTime)
 	{
 		if (!m_goingUp)
 		{
-			m_spr->ChangeAnim(3);
+			GetAnimSpr()->ChangeAnim(3);
 			m_waitTime = 0;
 			m_goingUp = true;
 		}
