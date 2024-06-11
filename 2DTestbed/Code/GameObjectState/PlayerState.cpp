@@ -40,13 +40,13 @@ void GroundedState::ProcessInputs()
 			player->SetDirection(true);
 
 		player->GetAnimSpr()->ChangeAnim(MOVING);
-		player->SetXVelocity(-c_moveSpeed);
+		player->SetXVelocity(c_moveSpeed);
 	}
 
 	if (keyStates[UP_KEY])
 		player->GetAnimSpr()->ChangeAnim(LOOKUP);
 
-	if (keyStates[SPACE_KEY])
+	if (keyStates[JUMP_KEY])
 	{
 		if (!player->GetCantJump())
 		{
@@ -58,22 +58,21 @@ void GroundedState::ProcessInputs()
 		}
 	}
 
-	if (keyStates[RCRTL_KEY])
+	if (keyStates[SPINJUMP])
 	{
-		if (!player->GetCantJump())
+		if (!player->GetCantSpinJump())
 		{
 			player->GetAnimSpr()->ChangeAnim(SPINJUMP);
 			player->SetAirbourne(true);
 			player->SetOnGround(false);
 			player->DecrementYVelocity(c_jumpSpeed);
-			player->SetCantJump(true);
+			player->SetCantSpinJump(true);
 		}
 	}
 }
 
 void GroundedState::Update(float deltaTime)
 {
-	ProcessInputs();
 }
 
 void AirborneState::Initialise()
@@ -95,32 +94,69 @@ void AirborneState::ProcessInputs()
 
 	if (keyStates[RIGHT_KEY])
 	{
-		if (!player->GetDirection())
+		 if (!player->GetDirection())
 			player->SetDirection(true);
 
-		player->SetXVelocity(-c_moveSpeed);
+		player->SetXVelocity(c_moveSpeed);
 	}
 
-	if (keyStates[SPACE_KEY])
-		player->DecrementYVelocity(c_jumpSpeed);
+	if (!keyStates[JUMP_KEY])
+	{
+		if (player->GetAirbourne() && player->GetCantJump())
+		{
+			if (!player->GetIsCrouched())
+				player->GetAnimSpr()->ChangeAnim(FALL);
+			player->SetAirTime(c_maxAirTime);
+		}
+	}
 
-	if (keyStates[RCRTL_KEY])
-		player->DecrementYVelocity(c_jumpSpeed);
+	if (!keyStates[SPINJUMP])
+	{
+		if (player->GetAirbourne() && player->GetCantSpinJump())
+		{
+			player->SetAirTime(c_maxAirTime);
+		}
+	}
 }
 
 void AirborneState::Update(float deltaTime)
 {
-	ProcessInputs();
 }
 
 void CrouchingState::Initialise()
 {
-	GetPlayer()->GetAnimSpr()->ChangeAnim(CROUCH);
+	Player* player = GetPlayer();
+	player->SetXVelocity(0);
+	player->GetAnimSpr()->ChangeAnim(CROUCH);
 }
 
 void CrouchingState::Resume()
 {
-	GetPlayer()->GetAnimSpr()->ChangeAnim(CROUCH);
+	Player* player = GetPlayer();
+	player->GetAnimSpr()->ChangeAnim(CROUCH);
+
+	player->SetXVelocity(0);
+
+	//get current position
+	sf::Vector2f pos = player->GetPosition();
+
+	if (player->GetIsSuper())
+	{
+		//adjust bbox position
+		if (player->GetDirection())
+			player->GetBBox()->Update(sf::Vector2f(player->GetPosition().x - 1.f, player->GetPosition().y + 22.f));
+		else
+			player->GetBBox()->Update(sf::Vector2f(player->GetPosition().x + 1.f, player->GetPosition().y + 22.f));
+	}
+	else
+	{
+		//adjust bbox position
+		if (player->GetDirection())
+			player->GetBBox()->Update(sf::Vector2f(player->GetPosition().x - 2.f, player->GetPosition().y + 12.f));
+		else
+			player->GetBBox()->Update(sf::Vector2f(player->GetPosition().x + 2.f, player->GetPosition().y + 12.f));
+	}
+
 	PlayerState::Resume();
 }
 
@@ -129,7 +165,7 @@ void CrouchingState::ProcessInputs()
 	Player* player = GetPlayer();
 	auto& keyStates = player->GetKeyStates();
 
-	if (keyStates[SPACE_KEY])
+	if (keyStates[JUMP_KEY])
 	{
 		if (!player->GetCantJump())
 		{
@@ -140,30 +176,30 @@ void CrouchingState::ProcessInputs()
 		}
 	}
 
-	if (keyStates[RCRTL_KEY])
+	if (keyStates[SPINJUMP])
 	{
-		if (!player->GetCantJump())
+		if (!player->GetCantSpinJump())
 		{
 			player->GetAnimSpr()->ChangeAnim(SPINJUMP);
 			player->SetAirbourne(true);
 			player->SetOnGround(false);
 			player->DecrementYVelocity(c_jumpSpeed);
-			player->SetCantJump(true);
+			player->SetCantSpinJump(true);
 		}
 	}
 }
 
 void CrouchingState::Update(float deltaTime)
 {
-	ProcessInputs();
 }
 
 void DieingState::Initialise()
 {
 	Player* player = GetPlayer();
-	player->GetAnimSpr()->ChangeAnim(SPINJUMP);
-	player->SetAirTime(0.33f);
+	player->GetAnimSpr()->ChangeAnim(DIE);
+	player->SetAirTime(0.66f);
 	player->SetAirbourne(true);
+	player->DecrementYVelocity(c_jumpSpeed);
 }
 
 void DieingState::ProcessInputs()
@@ -173,26 +209,23 @@ void DieingState::ProcessInputs()
 
 void DieingState::Update(float deltaTime)
 {
-	ProcessInputs();
-
 	Player* player = GetPlayer();
 
 	if (player->GetAirbourne())
 	{
-		player->DecrementYVelocity(c_jumpSpeed);
 		player->IncAirTime(deltaTime);
 		if (player->GetAirTime() >= c_maxAirTime)
 			player->SetAirbourne(false);
+
+		player->Move(sf::Vector2f(0, player->GetYVelocity() * FPS * deltaTime));
 	}
 	else
 	{
-
+		player->Move(sf::Vector2f(0, -player->GetYVelocity() * FPS * deltaTime));
 		if (!Game::GetGameMgr()->GetCamera()->OnScreen(player))
 		{
 			if (!Automated)
-			{
 				player->Reset();
-			}
 		}
 	}
 }

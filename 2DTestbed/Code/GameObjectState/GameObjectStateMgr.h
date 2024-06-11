@@ -13,6 +13,7 @@ public:
 	void ChangeState(GameObjectState* state);
 	void PushState(GameObjectState* state);
 	void PopState();
+	void ClearStates();
 
 	void Pause();
 	void Resume();

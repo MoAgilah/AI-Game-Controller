@@ -5,6 +5,8 @@
 #include "../Game/Game.h"
 #include "../Controller/CtrlMgr.h"
 #include <format>
+#include <iostream>
+#include "../GameObjectState/PlayerState.h"
 
 bool Player::s_playerInserted = false;
 
@@ -13,16 +15,9 @@ Player::Player(int rows, int cols, bool symmetrical, int initAnim, float animSpd
 {
 	m_type = (int)TexID::Mario;
 	m_spawnData.m_initialPos = sf::Vector2f(75, 454);
-
 	m_keyStates.fill(false);
-
-	std::vector<int> frames{ 1, 1, 1, 2, 1, 2, 1, 2 };
-	//regular mario
-	GetAnimSpr()->SetFrames(frames);
-
 	SetPosition(m_spawnData.m_initialPos);
-
-	m_heightDiff = 11.25f;
+	GetAnimSpr()->SetFrameData(rows, cols, { 1, 1, 1, 2, 1, 2, 1, 2 });
 
 	//if automated
 	if (Automated)
@@ -58,11 +53,8 @@ void Player::Update(float deltaTime)
 		{
 			//change spr and bbox
 			m_spr->SetTexture(TexID::Super);
-			auto frames = std::vector<int>{ 1, 1, 1, 3, 1, 2, 1, 2 };
-			GetAnimSpr()->SetFrameData(8, 3, frames);
+			GetAnimSpr()->SetFrameData(8, 3, { 1, 1, 1, 3, 1, 2, 1, 2 });
 			m_bbox->SetTexture(TexID::SuperBB);
-
-			//adjust postion
 			SetPosition(m_spr->GetPosition() - sf::Vector2f(0, m_heightDiff));
 		}
 	}
@@ -73,11 +65,8 @@ void Player::Update(float deltaTime)
 		{
 			//change spr and bbox
 			m_spr->SetTexture(TexID::Mario);
-			std::vector<int> frames{ 1, 1, 1, 2, 1, 2, 1, 2 };
-			GetAnimSpr()->SetFrameData(8, 2, frames);
+			GetAnimSpr()->SetFrameData(8, 2, { 1, 1, 1, 2, 1, 2, 1, 2 });
 			m_bbox->SetTexture(TexID::MarioBB);
-
-			//adjust position
 			SetPosition(m_spr->GetPosition() + sf::Vector2f(0, m_heightDiff));
 		}
 
@@ -85,79 +74,83 @@ void Player::Update(float deltaTime)
 
 	ProcessInput();
 
-	//set vulnerability time
-	if (m_justBeenHit)
+	if (GetIsAlive())
 	{
-		m_InvulTime -= deltaTime;
+		//set vulnerability time
+		if (m_justBeenHit)
+		{
+			m_InvulTime -= deltaTime;
 
-		if (m_InvulTime <= 0)
-		{
-			m_justBeenHit = false;
-		}
-	}
-
-	if (m_justHitEnemy)
-	{
-		//if not hovering
-		if (m_noGravTime <= 0)
-		{
-			if (m_justHitEnemy)
-				m_justHitEnemy = false;
-		}
-		else //if hovering
-		{
-			SetYVelocity(0);
-			m_noGravTime -= deltaTime;
-		}
-	}
-
-	if (!GetIsAlive())
-	{
-		if (GetAirbourne())
-		{
-			DecrementYVelocity(c_jumpSpeed);
-			m_airtime += deltaTime;
-			if (m_airtime >= c_maxAirTime)
+			if (m_InvulTime <= 0)
 			{
-				SetAirbourne(false);
+				m_justBeenHit = false;
+			}
+		}
+
+		if (m_justHitEnemy)
+		{
+			//if not hovering
+			if (m_noGravTime <= 0)
+			{
+				if (m_justHitEnemy)
+					m_justHitEnemy = false;
+			}
+			else //if hovering
+			{
+				SetYVelocity(0);
+				m_noGravTime -= deltaTime;
+			}
+		}
+
+		if (GetOnGround())
+		{
+			if (!GetAirbourne())
+			{
+				if (m_stateMgr.GetStateName() == "Airborne")
+					m_stateMgr.PopState();
+
+				if (GetIsCrouched())
+				{
+					if (m_stateMgr.GetStateName() != "Crouching")
+						m_stateMgr.ChangeState(new CrouchingState(this));
+				}
+				else
+				{
+					if (m_stateMgr.GetStateName() != "Grounded")
+						m_stateMgr.ChangeState(new GroundedState(this));
+				}
+
+				SetYVelocity(0);
+				m_airtime = 0;
 			}
 		}
 		else
 		{
-			 
-			if (!Game::GetGameMgr()->GetCamera()->OnScreen(this))
-			{
-				if (!Automated)
-				{
-					Reset();
-				}
-			}
-		}
-
-		Move(sf::Vector2f(0, GetYVelocity() * FPS * deltaTime));
-	}
-	else
-	{
-		if (!GetOnGround())
-		{
 			if (GetAirbourne())
 			{
+				if (m_stateMgr.GetStateName() != "Airborne")
+					m_stateMgr.PushState(new AirborneState(this));
+
 				m_airtime += deltaTime;
 				if (m_airtime >= c_maxAirTime)
-				{
 					SetAirbourne(false);
-					m_justCrouched = false;
-				}
 			}
 			else
 			{
 				IncrementYVelocity(c_gravity);
 			}
 		}
-		else
+
+		if ((m_keyStates[LEFT_KEY] == false && m_keyStates[RIGHT_KEY] == false))
+			m_velocity.x = 0.0f;
+
+		if (!m_keyStates[JUMP_KEY] && !m_keyStates[SPINJUMP])
+			m_cantjump = m_cantSpinJump = false;
+
+		if (GetVelocity() == sf::Vector2f())
 		{
-			SetYVelocity(0);
-			m_airtime = 0;
+			if (!m_keyStates[DOWN_KEY] && !m_keyStates[UP_KEY])
+				GetAnimSpr()->ChangeAnim(IDLE);
 		}
 
 		//decomposition of movement
@@ -175,20 +168,15 @@ void Player::Update(float deltaTime)
 			Collisions::Get()->ProcessCollisions(this);
 		}
 	}
-
-	//check for leftmost and rightmost boundary
-	if (m_spr->GetPosition().x < m_spr->GetOrigin().x || m_spr->GetPosition().x > 11776 - m_spr->GetOrigin().x)
+	else
 	{
+		if (m_stateMgr.GetStateName() != "Dieing")
+			m_stateMgr.ChangeState(new DieingState(this));
+	}
+
+	if (m_spr->GetPosition().x < LeftMost)
 		Move(sf::Vector2f(-GetXVelocity() * FPS * deltaTime, 0));
-	}
 
-	if (m_bbox->GetSprite()->getPosition().y > 600 - m_bbox->GetSprite()->getOrigin().y)
-	{
-		if (GetIsAlive())
-			Kill();
-	}
-
-	//check for exceeded rightmost || or hit the goal
 	if (m_spr->GetPosition().x > RightMost)
 	{
 		SetSpawnLoc();
@@ -198,6 +186,14 @@ void Player::Update(float deltaTime)
 			Reset();
 		}
 	}
+
+	if (m_bbox->GetSprite()->getPosition().y > 600 - m_bbox->GetSprite()->getOrigin().y)
+	{
+		if (GetIsAlive())
+			SetIsAlive(false);
+	}
+
+	m_stateMgr.Update(deltaTime);
 
 	GetAnimSpr()->Update(deltaTime);
 }
@@ -229,7 +225,7 @@ void Player::Reset()
 	SetVelocity(sf::Vector2f(0.0f, 0.0f));
 
 	m_super = false;
-	m_justCrouched = false;
+	m_crouched = false;
 	m_justBeenHit = false;
 	m_alive = true;
 	m_cantjump = false;
@@ -244,6 +240,7 @@ void Player::Reset()
 	m_InvulTime = 0;
 	m_airtime = 0;
 
+	m_stateMgr.ClearStates();
 	Timer::Get()->ResetTime();
 	Game::GetGameMgr()->GetLevel()->ResetLevel();
 }
@@ -289,7 +286,7 @@ void Player::ForceFall()
 	}
 }
 
-void Player::SetAirTime(float val)
+void Player::JusyHitEnemy(float val)
 {
 	m_justHitEnemy = true;
 	m_noGravTime = val;
@@ -319,7 +316,7 @@ void Player::EndOfRunCalculations()
 {
 	float percent = ((GetPosition().x - 18.f) / RightMost) * 100;
 	//completed level
-	if (m_goalHit)
+	if (GetGoalHit())
 	{
 		Game::GetGameMgr()->GetLogger()->AddExperimentLog("Completed the level");
 		m_fitness += 1000;
@@ -369,10 +366,10 @@ void Player::ControllerInput()
 		case DOWN_KEY:
 			move = "down";
 			break;
-		case SPACE_KEY:
+		case JUMP_KEY:
 			move = "jump";
 			break;
-		case RCRTL_KEY:
+		case SPINJUMP:
 			move = "sJmp";
 			break;
 
@@ -395,76 +392,64 @@ void Player::ControllerInput()
 
 void Player::HumanInput()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad4))
 	{
 		m_keyStates[LEFT_KEY] = true;
 	}
 	else
 	{
 		if (m_keyStates[LEFT_KEY])
-		{
 			m_keyStates[LEFT_KEY] = false;
-		}
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad6))
 	{
 		m_keyStates[RIGHT_KEY] = true;
 	}
 	else
 	{
 		if (m_keyStates[RIGHT_KEY])
-		{
 			m_keyStates[RIGHT_KEY] = false;
-		}
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
-		m_keyStates[SPACE_KEY] = true;
+		m_keyStates[JUMP_KEY] = true;
 	}
 	else
 	{
-		if (m_keyStates[SPACE_KEY])
-		{
-			m_keyStates[SPACE_KEY] = false;
-		}
+		if (m_keyStates[JUMP_KEY])
+			m_keyStates[JUMP_KEY] = false;
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::RControl))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
-		m_keyStates[RCRTL_KEY] = true;
+		m_keyStates[SPINJUMP] = true;
 	}
 	else
 	{
-		if (m_keyStates[RCRTL_KEY])
-		{
-			m_keyStates[RCRTL_KEY] = false;
-		}
+		if (m_keyStates[SPINJUMP])
+			m_keyStates[SPINJUMP] = false;
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad8))
 	{
 		m_keyStates[UP_KEY] = true;
 	}
 	else
 	{
 		if (m_keyStates[UP_KEY])
-		{
 			m_keyStates[UP_KEY] = false;
-		}
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad2))
 	{
 		m_keyStates[DOWN_KEY] = true;
 	}
 	else
 	{
 		if (m_keyStates[DOWN_KEY])
-		{
 			m_keyStates[DOWN_KEY] = false;
-		}
 	}
 }
 
@@ -482,64 +467,11 @@ void Player::ProcessInput()
 		HumanInput();
 	}
 
-	//move left
-	if (m_keyStates[LEFT_KEY])
-	{
-		if (!m_keyStates[DOWN_KEY])
-		{
-			//change direction
-			if (GetDirection())
-				SetDirection(false);
+	m_stateMgr.ProcessInputs();
 
-			//change animation
-			if (GetOnGround())
-			{
-				GetAnimSpr()->ChangeAnim(MOVING);
-			}
-
-			// right key is pressed: move our character
-			SetXVelocity(-c_moveSpeed);
-		}
-	}
-
-
-	//move right
-	if (m_keyStates[RIGHT_KEY])
-	{
-		if (!m_keyStates[DOWN_KEY])
-		{
-			//change direction
-			if (!GetDirection())
-				SetDirection(true);
-
-			//change animation
-			if (GetOnGround())
-			{
-				GetAnimSpr()->ChangeAnim(MOVING);
-			}
-
-			// right key is pressed: move our character
-			SetXVelocity(c_moveSpeed);
-		}
-	}
-
-	if ((m_keyStates[LEFT_KEY] == false && m_keyStates[RIGHT_KEY] == false))
-	{
-		m_velocity.x = 0.0f;
-	}
-
-	if (m_keyStates[UP_KEY])
-	{
-		//change animation
-		GetAnimSpr()->ChangeAnim(LOOKUP);
-	}
-
-	//start change bbox to crouch bbox
-		//if crouched key held down
 	if (m_keyStates[DOWN_KEY])
 	{
-		//if not changed bbox
-		if (m_justCrouched == false)
+		if (!GetIsCrouched())
 		{
 			//get current position
 			sf::Vector2f pos = GetPosition();
@@ -565,16 +497,15 @@ void Player::ProcessInput()
 					m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x + 2.f, m_spr->GetPosition().y + 12.f));
 			}
 
-			m_justCrouched = true;
-			GetAnimSpr()->ChangeAnim(CROUCH);
+			SetIsCrouched(true);
 		}
 	}
-	else //if crouched key is not held down
+	else
 	{
 		//if was crouched
-		if (m_justCrouched)
+		if (GetIsCrouched())
 		{
-			m_justCrouched = false;
+			SetIsCrouched(false);
 
 			if (m_super)
 				m_bbox->SetTexture(TexID::SuperBB);
@@ -582,69 +513,6 @@ void Player::ProcessInput()
 				m_bbox->SetTexture(TexID::MarioBB);
 
 			SetPosition(GetPosition());
-			GetAnimSpr()->ChangeAnim(IDLE);
 		}
-	}//end change bbox to crouch bbox
-
-	//regular jump
-	if (m_keyStates[SPACE_KEY])
-	{
-		if (m_cantjump == false)
-		{
-			if (GetOnGround())
-			{
-				//change animation
-				if (!m_keyStates[DOWN_KEY])
-					GetAnimSpr()->ChangeAnim(JUMP);
-				// up key is pressed: move our character
-				SetAirbourne(true);
-				SetOnGround(false);
-				DecrementYVelocity(c_jumpSpeed);
-				m_cantjump = true;
-			}
-		}
-	}
-	else
-	{
-		if (GetAirbourne() && m_cantjump)
-		{
-			GetAnimSpr()->ChangeAnim(FALL);
-			m_airtime = c_maxAirTime;
-		}
-	}
-
-	//spin jump
-	if (m_keyStates[RCRTL_KEY])
-	{
-		if (m_cantSpinJump == false)
-		{
-			if (GetOnGround())
-			{
-				//change animation
-				GetAnimSpr()->ChangeAnim(SPINJUMP);
-				// up key is pressed: move our character
-				SetAirbourne(true);
-				SetOnGround(false);
-				DecrementYVelocity(c_jumpSpeed);
-				m_cantSpinJump = true;
-			}
-		}
-	}
-	else
-	{
-		if (GetAirbourne() && m_cantSpinJump)
-		{
-			GetAnimSpr()->ChangeAnim(SPINJUMP);
-			m_airtime = c_maxAirTime;
-		}
-	}
-
-	if (!m_keyStates[SPACE_KEY] && !m_keyStates[RCRTL_KEY])
-		m_cantjump = m_cantSpinJump = false;
-
-	if (GetVelocity() == sf::Vector2f())
-	{
-		if (!m_keyStates[DOWN_KEY] && !m_keyStates[UP_KEY])
-			GetAnimSpr()->ChangeAnim(IDLE);
 	}
 }

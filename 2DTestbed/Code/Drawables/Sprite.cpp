@@ -95,12 +95,12 @@ void AnimatedSprite::SetFrames(std::span<int> numFrames)
 	m_animation.m_max = m_numFrames[m_animation.m_current];
 }
 
-void AnimatedSprite::SetFrameData(int rows, int columns, std::span<int> numFrames)
+void AnimatedSprite::SetFrameData(int rows, int columns, const std::vector<int>& numFrames)
 {
 	//set single frame size
 	SetFrameSize(sf::Vector2u(GetTextureSize().x / columns, GetTextureSize().y / rows), m_frame.m_current, m_animation.m_current);
 
-	m_numFrames.assign(numFrames.begin(), numFrames.end());
+	m_numFrames = numFrames;
 	m_animation.m_max = m_numFrames[m_animation.m_current];
 }
 

@@ -13,7 +13,7 @@ public:
 	void Reset() override;
 	virtual void Die() {};
 
-	bool GetIsAlive() const { return m_numLives <= 0; }
+	bool GetIsAlive() const { return m_numLives > 0; }
 	bool GetActive() const final { return GameObject::GetActive() && GetIsAlive(); }
 	void DecrementLife();
 

@@ -1,9 +1,10 @@
 #include "GameObjectStateMgr.h"
+#include <iostream>
+#include <format>
 
 GameObjectStateMgr::~GameObjectStateMgr()
 {
-	while (!m_vGameStates.empty())
-		m_vGameStates.pop_back();
+	ClearStates();
 }
 
 std::string_view GameObjectStateMgr::GetStateName()
@@ -21,6 +22,7 @@ void GameObjectStateMgr::ChangeState(GameObjectState* state)
 
 	m_vGameStates.push_back(state);
 	m_vGameStates.back()->Initialise();
+	std::cout << std::format("Changed too {} state\n", m_vGameStates.back()->GetStateName());
 }
 
 void GameObjectStateMgr::PushState(GameObjectState* state)
@@ -30,15 +32,25 @@ void GameObjectStateMgr::PushState(GameObjectState* state)
 
 	m_vGameStates.push_back(state);
 	m_vGameStates.back()->Initialise();
+	std::cout << std::format("Pushed {} state\n", m_vGameStates.back()->GetStateName());
 }
 
 void GameObjectStateMgr::PopState()
 {
 	if (!m_vGameStates.empty())
+	{
+		std::cout << std::format("Popped {} state\n", m_vGameStates.back()->GetStateName());
 		m_vGameStates.pop_back();
+	}
 
 	if (!m_vGameStates.empty())
 		m_vGameStates.back()->Resume();
+}
+
+void GameObjectStateMgr::ClearStates()
+{
+	while (!m_vGameStates.empty())
+		m_vGameStates.pop_back();
 }
 
 void GameObjectStateMgr::Pause()
@@ -61,8 +73,6 @@ void GameObjectStateMgr::ProcessInputs()
 
 void GameObjectStateMgr::Update(float deltaTime)
 {
-	ProcessInputs();
-
 	if (!m_vGameStates.empty())
 		m_vGameStates.back()->Update(deltaTime);
 }

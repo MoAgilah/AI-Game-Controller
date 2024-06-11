@@ -25,6 +25,8 @@ public:
 	void Render(sf::RenderWindow& window);
 	void ResetLevel();
 
+	void CheckIsInView();
+
 	void AddObject(const sf::Vector2f& pos);
 private:
 	void AddEnemies();

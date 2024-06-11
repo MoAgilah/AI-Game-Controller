@@ -6,9 +6,11 @@
 #include "../GameObjects/GameObject.h"
 #include "../NEAT/phenotype.h"
 
+#include "../GameObjectState/GameObjectStateMgr.h"
+
 enum Anims { IDLE, CROUCH, JUMP, MOVING, LOOKUP, SPINJUMP, FALL, DIE, MAXANIM };
 
-enum Actions { LEFT_KEY, RIGHT_KEY, UP_KEY, DOWN_KEY, SPACE_KEY, RCRTL_KEY };
+enum Actions { LEFT_KEY, RIGHT_KEY, UP_KEY, DOWN_KEY, JUMP_KEY, RCRTL_KEY };
 
 class Camera;
 class Player : public AnimatedGameObject
@@ -19,12 +21,7 @@ public:
 
 	void Update(float deltaTime) final;
 	void Render(sf::RenderWindow& window) final;
-
-	const std::array<bool, MAXKEYS>& GetKeyStates() const { return m_keyStates; }
-
 	void Reset() final;
-
-	void Kill();
 
 	void Move(sf::Vector2f vel);
 
@@ -38,8 +35,13 @@ public:
 	double Fitness() const { return m_fitness; }
 
 	bool GetIsAlive() const { return m_alive; }
+	void SetIsAlive(bool val) { m_alive = val; }
 
 	void IncreaseCoins(int num) { m_coinTotal = +num; }
+
+	const std::array<bool, MAXKEYS>& GetKeyStates() const { return m_keyStates; }
+
+	void Kill();
 
 	bool GetIfInvulnerable() const { return m_justBeenHit; }
 
@@ -51,12 +53,16 @@ public:
 	bool GetCantSpinJump() const { return m_cantSpinJump; }
 	void SetCantSpinJump(bool val) { m_cantSpinJump = val; }
 
+	bool GetIsCrouched() const { return m_crouched; }
+	void SetIsCrouched(bool crouched) { m_crouched = crouched; }
+
 	void ForceFall();
 
 	void JustBeenHit(bool hit);
+	void JusyHitEnemy(float val = 1);
 
 	float GetAirTime() const { return m_airtime; }
-	void SetAirTime(float val = 1);
+	void SetAirTime(float val) { m_airtime = val; }
 	void IncAirTime(float val) { m_airtime += val; }
 
 	void EndOfRunCalculations();
@@ -71,7 +77,7 @@ private:
 private:
 	static bool s_playerInserted;
 	bool m_super = false;
-	bool m_justCrouched = false;
+	bool m_crouched = false;
 	bool m_justBeenHit = false;
 	bool m_justHitEnemy = false;
 	bool m_alive = true;
@@ -83,15 +89,17 @@ private:
 
 	int m_coinTotal = 0;
 
-	float m_heightDiff = 0;
+	float m_heightDiff = 11.25;
 	float m_noGravTime = 0;
 	float m_InvulTime = 0;
 	float m_airtime = 0;
 
-	double	m_fitness;
+	double	m_fitness = 0;
 	std::vector<double> outputs;
 
 	sf::Vector2f m_spawnLoc;
 
-	CNeuralNet* m_itsBrain;
+	CNeuralNet* m_itsBrain = nullptr;
+
+	GameObjectStateMgr m_stateMgr;
 };

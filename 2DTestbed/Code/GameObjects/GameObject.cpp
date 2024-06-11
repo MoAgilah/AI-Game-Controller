@@ -55,12 +55,12 @@ void GameObject::SetPosition(sf::Vector2f pos)
 	if (GetDirection())
 	{
 		//+
-		m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x - 2.f, m_spr->GetPosition().y + 3.5f));
+		m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x/* - 2.f*/, m_spr->GetPosition().y + 3.5f));
 	}
 	else
 	{
 		//-
-		m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x + 2.f, m_spr->GetPosition().y + 3.5f));
+		m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x/* + 2.f*/, m_spr->GetPosition().y + 3.5f));
 	}
 }
 
@@ -70,12 +70,12 @@ void GameObject::SetPosition(float x, float y)
 	if (GetDirection())
 	{
 		//+
-		m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x - 2.f, m_spr->GetPosition().y + 3.5f));
+		m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x/* - 2.f*/, m_spr->GetPosition().y + 3.5f));
 	}
 	else
 	{
 		//-
-		m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x + 2.f, m_spr->GetPosition().y + 3.5f));
+		m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x /*+ 2.f*/, m_spr->GetPosition().y + 3.5f));
 	}
 }
 
@@ -100,6 +100,7 @@ AnimatedGameObject::AnimatedGameObject(TexID id, int rows, int cols, int bTyp, b
 	m_type = (int)id;
 	m_spr = std::make_shared<AnimatedSprite>(id, rows, cols, FPS, symmetrical, initAnim, animSpd);
 	m_spawnData.m_initialAnim = initAnim;
+	m_spawnData.m_initialDir = dir;
 	SetDirection(m_spawnData.m_initialDir);
 }
 
@@ -109,6 +110,7 @@ AnimatedGameObject::AnimatedGameObject(TexID id, int bTyp, bool dir, bool symmet
 	m_type = (int)id;
 	m_spr = std::make_shared<AnimatedSprite>(id, FPS, symmetrical, initAnim, animSpd);
 	m_spawnData.m_initialAnim = initAnim;
+	m_spawnData.m_initialDir = dir;
 	SetDirection(m_spawnData.m_initialDir);
 }
 

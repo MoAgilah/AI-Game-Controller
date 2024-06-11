@@ -168,6 +168,12 @@
     <ClCompile Include="Code\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Code\GameObjectState\GameObjectStateMgr.cpp">
+      <Filter>Source Files\GameStates</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameObjectState\PlayerState.cpp">
+      <Filter>Source Files\GameStates</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Collisions\BoundingBox.h">
@@ -274,6 +280,15 @@
     </ClInclude>
     <ClInclude Include="Code\Drawables\Sprite.h">
       <Filter>Header Files\Drawables</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameObjectState\GameObjectState.h">
+      <Filter>Header Files\GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameObjectState\GameObjectStateMgr.h">
+      <Filter>Header Files\GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameObjectState\PlayerState.h">
+      <Filter>Header Files\GameStates</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

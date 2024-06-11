@@ -310,7 +310,7 @@ void Collisions::PlayerToEnemy(GameObject * ply, GameObject * enmy)
 						}
 						else
 						{
-							ptmp->Kill();
+							ptmp->SetIsAlive(false);
 						}
 					}
 				}
@@ -320,7 +320,7 @@ void Collisions::PlayerToEnemy(GameObject * ply, GameObject * enmy)
 				if (ptmp->GetIsAlive())
 				{
 					//set hover time
-					ptmp->SetAirTime(0.1f);
+					ptmp->JusyHitEnemy(0.1f);
 					etmp->DecrementLife();
 				}
 			}

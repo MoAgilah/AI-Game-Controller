@@ -61,9 +61,5 @@ void Game::CheckInView()
 	for (auto& tile : Collisions::Get()->GetGrid())
 		tile->SetVisible(m_camera->IsinView(tile->GetRect()));
 
-	for (auto& enemy : m_world->GetEnemies())
-		enemy->SetVisible(m_camera->IsInView(enemy->GetSprite()));
-
-	for (auto& object : m_world->GetObjects())
-		object->SetVisible(m_camera->IsInView(object->GetSprite()));
+	m_world->CheckIsInView();
 }
