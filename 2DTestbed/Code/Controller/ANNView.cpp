@@ -108,7 +108,7 @@ void ANNView::Update()
 			for (size_t j = 0; j < gobj.size(); j++)
 			{
 				int type = gobj[j]->GetBBox()->GetID();
-				if (type == BILL)
+				if (type == (int)TexID::BillBB)
 				{
 					tmp.setSize(sf::Vector2f(96, 108));
 					tmp.setOrigin(48, 54);
@@ -125,19 +125,19 @@ void ANNView::Update()
 
 					if (m_vecView[i]->GetRect().getGlobalBounds().intersects(tmp.getGlobalBounds()))
 					{
-						if (type == PLAYER)
+						if (type >= PlyBgn && type <= PlyEnd)
 						{
 							m_vecView[i]->SetFillColour(sf::Color::Red);
 						}
-						else if (type > PLAYER && type <= EnmyEnd)
+						else if (type >= EnmyBgn && type <= EnmyEnd)
 						{
 							m_vecView[i]->SetFillColour(sf::Color::Black);
 						}
-						else if (type > EnmyEnd && type <= SHROOM)
+						else if (type >= ColBgn && type <= ColEnd)
 						{
 							m_vecView[i]->SetFillColour(sf::Color::Yellow);
 						}
-						else if (type > SHROOM && type <= ObjEnd)
+						else if (type >= ObjBgn && type <= ObjEnd)
 						{
 							m_vecView[i]->SetFillColour(sf::Color::Green);
 						}

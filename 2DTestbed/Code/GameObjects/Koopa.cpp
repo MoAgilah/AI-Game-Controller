@@ -11,7 +11,7 @@ Koopa::Koopa(int rows, int cols, bool dir, bool symmetrical, int initAnim, float
 
 	m_spawnData.m_initialPos = sf::Vector2f(400, 524);
 	m_spr->SetPosition(m_spawnData.m_initialPos);
-	m_type = KOOPA;
+	m_type = (int)TexID::Koopa;
 	m_numLives = m_maxLives = 1;
 }
 

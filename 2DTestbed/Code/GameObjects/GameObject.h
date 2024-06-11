@@ -8,13 +8,10 @@
 
 enum GOTYPE
 {
-	PLAYER,
-	KOOPA, REX, BILL, PPLANT,CHUCK,
-	YCOIN, SHROOM, QBOX, SMBOX, SPBOX,
-	CHKPOINT, GOAL,
-
-	EnmyBgn = KOOPA, EnmyEnd = CHUCK,
-	ObjBgn = YCOIN, ObjEnd = GOAL
+	PlyBgn = (int)TexID::Mario, PlyEnd = (int)TexID::SuperSmlBB,
+	EnmyBgn = (int)TexID::Koopa, EnmyEnd = (int)TexID::ChuckBB,
+	ColBgn = (int)TexID::YCoin, ColEnd = (int)TexID::GoalBB,
+	ObjBgn = (int)TexID::QBox, ObjEnd = (int)TexID::BoxBB
 };
 
 struct SpawnData

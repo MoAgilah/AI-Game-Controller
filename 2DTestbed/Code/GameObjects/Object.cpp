@@ -55,7 +55,7 @@ void Object::Reset()
 
 void Object::Animate(float deltaTime)
 {
-	if (this->GetBBox()->GetID() == SHROOM)
+	if (this->GetBBox()->GetID() == (int)TexID::ShroomBB)
 	{
 		SetPrevPosition(GetPosition());
 
@@ -98,7 +98,7 @@ void Object::Animate(float deltaTime)
 		}
 	}
 
-	if (this->GetBBox()->GetID() == GOAL)
+	if (this->GetBBox()->GetID() == (int)TexID::GoalBB)
 	{
 		if (m_goingUp)
 		{

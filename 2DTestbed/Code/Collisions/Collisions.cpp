@@ -270,7 +270,7 @@ void Collisions::PlayerToEnemy(GameObject * ply, GameObject * enmy)
 	float eTop = etmp->GetBBox()->GetSprite()->getPosition().y - enmy->GetBBox()->GetSprite()->getOrigin().y;
 
 	bool col = false;
-	if (etmp->GetBBox()->GetID() == BILL)
+	if (etmp->GetBBox()->GetID() == (int)TexID::BillBB)
 	{
 		Bill* bill = (Bill*)enmy;
 
@@ -375,7 +375,7 @@ void Collisions::ObjectToTile(GameObject * obj, Tile * tile)
 	{
 		if(GetDirTravelling(obj) == DDIR)
 		{
-			if (obj->GetBBox()->GetID() == REX || tile->GetType() == OWAY)
+			if (obj->GetBBox()->GetID() == (int)TexID::RexBB || tile->GetType() == OWAY)
 			{
 				Rex* rtmp = (Rex*)obj;
 				if (rtmp->Tall())//if regular
@@ -407,7 +407,7 @@ void Collisions::ObjectToTile(GameObject * obj, Tile * tile)
 		switch (GetDirTravelling(obj))
 		{
 		case RDIR:
-			if (obj->GetBBox()->GetID() == REX)
+			if (obj->GetBBox()->GetID() == (int)TexID::RexBB)
 			{
 				Rex* rtmp = (Rex*)obj;
 				if (rtmp->Tall())//regular
@@ -421,7 +421,7 @@ void Collisions::ObjectToTile(GameObject * obj, Tile * tile)
 					rtmp->SetPosition(sf::Vector2f((tile->GetRect().getPosition().x - tile->GetRect().getOrigin().x * sX) - (obj->GetOrigin().x * sX) + 3, obj->GetPosition().y));
 				}
 			}
-			else if (obj->GetBBox()->GetID() == SHROOM)
+			else if (obj->GetBBox()->GetID() == (int)TexID::ShroomBB)
 			{
 				//set to minimum closest dist
 				((Object*)obj)->SetPosition(sf::Vector2f((tile->GetRect().getPosition().x - tile->GetRect().getOrigin().x * sX) - (obj->GetOrigin().x * sX) -4.f, obj->GetPosition().y));
@@ -444,7 +444,7 @@ void Collisions::ObjectToTile(GameObject * obj, Tile * tile)
 
 			break;
 		case LDIR:
-			if (obj->GetBBox()->GetID() == REX)
+			if (obj->GetBBox()->GetID() == (int)TexID::RexBB)
 			{
 				Rex* rtmp = (Rex*)obj;
 				if (rtmp->Tall())//regular
@@ -458,7 +458,7 @@ void Collisions::ObjectToTile(GameObject * obj, Tile * tile)
 					rtmp->SetPosition(sf::Vector2f((tile->GetRect().getPosition().x + tile->GetRect().getOrigin().x * sX) + (obj->GetOrigin().x * sX) - 3.f, obj->GetPosition().y));
 				}
 			}
-			else if (obj->GetBBox()->GetID() == SHROOM)
+			else if (obj->GetBBox()->GetID() == (int)TexID::ShroomBB)
 			{
 				//set to minimum closest dist
 				((Object*)obj)->SetPosition(sf::Vector2f((tile->GetRect().getPosition().x + tile->GetRect().getOrigin().x * sX) + (obj->GetOrigin().x * sX) + 4.f, obj->GetPosition().y));
@@ -520,18 +520,17 @@ void Collisions::ObjectToTile(GameObject * obj, Tile * tile)
 void Collisions::ColObjectToTile(GameObject * c_obj, Tile * tile)
 {
 	int id = c_obj->GetBBox()->GetID();
-	if (id >= (int)TexID::PlyBgn && id <= (int)TexID::PlyEnd)
+	if (id >= PlyBgn && id <= PlyEnd)
 	{
 		PlayerToTile(c_obj, tile);
 	}
-	else if (id >= (int)TexID::EnmyBgn && id <= (int)TexID::EnmyEnd)
+	else if (id >= EnmyBgn && id <= EnmyEnd)
 	{
 		ObjectToTile(c_obj, tile);
 	}
-	else if (id >= (int)TexID::ObjBgn)
+	else if (id == (int)TexID::ShroomBB)
 	{
-		if (id == SHROOM)
-			ObjectToTile(c_obj, tile);
+		ObjectToTile(c_obj, tile);
 	}
 }
 
@@ -594,27 +593,27 @@ void Collisions::ColObjectToColObject(GameObject * colObj1, GameObject * colObj2
 	int isPlayer = -1;
 
 	//if either is a player assign id num
-	if (col1Typ >= (int)TexID::PlyBgn && col1Typ <= (int)TexID::PlyEnd) isPlayer = 1;
-	else if (col2Typ >= (int)TexID::PlyBgn && col2Typ <= (int)TexID::PlyEnd) isPlayer = 2;
+	if (col1Typ >= PlyBgn && col1Typ <= PlyEnd) isPlayer = 1;
+	else if (col2Typ >= PlyBgn && col2Typ <= PlyEnd) isPlayer = 2;
 
 	if (isPlayer == 1)//if player is obj 1
 	{
-		if (col2Typ >= (int)TexID::EnmyBgn && col2Typ <= (int)TexID::EnmyBgn)
+		if (col1Typ >= EnmyBgn && col1Typ <= EnmyEnd)
 		{
 			PlayerToEnemy(colObj1, colObj2);
 		}
-		else if (col2Typ >= (int)TexID::ObjBgn)
+		else if (col2Typ >= ColBgn && col2Typ <= ObjEnd)
 		{
 			PlayerToObject((Player*)colObj1, (Object*)colObj2);
 		}
 	}
 	else if (isPlayer == 2)//if player is obj 2
 	{
-		if (col1Typ >= (int)TexID::EnmyBgn && col1Typ <= (int)TexID::EnmyEnd)
+		if (col1Typ >= EnmyBgn && col1Typ <= EnmyEnd)
 		{
 			PlayerToEnemy(colObj2, colObj1);
 		}
-		else if (col1Typ >= (int)TexID::ObjBgn)
+		else if (col1Typ >= ColBgn && col1Typ <= ObjEnd)
 		{
 			PlayerToObject((Player*)colObj2, (Object*)colObj1);
 		}
@@ -622,7 +621,7 @@ void Collisions::ColObjectToColObject(GameObject * colObj1, GameObject * colObj2
 	else // if neither are the player
 	{
 		//if both are enemies
-		if ((col1Typ >= (int)TexID::EnmyBgn && col1Typ <= (int)TexID::EnmyEnd) && (col2Typ >= (int)TexID::EnmyBgn && col2Typ <= (int)TexID::EnmyEnd))
+		if ((col1Typ >= EnmyBgn && col1Typ <= EnmyEnd) && (col2Typ >= EnmyBgn && col2Typ <= EnmyEnd))
 		{
 			if (colObj1->GetActive() && colObj2->GetActive())
 			{
