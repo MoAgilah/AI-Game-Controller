@@ -298,7 +298,7 @@ void Collisions::PlayerToEnemy(GameObject * ply, GameObject * enmy)
 			if (pBot > eTop || etmp->GetID() == TexID::PPlant)
 			{
 				//if not vulnerable
-					if (!ptmp->GetIfInvulnerable())
+				if (!ptmp->GetIfInvulnerable())
 				{
 					if (ptmp->GetIsAlive())
 					{

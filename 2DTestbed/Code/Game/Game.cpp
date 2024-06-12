@@ -19,7 +19,7 @@ Game::Game()
 	if (Automated)
 		m_player.reset(CtrlMgr::GetCtrlMgr()->GetController()->GetCurrentPlayer());
 	else
-		m_player = std::make_unique<Player>(8, 2, false, 0, .5f);
+		m_player = std::make_unique<Player>();
 
 	m_world = std::make_unique<World>();
 	m_logger = std::make_unique<Logger>();

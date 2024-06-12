@@ -73,6 +73,9 @@
     <Filter Include="Source Files\GameStates">
       <UniqueIdentifier>{2af2cd57-0d93-476b-877f-13fbbc91894e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shaders">
+      <UniqueIdentifier>{a34805c1-89c8-4bdd-8303-c4dbafd411bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Collisions\BoundingBox.cpp">
@@ -299,6 +302,9 @@
   <ItemGroup>
     <None Include="Code\NEAT\params.ini">
       <Filter>Header Files\Controller\NEAT</Filter>
+    </None>
+    <None Include="Resources\Shaders\FlashShader.frag">
+      <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

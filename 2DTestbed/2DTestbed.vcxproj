@@ -235,6 +235,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Code\NEAT\params.ini" />
+    <None Include="Resources\Shaders\FlashShader.frag" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\Fonts\arial.ttf" />

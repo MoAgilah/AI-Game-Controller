@@ -16,7 +16,7 @@ class Camera;
 class Player : public AnimatedGameObject
 {
 public:
-	Player(int rows, int cols, bool symmetrical = true, int initAnim = 0, float animSpd = 1);
+	Player();
 	~Player() final = default;
 
 	void Update(float deltaTime) final;
@@ -26,7 +26,7 @@ public:
 	void Move(sf::Vector2f vel);
 
 	bool GetIsSuper() const { return m_super; }
-	void SetIsSuper(bool super) { m_super = super; }
+	void SetIsSuper(bool super);
 
 	bool GetGoalHit() const { return m_goalHit; }
 	void GoalHit() { m_goalHit = true; }
@@ -40,8 +40,6 @@ public:
 	void IncreaseCoins(int num) { m_coinTotal = +num; }
 
 	const std::array<bool, MAXKEYS>& GetKeyStates() const { return m_keyStates; }
-
-	void Kill();
 
 	bool GetIfInvulnerable() const { return m_justBeenHit; }
 
@@ -101,5 +99,6 @@ private:
 
 	CNeuralNet* m_itsBrain = nullptr;
 
+	sf::Shader m_fragShader;
 	GameObjectStateMgr m_stateMgr;
 };

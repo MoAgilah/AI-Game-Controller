@@ -10,34 +10,26 @@
 
 bool Player::s_playerInserted = false;
 
-Player::Player(int rows, int cols, bool symmetrical, int initAnim, float animSpd)
-	: AnimatedGameObject(TexID::Mario, rows, cols, (int)TexID::MarioBB, true, symmetrical, initAnim, animSpd)
+Player::Player()
+	: AnimatedGameObject(TexID::Mario, (int)TexID::MarioBB, true, false, Anims::IDLE, 0.5f)
 {
-	m_type = (int)TexID::Mario;
-	m_spawnData.m_initialPos = sf::Vector2f(75, 454);
-	m_keyStates.fill(false);
-	SetPosition(m_spawnData.m_initialPos);
-	GetAnimSpr()->SetFrameData(rows, cols, { 1, 1, 1, 2, 1, 2, 1, 2 });
+	m_fragShader.loadFromFile("Resources/Shaders/FlashShader.frag", sf::Shader::Fragment);
+	m_fragShader.setUniform("flashColor", sf::Glsl::Vec4(1, 1, 1, 1));
 
-	//if automated
+	m_spawnData.m_initialPos = sf::Vector2f(75, 454);
+	SetPosition(m_spawnData.m_initialPos);
+	m_keyStates.fill(false);
+
+	GetAnimSpr()->SetFrameData(8, 2, { 1, 1, 1, 2, 1, 2, 1, 2 });
+	SetIsSuper(true);
+
 	if (Automated)
 	{
-		//if player already inserted
 		if (s_playerInserted)
-		{
-			//remove additional players
 			Collisions::Get()->RemoveLastAdded();
-		}
-		else
-		{
-			//if first player
-			s_playerInserted = true;
-		}
 	}
-	else
-	{
-		s_playerInserted = true;
-	}
+
+	s_playerInserted = true;
 }
 
 void Player::Update(float deltaTime)
@@ -45,37 +37,50 @@ void Player::Update(float deltaTime)
 	if (!GetActive())
 		return;
 
-	//adjust position when changing from regular -> super and vice versa
-	if (m_super)
-	{
-		//if current spr and bbox is not super
-		if (m_spr->GetTexID() != TexID::Super)
-		{
-			//change spr and bbox
-			m_spr->SetTexture(TexID::Super);
-			GetAnimSpr()->SetFrameData(8, 3, { 1, 1, 1, 3, 1, 2, 1, 2 });
-			m_bbox->SetTexture(TexID::SuperBB);
-			SetPosition(m_spr->GetPosition() - sf::Vector2f(0, m_heightDiff));
-		}
-	}
-	else
-	{
-		//if current spr and bbox is not regular
-		if (m_spr->GetTexID() != TexID::Mario)
-		{
-			//change spr and bbox
-			m_spr->SetTexture(TexID::Mario);
-			GetAnimSpr()->SetFrameData(8, 2, { 1, 1, 1, 2, 1, 2, 1, 2 });
-			m_bbox->SetTexture(TexID::MarioBB);
-			SetPosition(m_spr->GetPosition() + sf::Vector2f(0, m_heightDiff));
-		}
-
-	}//end super
-
 	ProcessInput();
+
+	m_stateMgr.Update(deltaTime);
+
+	GetAnimSpr()->Update(deltaTime);
 
 	if (GetIsAlive())
 	{
+		if (GetOnGround())
+		{
+			if (m_stateMgr.GetStateName() == "Airborne")
+				m_stateMgr.PopState();
+
+			if (GetIsCrouched())
+			{
+				if (m_stateMgr.GetStateName() != "Crouching")
+					m_stateMgr.ChangeState(new CrouchingState(this));
+			}
+			else
+			{
+				if (m_stateMgr.GetStateName() != "Grounded")
+					m_stateMgr.ChangeState(new GroundedState(this));
+			}
+
+			SetYVelocity(0);
+			m_airtime = 0;
+		}
+		else
+		{
+			if (GetAirbourne())
+			{
+				if (m_stateMgr.GetStateName() != "Airborne")
+					m_stateMgr.PushState(new AirborneState(this));
+
+				m_airtime += deltaTime;
+				if (m_airtime >= c_maxAirTime)
+					SetAirbourne(false);
+			}
+			else
+			{
+				IncrementYVelocity(c_gravity);
+			}
+		}
+
 		//set vulnerability time
 		if (m_justBeenHit)
 		{
@@ -83,6 +88,7 @@ void Player::Update(float deltaTime)
 
 			if (m_InvulTime <= 0)
 			{
+				m_InvulTime = 0;
 				m_justBeenHit = false;
 			}
 		}
@@ -102,45 +108,6 @@ void Player::Update(float deltaTime)
 			}
 		}
 
-		if (GetOnGround())
-		{
-			if (!GetAirbourne())
-			{
-				if (m_stateMgr.GetStateName() == "Airborne")
-					m_stateMgr.PopState();
-
-				if (GetIsCrouched())
-				{
-					if (m_stateMgr.GetStateName() != "Crouching")
-						m_stateMgr.ChangeState(new CrouchingState(this));
-				}
-				else
-				{
-					if (m_stateMgr.GetStateName() != "Grounded")
-						m_stateMgr.ChangeState(new GroundedState(this));
-				}
-
-				SetYVelocity(0);
-				m_airtime = 0;
-			}
-		}
-		else
-		{
-			if (GetAirbourne())
-			{
-				if (m_stateMgr.GetStateName() != "Airborne")
-					m_stateMgr.PushState(new AirborneState(this));
-
-				m_airtime += deltaTime;
-				if (m_airtime >= c_maxAirTime)
-					SetAirbourne(false);
-			}
-			else
-			{
-				IncrementYVelocity(c_gravity);
-			}
-		}
-
 		if ((m_keyStates[LEFT_KEY] == false && m_keyStates[RIGHT_KEY] == false))
 			m_velocity.x = 0.0f;
 
@@ -151,6 +118,25 @@ void Player::Update(float deltaTime)
 		{
 			if (!m_keyStates[DOWN_KEY] && !m_keyStates[UP_KEY])
 				GetAnimSpr()->ChangeAnim(IDLE);
+		}
+
+		if (m_spr->GetPosition().x < LeftMost)
+			Move(sf::Vector2f(-GetXVelocity() * FPS * deltaTime, 0));
+
+		if (m_spr->GetPosition().x > RightMost)
+		{
+			SetSpawnLoc();
+
+			if (Automated == false)
+			{
+				Reset();
+			}
+		}
+
+		if (m_bbox->GetSprite()->getPosition().y > 600 - m_bbox->GetSprite()->getOrigin().y)
+		{
+			if (GetIsAlive())
+				SetIsAlive(false);
 		}
 
 		//decomposition of movement
@@ -174,33 +160,13 @@ void Player::Update(float deltaTime)
 			m_stateMgr.ChangeState(new DieingState(this));
 	}
 
-	if (m_spr->GetPosition().x < LeftMost)
-		Move(sf::Vector2f(-GetXVelocity() * FPS * deltaTime, 0));
-
-	if (m_spr->GetPosition().x > RightMost)
-	{
-		SetSpawnLoc();
-
-		if (Automated == false)
-		{
-			Reset();
-		}
-	}
-
-	if (m_bbox->GetSprite()->getPosition().y > 600 - m_bbox->GetSprite()->getOrigin().y)
-	{
-		if (GetIsAlive())
-			SetIsAlive(false);
-	}
-
-	m_stateMgr.Update(deltaTime);
-
-	GetAnimSpr()->Update(deltaTime);
+	m_fragShader.setUniform("time", m_InvulTime);
 }
 
 void Player::Render(sf::RenderWindow& window)
 {
-	m_spr->Render(window);
+
+	window.draw(*m_spr->GetSprite(), &m_fragShader);
 	m_bbox->Render(window);
 }
 
@@ -245,19 +211,37 @@ void Player::Reset()
 	Game::GetGameMgr()->GetLevel()->ResetLevel();
 }
 
-void Player::Kill()
-{
-	m_airtime = 0.33f;
-	SetAirbourne(true);
-	SetOnGround(false);
-	m_alive = false;
-	GetAnimSpr()->ChangeAnim(DIE);
-}
-
 void Player::Move(sf::Vector2f vel)
 {
 	m_spr->Move(vel.x, vel.y);
 	m_bbox->GetSprite()->move(vel);
+}
+
+void Player::SetIsSuper(bool super)
+{
+	m_super = super;
+	if (m_super)
+	{
+		//if current spr and bbox is not super
+		if (m_spr->GetTexID() != TexID::Super)
+		{
+			//change spr and bbox
+			m_spr->SetTexture(TexID::Super);
+			GetAnimSpr()->SetFrameData(8, 3, { 1, 1, 1, 3, 1, 2, 1, 2 });
+			m_bbox->SetTexture(TexID::SuperBB);
+			SetPosition(m_spr->GetPosition() - sf::Vector2f(0, m_heightDiff));
+		}
+	}
+	else
+	{
+		if (m_spr->GetTexID() != TexID::Mario)
+		{
+			m_spr->SetTexture(TexID::Mario);
+			GetAnimSpr()->SetFrameData(8, 2, { 1, 1, 1, 2, 1, 2, 1, 2 });
+			m_bbox->SetTexture(TexID::MarioBB);
+			SetPosition(m_spr->GetPosition() + sf::Vector2f(0, m_heightDiff));
+		}
+	}
 }
 
 void Player::SetSpawnLoc(sf::Vector2f loc)
@@ -274,16 +258,9 @@ void Player::SetSpawnLoc(sf::Vector2f loc)
 
 void Player::ForceFall()
 {
-	if (m_cantjump == false || m_cantSpinJump == false)
-	{
-		m_cantjump = true;
-		m_cantSpinJump = true;
-
-		if (GetAirbourne())
-		{
-			SetAirbourne(false);
-		}
-	}
+	SetCantJump(true);
+	SetCantSpinJump(true);
+	SetAirbourne(false);
 }
 
 void Player::JusyHitEnemy(float val)
@@ -295,7 +272,7 @@ void Player::JusyHitEnemy(float val)
 void Player::JustBeenHit(bool hit)
 {
 	m_justBeenHit = hit;
-	m_InvulTime = 1;
+	m_InvulTime = 1.f;
 }
 
 bool Player::UpdateANN()
