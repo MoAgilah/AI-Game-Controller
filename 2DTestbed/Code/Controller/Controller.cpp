@@ -4,6 +4,7 @@
 #include "../Controller/ANNView.h"
 #include "../Game/Game.h"
 #include "../Game/Constants.h"
+#include <format>
 
 Controller::Controller()
 {
@@ -145,7 +146,7 @@ bool Controller::Update()
 		for (int swp = 0; swp< m_vecMarios.size(); ++swp)
 		{
 			Game::GetGameMgr()->GetLogger()->AddExperimentLog("Player: " + std::to_string(swp),false);
-			m_vecMarios[swp]->EndOfRunCalculations();
+			EndOfRunCalculation(m_vecMarios[swp]);
 		}
 
 		//increment the generation counter
@@ -196,4 +197,33 @@ std::vector<double> Controller::GetFitnessScores() const
 	}
 
 	return scores;
+}
+
+void Controller::EndOfRunCalculation(Player* ply)
+{
+	float percent = 0;
+	float endX = ply->GetPosition().x;
+	float startX = ply->GetInitialPosition().x;
+
+	if (endX < startX)
+	{
+		percent = -((endX / startX) * 100);
+		Game::GetGameMgr()->GetLogger()->AddExperimentLog(std::format("Player moved left by {}%!", percent));
+	}
+	else if (endX == startX)
+	{
+		Game::GetGameMgr()->GetLogger()->AddExperimentLog(std::format("Player did not move!"));
+	}
+	else if (ply->GetGoalHit())
+	{
+		percent = 100;
+		Game::GetGameMgr()->GetLogger()->AddExperimentLog("Player completed the level");
+	}
+	else
+	{
+		percent = ((endX - startX) / RightMost) * 100;
+		Game::GetGameMgr()->GetLogger()->AddExperimentLog(std::format("Player completed {}% of the level!", percent));
+	}
+
+	ply->UpdateFitness(percent);
 }

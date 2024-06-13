@@ -22,6 +22,8 @@ public:
 	bool Update();
 	std::vector<double>  GetFitnessScores()const;//body needs to be written
 private:
+	void EndOfRunCalculation(Player* ply);
+
 	int currPlayer;
 	int	iNumPlayers;
 	ANNView* m_AnnView;

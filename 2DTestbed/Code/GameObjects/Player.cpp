@@ -21,7 +21,6 @@ Player::Player()
 	m_keyStates.fill(false);
 
 	GetAnimSpr()->SetFrameData(8, 2, { 1, 1, 1, 2, 1, 2, 1, 2 });
-	SetIsSuper(true);
 
 	if (Automated)
 	{
@@ -289,39 +288,9 @@ bool Player::UpdateANN()
 	return true;
 }
 
-void Player::EndOfRunCalculations()
-{
-	float percent = ((GetPosition().x - 18.f) / RightMost) * 100;
-	//completed level
-	if (GetGoalHit())
-	{
-		Game::GetGameMgr()->GetLogger()->AddExperimentLog("Completed the level");
-		m_fitness += 1000;
-	}
-	else if (GetPosition().x <= 75.f)
-	{
-		m_fitness -= percent;
-
-		if (GetPosition().x == 75.f)
-		{
-			Game::GetGameMgr()->GetLogger()->AddExperimentLog(std::format("Did not move = {}% Completed", percent));
-		}
-		else
-		{
-			Game::GetGameMgr()->GetLogger()->AddExperimentLog(std::format("Moved left  = {}% Completed", percent));
-		}
-	}
-	//moved right some
-	else
-	{
-		Game::GetGameMgr()->GetLogger()->AddExperimentLog(std::format("{}% Completed", percent));
-		m_fitness += percent;
-	}
-}
-
 void Player::ControllerInput()
 {
-	Game::GetGameMgr()->GetLogger()->AddDebugLog(std::format("Player ", CtrlMgr::GetCtrlMgr()->GetController()->GetCurrentPlayerNum()), false);
+	Game::GetGameMgr()->GetLogger()->AddDebugLog(std::format("Player {}", CtrlMgr::GetCtrlMgr()->GetController()->GetCurrentPlayerNum()), false);
 
 	for (int i = 0; i < outputs.size(); ++i)
 	{
@@ -349,7 +318,6 @@ void Player::ControllerInput()
 		case SPINJUMP:
 			move = "sJmp";
 			break;
-
 		default:
 			break;
 		}

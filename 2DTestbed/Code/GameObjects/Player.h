@@ -63,7 +63,6 @@ public:
 	void SetAirTime(float val) { m_airtime = val; }
 	void IncAirTime(float val) { m_airtime += val; }
 
-	void EndOfRunCalculations();
 	void InsertNewBrain(CNeuralNet* brain) { m_itsBrain = brain; }
 	bool UpdateANN();
 
@@ -72,7 +71,6 @@ private:
 	void ControllerInput();
 	void HumanInput();
 
-private:
 	static bool s_playerInserted;
 	bool m_super = false;
 	bool m_crouched = false;
