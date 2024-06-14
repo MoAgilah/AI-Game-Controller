@@ -20,6 +20,8 @@ Player::Player()
 	SetPosition(m_spawnData.m_initialPos);
 	m_keyStates.fill(false);
 
+	SetIsSuper(true);
+
 	GetAnimSpr()->SetFrameData(8, 2, { 1, 1, 1, 2, 1, 2, 1, 2 });
 
 	if (Automated)

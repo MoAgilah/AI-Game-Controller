@@ -85,6 +85,7 @@ private:
 
 	int m_coinTotal = 0;
 
+	sf::Vector2f m_sizeDiff;
 	float m_heightDiff = 11.25;
 	float m_noGravTime = 0;
 	float m_InvulTime = 0;
