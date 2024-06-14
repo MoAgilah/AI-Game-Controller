@@ -119,8 +119,25 @@ void Player::Update(float deltaTime)
 				GetAnimSpr()->ChangeAnim(IDLE);
 		}
 
-		if (m_spr->GetPosition().x < LeftMost)
+		//decomposition of movement
+		if (GetXVelocity() != 0)
+		{
+			SetPrevPosition(m_spr->GetPosition());
+			Move(sf::Vector2f(GetXVelocity() * FPS * deltaTime, 0));
+			Collisions::Get()->ProcessCollisions(this);
+		}
+
+		if (GetYVelocity() != 0)
+		{
+			SetPrevPosition(m_spr->GetPosition());
+			Move(sf::Vector2f(0, GetYVelocity() * FPS * deltaTime));
+			Collisions::Get()->ProcessCollisions(this);
+		}
+
+		if (m_spr->GetPosition().x < (m_spr->GetOrigin().x * sX)*0.5)
+		{
 			Move(sf::Vector2f(-GetXVelocity() * FPS * deltaTime, 0));
+		}
 
 		if (m_spr->GetPosition().x > RightMost)
 		{
@@ -136,21 +153,6 @@ void Player::Update(float deltaTime)
 		{
 			if (GetIsAlive())
 				SetIsAlive(false);
-		}
-
-		//decomposition of movement
-		if (GetXVelocity() != 0)
-		{
-			SetPrevPosition(m_spr->GetPosition());
-			Move(sf::Vector2f(GetXVelocity() * FPS * deltaTime, 0));
-			Collisions::Get()->ProcessCollisions(this);
-		}
-
-		if (GetYVelocity() != 0)
-		{
-			SetPrevPosition(m_spr->GetPosition());
-			Move(sf::Vector2f(0, GetYVelocity() * FPS * deltaTime));
-			Collisions::Get()->ProcessCollisions(this);
 		}
 	}
 	else
