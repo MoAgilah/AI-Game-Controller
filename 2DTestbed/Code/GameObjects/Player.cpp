@@ -20,9 +20,7 @@ Player::Player()
 	SetPosition(m_spawnData.m_initialPos);
 	m_keyStates.fill(false);
 
-	SetIsSuper(true);
-
-	GetAnimSpr()->SetFrameData(8, 2, { 1, 1, 1, 2, 1, 2, 1, 2 });
+	GetAnimSpr()->SetFrameData(14, 4, { 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4 });
 
 	if (Automated)
 	{
@@ -112,7 +110,7 @@ void Player::Update(float deltaTime)
 		if ((m_keyStates[LEFT_KEY] == false && m_keyStates[RIGHT_KEY] == false))
 			m_velocity.x = 0.0f;
 
-		if (!m_keyStates[JUMP_KEY] && !m_keyStates[SPINJUMP])
+		if (!m_keyStates[JUMP_KEY] && !m_keyStates[SJUMP_KEY])
 			m_cantjump = m_cantSpinJump = false;
 
 		if (GetVelocity() == sf::Vector2f())
@@ -179,8 +177,7 @@ void Player::Reset()
 	{
 		//change spr and bbox
 		m_spr->SetTexture(TexID::Mario);
-		std::vector<int> frames{ 1, 1, 1, 2, 1, 2, 1, 2 };
-		GetAnimSpr()->SetFrameData(8, 2, frames);
+		GetAnimSpr()->SetFrameData(14, 4, { 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4 });
 		m_bbox->SetTexture(TexID::MarioBB);
 
 		//adjust position
@@ -230,7 +227,7 @@ void Player::SetIsSuper(bool super)
 		{
 			//change spr and bbox
 			m_spr->SetTexture(TexID::Super);
-			GetAnimSpr()->SetFrameData(8, 3, { 1, 1, 1, 3, 1, 2, 1, 2 });
+			GetAnimSpr()->SetFrameData(14, 4, { 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4 });
 			m_bbox->SetTexture(TexID::SuperBB);
 			SetPosition(m_spr->GetPosition() - sf::Vector2f(0, m_heightDiff));
 		}
@@ -240,7 +237,7 @@ void Player::SetIsSuper(bool super)
 		if (m_spr->GetTexID() != TexID::Mario)
 		{
 			m_spr->SetTexture(TexID::Mario);
-			GetAnimSpr()->SetFrameData(8, 2, { 1, 1, 1, 2, 1, 2, 1, 2 });
+			GetAnimSpr()->SetFrameData(14, 4, { 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4 });
 			m_bbox->SetTexture(TexID::MarioBB);
 			SetPosition(m_spr->GetPosition() + sf::Vector2f(0, m_heightDiff));
 		}
@@ -319,7 +316,7 @@ void Player::ControllerInput()
 		case JUMP_KEY:
 			move = "jump";
 			break;
-		case SPINJUMP:
+		case SJUMP_KEY:
 			move = "sJmp";
 			break;
 		default:
@@ -373,12 +370,12 @@ void Player::HumanInput()
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
-		m_keyStates[SPINJUMP] = true;
+		m_keyStates[SJUMP_KEY] = true;
 	}
 	else
 	{
-		if (m_keyStates[SPINJUMP])
-			m_keyStates[SPINJUMP] = false;
+		if (m_keyStates[SJUMP_KEY])
+			m_keyStates[SJUMP_KEY] = false;
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad8))

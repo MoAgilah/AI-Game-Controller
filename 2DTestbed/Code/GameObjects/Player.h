@@ -8,9 +8,9 @@
 
 #include "../GameObjectState/GameObjectStateMgr.h"
 
-enum Anims { IDLE, CROUCH, JUMP, MOVING, LOOKUP, SPINJUMP, FALL, DIE, MAXANIM };
+enum Anims { IDLE, LOOKUP, JUMP, FALL, RUNJUMP, SKID, SLIDE, VICTORY, CROUCH, GROW, DIE, MOVING, RUNNING, SPINJUMP, MAXANIM };
 
-enum Actions { LEFT_KEY, RIGHT_KEY, UP_KEY, DOWN_KEY, JUMP_KEY, RCRTL_KEY };
+enum Actions { LEFT_KEY, RIGHT_KEY, UP_KEY, DOWN_KEY, JUMP_KEY, SJUMP_KEY };
 
 class Camera;
 class Player : public AnimatedGameObject

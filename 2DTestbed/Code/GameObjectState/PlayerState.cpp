@@ -58,7 +58,7 @@ void GroundedState::ProcessInputs()
 		}
 	}
 
-	if (keyStates[SPINJUMP])
+	if (keyStates[SJUMP_KEY])
 	{
 		if (!player->GetCantSpinJump())
 		{
@@ -110,7 +110,7 @@ void AirborneState::ProcessInputs()
 		}
 	}
 
-	if (!keyStates[SPINJUMP])
+	if (!keyStates[SJUMP_KEY])
 	{
 		if (player->GetAirbourne() && player->GetCantSpinJump())
 		{
@@ -176,7 +176,7 @@ void CrouchingState::ProcessInputs()
 		}
 	}
 
-	if (keyStates[SPINJUMP])
+	if (keyStates[SJUMP_KEY])
 	{
 		if (!player->GetCantSpinJump())
 		{
