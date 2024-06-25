@@ -27,9 +27,10 @@ class AABB : public BoundingVolume
 {
 public:
 	AABB();
-	explicit AABB(const sf::Vector2f& ownerSize);
+	explicit AABB(const sf::Vector2f& size);
 	~AABB() final = default;
 
+	void Reset(const sf::Vector2f& size);
 	void Update(const sf::Vector2f& position) final;
 
 	Vector<float> GetMin() const { return m_min; }

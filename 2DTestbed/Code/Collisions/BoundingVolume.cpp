@@ -52,6 +52,15 @@ AABB::AABB(const sf::Vector2f& size)
 	Update(sf::Vector2f());
 }
 
+void AABB::Reset(const sf::Vector2f& size)
+{
+	m_size = size;
+	auto rect = static_cast<sf::RectangleShape*>(GetShape());
+	rect->setSize(sf::Vector2f(m_size));
+
+	GetShape()->setOrigin(m_size.x * .5f, m_size.y * .5f);
+}
+
 void AABB::Update(const sf::Vector2f& position)
 {
 	GetShape()->setPosition(position);
