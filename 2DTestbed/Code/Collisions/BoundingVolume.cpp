@@ -30,27 +30,18 @@ BoundingVolume::BoundingVolume(sf::Shape* shape)
 AABB::AABB()
 	: BoundingVolume(new sf::RectangleShape(sf::Vector2f(16, 16)))
 {
-	GetShape()->setOrigin(16 * .5f, 16 * .5f);
+	GetShape()->setOrigin(8, 8);
 	GetShape()->setScale(sX,sY);
 	GetShape()->setOutlineColor(sf::Color::Red);
 	GetShape()->setOutlineThickness(1);
 	GetShape()->setFillColor(sf::Color::Transparent);
-
-	Update(sf::Vector2f());
 }
 
-AABB::AABB(const sf::Vector2f& ownerSize)
-	: BoundingVolume(new sf::RectangleShape())
+AABB::AABB(const sf::Vector2f& size)
+	: BoundingVolume(new sf::RectangleShape()), m_size(size)
 {
-	sf::Vector2f sf(.6f, .6f);
-	if (ownerSize.x > ownerSize.y)
-		sf.y *= (ownerSize.y / ownerSize.x);
-	else if (ownerSize.y > ownerSize.x)
-		sf.x *= (ownerSize.x / ownerSize.y);
-
 	auto rect = static_cast<sf::RectangleShape*>(GetShape());
-	rect->setSize(sf::Vector2f(ownerSize.x * sf.x, ownerSize.y * sf.y));
-	m_size = rect->getSize();
+	rect->setSize(sf::Vector2f(m_size));
 
 	GetShape()->setOrigin(m_size.x * .5f, m_size.y * .5f);
 	GetShape()->setScale(sX, sY);
