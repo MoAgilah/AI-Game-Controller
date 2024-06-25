@@ -14,7 +14,6 @@ std::string TexIDToString(TexID id)
 	case TexID::MarioSmlBB:		return "MarioSmlBB";
 	case TexID::Super:			return "Super";
 	case TexID::SuperBB:		return "SuperBB";
-	case TexID::SuperSmlBB:		return "SuperSmlBB";
 	case TexID::Koopa:			return "Koopa";
 	case TexID::KoopaBB:		return "KoopaBB";
 	case TexID::Bill:			return "Bill";

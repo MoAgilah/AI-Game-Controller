@@ -8,7 +8,7 @@
 
 enum GOTYPE
 {
-	PlyBgn = (int)TexID::Mario, PlyEnd = (int)TexID::SuperSmlBB,
+	PlyBgn = (int)TexID::Mario, PlyEnd = (int)TexID::SuperBB,
 	EnmyBgn = (int)TexID::Koopa, EnmyEnd = (int)TexID::ChuckBB,
 	ColBgn = (int)TexID::YCoin, ColEnd = (int)TexID::GoalBB,
 	ObjBgn = (int)TexID::QBox, ObjEnd = (int)TexID::BoxBB

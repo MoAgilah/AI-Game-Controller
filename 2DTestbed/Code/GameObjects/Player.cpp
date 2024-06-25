@@ -424,7 +424,7 @@ void Player::ProcessInput()
 
 			if (m_super)
 			{
-				m_bbox->SetTexture(TexID::SuperSmlBB);
+				m_bbox->SetTexture(TexID::MarioSmlBB);
 
 				//adjust bbox position
 				if (GetDirection())
