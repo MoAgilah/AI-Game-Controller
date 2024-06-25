@@ -174,7 +174,7 @@ void Collisions::PlayerToTile(GameObject * ply, Tile * tile)
 		if (dir == DDIR)
 		{
 			//move to top of tile
-			plyObj->SetPosition(sf::Vector2f(plyObj->GetPosition().x, (tile->GetRect().getPosition().y - tile->GetRect().getOrigin().y * sY) - (plyObj->GetOrigin().y * sY) +4.f));
+			plyObj->SetPosition(sf::Vector2f(plyObj->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (plyObj->GetOrigin().y * sY) +4.f));
 			plyObj->SetOnGround(true);
 			return;
 		}
@@ -193,7 +193,7 @@ void Collisions::PlayerToTile(GameObject * ply, Tile * tile)
 			if (dir == DDIR)
 			{
 				//move to top of tile
-				plyObj->SetPosition(sf::Vector2f(plyObj->GetPosition().x, (tile->GetRect().getPosition().y - tile->GetRect().getOrigin().y * sY) - (plyObj->GetOrigin().y * sY) + 4.f));
+				plyObj->SetPosition(sf::Vector2f(plyObj->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (plyObj->GetOrigin().y * sY) + 4.f));
 				plyObj->SetOnGround(true);
 				return;
 			}
@@ -204,7 +204,7 @@ void Collisions::PlayerToTile(GameObject * ply, Tile * tile)
 			{
 				//error occured with super mario colliding with tile above him when on the ground
 				//this skips collision with that tile as way to alleiviate the problem
-				if (tile->GetID() == "17910")
+				if (tile->GetID() == "1794")
 				{
 					plyObj->SetOnGround(false);
 				}
@@ -219,16 +219,16 @@ void Collisions::PlayerToTile(GameObject * ply, Tile * tile)
 		{
 		case DDIR:
 			//move to tile top
-			plyObj->SetPosition(sf::Vector2f(plyObj->GetPosition().x, (tile->GetRect().getPosition().y - tile->GetRect().getOrigin().y * sY) - (plyObj->GetOrigin().y * sY) + 4.f));
+			plyObj->SetPosition(sf::Vector2f(plyObj->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (plyObj->GetOrigin().y * sY) + 4.f));
 			plyObj->SetOnGround(true);
 			return;
 		case RDIR:
 			//move to closest point without a collision to remove jittering
-			plyObj->SetPosition(sf::Vector2f((tile->GetRect().getPosition().x - tile->GetRect().getOrigin().x * sX) - (plyObj->GetOrigin().x * sX) + 7.5f, plyObj->GetPosition().y));
+			plyObj->SetPosition(sf::Vector2f((tile->GetPosition().x - tile->GetOrigin().x * sX) - (plyObj->GetOrigin().x * sX) + 7.5f, plyObj->GetPosition().y));
 			return;
 		case LDIR:
 			//move to closest point without a collision to remove jittering
-			plyObj->SetPosition(sf::Vector2f((tile->GetRect().getPosition().x + tile->GetRect().getOrigin().x * sX) + (plyObj->GetOrigin().x * sX) - 7.5f, plyObj->GetPosition().y));
+			plyObj->SetPosition(sf::Vector2f((tile->GetPosition().x + tile->GetOrigin().x * sX) + (plyObj->GetOrigin().x * sX) - 7.5f, plyObj->GetPosition().y));
 			return;
 		}
 	}
@@ -381,18 +381,18 @@ void Collisions::ObjectToTile(GameObject * obj, Tile * tile)
 				if (rtmp->Tall())//if regular
 				{
 					//set to tile top
-					rtmp->SetPosition(sf::Vector2f(obj->GetPosition().x, (tile->GetRect().getPosition().y - tile->GetRect().getOrigin().y * sY) - (obj->GetOrigin().y * sY) + 3.5f));
+					rtmp->SetPosition(sf::Vector2f(obj->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (obj->GetOrigin().y * sY) + 3.5f));
 				}
 				else//if squished
 				{
 					//set to tile top
-					rtmp->SetPosition(sf::Vector2f(obj->GetPosition().x, (tile->GetRect().getPosition().y - tile->GetRect().getOrigin().y * sY) - (obj->GetOrigin().y * sY) + 4.f));
+					rtmp->SetPosition(sf::Vector2f(obj->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (obj->GetOrigin().y * sY) + 4.f));
 				}
 			}
 			else
 			{
 				//set to tile top
-				obj->SetPosition(sf::Vector2f(obj->GetPosition().x, (tile->GetRect().getPosition().y - tile->GetRect().getOrigin().y * sY) - (obj->GetOrigin().y * sY) + 2.5f));
+				obj->SetPosition(sf::Vector2f(obj->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (obj->GetOrigin().y * sY) + 2.5f));
 			}
 
 			obj->SetOnGround(true);
@@ -413,23 +413,23 @@ void Collisions::ObjectToTile(GameObject * obj, Tile * tile)
 				if (rtmp->Tall())//regular
 				{
 					//set to minimum closest dist
-					rtmp->SetPosition(sf::Vector2f((tile->GetRect().getPosition().x - tile->GetRect().getOrigin().x * sX) - (obj->GetOrigin().x * sX) + 7, obj->GetPosition().y));
+					rtmp->SetPosition(sf::Vector2f((tile->GetPosition().x - tile->GetOrigin().x * sX) - (obj->GetOrigin().x * sX) + 7, obj->GetPosition().y));
 				}
 				else//squished
 				{
 					//set to minimum closest dist
-					rtmp->SetPosition(sf::Vector2f((tile->GetRect().getPosition().x - tile->GetRect().getOrigin().x * sX) - (obj->GetOrigin().x * sX) + 3, obj->GetPosition().y));
+					rtmp->SetPosition(sf::Vector2f((tile->GetPosition().x - tile->GetOrigin().x * sX) - (obj->GetOrigin().x * sX) + 3, obj->GetPosition().y));
 				}
 			}
 			else if (obj->GetBBox()->GetID() == (int)TexID::ShroomBB)
 			{
 				//set to minimum closest dist
-				((Object*)obj)->SetPosition(sf::Vector2f((tile->GetRect().getPosition().x - tile->GetRect().getOrigin().x * sX) - (obj->GetOrigin().x * sX) -4.f, obj->GetPosition().y));
+				((Object*)obj)->SetPosition(sf::Vector2f((tile->GetPosition().x - tile->GetOrigin().x * sX) - (obj->GetOrigin().x * sX) -4.f, obj->GetPosition().y));
 			}
 			else
 			{
 				//set to minimum closest dist
-				obj->SetPosition(sf::Vector2f((tile->GetRect().getPosition().x - tile->GetRect().getOrigin().x * sX) - (obj->GetOrigin().x * sX) + 7.5f, obj->GetPosition().y));
+				obj->SetPosition(sf::Vector2f((tile->GetPosition().x - tile->GetOrigin().x * sX) - (obj->GetOrigin().x * sX) + 7.5f, obj->GetPosition().y));
 			}
 
 			//flip direction
@@ -450,23 +450,23 @@ void Collisions::ObjectToTile(GameObject * obj, Tile * tile)
 				if (rtmp->Tall())//regular
 				{
 					//set to minimum closest dist
-					rtmp->SetPosition(sf::Vector2f((tile->GetRect().getPosition().x + tile->GetRect().getOrigin().x * sX) + (obj->GetOrigin().x * sX) - 7.f, obj->GetPosition().y));
+					rtmp->SetPosition(sf::Vector2f((tile->GetPosition().x + tile->GetOrigin().x * sX) + (obj->GetOrigin().x * sX) - 7.f, obj->GetPosition().y));
 				}
 				else//squished
 				{
 					//set to minimum closest dist
-					rtmp->SetPosition(sf::Vector2f((tile->GetRect().getPosition().x + tile->GetRect().getOrigin().x * sX) + (obj->GetOrigin().x * sX) - 3.f, obj->GetPosition().y));
+					rtmp->SetPosition(sf::Vector2f((tile->GetPosition().x + tile->GetOrigin().x * sX) + (obj->GetOrigin().x * sX) - 3.f, obj->GetPosition().y));
 				}
 			}
 			else if (obj->GetBBox()->GetID() == (int)TexID::ShroomBB)
 			{
 				//set to minimum closest dist
-				((Object*)obj)->SetPosition(sf::Vector2f((tile->GetRect().getPosition().x + tile->GetRect().getOrigin().x * sX) + (obj->GetOrigin().x * sX) + 4.f, obj->GetPosition().y));
+				((Object*)obj)->SetPosition(sf::Vector2f((tile->GetPosition().x + tile->GetOrigin().x * sX) + (obj->GetOrigin().x * sX) + 4.f, obj->GetPosition().y));
 			}
 			else
 			{
 				//set to minimum closest dist
-				obj->SetPosition(sf::Vector2f((tile->GetRect().getPosition().x + tile->GetRect().getOrigin().x * sX) + (obj->GetOrigin().x * sX) - 7.5f, obj->GetPosition().y));
+				obj->SetPosition(sf::Vector2f((tile->GetPosition().x + tile->GetOrigin().x * sX) + (obj->GetOrigin().x * sX) - 7.5f, obj->GetPosition().y));
 			}
 
 			//flip direction

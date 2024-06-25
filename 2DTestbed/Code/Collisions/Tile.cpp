@@ -1,28 +1,11 @@
 #include "../Collisions/Tile.h"
 #include "../Game/Camera.h"
 #include "../Game/Constants.h"
+#include <format>
 
-Tile::Tile()
+Tile::Tile(const sf::Font& font)
+	: m_hasFont(true)
 {
-	m_rect.setSize(sf::Vector2f(16, 16));
-	m_rect.setFillColor(sf::Color::Transparent);
-	m_rect.setOutlineColor(sf::Color::Black);
-	m_rect.setOutlineThickness(1);
-	m_rect.setScale(sX, sY);
-	m_rect.setOrigin(8, 8);
-
-	hasFont = false;
-}
-
-Tile::Tile(sf::Font& font)
-{
-	m_rect.setSize(sf::Vector2f(16, 16));
-	m_rect.setFillColor(sf::Color::Transparent);
-	m_rect.setOutlineColor(sf::Color::Black);
-	m_rect.setOutlineThickness(1);
-	m_rect.setScale(sX, sY);
-	m_rect.setOrigin(8, 8);
-
 	m_srect.setSize(sf::Vector2f(1, 1));
 	m_srect.setFillColor(sf::Color::Transparent);
 	m_srect.setOutlineColor(sf::Color::Black);
@@ -34,72 +17,25 @@ Tile::Tile(sf::Font& font)
 	m_text.setCharacterSize(12);
 	m_text.setOrigin(6, 6);
 	m_text.setStyle(sf::Text::Bold);
-
-	m_type = EMPTY;
-
-	hasFont = true;
-}
-
-Tile::~Tile()
-{
-	if (m_font)
-	{
-		m_font = nullptr;
-	}
 }
 
 void Tile::SetID(int gX, int gY)
 {
-	//flip y
-	InvertY(gY);
-
 	//set id
-	m_id = std::to_string(gX) + std::to_string(gY);
+	m_id = std::format("{}{}", gX, gY);
 
 	//numerical id
 	m_colNum = gX;
 	m_rowNum = gY;
 
 	//set tile identifier text
-	m_text.setString(std::to_string(gY) + "\n" + std::to_string(gX));
-}
-
-sf::Vector2f Tile::GetOrigin()
-{
-	return m_rect.getOrigin();
-}
-
-sf::Vector2f Tile::GetPosition()
-{
-	return m_rect.getPosition();
+	m_text.setString(std::format("{}\n{}", gX, gY));
 }
 
 void Tile::SetPosition(sf::Vector2f pos)
 {
-	m_rect.setPosition(pos);
-	m_text.setPosition(m_rect.getPosition().x - 10.f, m_rect.getPosition().y - 7.5f);
-}
-
-void Tile::InvertY(int& y)
-{
-	switch (y)
-	{
-	case 0: y = 14; break;
-	case 1: y = 13; break;
-	case 2: y = 12; break;
-	case 3: y = 11; break;
-	case 4: y = 10; break;
-	case 5: y = 9; break;
-	case 6: y = 8; break;
-	case 7: break;
-	case 8: y = 6; break;
-	case 9: y = 5; break;
-	case 10: y = 4; break;
-	case 11: y = 3; break;
-	case 12: y = 2; break;
-	case 13: y = 1; break;
-	case 14: y = 0; break;
-	}
+	m_aabb.GetShape()->setPosition(pos);
+	m_text.setPosition(m_aabb.GetShape()->getPosition().x - 10.f, m_aabb.GetShape()->getPosition().y - 7.5f);
 }
 
 void Tile::CreateDesSlope()
@@ -154,61 +90,15 @@ void Tile::CreateAscSlope()
 
 void Tile::Render(sf::RenderWindow& window)
 {
-	window.draw(m_rect);
+	window.draw(*m_aabb.GetShape());
 
-	if (hasFont)
-	{
+	if (m_hasFont)
 		window.draw(m_text);
-	}
 
 	for (int i = 0; i < m_slope.size(); i++)
 	{
 		window.draw(m_slope[i]);
 	}
-}
-
-std::string Tile::GetID()
-{
-	return m_id;
-}
-
-int Tile::GetType()
-{
-	return m_type;
-}
-
-sf::RectangleShape Tile::GetRect()
-{
-	return m_rect;
-}
-
-std::vector<sf::RectangleShape> Tile::GetSlopeBBox()
-{
-	return m_slope;
-}
-
-bool Tile::GetActive()
-{
-	return m_visible;
-}
-
-void Tile::SetVisible(bool vis)
-{
-	m_visible = vis;
-}
-
-int Tile::GetRowNum()
-{
-	return m_rowNum;
-}
-int Tile::GetCowNum()
-{
-	return m_colNum;
-}
-
-void Tile::SetFillColour(sf::Color col)
-{
-	m_rect.setFillColor(col);
 }
 
 void Tile::SetType(int type)

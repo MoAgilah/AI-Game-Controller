@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include "../Collisions/BoundingVolume.h"
 
 #include <vector>
 
@@ -13,47 +14,46 @@ class Camera;
 class Tile
 {
 public:
-	Tile();
-	Tile(sf::Font& font);
-	~Tile();
+	Tile() = default;
+	explicit Tile(const sf::Font& font);
+	~Tile() = default;
 
 	void SetID(int gX, int gY);
-	std::string GetID();
+	std::string_view GetID() const { return m_id; }
+
+	int GetRowNum() const { return m_rowNum; }
+	int GetCowNum() const { return m_colNum; }
 
 	void SetType(int type);
-	int GetType();
+	int GetType() const { return m_type; }
+
+	bool GetActive() const { return m_visible; }
+	void SetActive(bool vis) { m_visible = vis; }
 
 	void SetPosition(sf::Vector2f pos);
-	sf::Vector2f GetPosition();
+	const sf::Vector2f& GetPosition() { return m_aabb.GetShape()->getPosition(); }
+	const sf::Vector2f& GetOrigin() { return m_aabb.GetShape()->getOrigin(); }
 
-	bool GetActive();
-	void SetVisible(bool vis);
+	sf::RectangleShape GetRect() { return *static_cast<sf::RectangleShape*>(m_aabb.GetShape()); }
+	const std::vector<sf::RectangleShape>& GetSlopeBBox() const { return m_slope; }
 
-	sf::Vector2f GetOrigin();
-	sf::RectangleShape GetRect();
-	std::vector<sf::RectangleShape> GetSlopeBBox();
-	int GetRowNum();
-	int GetCowNum();
-
-	void SetFillColour(sf::Color col);
+	void SetFillColour(sf::Color col) { m_aabb.GetShape()->setFillColor(col); }
 
 	void Render(sf::RenderWindow& window);
+
 private:
-	void InvertY(int& y);
 	void CreateDesSlope();
 	void CreateAscSlope();
 
-	int m_colNum;
-	int m_rowNum;
-	int m_type;
-	bool m_visible;
-	bool hasFont;
+	bool m_visible = false;
+	bool m_hasFont = false;
+	int m_colNum = -1;
+	int m_rowNum = -1;
+	int m_type = EMPTY;
+
 	std::string m_id;
-	//Tile
-	sf::RectangleShape m_rect;
+	AABB m_aabb;
 	sf::Text m_text;
-	sf::Font* m_font;
-	//Tile's Slope
 	sf::RectangleShape m_srect;
 	std::vector<sf::RectangleShape> m_slope;
 };

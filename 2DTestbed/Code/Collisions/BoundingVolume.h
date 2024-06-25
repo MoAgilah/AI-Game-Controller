@@ -20,7 +20,7 @@ public:
 
 private:
 	Vector<float> m_center;
-	std::unique_ptr<sf::Shape> m_shape;
+	std::shared_ptr<sf::Shape> m_shape;
 };
 
 class AABB : public BoundingVolume

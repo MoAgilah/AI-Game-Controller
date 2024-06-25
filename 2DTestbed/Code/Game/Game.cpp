@@ -59,7 +59,7 @@ void Game::CheckInView()
 	m_player->SetVisible(m_camera->IsInView(m_player->GetBBox()->GetSprite()));
 
 	for (auto& tile : Collisions::Get()->GetGrid())
-		tile->SetVisible(m_camera->IsinView(tile->GetRect()));
+		tile->SetActive(m_camera->IsinView(tile->GetRect()));
 
 	m_world->CheckIsInView();
 }

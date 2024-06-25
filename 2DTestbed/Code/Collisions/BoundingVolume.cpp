@@ -32,7 +32,7 @@ AABB::AABB()
 {
 	GetShape()->setOrigin(8, 8);
 	GetShape()->setScale(sX,sY);
-	GetShape()->setOutlineColor(sf::Color::Red);
+	GetShape()->setOutlineColor(sf::Color::Black);
 	GetShape()->setOutlineThickness(1);
 	GetShape()->setFillColor(sf::Color::Transparent);
 }
