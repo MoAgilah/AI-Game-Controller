@@ -11,13 +11,13 @@
 bool Player::s_playerInserted = false;
 
 Player::Player()
-	: AnimatedGameObject(TexID::Mario, (int)TexID::MarioBB, true, false, Anims::IDLE, 0.5f)
+	: AnimatedObject(TexID::Mario, (int)TexID::MarioBB, true, false, Anims::IDLE, 0.5f)
 {
 	m_fragShader.loadFromFile("Resources/Shaders/FlashShader.frag", sf::Shader::Fragment);
 	m_fragShader.setUniform("flashColor", sf::Glsl::Vec4(1, 1, 1, 1));
 
-	m_spawnData.m_initialPos = sf::Vector2f(75, 454);
-	SetPosition(m_spawnData.m_initialPos);
+	SetInitialPosition(sf::Vector2f(75, 454));
+	SetPosition(GetInitialPosition());
 	m_keyStates.fill(false);
 
 	GetAnimSpr()->SetFrameData(14, 4, { 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4 });
@@ -108,7 +108,7 @@ void Player::Update(float deltaTime)
 		}
 
 		if ((m_keyStates[LEFT_KEY] == false && m_keyStates[RIGHT_KEY] == false))
-			m_velocity.x = 0.0f;
+			SetXVelocity(0.0f);
 
 		if (!m_keyStates[JUMP_KEY] && !m_keyStates[SJUMP_KEY])
 			m_cantjump = m_cantSpinJump = false;
@@ -122,24 +122,24 @@ void Player::Update(float deltaTime)
 		//decomposition of movement
 		if (GetXVelocity() != 0)
 		{
-			SetPrevPosition(m_spr->GetPosition());
+			SetPrevPosition(GetPosition());
 			Move(sf::Vector2f(GetXVelocity() * FPS * deltaTime, 0));
 			Collisions::Get()->ProcessCollisions(this);
 		}
 
 		if (GetYVelocity() != 0)
 		{
-			SetPrevPosition(m_spr->GetPosition());
+			SetPrevPosition(GetPosition());
 			Move(sf::Vector2f(0, GetYVelocity() * FPS * deltaTime));
 			Collisions::Get()->ProcessCollisions(this);
 		}
 
-		if (m_spr->GetPosition().x < (m_spr->GetOrigin().x * sX)*0.5)
+		if (GetPosition().x < (GetOrigin().x * sX)*0.5)
 		{
 			Move(sf::Vector2f(-GetXVelocity() * FPS * deltaTime, 0));
 		}
 
-		if (m_spr->GetPosition().x > RightMost)
+		if (GetPosition().x > RightMost)
 		{
 			SetSpawnLoc();
 
@@ -149,7 +149,7 @@ void Player::Update(float deltaTime)
 			}
 		}
 
-		if (m_bbox->GetSprite()->getPosition().y > 600 - m_bbox->GetSprite()->getOrigin().y)
+		if (GetBBox()->GetSprite()->getPosition().y > 600 - GetBBox()->GetSprite()->getOrigin().y)
 		{
 			if (GetIsAlive())
 				SetIsAlive(false);
@@ -167,26 +167,26 @@ void Player::Update(float deltaTime)
 void Player::Render(sf::RenderWindow& window)
 {
 
-	window.draw(*m_spr->GetSprite(), &m_fragShader);
-	m_bbox->Render(window);
+	window.draw(*GetAnimSpr()->GetSprite(), &m_fragShader);
+	GetBBox()->Render(window);
 }
 
 void Player::Reset()
 {
-	if (m_spr->GetTexID() != TexID::Mario)
+	if (GetAnimSpr()->GetTexID() != TexID::Mario)
 	{
 		//change spr and bbox
-		m_spr->SetTexture(TexID::Mario);
+		GetAnimSpr()->SetTexture(TexID::Mario);
 		GetAnimSpr()->SetFrameData(14, 4, { 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4 });
-		m_bbox->SetTexture(TexID::MarioBB);
+		GetBBox()->SetTexture(TexID::MarioBB);
 
 		//adjust position
-		SetPosition(m_spr->GetPosition() + sf::Vector2f(0, m_heightDiff));
+		SetPosition(GetAnimSpr()->GetPosition() + sf::Vector2f(0, m_heightDiff));
 	}
 
 	GameObject::Reset();
 
-	m_spawnLoc = m_spawnData.m_initialPos;
+	m_spawnLoc = GetInitialPosition();
 
 	SetVelocity(sf::Vector2f(0.0f, 0.0f));
 
@@ -213,8 +213,8 @@ void Player::Reset()
 
 void Player::Move(sf::Vector2f vel)
 {
-	m_spr->Move(vel.x, vel.y);
-	m_bbox->GetSprite()->move(vel);
+	GetAnimSpr()->Move(vel.x, vel.y);
+	GetBBox()->GetSprite()->move(vel);
 }
 
 void Player::SetIsSuper(bool super)
@@ -223,23 +223,23 @@ void Player::SetIsSuper(bool super)
 	if (m_super)
 	{
 		//if current spr and bbox is not super
-		if (m_spr->GetTexID() != TexID::Super)
+		if (GetAnimSpr()->GetTexID() != TexID::Super)
 		{
 			//change spr and bbox
-			m_spr->SetTexture(TexID::Super);
+			GetAnimSpr()->SetTexture(TexID::Super);
 			GetAnimSpr()->SetFrameData(14, 4, { 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4 });
-			m_bbox->SetTexture(TexID::SuperBB);
-			SetPosition(m_spr->GetPosition() - sf::Vector2f(0, m_heightDiff));
+			GetBBox()->SetTexture(TexID::SuperBB);
+			SetPosition(GetAnimSpr()->GetPosition() - sf::Vector2f(0, m_heightDiff));
 		}
 	}
 	else
 	{
-		if (m_spr->GetTexID() != TexID::Mario)
+		if (GetAnimSpr()->GetTexID() != TexID::Mario)
 		{
-			m_spr->SetTexture(TexID::Mario);
+			GetAnimSpr()->SetTexture(TexID::Mario);
 			GetAnimSpr()->SetFrameData(14, 4, { 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4 });
-			m_bbox->SetTexture(TexID::MarioBB);
-			SetPosition(m_spr->GetPosition() + sf::Vector2f(0, m_heightDiff));
+			GetBBox()->SetTexture(TexID::MarioBB);
+			SetPosition(GetAnimSpr()->GetPosition() + sf::Vector2f(0, m_heightDiff));
 		}
 	}
 }
@@ -248,7 +248,7 @@ void Player::SetSpawnLoc(sf::Vector2f loc)
 {
 	if (loc == sf::Vector2f(0, 0))
 	{
-		m_spawnLoc = m_spawnData.m_initialPos;
+		m_spawnLoc = GetInitialPosition();
 	}
 	else
 	{
@@ -424,23 +424,23 @@ void Player::ProcessInput()
 
 			if (m_super)
 			{
-				m_bbox->SetTexture(TexID::MarioSmlBB);
+				GetBBox()->SetTexture(TexID::MarioSmlBB);
 
 				//adjust bbox position
 				if (GetDirection())
-					m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x - 1.f, m_spr->GetPosition().y + 22.f));
+					GetBBox()->Update(sf::Vector2f(GetAnimSpr()->GetPosition().x - 1.f, GetAnimSpr()->GetPosition().y + 22.f));
 				else
-					m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x + 1.f, m_spr->GetPosition().y + 22.f));
+					GetBBox()->Update(sf::Vector2f(GetAnimSpr()->GetPosition().x + 1.f, GetAnimSpr()->GetPosition().y + 22.f));
 			}
 			else
 			{
-				m_bbox->SetTexture(TexID::MarioSmlBB);
+				GetBBox()->SetTexture(TexID::MarioSmlBB);
 
 				//adjust bbox position
 				if (GetDirection())
-					m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x - 2.f, m_spr->GetPosition().y + 12.f));
+					GetBBox()->Update(sf::Vector2f(GetAnimSpr()->GetPosition().x - 2.f, GetAnimSpr()->GetPosition().y + 12.f));
 				else
-					m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x + 2.f, m_spr->GetPosition().y + 12.f));
+					GetBBox()->Update(sf::Vector2f(GetAnimSpr()->GetPosition().x + 2.f, GetAnimSpr()->GetPosition().y + 12.f));
 			}
 
 			SetIsCrouched(true);
@@ -454,9 +454,9 @@ void Player::ProcessInput()
 			SetIsCrouched(false);
 
 			if (m_super)
-				m_bbox->SetTexture(TexID::SuperBB);
+				GetBBox()->SetTexture(TexID::SuperBB);
 			else
-				m_bbox->SetTexture(TexID::MarioBB);
+				GetBBox()->SetTexture(TexID::MarioBB);
 
 			SetPosition(GetPosition());
 		}

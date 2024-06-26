@@ -1,10 +1,11 @@
-#ifndef  GameObjectH
-#define  GameObjectH
+#pragma once
 
 #include <memory>
 #include <string>
 #include <SFML/Graphics.hpp>
 #include "../Drawables/Sprite.h"
+#include "../Collisions/BoundingBox.h"
+#include "../Game/Constants.h"
 
 enum GOTYPE
 {
@@ -14,20 +15,12 @@ enum GOTYPE
 	ObjBgn = (int)TexID::QBox, ObjEnd = (int)TexID::BoxBB
 };
 
-struct SpawnData
-{
-	int m_initialAnim = 0;
-	bool m_initialDir = true;
-	sf::Vector2f m_initialPos;
-};
-
-class Camera;
-class BoundingBox;
 class GameObject
 {
 public:
 	explicit GameObject(TexID boxId);
 	GameObject(TexID sprId, TexID boxId);
+	GameObject(AnimatedSprite* sprite, TexID boxId);
 	virtual ~GameObject() = default;
 
 	virtual void Update(float deltaTime) = 0;
@@ -35,14 +28,109 @@ public:
 
 	virtual void Reset();
 
-	sf::Sprite* GetSprite() { return m_spr->GetSprite(); }
+	int GetObjectNum() const { return m_objectID; }
+
+	Sprite* GetSprite() { return m_spr.get(); }
 	BoundingBox* GetBBox() { return m_bbox.get(); }
 
-	sf::Vector2f GetInitialPosition() const { return m_spawnData.m_initialPos; }
+	TexID GetID() const { return (TexID)m_type; }
+	void SetID(TexID id) { m_type = (int)id; }
 
-	sf::Vector2f GetPosition() const { return m_spr->GetPosition(); };
-	void SetPosition(sf::Vector2f pos);
-	void SetPosition(float x, float y);
+	virtual bool GetActive() const { return m_visible; }
+	void SetActive(bool act) { m_visible = act; }
+
+	bool GetDirection() const { return m_direction; }
+	void SetDirection(bool dir)
+	{
+		m_direction = dir;
+		if (m_direction)
+		{
+			// flip X
+			m_spr->SetScale({ sX, sY });
+		}
+		else
+		{
+			//unflip x
+			m_spr->SetScale({ -sX, sY });
+		}
+	}
+
+	bool GetInitialDirection() const { return m_initialDir; };
+	void SetInitialDirection(bool dir) { m_initialDir = dir; }
+
+	const sf::Vector2f& GetPosition() const { return m_spr->GetPosition(); };
+	void SetPosition(const sf::Vector2f& pos)
+	{
+		m_spr->SetPosition(pos);
+		m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x, m_spr->GetPosition().y + 3.5f));
+	}
+	void SetPosition(float x, float y)
+	{
+		m_spr->SetPosition(sf::Vector2f(x, y));
+		m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x, m_spr->GetPosition().y + 3.5f));
+	}
+
+	const sf::Vector2f& GetInitialPosition() const { return m_initialPos; }
+	void SetInitialPosition(const sf::Vector2f& pos) { m_initialPos = pos; }
+
+	sf::Vector2f GetOrigin() const { return m_spr->GetOrigin(); }
+
+private:
+
+	int m_type = -1;
+	int m_objectID;
+	static int s_objectNum;
+	bool m_visible = false;
+	bool m_direction = true;
+	bool m_initialDir = m_direction;
+	sf::Vector2f m_initialPos;
+	std::shared_ptr<Sprite> m_spr;
+	std::shared_ptr<BoundingBox> m_bbox;
+};
+
+
+class StaticObject : public GameObject
+{
+public:
+	StaticObject(TexID id, bool dir, const sf::Vector2f& pos);
+	StaticObject(TexID id, int bTyp, bool dir, const sf::Vector2f& pos);
+	~StaticObject() override = default;
+
+	void Reset() override;
+};
+
+struct Cells
+{
+	int m_rows;
+	int m_cols;
+
+	Cells(int rows, int cols)
+		: m_rows(rows), m_cols(cols) {}
+};
+
+class AnimatedObject : public GameObject
+{
+public:
+	AnimatedObject(TexID id, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd);
+	AnimatedObject(TexID id, int bTyp, bool dir, Cells cell, bool symmetrical, int initAnim, float animSpd);
+	~AnimatedObject() override = default;
+
+	void Reset() override;
+
+	AnimatedSprite* GetAnimSpr() { return static_cast<AnimatedSprite*>(GetSprite()); }
+
+	bool GetOnGround() const { return m_onGround; }
+	void SetOnGround(bool grnd) { m_onGround = grnd; }
+
+	bool GetAirbourne() const { return m_airbourne; }
+	void SetAirbourne(bool air) { m_airbourne = air; }
+
+	int GetInitialAnim() const { return m_initialAnim; }
+	void SetInitialAnim(int initAnim) { m_initialAnim = initAnim; }
+
+	void SetPrevPosition(sf::Vector2f pos) { m_prevPos = pos; }
+	void SetPrevPosition(float x, float y) { m_prevPos = sf::Vector2f(x, y); }
+	sf::Vector2f GetPrevPostion() const { return m_prevPos; }
 
 	sf::Vector2f GetVelocity() const { return m_velocity; }
 	void SetVelocity(sf::Vector2f vel) { m_velocity = vel; }
@@ -57,61 +145,11 @@ public:
 	void SetYVelocity(float y) { m_velocity.y = y; }
 	void IncrementYVelocity(float y) { m_velocity.y += y; }
 	void DecrementYVelocity(float y) { m_velocity.y -= y; }
+private:
 
-	sf::Vector2f GetOrigin() const { return m_spr->GetOrigin(); }
-
-	void SetPrevPosition(sf::Vector2f pos) { m_prevPos = pos; }
-	void SetPrevPosition(float x, float y) { m_prevPos = sf::Vector2f(x, y); }
-	sf::Vector2f GetPrevPostion() const { return m_prevPos; }
-
-	bool GetOnGround() const { return m_onGround; }
-	virtual void SetOnGround(bool grnd) { m_onGround = grnd; }
-
-	bool GetAirbourne() const { return m_airbourne; }
-	void SetAirbourne(bool air) { m_airbourne = air; }
-
-	bool GetDirection() const { return m_direction; }
-	void SetDirection(bool dir);
-
-	int GetObjectNum() const { return m_objectID; }
-
-	virtual bool GetActive() const { return m_visible; }
-	void SetActive(bool act) { m_visible = act; }
-
-	TexID GetID() const { return (TexID)m_type; }
-
-protected:
-	int m_type = -1;
-	int m_objectID;
-	static int s_objectNum;
-
-	SpawnData m_spawnData;
-
-	bool m_visible = false;
-
-	bool m_direction = true;
 	bool m_onGround = false;
 	bool m_airbourne = false;
-
-	sf::Vector2f m_position;
-	sf::Vector2f m_velocity;
-
+	int m_initialAnim;
 	sf::Vector2f m_prevPos;
-
-	std::shared_ptr<Sprite> m_spr;
-	std::shared_ptr<BoundingBox> m_bbox;
+	sf::Vector2f m_velocity;
 };
-
-class AnimatedGameObject : public GameObject
-{
-public:
-	AnimatedGameObject(TexID id, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd);
-	AnimatedGameObject(TexID id, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd);
-	~AnimatedGameObject() override = default;
-
-	void Reset() override;
-
-	AnimatedSprite* GetAnimSpr() { return static_cast<AnimatedSprite*>(m_spr.get()); }
-};
-
-#endif

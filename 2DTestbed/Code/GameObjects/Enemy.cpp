@@ -5,7 +5,7 @@
 #include "../GameObjects/Rex.h"
 
 Enemy::Enemy(TexID id, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd)
-	: AnimatedGameObject(id, rows, cols, bTyp, dir, symmetrical, initAnim, animSpd)
+	: AnimatedObject(id, bTyp, dir, Cells(rows, cols), symmetrical, initAnim, animSpd)
 {}
 
 void Enemy::Update(float deltaTime)
@@ -21,19 +21,19 @@ void Enemy::Update(float deltaTime)
 		if (m_resetAllowed)
 			m_resetAllowed = false;
 
-		if (GetIsAlive() || m_bbox->GetID() == (int)TexID::BillBB)
+		if (GetIsAlive() || GetBBox()->GetID() == (int)TexID::BillBB)
 			Animate(deltaTime);
 
 		GetAnimSpr()->Update(deltaTime);
 		if (GetDirection())
 		{
 			//+
-			m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x - 2, m_spr->GetPosition().y));
+			GetBBox()->Update(sf::Vector2f(GetAnimSpr()->GetPosition().x - 2, GetAnimSpr()->GetPosition().y));
 		}
 		else
 		{
 			//-
-			m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x + 2, m_spr->GetPosition().y));
+			GetBBox()->Update(sf::Vector2f(GetAnimSpr()->GetPosition().x + 2, GetAnimSpr()->GetPosition().y));
 		}
 	}
 	//if off screen
@@ -48,7 +48,7 @@ void Enemy::Update(float deltaTime)
 		m_tillReset -= deltaTime;
 		if (m_tillReset <= 0)
 		{
-			if (!Game::GetGameMgr()->GetCamera()->IsInView(m_spawnData.m_initialPos, GetOrigin()))
+			if (!Game::GetGameMgr()->GetCamera()->IsInView(GetInitialPosition(), GetOrigin()))
 			{
 				Reset();
 			}
@@ -58,7 +58,7 @@ void Enemy::Update(float deltaTime)
 
 void Enemy::Render(sf::RenderWindow & window)
 {
-	window.draw(*GetSprite());
+	window.draw(*GetAnimSpr()->GetSprite());
 	window.draw(*GetBBox()->GetSprite());
 }
 
@@ -85,7 +85,7 @@ void Enemy::DecrementLife()
 	}
 	else
 	{
-		if (m_bbox->GetID() == (int)TexID::RexBB)
+		if (GetBBox()->GetID() == (int)TexID::RexBB)
 			((Rex*)this)->Change();
 	}
 }

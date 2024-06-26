@@ -9,9 +9,9 @@ Koopa::Koopa(int rows, int cols, bool dir, bool symmetrical, int initAnim, float
 	std::vector<int> frames{ 1, 2, 1};
 	GetAnimSpr()->SetFrames(frames);
 
-	m_spawnData.m_initialPos = sf::Vector2f(400, 524);
-	m_spr->SetPosition(m_spawnData.m_initialPos);
-	m_type = (int)TexID::Koopa;
+	SetInitialPosition(sf::Vector2f(400, 524));
+	GetAnimSpr()->SetPosition(GetInitialPosition());
+	SetID(TexID::Koopa);
 	m_numLives = m_maxLives = 1;
 }
 
@@ -46,20 +46,20 @@ void Koopa::Animate(float deltaTime)
 
 	if (GetXVelocity() != 0)
 	{
-		m_spr->Move(GetXVelocity() * FPS * deltaTime, 0);
+		GetAnimSpr()->Move(GetXVelocity() * FPS * deltaTime, 0);
 		Collisions::Get()->ProcessCollisions(this);
 	}
 
 	//check for leftmost and rightmost boundary
-	if (m_spr->GetPosition().x < m_spr->GetOrigin().x || m_spr->GetPosition().x > 11776 - m_spr->GetOrigin().x)
+	if (GetAnimSpr()->GetPosition().x < GetAnimSpr()->GetOrigin().x || GetAnimSpr()->GetPosition().x > 11776 - GetAnimSpr()->GetOrigin().x)
 	{
-		m_spr->Move(-GetXVelocity() * FPS * deltaTime, 0);
+		GetAnimSpr()->Move(-GetXVelocity() * FPS * deltaTime, 0);
 		SetDirection(!GetDirection());
 	}
 
 	if (GetYVelocity() != 0)
 	{
-		m_spr->Move(0, GetYVelocity() * FPS * deltaTime);
+		GetAnimSpr()->Move(0, GetYVelocity() * FPS * deltaTime);
 		Collisions::Get()->ProcessCollisions(this);
 	}
 }

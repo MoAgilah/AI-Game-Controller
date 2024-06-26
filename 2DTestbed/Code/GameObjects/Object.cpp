@@ -4,10 +4,10 @@
 #include "../Game/Constants.h"
 
 Object::Object(TexID id, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd, const sf::Vector2f& initPos)
-	:AnimatedGameObject(id, rows, cols, bTyp, dir, symmetrical, initAnim, animSpd)
+	:AnimatedObject(id, bTyp, dir, Cells(rows, cols), symmetrical, initAnim, animSpd)
 {
-	m_spawnData.m_initialPos = initPos;
-	SetPosition(m_spawnData.m_initialPos);
+	SetInitialPosition(initPos);
+	SetPosition(GetInitialPosition());
 }
 
 void Object::Update(float deltaTime)
@@ -30,26 +30,26 @@ void Object::Update(float deltaTime)
 		if (GetDirection())
 		{
 			//+
-			m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x - 2, m_spr->GetPosition().y));
+			GetBBox()->Update(sf::Vector2f(GetAnimSpr()->GetPosition().x - 2, GetAnimSpr()->GetPosition().y));
 		}
 		else
 		{
 			//-
-			m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x + 2, m_spr->GetPosition().y));
+			GetBBox()->Update(sf::Vector2f(GetAnimSpr()->GetPosition().x + 2, GetAnimSpr()->GetPosition().y));
 		}
 	}
 }
 
 void Object::Render(sf::RenderWindow & window)
 {
-	window.draw(*m_spr->GetSprite());
+	window.draw(*GetAnimSpr()->GetSprite());
 }
 
 void Object::Reset()
 {
 	m_isAnimating = false;
 	m_goingUp = false;
-	GetAnimSpr()->ChangeAnim(m_spawnData.m_initialAnim);
+	GetAnimSpr()->ChangeAnim(GetInitialAnim());
 	SetActive(false);
 }
 
@@ -80,20 +80,20 @@ void Object::Animate(float deltaTime)
 
 		if (GetXVelocity() != 0)
 		{
-			m_spr->Move(GetXVelocity() * FPS * deltaTime, 0);
+			GetAnimSpr()->Move(GetXVelocity() * FPS * deltaTime, 0);
 			Collisions::Get()->ProcessCollisions(this);
 		}
 
 		//check for leftmost and rightmost boundary
-		if (m_spr->GetPosition().x < m_spr->GetOrigin().x || m_spr->GetPosition().x > 11776 - m_spr->GetOrigin().x)
+		if (GetAnimSpr()->GetPosition().x < GetAnimSpr()->GetOrigin().x || GetAnimSpr()->GetPosition().x > 11776 - GetAnimSpr()->GetOrigin().x)
 		{
-			m_spr->Move(-GetXVelocity() * FPS * deltaTime, 0);
+			GetAnimSpr()->Move(-GetXVelocity() * FPS * deltaTime, 0);
 			SetDirection(!GetDirection());
 		}
 
 		if (GetYVelocity() != 0)
 		{
-			m_spr->Move(0, GetYVelocity() * FPS * deltaTime);
+			GetAnimSpr()->Move(0, GetYVelocity() * FPS * deltaTime);
 			Collisions::Get()->ProcessCollisions(this);
 		}
 	}
@@ -111,7 +111,7 @@ void Object::Animate(float deltaTime)
 
 		if (GetYVelocity() != 0)
 		{
-			m_spr->Move(0, GetYVelocity() * FPS * deltaTime);
+			GetAnimSpr()->Move(0, GetYVelocity() * FPS * deltaTime);
 		}
 
 		sf::Vector2f currentPos = GetPosition();

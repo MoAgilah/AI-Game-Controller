@@ -12,7 +12,7 @@ enum Direction
 };
 
 class GameObject;
-class AnimatedGameObject;
+class AnimatedObject;
 class Object;
 class Camera;
 class Player;
@@ -34,7 +34,7 @@ public:
 private:
 	void ColObjectToTile(GameObject* colObj, Tile* tile);
 	void PlayerToTile(Player* ply, Tile* tile);
-	void ObjectToTile(AnimatedGameObject* enmy, Tile* tile);
+	void ObjectToTile(AnimatedObject* enmy, Tile* tile);
 
 	void ColObjectToColObject(GameObject* colObj1, GameObject* colObj2);
 	void PlayerToEnemy(Player* ply, Enemy* enmy);
@@ -42,7 +42,7 @@ private:
 
 	void EnemyToEnemy(Enemy* enmy1, Enemy* enmy2);
 
-	int GetDirTravelling(AnimatedGameObject* obj);
+	int GetDirTravelling(AnimatedObject* obj);
 	void QBoxHit(Player* ply, Object* obj);
 	void SmashBoxHit(Player* ply, Object* obj);
 	void SpinBoxHit(Player* ply, Object* obj);

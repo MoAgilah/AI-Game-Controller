@@ -13,7 +13,7 @@ enum Anims { IDLE, LOOKUP, JUMP, FALL, RUNJUMP, SKID, SLIDE, VICTORY, CROUCH, GR
 enum Actions { LEFT_KEY, RIGHT_KEY, UP_KEY, DOWN_KEY, JUMP_KEY, SJUMP_KEY };
 
 class Camera;
-class Player : public AnimatedGameObject
+class Player : public AnimatedObject
 {
 public:
 	Player();

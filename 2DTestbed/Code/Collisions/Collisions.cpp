@@ -126,7 +126,7 @@ void Collisions::ProcessCollisions(GameObject* gobj)
 
 	if (!Col)
 	{
-		gobj->SetOnGround(false);
+		((AnimatedObject*)gobj)->SetOnGround(false);
 	}
 
 	for (int g = 0; g < m_collidables.size(); ++g)
@@ -363,7 +363,7 @@ void Collisions::PlayerToObject(Player * ply, Object * obj)
 	}
 }
 
-void Collisions::ObjectToTile(AnimatedGameObject* obj, Tile * tile)
+void Collisions::ObjectToTile(AnimatedObject* obj, Tile * tile)
 {
 	//ground and one way platforms
 	if (tile->GetType() == GRND || tile->GetType() == OWAY)
@@ -399,7 +399,7 @@ void Collisions::ObjectToTile(AnimatedGameObject* obj, Tile * tile)
 	//corner tile or wall tile
 	if (tile->GetType() == CRN || tile->GetType() == WALL)
 	{
-		switch (GetDirTravelling((AnimatedGameObject*)obj))
+		switch (GetDirTravelling((AnimatedObject*)obj))
 		{
 		case RDIR:
 			if (obj->GetBBox()->GetID() == (int)TexID::RexBB)
@@ -490,7 +490,7 @@ void Collisions::ObjectToTile(AnimatedGameObject* obj, Tile * tile)
 		{
 			if (obj->GetBBox()->GetSprite()->getGlobalBounds().intersects(tmpSlope[i].getGlobalBounds()))
 			{
-				switch (GetDirTravelling((AnimatedGameObject*)obj))
+				switch (GetDirTravelling((AnimatedObject*)obj))
 				{
 				case DDIR:
 					obj->SetPosition(sf::Vector2f(obj->GetPosition().x, tmpSlope[i].getPosition().y - tmpSlope[i].getOrigin().y*sY - obj->GetOrigin().y*sX));
@@ -521,11 +521,11 @@ void Collisions::ColObjectToTile(GameObject * c_obj, Tile * tile)
 	}
 	else if (id >= EnmyBgn && id <= EnmyEnd)
 	{
-		ObjectToTile((AnimatedGameObject*)c_obj, tile);
+		ObjectToTile((AnimatedObject*)c_obj, tile);
 	}
 	else if (id == (int)TexID::ShroomBB)
 	{
-		ObjectToTile((AnimatedGameObject*)c_obj, tile);
+		ObjectToTile((AnimatedObject*)c_obj, tile);
 	}
 }
 
@@ -626,7 +626,7 @@ void Collisions::ColObjectToColObject(GameObject * colObj1, GameObject * colObj2
 	}
 }
 
-int Collisions::GetDirTravelling(AnimatedGameObject * obj)
+int Collisions::GetDirTravelling(AnimatedObject * obj)
 {
 	//direction travelling
 	sf::Vector2f dirV = obj->GetPosition() - obj->GetPrevPostion();

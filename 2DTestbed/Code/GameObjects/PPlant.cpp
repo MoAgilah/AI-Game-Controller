@@ -6,8 +6,8 @@
 PPlant::PPlant(const sf::Vector2f& initPos)
 	:Enemy(TexID::PPlant, 2, 2, (int)TexID::PPlantBB, false, false)
 {
-	m_spawnData.m_initialPos = initPos;
-	SetPosition(m_spawnData.m_initialPos);
+	SetInitialPosition(initPos);
+	SetPosition(GetInitialPosition());
 
 	std::vector<int> cframes{ 1, 2};
 	GetAnimSpr()->SetFrames(cframes);
@@ -28,7 +28,7 @@ void PPlant::Animate(float deltaTime)
 
 	if (GetYVelocity() != 0)
 	{
-		m_spr->Move(0, GetYVelocity() * FPS * deltaTime);
+		GetAnimSpr()->Move(0, GetYVelocity() * FPS * deltaTime);
 		Collisions::Get()->ProcessCollisions(this);
 	}
 

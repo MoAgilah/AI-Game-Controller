@@ -172,8 +172,8 @@
     <ClCompile Include="Code\GameObjects\Bill.cpp" />
     <ClCompile Include="Code\GameObjects\Chuck.cpp" />
     <ClCompile Include="Code\GameObjects\Enemy.cpp" />
-    <ClCompile Include="Code\GameObjects\GameObject.cpp" />
     <ClCompile Include="Code\GameObjects\Koopa.cpp" />
+    <ClCompile Include="Code\GameObjects\GameObject.cpp" />
     <ClCompile Include="Code\GameObjects\Object.cpp" />
     <ClCompile Include="Code\GameObjects\Player.cpp" />
     <ClCompile Include="Code\GameObjects\PPlant.cpp" />
@@ -209,8 +209,8 @@
     <ClInclude Include="Code\GameObjects\Bill.h" />
     <ClInclude Include="Code\GameObjects\Chuck.h" />
     <ClInclude Include="Code\GameObjects\Enemy.h" />
-    <ClInclude Include="Code\GameObjects\GameObject.h" />
     <ClInclude Include="Code\GameObjects\Koopa.h" />
+    <ClInclude Include="Code\GameObjects\GameObject.h" />
     <ClInclude Include="Code\GameObjects\Object.h" />
     <ClInclude Include="Code\GameObjects\Player.h" />
     <ClInclude Include="Code\GameObjects\PPlant.h" />
