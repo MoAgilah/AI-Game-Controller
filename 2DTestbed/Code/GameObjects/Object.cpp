@@ -50,7 +50,7 @@ void Object::Reset()
 	m_isAnimating = false;
 	m_goingUp = false;
 	GetAnimSpr()->ChangeAnim(m_spawnData.m_initialAnim);
-	SetVisible(false);
+	SetActive(false);
 }
 
 void Object::Animate(float deltaTime)

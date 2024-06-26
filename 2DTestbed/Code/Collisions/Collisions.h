@@ -12,9 +12,11 @@ enum Direction
 };
 
 class GameObject;
+class AnimatedGameObject;
 class Object;
 class Camera;
 class Player;
+class Enemy;
 class Collisions
 {
 public:
@@ -31,16 +33,16 @@ public:
 	std::vector<GameObject*> GetCollidables();
 private:
 	void ColObjectToTile(GameObject* colObj, Tile* tile);
-	void PlayerToTile(GameObject* ply, Tile* tile);
-	void ObjectToTile(GameObject* enmy, Tile* tile);
+	void PlayerToTile(Player* ply, Tile* tile);
+	void ObjectToTile(AnimatedGameObject* enmy, Tile* tile);
 
 	void ColObjectToColObject(GameObject* colObj1, GameObject* colObj2);
-	void PlayerToEnemy(GameObject* ply, GameObject* enmy);
+	void PlayerToEnemy(Player* ply, Enemy* enmy);
 	void PlayerToObject(Player* ply, Object* obj);
 
-	void EnemyToEnemy(GameObject* enmy1, GameObject* enmy2);
+	void EnemyToEnemy(Enemy* enmy1, Enemy* enmy2);
 
-	int GetDirTravelling(GameObject * obj);
+	int GetDirTravelling(AnimatedGameObject* obj);
 	void QBoxHit(Player* ply, Object* obj);
 	void SmashBoxHit(Player* ply, Object* obj);
 	void SpinBoxHit(Player* ply, Object* obj);

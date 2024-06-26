@@ -56,7 +56,7 @@ void Game::Render(sf::RenderWindow & window)
 
 void Game::CheckInView()
 {
-	m_player->SetVisible(m_camera->IsInView(m_player->GetBBox()->GetSprite()));
+	m_player->SetActive(m_camera->IsInView(m_player->GetBBox()->GetSprite()));
 
 	for (auto& tile : Collisions::Get()->GetGrid())
 		tile->SetActive(m_camera->IsinView(tile->GetRect()));

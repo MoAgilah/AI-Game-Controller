@@ -16,7 +16,7 @@ void Enemy::Update(float deltaTime)
 			m_timeLeftActive -= deltaTime;
 
 		if (m_timeLeftActive < 0)
-			SetVisible(false);
+			SetActive(false);
 
 		if (m_resetAllowed)
 			m_resetAllowed = false;

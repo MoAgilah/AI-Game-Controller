@@ -76,7 +76,7 @@ public:
 	int GetObjectNum() const { return m_objectID; }
 
 	virtual bool GetActive() const { return m_visible; }
-	void SetVisible(bool act) { m_visible = act; }
+	void SetActive(bool act) { m_visible = act; }
 
 	TexID GetID() const { return (TexID)m_type; }
 

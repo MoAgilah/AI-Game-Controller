@@ -15,8 +15,8 @@ public:
 
 	~PlayerState() override = default;
 
-	void Pause() override { m_player->SetVisible(false); }
-	void Resume() override { m_player->SetVisible(true); }
+	void Pause() override { m_player->SetActive(false); }
+	void Resume() override { m_player->SetActive(true); }
 
 	Player* GetPlayer() { return m_player.get(); }
 

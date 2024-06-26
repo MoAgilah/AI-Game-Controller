@@ -102,7 +102,7 @@ void World::CheckIsInView()
 
 	for (int i = 0; i < m_enemies.size(); i++)
 	{
-		m_enemies[i]->SetVisible(camera->IsInView(m_enemies[i]->GetSprite()));
+		m_enemies[i]->SetActive(camera->IsInView(m_enemies[i]->GetSprite()));
 	}
 }
 

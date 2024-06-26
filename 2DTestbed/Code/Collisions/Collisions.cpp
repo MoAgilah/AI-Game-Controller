@@ -162,11 +162,9 @@ std::vector<GameObject*> Collisions::GetCollidables()
 	return m_collidables;
 }
 
-void Collisions::PlayerToTile(GameObject * ply, Tile * tile)
+void Collisions::PlayerToTile(Player* ply, Tile * tile)
 {
-	Player* plyObj = (Player*)ply;
-
-	int dir = GetDirTravelling(plyObj);
+	int dir = GetDirTravelling(ply);
 
 	if (tile->GetType() == GRND)
 	{
@@ -174,8 +172,8 @@ void Collisions::PlayerToTile(GameObject * ply, Tile * tile)
 		if (dir == DDIR)
 		{
 			//move to top of tile
-			plyObj->SetPosition(sf::Vector2f(plyObj->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (plyObj->GetOrigin().y * sY) +4.f));
-			plyObj->SetOnGround(true);
+			ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (ply->GetOrigin().y * sY) +4.f));
+			ply->SetOnGround(true);
 			return;
 		}
 	}
@@ -183,7 +181,7 @@ void Collisions::PlayerToTile(GameObject * ply, Tile * tile)
 	//oway is a one way tile can be fell upon and jumped through
 	if (tile->GetType() == OWAY)
 	{
-		float plyBot = plyObj->GetBBox()->GetSprite()->getPosition().y + plyObj->GetOrigin().y;
+		float plyBot = ply->GetBBox()->GetSprite()->getPosition().y + ply->GetOrigin().y;
 		float tiletop = tile->GetPosition().y - tile->GetOrigin().y;
 
 		//if above the tile
@@ -193,20 +191,20 @@ void Collisions::PlayerToTile(GameObject * ply, Tile * tile)
 			if (dir == DDIR)
 			{
 				//move to top of tile
-				plyObj->SetPosition(sf::Vector2f(plyObj->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (plyObj->GetOrigin().y * sY) + 4.f));
-				plyObj->SetOnGround(true);
+				ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (ply->GetOrigin().y * sY) + 4.f));
+				ply->SetOnGround(true);
 				return;
 			}
 		}
 		else
 		{
-			if (plyObj->GetIsSuper())
+			if (ply->GetIsSuper())
 			{
 				//error occured with super mario colliding with tile above him when on the ground
 				//this skips collision with that tile as way to alleiviate the problem
 				if (tile->GetID() == "1794")
 				{
-					plyObj->SetOnGround(false);
+					ply->SetOnGround(false);
 				}
 			}
 		}
@@ -219,16 +217,16 @@ void Collisions::PlayerToTile(GameObject * ply, Tile * tile)
 		{
 		case DDIR:
 			//move to tile top
-			plyObj->SetPosition(sf::Vector2f(plyObj->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (plyObj->GetOrigin().y * sY) + 4.f));
-			plyObj->SetOnGround(true);
+			ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (ply->GetOrigin().y * sY) + 4.f));
+			ply->SetOnGround(true);
 			return;
 		case RDIR:
 			//move to closest point without a collision to remove jittering
-			plyObj->SetPosition(sf::Vector2f((tile->GetPosition().x - tile->GetOrigin().x * sX) - (plyObj->GetOrigin().x * sX) + 7.5f, plyObj->GetPosition().y));
+			ply->SetPosition(sf::Vector2f((tile->GetPosition().x - tile->GetOrigin().x * sX) - (ply->GetOrigin().x * sX) + 7.5f, ply->GetPosition().y));
 			return;
 		case LDIR:
 			//move to closest point without a collision to remove jittering
-			plyObj->SetPosition(sf::Vector2f((tile->GetPosition().x + tile->GetOrigin().x * sX) + (plyObj->GetOrigin().x * sX) - 7.5f, plyObj->GetPosition().y));
+			ply->SetPosition(sf::Vector2f((tile->GetPosition().x + tile->GetOrigin().x * sX) + (ply->GetOrigin().x * sX) - 7.5f, ply->GetPosition().y));
 			return;
 		}
 	}
@@ -243,14 +241,14 @@ void Collisions::PlayerToTile(GameObject * ply, Tile * tile)
 		for (int i = 0; i < tmpSlope.size(); i++)
 		{
 			//if collision with slope
-			if (plyObj->GetBBox()->GetSprite()->getGlobalBounds().intersects(tmpSlope[i].getGlobalBounds()))
+			if (ply->GetBBox()->GetSprite()->getGlobalBounds().intersects(tmpSlope[i].getGlobalBounds()))
 			{
 				switch (dir)
 				{
 				case DDIR:
 					//set to slope top
-					plyObj->SetPosition(sf::Vector2f(plyObj->GetPosition().x, tmpSlope[i].getPosition().y - tmpSlope[i].getOrigin().y * sY - (plyObj->GetOrigin().y * sX)));
-					plyObj->SetOnGround(true);
+					ply->SetPosition(sf::Vector2f(ply->GetPosition().x, tmpSlope[i].getPosition().y - tmpSlope[i].getOrigin().y * sY - (ply->GetOrigin().y * sX)));
+					ply->SetOnGround(true);
 					colFound = true;
 					return;
 				}
@@ -258,29 +256,26 @@ void Collisions::PlayerToTile(GameObject * ply, Tile * tile)
 		}
 	}
 
-	plyObj->SetOnGround(false);
+	ply->SetOnGround(false);
 }
 
-void Collisions::PlayerToEnemy(GameObject * ply, GameObject * enmy)
+void Collisions::PlayerToEnemy(Player * ply, Enemy * enmy)
 {
-	Player* ptmp = (Player*)ply;
-	Enemy* etmp = (Enemy*)enmy;
-
-	float pBot = ptmp->GetBBox()->GetSprite()->getPosition().y + ((Player*)ply)->GetBBox()->GetSprite()->getOrigin().y;
-	float eTop = etmp->GetBBox()->GetSprite()->getPosition().y - enmy->GetBBox()->GetSprite()->getOrigin().y;
+	float pBot = ply->GetBBox()->GetSprite()->getPosition().y + ply->GetBBox()->GetSprite()->getOrigin().y;
+	float eTop = enmy->GetBBox()->GetSprite()->getPosition().y - enmy->GetBBox()->GetSprite()->getOrigin().y;
 
 	bool col = false;
-	if (etmp->GetBBox()->GetID() == (int)TexID::BillBB)
+	if (enmy->GetBBox()->GetID() == (int)TexID::BillBB)
 	{
 		Bill* bill = (Bill*)enmy;
 
 		//check for collision with inner sphere
-		if (CircleToRect(bill->GetBody().front, ptmp))
+		if (CircleToRect(bill->GetBody().front, ply))
 		{
 			col = true;
 		}
 		//check for collision with back rect
-		else if (ptmp->GetBBox()->GetSprite()->getGlobalBounds().intersects(bill->GetBody().back.getGlobalBounds()))
+		else if (ply->GetBBox()->GetSprite()->getGlobalBounds().intersects(bill->GetBody().back.getGlobalBounds()))
 		{
 			col = true;
 		}
@@ -292,36 +287,36 @@ void Collisions::PlayerToEnemy(GameObject * ply, GameObject * enmy)
 
 	if (col)
 	{
-		if (etmp->GetIsAlive())
+		if (enmy->GetIsAlive())
 		{
 			//if player is not above enemy and enemy is piranha plant
-			if (pBot > eTop || etmp->GetID() == TexID::PPlant)
+			if (pBot > eTop || enmy->GetID() == TexID::PPlant)
 			{
 				//if not vulnerable
-				if (!ptmp->GetIfInvulnerable())
+				if (!ply->GetIfInvulnerable())
 				{
-					if (ptmp->GetIsAlive())
+					if (ply->GetIsAlive())
 					{
-						if (ptmp->GetIsSuper())
+						if (ply->GetIsSuper())
 						{
 							//ptmp->UpdateFitness(-100);
-							ptmp->JustBeenHit(true);
-							ptmp->SetIsSuper(false);
+							ply->JustBeenHit(true);
+							ply->SetIsSuper(false);
 						}
 						else
 						{
-							ptmp->SetIsAlive(false);
+							ply->SetIsAlive(false);
 						}
 					}
 				}
 			}
 			else
 			{
-				if (ptmp->GetIsAlive())
+				if (ply->GetIsAlive())
 				{
 					//set hover time
-					ptmp->JusyHitEnemy(0.1f);
-					etmp->DecrementLife();
+					ply->JusyHitEnemy(0.1f);
+					enmy->DecrementLife();
 				}
 			}
 		}
@@ -335,13 +330,13 @@ void Collisions::PlayerToObject(Player * ply, Object * obj)
 	{
 	case TexID::Shroom://super mushroom
 		ply->SetIsSuper(true);
-		obj->SetVisible(false);
+		obj->SetActive(false);
 		//ply->UpdateFitness(200);
 		break;
 	case TexID::YCoin://yoshi coin
 		ply->IncreaseCoins(5);
 		//ply->UpdateFitness(100);
-		obj->SetVisible(false);
+		obj->SetActive(false);
 		break;
 	case TexID::QBox://question mark box
 		QBoxHit(ply, obj);
@@ -356,7 +351,7 @@ void Collisions::PlayerToObject(Player * ply, Object * obj)
 		ply->SetSpawnLoc(obj->GetPosition());
 		//ply->UpdateFitness(200);
 		ply->SetIsSuper(true);
-		obj->SetVisible(false);
+		obj->SetActive(false);
 		break;
 	case TexID::Goal://end goal
 		//ply->UpdateFitness(200);
@@ -368,7 +363,7 @@ void Collisions::PlayerToObject(Player * ply, Object * obj)
 	}
 }
 
-void Collisions::ObjectToTile(GameObject * obj, Tile * tile)
+void Collisions::ObjectToTile(AnimatedGameObject* obj, Tile * tile)
 {
 	//ground and one way platforms
 	if (tile->GetType() == GRND || tile->GetType() == OWAY)
@@ -404,7 +399,7 @@ void Collisions::ObjectToTile(GameObject * obj, Tile * tile)
 	//corner tile or wall tile
 	if (tile->GetType() == CRN || tile->GetType() == WALL)
 	{
-		switch (GetDirTravelling(obj))
+		switch (GetDirTravelling((AnimatedGameObject*)obj))
 		{
 		case RDIR:
 			if (obj->GetBBox()->GetID() == (int)TexID::RexBB)
@@ -495,7 +490,7 @@ void Collisions::ObjectToTile(GameObject * obj, Tile * tile)
 		{
 			if (obj->GetBBox()->GetSprite()->getGlobalBounds().intersects(tmpSlope[i].getGlobalBounds()))
 			{
-				switch (GetDirTravelling(obj))
+				switch (GetDirTravelling((AnimatedGameObject*)obj))
 				{
 				case DDIR:
 					obj->SetPosition(sf::Vector2f(obj->GetPosition().x, tmpSlope[i].getPosition().y - tmpSlope[i].getOrigin().y*sY - obj->GetOrigin().y*sX));
@@ -522,19 +517,19 @@ void Collisions::ColObjectToTile(GameObject * c_obj, Tile * tile)
 	int id = c_obj->GetBBox()->GetID();
 	if (id >= PlyBgn && id <= PlyEnd)
 	{
-		PlayerToTile(c_obj, tile);
+		PlayerToTile((Player*)c_obj, tile);
 	}
 	else if (id >= EnmyBgn && id <= EnmyEnd)
 	{
-		ObjectToTile(c_obj, tile);
+		ObjectToTile((AnimatedGameObject*)c_obj, tile);
 	}
 	else if (id == (int)TexID::ShroomBB)
 	{
-		ObjectToTile(c_obj, tile);
+		ObjectToTile((AnimatedGameObject*)c_obj, tile);
 	}
 }
 
-void Collisions::EnemyToEnemy(GameObject * enmy1, GameObject * enmy2)
+void Collisions::EnemyToEnemy(Enemy * enmy1, Enemy* enmy2)
 {
 	bool enmy2Dir = enmy1->GetDirection();
 	enmy1->SetDirection(enmy2->GetDirection());
@@ -600,7 +595,7 @@ void Collisions::ColObjectToColObject(GameObject * colObj1, GameObject * colObj2
 	{
 		if (col1Typ >= EnmyBgn && col1Typ <= EnmyEnd)
 		{
-			PlayerToEnemy(colObj1, colObj2);
+			PlayerToEnemy((Player*)colObj1, (Enemy*)colObj2);
 		}
 		else if (col2Typ >= ColBgn && col2Typ <= ObjEnd)
 		{
@@ -611,7 +606,7 @@ void Collisions::ColObjectToColObject(GameObject * colObj1, GameObject * colObj2
 	{
 		if (col1Typ >= EnmyBgn && col1Typ <= EnmyEnd)
 		{
-			PlayerToEnemy(colObj2, colObj1);
+			PlayerToEnemy((Player*)colObj2, (Enemy*)colObj1);
 		}
 		else if (col1Typ >= ColBgn && col1Typ <= ObjEnd)
 		{
@@ -625,13 +620,13 @@ void Collisions::ColObjectToColObject(GameObject * colObj1, GameObject * colObj2
 		{
 			if (colObj1->GetActive() && colObj2->GetActive())
 			{
-				EnemyToEnemy(colObj1, colObj2);
+				EnemyToEnemy((Enemy*)colObj1, (Enemy*)colObj2);
 			}
 		}
 	}
 }
 
-int Collisions::GetDirTravelling(GameObject * obj)
+int Collisions::GetDirTravelling(AnimatedGameObject * obj)
 {
 	//direction travelling
 	sf::Vector2f dirV = obj->GetPosition() - obj->GetPrevPostion();
