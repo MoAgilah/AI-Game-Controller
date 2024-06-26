@@ -58,6 +58,18 @@ public:
 	bool GetInitialDirection() const { return m_initialDir; };
 	void SetInitialDirection(bool dir) { m_initialDir = dir; }
 
+	void Move(float x, float y)
+	{
+		m_spr->GetSprite()->move(sf::Vector2f(x, y));
+		m_bbox->GetSprite()->move(sf::Vector2f(x, y));
+	}
+
+	void Move(const sf::Vector2f& pos)
+	{
+		m_spr->GetSprite()->move(pos);
+		m_bbox->GetSprite()->move(pos);
+	}
+
 	const sf::Vector2f& GetPosition() const { return m_spr->GetPosition(); };
 	void SetPosition(const sf::Vector2f& pos)
 	{

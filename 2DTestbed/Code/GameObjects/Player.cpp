@@ -211,12 +211,6 @@ void Player::Reset()
 	Game::GetGameMgr()->GetLevel()->ResetLevel();
 }
 
-void Player::Move(sf::Vector2f vel)
-{
-	GetAnimSpr()->Move(vel.x, vel.y);
-	GetBBox()->GetSprite()->move(vel);
-}
-
 void Player::SetIsSuper(bool super)
 {
 	m_super = super;
@@ -229,7 +223,7 @@ void Player::SetIsSuper(bool super)
 			GetAnimSpr()->SetTexture(TexID::Super);
 			GetAnimSpr()->SetFrameData(14, 4, { 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4 });
 			GetBBox()->SetTexture(TexID::SuperBB);
-			SetPosition(GetAnimSpr()->GetPosition() - sf::Vector2f(0, m_heightDiff));
+			SetPosition(GetPosition() - sf::Vector2f(0, m_heightDiff));
 		}
 	}
 	else
@@ -239,7 +233,7 @@ void Player::SetIsSuper(bool super)
 			GetAnimSpr()->SetTexture(TexID::Mario);
 			GetAnimSpr()->SetFrameData(14, 4, { 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4 });
 			GetBBox()->SetTexture(TexID::MarioBB);
-			SetPosition(GetAnimSpr()->GetPosition() + sf::Vector2f(0, m_heightDiff));
+			SetPosition(GetPosition() + sf::Vector2f(0, m_heightDiff));
 		}
 	}
 }
@@ -428,9 +422,9 @@ void Player::ProcessInput()
 
 				//adjust bbox position
 				if (GetDirection())
-					GetBBox()->Update(sf::Vector2f(GetAnimSpr()->GetPosition().x - 1.f, GetAnimSpr()->GetPosition().y + 22.f));
+					GetBBox()->Update(sf::Vector2f(GetPosition().x - 1.f, GetPosition().y + 22.f));
 				else
-					GetBBox()->Update(sf::Vector2f(GetAnimSpr()->GetPosition().x + 1.f, GetAnimSpr()->GetPosition().y + 22.f));
+					GetBBox()->Update(sf::Vector2f(GetPosition().x + 1.f, GetPosition().y + 22.f));
 			}
 			else
 			{
@@ -438,9 +432,9 @@ void Player::ProcessInput()
 
 				//adjust bbox position
 				if (GetDirection())
-					GetBBox()->Update(sf::Vector2f(GetAnimSpr()->GetPosition().x - 2.f, GetAnimSpr()->GetPosition().y + 12.f));
+					GetBBox()->Update(sf::Vector2f(GetPosition().x - 2.f, GetPosition().y + 12.f));
 				else
-					GetBBox()->Update(sf::Vector2f(GetAnimSpr()->GetPosition().x + 2.f, GetAnimSpr()->GetPosition().y + 12.f));
+					GetBBox()->Update(sf::Vector2f(GetPosition().x + 2.f, GetPosition().y + 12.f));
 			}
 
 			SetIsCrouched(true);

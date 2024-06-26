@@ -52,13 +52,12 @@ void Bill::Animate(float deltaTime)
 	if (!GetIsAlive())
 	{
 		SetVelocity(0, c_jumpSpeed);
-
-		GetAnimSpr()->Move(0, GetYVelocity() * FPS * deltaTime);
+		Move(0, GetYVelocity() * FPS * deltaTime);
 	}
 
 	if (GetXVelocity() != 0)
 	{
-		GetAnimSpr()->Move(GetXVelocity() * FPS * deltaTime, 0);
+		Move(GetXVelocity() * FPS * deltaTime, 0);
 		Collisions::Get()->ProcessCollisions(this);
 	}
 

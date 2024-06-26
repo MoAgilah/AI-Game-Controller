@@ -23,8 +23,6 @@ public:
 	void Render(sf::RenderWindow& window) final;
 	void Reset() final;
 
-	void Move(sf::Vector2f vel);
-
 	bool GetIsSuper() const { return m_super; }
 	void SetIsSuper(bool super);
 

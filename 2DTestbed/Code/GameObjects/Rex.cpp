@@ -46,12 +46,12 @@ void Rex::Update(float deltaTime)
 				if (m_numLives == m_maxLives)
 				{
 					//+
-					GetBBox()->Update(sf::Vector2f(GetAnimSpr()->GetPosition().x - 2.f, GetAnimSpr()->GetPosition().y));
+					GetBBox()->Update(sf::Vector2f(GetPosition().x - 2.f, GetPosition().y));
 				}
 				else
 				{
 					//+
-					GetBBox()->Update(sf::Vector2f(GetAnimSpr()->GetPosition().x - 4.f, GetAnimSpr()->GetPosition().y + 18.5f));
+					GetBBox()->Update(sf::Vector2f(GetPosition().x - 4.f, GetPosition().y + 18.5f));
 				}
 
 			}
@@ -60,12 +60,12 @@ void Rex::Update(float deltaTime)
 				if (m_numLives == m_maxLives)
 				{
 					//+
-					GetBBox()->Update(sf::Vector2f(GetAnimSpr()->GetPosition().x + 2.f, GetAnimSpr()->GetPosition().y));
+					GetBBox()->Update(sf::Vector2f(GetPosition().x + 2.f, GetPosition().y));
 				}
 				else
 				{
 					//-
-					GetBBox()->Update(sf::Vector2f(GetAnimSpr()->GetPosition().x + 4.f, GetAnimSpr()->GetPosition().y + 18.5f));
+					GetBBox()->Update(sf::Vector2f(GetPosition().x + 4.f, GetPosition().y + 18.5f));
 				}
 			}
 		}
@@ -121,20 +121,20 @@ void Rex::Animate(float deltaTime)
 
 	if (GetXVelocity() != 0)
 	{
-		GetAnimSpr()->Move(GetXVelocity() * FPS * deltaTime, 0);
+		Move(GetXVelocity() * FPS * deltaTime, 0);
 		Collisions::Get()->ProcessCollisions(this);
 	}
 
 	//check for leftmost and rightmost boundary
-	if (GetAnimSpr()->GetPosition().x < GetAnimSpr()->GetOrigin().x || GetAnimSpr()->GetPosition().x > 11776 - GetAnimSpr()->GetOrigin().x)
+	if (GetPosition().x < GetOrigin().x || GetPosition().x > 11776 - GetOrigin().x)
 	{
-		GetAnimSpr()->Move(-GetXVelocity() * FPS * deltaTime, 0);
+		Move(-GetXVelocity() * FPS * deltaTime, 0);
 		SetDirection(!GetDirection());
 	}
 
 	if (GetYVelocity() != 0)
 	{
-		GetAnimSpr()->Move(0, GetYVelocity() * FPS * deltaTime);
+		Move(0, GetYVelocity() * FPS * deltaTime);
 		Collisions::Get()->ProcessCollisions(this);
 	}
 }

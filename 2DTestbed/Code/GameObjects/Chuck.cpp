@@ -10,7 +10,7 @@ Chuck::Chuck(bool dir, int initAnim, float animSpd, const sf::Vector2f& initPos 
 
 	SetInitialPosition(initPos);
 
-	GetAnimSpr()->SetPosition(GetInitialPosition());
+	SetPosition(GetInitialPosition());
 	m_numLives = m_maxLives = 2;
 }
 
@@ -71,7 +71,5 @@ void Chuck::Animate(float deltaTime)
 	}
 
 	if (GetYVelocity() != 0)
-	{
-		GetAnimSpr()->Move(0, GetYVelocity() * FPS * deltaTime);
-	}
+		Move(0, GetYVelocity() * FPS * deltaTime);
 }

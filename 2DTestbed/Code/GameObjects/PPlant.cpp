@@ -28,7 +28,7 @@ void PPlant::Animate(float deltaTime)
 
 	if (GetYVelocity() != 0)
 	{
-		GetAnimSpr()->Move(0, GetYVelocity() * FPS * deltaTime);
+		Move(0, GetYVelocity() * FPS * deltaTime);
 		Collisions::Get()->ProcessCollisions(this);
 	}
 
