@@ -107,13 +107,13 @@ void World::CheckIsInView()
 
 	for (int i = 0; i < m_objects.size(); i++)
 	{
-		m_objects[i]->SetActive(camera->IsInView(m_objects[i]->GetSprite()->GetSprite()));
+		m_objects[i]->SetActive(camera->IsInView(m_objects[i]->GetSprite()->GetSprite()));   
 	}
 }
 
 void World::AddObject(const sf::Vector2f& pos)
 {
-	m_objects.push_back(std::make_unique<Object>(TexID::Shroom, 1, 1, (int)TexID::ShroomBB, true, true, 0, 1.f, pos));
+	//m_objects.push_back(std::make_unique<StaticObject>(TexID::Shroom, (int)TexID::ShroomBB, true, pos));
 }
 
 void World::AddEnemies()

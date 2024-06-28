@@ -6,7 +6,7 @@
 #include "../Controller/CtrlMgr.h"
 #include <format>
 #include <iostream>
-#include "../GameObjectState/PlayerState.h"
+#include "../GameStates/PlayerState.h"
 
 bool Player::s_playerInserted = false;
 

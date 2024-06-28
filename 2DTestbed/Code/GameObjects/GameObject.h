@@ -40,47 +40,24 @@ public:
 	void SetActive(bool act) { m_visible = act; }
 
 	bool GetDirection() const { return m_direction; }
-	void SetDirection(bool dir)
-	{
-		m_direction = dir;
-		if (m_direction)
-		{
-			// flip X
-			m_spr->SetScale({ sX, sY });
-		}
-		else
-		{
-			//unflip x
-			m_spr->SetScale({ -sX, sY });
-		}
-	}
+	void SetDirection(bool dir);
 
 	bool GetInitialDirection() const { return m_initialDir; };
 	void SetInitialDirection(bool dir) { m_initialDir = dir; }
 
-	void Move(float x, float y)
-	{
-		m_spr->GetSprite()->move(sf::Vector2f(x, y));
-		m_bbox->GetSprite()->move(sf::Vector2f(x, y));
-	}
+	bool GetOnGround() const { return m_onGround; }
+	void SetOnGround(bool grnd) { m_onGround = grnd; }
 
-	void Move(const sf::Vector2f& pos)
-	{
-		m_spr->GetSprite()->move(pos);
-		m_bbox->GetSprite()->move(pos);
-	}
+	void Move(float x, float y);
+	void Move(const sf::Vector2f& pos);
 
 	const sf::Vector2f& GetPosition() const { return m_spr->GetPosition(); };
-	void SetPosition(const sf::Vector2f& pos)
-	{
-		m_spr->SetPosition(pos);
-		m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x, m_spr->GetPosition().y + 3.5f));
-	}
-	void SetPosition(float x, float y)
-	{
-		m_spr->SetPosition(sf::Vector2f(x, y));
-		m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x, m_spr->GetPosition().y + 3.5f));
-	}
+	void SetPosition(const sf::Vector2f& pos);
+	void SetPosition(float x, float y);
+
+	void SetPrevPosition(sf::Vector2f pos) { m_previousPos = pos; }
+	void SetPrevPosition(float x, float y) { m_previousPos = sf::Vector2f(x, y); }
+	sf::Vector2f GetPrevPostion() const { return m_previousPos; }
 
 	const sf::Vector2f& GetInitialPosition() const { return m_initialPos; }
 	void SetInitialPosition(const sf::Vector2f& pos) { m_initialPos = pos; }
@@ -93,9 +70,11 @@ private:
 	int m_objectID;
 	static int s_objectNum;
 	bool m_visible = false;
+	bool m_onGround = false;
 	bool m_direction = true;
 	bool m_initialDir = m_direction;
 	sf::Vector2f m_initialPos;
+	sf::Vector2f m_previousPos;
 	std::shared_ptr<Sprite> m_spr;
 	std::shared_ptr<BoundingBox> m_bbox;
 };
@@ -104,7 +83,6 @@ private:
 class StaticObject : public GameObject
 {
 public:
-	StaticObject(TexID id, bool dir, const sf::Vector2f& pos);
 	StaticObject(TexID id, int bTyp, bool dir, const sf::Vector2f& pos);
 	~StaticObject() override = default;
 
@@ -131,18 +109,11 @@ public:
 
 	AnimatedSprite* GetAnimSpr() { return static_cast<AnimatedSprite*>(GetSprite()); }
 
-	bool GetOnGround() const { return m_onGround; }
-	void SetOnGround(bool grnd) { m_onGround = grnd; }
-
 	bool GetAirbourne() const { return m_airbourne; }
 	void SetAirbourne(bool air) { m_airbourne = air; }
 
 	int GetInitialAnim() const { return m_initialAnim; }
 	void SetInitialAnim(int initAnim) { m_initialAnim = initAnim; }
-
-	void SetPrevPosition(sf::Vector2f pos) { m_prevPos = pos; }
-	void SetPrevPosition(float x, float y) { m_prevPos = sf::Vector2f(x, y); }
-	sf::Vector2f GetPrevPostion() const { return m_prevPos; }
 
 	sf::Vector2f GetVelocity() const { return m_velocity; }
 	void SetVelocity(sf::Vector2f vel) { m_velocity = vel; }
@@ -159,7 +130,6 @@ public:
 	void DecrementYVelocity(float y) { m_velocity.y -= y; }
 private:
 
-	bool m_onGround = false;
 	bool m_airbourne = false;
 	int m_initialAnim;
 	sf::Vector2f m_prevPos;

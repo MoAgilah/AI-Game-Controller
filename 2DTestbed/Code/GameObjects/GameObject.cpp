@@ -35,13 +35,42 @@ void GameObject::Reset()
 	m_visible = false;
 }
 
-StaticObject::StaticObject(TexID id, bool dir, const sf::Vector2f& pos)
-	: GameObject(id)
+void GameObject::SetDirection(bool dir)
 {
-	SetInitialDirection(dir);
-	SetDirection(GetInitialDirection());
-	SetInitialPosition(pos);
-	SetPosition(GetInitialPosition());
+	m_direction = dir;
+	if (m_direction)
+	{
+		// flip X
+		m_spr->SetScale({ sX, sY });
+	}
+	else
+	{
+		//unflip x
+		m_spr->SetScale({ -sX, sY });
+	}
+}
+
+void GameObject::Move(float x, float y)
+{
+	m_spr->GetSprite()->move(sf::Vector2f(x, y));
+	m_bbox->GetSprite()->move(sf::Vector2f(x, y));
+}
+
+void GameObject::Move(const sf::Vector2f& pos)
+{
+	m_spr->GetSprite()->move(pos);
+	m_bbox->GetSprite()->move(pos);
+}
+
+void GameObject::SetPosition(const sf::Vector2f& pos)
+{
+	m_spr->SetPosition(pos);
+	m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x, m_spr->GetPosition().y + 3.5f));
+}
+void GameObject::SetPosition(float x, float y)
+{
+	m_spr->SetPosition(sf::Vector2f(x, y));
+	m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x, m_spr->GetPosition().y + 3.5f));
 }
 
 StaticObject::StaticObject(TexID id, int bTyp, bool dir, const sf::Vector2f& pos)

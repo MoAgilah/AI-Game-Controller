@@ -1,13 +1,13 @@
-#include "GameObjectStateMgr.h"
+#include "GameStateMgr.h"
 #include <iostream>
 #include <format>
 
-GameObjectStateMgr::~GameObjectStateMgr()
+GameStateMgr::~GameStateMgr()
 {
 	ClearStates();
 }
 
-std::string_view GameObjectStateMgr::GetStateName()
+std::string_view GameStateMgr::GetStateName()
 {
 	if (!m_vGameStates.empty())
 		return m_vGameStates.back()->GetStateName();
@@ -15,7 +15,7 @@ std::string_view GameObjectStateMgr::GetStateName()
 	return std::string_view();
 }
 
-void GameObjectStateMgr::ChangeState(GameObjectState* state)
+void GameStateMgr::ChangeState(GameState* state)
 {
 	if (!m_vGameStates.empty())
 		m_vGameStates.pop_back();
@@ -25,7 +25,7 @@ void GameObjectStateMgr::ChangeState(GameObjectState* state)
 	std::cout << std::format("Changed too {} state\n", m_vGameStates.back()->GetStateName());
 }
 
-void GameObjectStateMgr::PushState(GameObjectState* state)
+void GameStateMgr::PushState(GameState* state)
 {
 	if (!m_vGameStates.empty())
 		m_vGameStates.back()->Pause();
@@ -35,7 +35,7 @@ void GameObjectStateMgr::PushState(GameObjectState* state)
 	std::cout << std::format("Pushed {} state\n", m_vGameStates.back()->GetStateName());
 }
 
-void GameObjectStateMgr::PopState()
+void GameStateMgr::PopState()
 {
 	if (!m_vGameStates.empty())
 	{
@@ -47,31 +47,31 @@ void GameObjectStateMgr::PopState()
 		m_vGameStates.back()->Resume();
 }
 
-void GameObjectStateMgr::ClearStates()
+void GameStateMgr::ClearStates()
 {
 	while (!m_vGameStates.empty())
 		m_vGameStates.pop_back();
 }
 
-void GameObjectStateMgr::Pause()
+void GameStateMgr::Pause()
 {
 	if (!m_vGameStates.empty())
 		m_vGameStates.back()->Pause();
 }
 
-void GameObjectStateMgr::Resume()
+void GameStateMgr::Resume()
 {
 	if (!m_vGameStates.empty())
 		m_vGameStates.back()->Resume();
 }
 
-void GameObjectStateMgr::ProcessInputs()
+void GameStateMgr::ProcessInputs()
 {
 	if (!m_vGameStates.empty())
 		m_vGameStates.back()->ProcessInputs();
 }
 
-void GameObjectStateMgr::Update(float deltaTime)
+void GameStateMgr::Update(float deltaTime)
 {
 	if (!m_vGameStates.empty())
 		m_vGameStates.back()->Update(deltaTime);

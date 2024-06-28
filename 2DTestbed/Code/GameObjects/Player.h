@@ -6,7 +6,7 @@
 #include "../GameObjects/GameObject.h"
 #include "../NEAT/phenotype.h"
 
-#include "../GameObjectState/GameObjectStateMgr.h"
+#include "../GameStates/GameStateMgr.h"
 
 enum Anims { IDLE, LOOKUP, JUMP, FALL, RUNJUMP, SKID, SLIDE, VICTORY, CROUCH, GROW, DIE, MOVING, RUNNING, SPINJUMP, MAXANIM };
 
@@ -97,5 +97,5 @@ private:
 	CNeuralNet* m_itsBrain = nullptr;
 
 	sf::Shader m_fragShader;
-	GameObjectStateMgr m_stateMgr;
+	GameStateMgr m_stateMgr;
 };

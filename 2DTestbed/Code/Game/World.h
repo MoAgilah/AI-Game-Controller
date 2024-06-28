@@ -5,7 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include "../Drawables/Sprite.h"
 #include "../GameObjects/Enemy.h"
-#include "../GameObjects/Object.h"
+#include "../GameObjects/GameObject.h"
 
 enum class Texts { Name, Time, Max };
 enum class Sprites { BackGround, Pipe1, Pipe2, Pipe3, Name, Time, Max};
@@ -19,7 +19,7 @@ public:
 	~World() = default;
 
 	const std::vector<std::unique_ptr<Enemy>>& GetEnemies() const { return m_enemies; }
-	const std::vector<std::unique_ptr<Object>>& GetObjects() const { return m_objects; }
+	const std::vector<std::unique_ptr<GameObject>>& GetObjects() const { return m_objects; }
 
 	void Update(float deltaTime);
 	void Render(sf::RenderWindow& window);
@@ -42,5 +42,5 @@ private:
 	std::array<sf::Text, (int)Texts::Max> m_texts;
 	std::array<Sprite, (int)Sprites::Max> m_sprites;
 	std::vector<std::unique_ptr<Enemy>> m_enemies;
-	std::vector<std::unique_ptr<Object>> m_objects;
+	std::vector<std::unique_ptr<GameObject>> m_objects;
 };

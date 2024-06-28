@@ -1,17 +1,17 @@
 #pragma once
 
 #include <vector>
-#include "GameObjectState.h"
+#include "GameState.h"
 
-class GameObjectStateMgr
+class GameStateMgr
 {
 public:
-	~GameObjectStateMgr();
+	~GameStateMgr();
 
 	std::string_view GetStateName();
 
-	void ChangeState(GameObjectState* state);
-	void PushState(GameObjectState* state);
+	void ChangeState(GameState* state);
+	void PushState(GameState* state);
 	void PopState();
 	void ClearStates();
 
@@ -22,5 +22,5 @@ public:
 	void Update(float deltaTime);
 
 private:
-	std::vector<GameObjectState*> m_vGameStates;
+	std::vector<GameState*> m_vGameStates;
 };

@@ -1,14 +1,14 @@
 #pragma once
 
 #include <memory>
-#include "GameObjectState.h"
+#include "GameState.h"
 #include "../GameObjects/Player.h"
 
-class PlayerState : public GameObjectState
+class PlayerState : public GameState
 {
 public:
 	explicit PlayerState(std::string_view name, Player* ply)
-		: GameObjectState(name)
+		: GameState(name)
 	{
 		m_player.reset(ply);
 	}

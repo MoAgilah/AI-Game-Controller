@@ -2,14 +2,14 @@
 
 #include <string>
 
-class GameObjectState
+class GameState
 {
 public:
-	explicit GameObjectState(std::string_view name)
+	explicit GameState(std::string_view name)
 		: m_StateName(name) {}
 
 	std::string_view GetStateName() { return m_StateName; }
-	virtual ~GameObjectState() = default;
+	virtual ~GameState() = default;
 
 	virtual void Initialise() = 0;
 	virtual void Pause() = 0;
