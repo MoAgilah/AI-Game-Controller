@@ -192,6 +192,15 @@
     <ClCompile Include="Code\GameStates\PlayerState.cpp">
       <Filter>Source Files\GameStates</Filter>
     </ClCompile>
+    <ClCompile Include="Code\GameStates\MainState.cpp">
+      <Filter>Source Files\GameStates</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameStates\GameState.cpp">
+      <Filter>Source Files\GameStates</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameStates\DebugState.cpp">
+      <Filter>Source Files\GameStates</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Collisions\BoundingBox.h">
@@ -315,6 +324,12 @@
       <Filter>Header Files\GameStates</Filter>
     </ClInclude>
     <ClInclude Include="Code\GameStates\PlayerState.h">
+      <Filter>Header Files\GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameStates\MainState.h">
+      <Filter>Header Files\GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameStates\DebugState.h">
       <Filter>Header Files\GameStates</Filter>
     </ClInclude>
   </ItemGroup>

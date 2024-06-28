@@ -28,15 +28,15 @@ public:
 	void CheckIsInView();
 
 	void AddObject(const sf::Vector2f& pos);
-private:
+
 	void AddEnemies();
 	void AddObjects();
 	void AddForeGroundSprites();
-	void AddGUI();
-
-	void UpdateGUI();
 
 private:
+
+	void AddGUI();
+	void UpdateGUI();
 
 	sf::Font m_font;
 	std::array<sf::Text, (int)Texts::Max> m_texts;

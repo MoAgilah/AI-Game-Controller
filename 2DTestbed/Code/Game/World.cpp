@@ -20,9 +20,6 @@ World::World()
 	m_sprites[(int)Sprites::BackGround].SetOrigin(sf::Vector2f(0, 0));
 	m_sprites[(int)Sprites::BackGround].SetPosition(sf::Vector2f(0, -480));
 
-	AddEnemies();
-	AddObjects();
-	AddForeGroundSprites();
 	AddGUI();
 }
 

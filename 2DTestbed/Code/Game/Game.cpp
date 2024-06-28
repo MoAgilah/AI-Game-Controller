@@ -7,8 +7,10 @@
 #include "../Collisions/Grid.h"
 #include "../Controller/CtrlMgr.h"
 #include "../Game/Constants.h"
+#include "../GameStates/MainState.h"
+#include "../GameStates/DebugState.h"
 
-std::unique_ptr<Game> Game::m_instance = nullptr;
+std::shared_ptr<Game> Game::m_instance = nullptr;
 
 Game::Game()
 {
@@ -23,6 +25,8 @@ Game::Game()
 
 	m_world = std::make_unique<World>();
 	m_logger = std::make_unique<Logger>();
+
+	m_stateMgr.ChangeState(new MainState(this));
 }
 
 void Game::ChangePlayer(Player * ply)
@@ -33,25 +37,12 @@ void Game::ChangePlayer(Player * ply)
 
 void Game::Update(float deltaTime)
 {
-	m_camera->Update();
-	Timer::Get()->UpdateTime(deltaTime);
-
-	if (Automated)
-		CtrlMgr::GetCtrlMgr()->GetController()->Update();
-
-	m_player->Update(deltaTime);
-	m_world->Update(deltaTime);
+	m_stateMgr.Update(deltaTime);
 }
 
 void Game::Render(sf::RenderWindow & window)
 {
-	m_camera->Reset(window);
-	CheckInView();
-
-	m_world->Render(window);
-	m_player->Render(window);
-
-	Collisions::Get()->Render(window);
+	m_stateMgr.Render(window);
 }
 
 void Game::CheckInView()

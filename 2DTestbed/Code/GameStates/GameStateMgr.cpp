@@ -76,3 +76,9 @@ void GameStateMgr::Update(float deltaTime)
 	if (!m_vGameStates.empty())
 		m_vGameStates.back()->Update(deltaTime);
 }
+
+void GameStateMgr::Render(sf::RenderWindow& window)
+{
+	if (!m_vGameStates.empty())
+		m_vGameStates.back()->Render(window);
+}

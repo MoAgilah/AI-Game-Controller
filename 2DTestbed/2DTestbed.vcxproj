@@ -177,7 +177,10 @@
     <ClCompile Include="Code\GameObjects\Player.cpp" />
     <ClCompile Include="Code\GameObjects\PPlant.cpp" />
     <ClCompile Include="Code\GameObjects\Rex.cpp" />
+    <ClCompile Include="Code\GameStates\DebugState.cpp" />
+    <ClCompile Include="Code\GameStates\GameState.cpp" />
     <ClCompile Include="Code\GameStates\GameStateMgr.cpp" />
+    <ClCompile Include="Code\GameStates\MainState.cpp" />
     <ClCompile Include="Code\GameStates\PlayerState.cpp" />
     <ClCompile Include="Code\Game\Camera.cpp" />
     <ClCompile Include="Code\Game\Game.cpp" />
@@ -214,8 +217,10 @@
     <ClInclude Include="Code\GameObjects\Player.h" />
     <ClInclude Include="Code\GameObjects\PPlant.h" />
     <ClInclude Include="Code\GameObjects\Rex.h" />
+    <ClInclude Include="Code\GameStates\DebugState.h" />
     <ClInclude Include="Code\GameStates\GameState.h" />
     <ClInclude Include="Code\GameStates\GameStateMgr.h" />
+    <ClInclude Include="Code\GameStates\MainState.h" />
     <ClInclude Include="Code\GameStates\PlayerState.h" />
     <ClInclude Include="Code\Game\Camera.h" />
     <ClInclude Include="Code\Game\Constants.h" />

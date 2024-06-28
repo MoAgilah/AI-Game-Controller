@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "GameState.h"
+#include <SFML/Graphics.hpp>
 
 class GameStateMgr
 {
@@ -20,6 +21,7 @@ public:
 
 	void ProcessInputs();
 	void Update(float deltaTime);
+	void Render(sf::RenderWindow& window);
 
 private:
 	std::vector<GameState*> m_vGameStates;
