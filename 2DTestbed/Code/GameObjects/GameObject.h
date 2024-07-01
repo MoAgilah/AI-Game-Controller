@@ -18,7 +18,6 @@ enum GOTYPE
 class GameObject
 {
 public:
-	explicit GameObject(TexID boxId);
 	GameObject(TexID sprId, TexID boxId);
 	GameObject(AnimatedSprite* sprite, TexID boxId);
 	virtual ~GameObject() = default;

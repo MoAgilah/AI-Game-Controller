@@ -3,12 +3,6 @@
 
 int GameObject::s_objectNum = 0;
 
-GameObject::GameObject(TexID boxId)
-{
-	m_bbox = std::make_shared<BoundingBox>(boxId);
-	m_objectID = s_objectNum++;
-}
-
 GameObject::GameObject(TexID sprId, TexID boxId)
 	: m_type((int)sprId)
 {
@@ -65,12 +59,14 @@ void GameObject::Move(const sf::Vector2f& pos)
 void GameObject::SetPosition(const sf::Vector2f& pos)
 {
 	m_spr->SetPosition(pos);
-	m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x, m_spr->GetPosition().y + 3.5f));
+	auto yOffset = (float)(m_bbox->GetSprite()->getTextureRect().getSize().y / 2);
+	m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x, m_spr->GetPosition().y + yOffset));
 }
 void GameObject::SetPosition(float x, float y)
 {
 	m_spr->SetPosition(sf::Vector2f(x, y));
-	m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x, m_spr->GetPosition().y + 3.5f));
+	auto yOffset = (float)(m_bbox->GetSprite()->getTextureRect().getSize().y / 2);
+	m_bbox->Update(sf::Vector2f(m_spr->GetPosition().x, m_spr->GetPosition().y + yOffset));
 }
 
 StaticObject::StaticObject(TexID id, int bTyp, bool dir, const sf::Vector2f& pos)
