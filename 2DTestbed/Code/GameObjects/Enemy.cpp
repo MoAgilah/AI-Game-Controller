@@ -4,8 +4,8 @@
 #include "../Game/Camera.h"
 #include "../GameObjects/Rex.h"
 
-Enemy::Enemy(TexID id, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd)
-	: AnimatedObject(id, bTyp, dir, Cells(rows, cols), symmetrical, initAnim, animSpd)
+Enemy::Enemy(TexID id, int rows, int cols, int bTyp, bool dir, bool symmetrical, float animSpd)
+	: AnimatedObject(id, bTyp, dir, Cells(rows, cols), symmetrical, animSpd)
 {}
 
 void Enemy::Update(float deltaTime)

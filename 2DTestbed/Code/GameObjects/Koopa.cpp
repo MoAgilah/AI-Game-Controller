@@ -3,8 +3,8 @@
 #include "../Game/Constants.h"
 
 
-Koopa::Koopa(int rows, int cols, bool dir, bool symmetrical, int initAnim, float animSpd, const sf::Vector2f& initPos)
-	:Enemy(TexID::Koopa, rows, cols, (int)TexID::KoopaBB, dir, symmetrical, initAnim, animSpd)
+Koopa::Koopa(int rows, int cols, bool dir, bool symmetrical, float animSpd, const sf::Vector2f& initPos)
+	:Enemy(TexID::Koopa, rows, cols, (int)TexID::KoopaBB, dir, symmetrical, animSpd)
 {
 	std::vector<int> frames{ 1, 2, 1};
 	GetAnimSpr()->SetFrames(frames);

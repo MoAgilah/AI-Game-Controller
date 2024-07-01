@@ -6,7 +6,7 @@ class Camera;
 class Enemy : public AnimatedObject
 {
 public:
-	Enemy(TexID id, int rows, int cols, int bTyp, bool dir = true, bool symmetrical = true, int initAnim = 0, float animSpd = 1);
+	Enemy(TexID id, int rows, int cols, int bTyp, bool dir = true, bool symmetrical = true, float animSpd = 1);
 	~Enemy() override = default;
 	void Update(float deltaTime) override;
 	void Render(sf::RenderWindow& window) override;

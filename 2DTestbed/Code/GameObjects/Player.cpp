@@ -11,7 +11,7 @@
 bool Player::s_playerInserted = false;
 
 Player::Player()
-	: AnimatedObject(TexID::Mario, (int)TexID::MarioBB, true, false, Anims::IDLE, 0.5f)
+	: AnimatedObject(TexID::Mario, (int)TexID::MarioBB, true, false, 0.5f)
 {
 	m_fragShader.loadFromFile("Resources/Shaders/FlashShader.frag", sf::Shader::Fragment);
 	m_fragShader.setUniform("flashColor", sf::Glsl::Vec4(1, 1, 1, 1));

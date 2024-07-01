@@ -14,6 +14,8 @@ public:
 	explicit Sprite(TexID id);
 	virtual ~Sprite() = default;
 
+	TexID GetTexID() const { return m_texID; }
+
 	void SetTexture(TexID id);
 
 	void Render(sf::RenderWindow& window) const { window.draw(m_sprite); }
@@ -36,8 +38,8 @@ public:
 	sf::Vector2u GetFrameSize() const { return m_frameSize; }
 	void SetFrameSize(const sf::Vector2u& size, int currentFrame = 1, int currentAnim = 1);
 
-	TexID GetTexID() const { return m_texID; }
 private:
+
 	TexID m_texID;
 	sf::Sprite m_sprite;
 	sf::Texture m_texture;
@@ -53,8 +55,8 @@ struct Range
 class AnimatedSprite : public Sprite
 {
 public:
-	AnimatedSprite(TexID id, int rows, int columns, float framesPerSec, bool symmetrical, int m_initialAnim, float animationSpeed);
-	AnimatedSprite(TexID id, float framesPerSec, bool symmetrical, int m_initialAnim, float animationSpeed);
+	AnimatedSprite(TexID id, int rows, int columns, float framesPerSec, bool symmetrical, float animationSpeed);
+	AnimatedSprite(TexID id, float framesPerSec, bool symmetrical, float animationSpeed);
 	~AnimatedSprite() final = default;
 
 	void Update(float dt);
@@ -64,10 +66,10 @@ public:
 	void SetFrames(std::span<int> numFrames);
 	void SetFrameData(int rows, int columns, const std::vector<int>& numFrames);
 
-	bool PlayedNumTimes(int val) const { return m_animEnd == val; }
-	bool playedOnce() const { return m_animEnd > 0; }
+	bool PlayedNumTimes(int val) const { return m_animCycles == val; }
+	bool playedOnce() const { return m_animCycles > 0; }
 private:
-	int m_animEnd = 0;
+	int m_animCycles = 0;
 	float m_currentTime = 0;
 	int m_frameTime = 0;
 	float m_animSpeed = 0;

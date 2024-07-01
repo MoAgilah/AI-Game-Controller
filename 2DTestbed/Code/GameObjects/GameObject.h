@@ -100,8 +100,8 @@ struct Cells
 class AnimatedObject : public GameObject
 {
 public:
-	AnimatedObject(TexID id, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd);
-	AnimatedObject(TexID id, int bTyp, bool dir, Cells cell, bool symmetrical, int initAnim, float animSpd);
+	AnimatedObject(TexID id, int bTyp, bool dir, bool symmetrical, float animSpd);
+	AnimatedObject(TexID id, int bTyp, bool dir, Cells cell, bool symmetrical, float animSpd);
 	~AnimatedObject() override = default;
 
 	void Reset() override;
@@ -110,9 +110,6 @@ public:
 
 	bool GetAirbourne() const { return m_airbourne; }
 	void SetAirbourne(bool air) { m_airbourne = air; }
-
-	int GetInitialAnim() const { return m_initialAnim; }
-	void SetInitialAnim(int initAnim) { m_initialAnim = initAnim; }
 
 	sf::Vector2f GetVelocity() const { return m_velocity; }
 	void SetVelocity(sf::Vector2f vel) { m_velocity = vel; }

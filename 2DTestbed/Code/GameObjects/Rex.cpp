@@ -4,8 +4,8 @@
 #include "../Game/Game.h"
 #include "../Game/Constants.h"
 
-Rex::Rex(bool dir, int initAnim, float animSpd, const sf::Vector2f& initPos)
-	:Enemy(TexID::Rex, 3, 2, (int)TexID::RexBB, dir, false, initAnim, animSpd)
+Rex::Rex(bool dir, float animSpd, const sf::Vector2f& initPos)
+	: Enemy(TexID::Rex, 3, 2, (int)TexID::RexBB, dir, false, animSpd)
 {
 	SetInitialPosition(initPos);
 	SetPosition(GetInitialPosition());

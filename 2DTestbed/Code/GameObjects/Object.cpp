@@ -4,7 +4,7 @@
 #include "../Game/Constants.h"
 
 Object::Object(TexID id, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd, const sf::Vector2f& initPos)
-	:AnimatedObject(id, bTyp, dir, Cells(rows, cols), symmetrical, initAnim, animSpd)
+	:AnimatedObject(id, bTyp, dir, Cells(rows, cols), symmetrical, animSpd)
 {
 	SetInitialPosition(initPos);
 	SetPosition(GetInitialPosition());
@@ -49,7 +49,7 @@ void Object::Reset()
 {
 	m_isAnimating = false;
 	m_goingUp = false;
-	GetAnimSpr()->ChangeAnim(GetInitialAnim());
+	GetAnimSpr()->ChangeAnim(0);
 	SetActive(false);
 }
 

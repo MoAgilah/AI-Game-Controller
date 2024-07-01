@@ -85,24 +85,20 @@ void StaticObject::Reset()
 	SetPosition(GetInitialPosition());
 }
 
-AnimatedObject::AnimatedObject(TexID id, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd)
-	: GameObject(new AnimatedSprite(id, FPS, symmetrical, initAnim, animSpd), (TexID)bTyp)
+AnimatedObject::AnimatedObject(TexID id, int bTyp, bool dir, bool symmetrical, float animSpd)
+	: GameObject(new AnimatedSprite(id, FPS, symmetrical, animSpd), (TexID)bTyp)
 {
 	SetID(id);
 	SetInitialDirection(dir);
 	SetDirection(GetInitialDirection());
-	SetInitialAnim(initAnim);
-	GetAnimSpr()->ChangeAnim(m_initialAnim);
 }
 
-AnimatedObject::AnimatedObject(TexID id, int bTyp, bool dir, Cells cell, bool symmetrical, int initAnim, float animSpd)
-	: GameObject(new AnimatedSprite(id, cell.m_rows, cell.m_cols, FPS, symmetrical, initAnim, animSpd), (TexID)bTyp)
+AnimatedObject::AnimatedObject(TexID id, int bTyp, bool dir, Cells cell, bool symmetrical, float animSpd)
+	: GameObject(new AnimatedSprite(id, cell.m_rows, cell.m_cols, FPS, symmetrical, animSpd), (TexID)bTyp)
 {
 	SetID(id);
 	SetInitialDirection(dir);
 	SetDirection(GetInitialDirection());
-	SetInitialAnim(initAnim);
-	GetAnimSpr()->ChangeAnim(m_initialAnim);
 }
 
 void AnimatedObject::Reset()
@@ -110,5 +106,5 @@ void AnimatedObject::Reset()
 	GameObject::Reset();
 	SetDirection(GetInitialDirection());
 	SetPosition(GetInitialPosition());
-	GetAnimSpr()->ChangeAnim(m_initialAnim);
+	GetAnimSpr()->ChangeAnim(0);
 }
