@@ -1,29 +1,44 @@
 #pragma once
 
-#include "../GameObjects/GameObject.h"
+#include "../GameObjects/Object.h"
+#include <SFML/Graphics.hpp>
 
-class Camera;
-class Enemy : public AnimatedObject
+class Enemy : public DynamicObject
 {
 public:
-	Enemy(TexID id, int rows, int cols, int bTyp, bool dir = true, bool symmetrical = true, float animSpd = 1);
+	Enemy(TexID sprId, TexID boxId, int maxLives = 1);
+	Enemy(TexID sprId, TexID boxId, AnimationData animData, int maxLives = 1);
 	~Enemy() override = default;
+
 	void Update(float deltaTime) override;
-	void Render(sf::RenderWindow& window) override;
+
 	void Reset() override;
-	virtual void Die() {};
+
+	bool GetOnGround() const { return m_onGround; }
+	void SetOnGround(bool grnd) { m_onGround = grnd; }
+
+	bool GetAirbourne() const { return m_airbourne; }
+	void SetAirbourne(bool air) { m_airbourne = air; }
+
+	float GetAirTime() const { return m_airtime; }
+	void SetAirTime(float val) { m_airtime = val; }
+	void IncAirTime(float val) { m_airtime += val; }
 
 	bool GetIsAlive() const { return m_numLives > 0; }
-	bool GetActive() const final { return GameObject::GetActive() && GetIsAlive(); }
-	void DecrementLife();
+	virtual void DecrementLife();
+	virtual void Die() = 0;
 
-protected:
+	void SetTimeLeftActive(float time) { m_timeLeftActive = time; }
+
+	virtual void UpdateBoundingBox();
+private:
 	virtual void Animate(float deltaTime) = 0;
 
-	bool m_crouched = false;
 	bool m_resetAllowed = false;
+	bool m_onGround = false;
+	bool m_airbourne = false;
 	int m_numLives = 1;
-	int m_maxLives = m_numLives;
+	int m_maxLives;
 	float m_airtime = 0;
 	float m_tillReset = 0;
 	float m_timeLeftActive = 0;

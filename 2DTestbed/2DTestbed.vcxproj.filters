@@ -85,6 +85,18 @@
     <Filter Include="Header Files\GameObjects\Objects">
       <UniqueIdentifier>{e22cd43b-c194-41c8-b335-af7ae20b85bd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GameObjects\Collectables">
+      <UniqueIdentifier>{814790be-f987-47e5-bd6f-ffe858cea289}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObjects\Collectables">
+      <UniqueIdentifier>{4489b5c6-ea10-4b56-8e15-496036e85405}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameObjects\Box">
+      <UniqueIdentifier>{dd82d794-5caf-47e3-9cb7-9123b6c1ed92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObjects\Box">
+      <UniqueIdentifier>{30a5b787-a988-4478-b5ab-8a3932199a48}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Collisions\BoundingBox.cpp">
@@ -147,33 +159,6 @@
     <ClCompile Include="Code\Game\World.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
-    <ClCompile Include="Code\GameObjects\GameObject.cpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\GameObjects\Object.cpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\GameObjects\Bill.cpp">
-      <Filter>Source Files\GameObjects\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\GameObjects\Chuck.cpp">
-      <Filter>Source Files\GameObjects\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\GameObjects\Enemy.cpp">
-      <Filter>Source Files\GameObjects\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\GameObjects\Koopa.cpp">
-      <Filter>Source Files\GameObjects\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\GameObjects\Player.cpp">
-      <Filter>Source Files\GameObjects\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\GameObjects\PPlant.cpp">
-      <Filter>Source Files\GameObjects\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\GameObjects\Rex.cpp">
-      <Filter>Source Files\GameObjects\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="Code\Drawables\Sprite.cpp">
       <Filter>Source Files\Drawables</Filter>
     </ClCompile>
@@ -183,7 +168,7 @@
     <ClCompile Include="Code\Collisions\BoundingVolume.cpp">
       <Filter>Source Files\Collisions</Filter>
     </ClCompile>
-    <ClCompile Include="Code\GameObjects\NObject.cpp">
+    <ClCompile Include="Code\GameObjects\Object.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Code\GameStates\GameStateMgr.cpp">
@@ -200,6 +185,33 @@
     </ClCompile>
     <ClCompile Include="Code\GameStates\DebugState.cpp">
       <Filter>Source Files\GameStates</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameObjects\Enemy.cpp">
+      <Filter>Source Files\GameObjects\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameObjects\Bill.cpp">
+      <Filter>Source Files\GameObjects\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameObjects\Koopa.cpp">
+      <Filter>Source Files\GameObjects\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameObjects\Chuck.cpp">
+      <Filter>Source Files\GameObjects\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameObjects\PPlant.cpp">
+      <Filter>Source Files\GameObjects\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameObjects\Rex.cpp">
+      <Filter>Source Files\GameObjects\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameObjects\Player.cpp">
+      <Filter>Source Files\GameObjects\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameObjects\Collectables.cpp">
+      <Filter>Source Files\GameObjects\Collectables</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameObjects\Box.cpp">
+      <Filter>Source Files\GameObjects\Box</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -278,33 +290,6 @@
     <ClInclude Include="Code\Game\TextureManager.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="Code\GameObjects\GameObject.h">
-      <Filter>Header Files\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\GameObjects\Object.h">
-      <Filter>Header Files\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\GameObjects\Bill.h">
-      <Filter>Header Files\GameObjects\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\GameObjects\Chuck.h">
-      <Filter>Header Files\GameObjects\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\GameObjects\Enemy.h">
-      <Filter>Header Files\GameObjects\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\GameObjects\Koopa.h">
-      <Filter>Header Files\GameObjects\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\GameObjects\PPlant.h">
-      <Filter>Header Files\GameObjects\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\GameObjects\Rex.h">
-      <Filter>Header Files\GameObjects\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\GameObjects\Player.h">
-      <Filter>Header Files\GameObjects\Player</Filter>
-    </ClInclude>
     <ClInclude Include="Code\Drawables\Sprite.h">
       <Filter>Header Files\Drawables</Filter>
     </ClInclude>
@@ -314,7 +299,7 @@
     <ClInclude Include="Code\Utilities\MathHelper.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="Code\GameObjects\NObject.h">
+    <ClInclude Include="Code\GameObjects\Object.h">
       <Filter>Header Files\GameObjects\Objects</Filter>
     </ClInclude>
     <ClInclude Include="Code\GameStates\GameState.h">
@@ -331,6 +316,33 @@
     </ClInclude>
     <ClInclude Include="Code\GameStates\DebugState.h">
       <Filter>Header Files\GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameObjects\Enemy.h">
+      <Filter>Header Files\GameObjects\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameObjects\Bill.h">
+      <Filter>Header Files\GameObjects\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameObjects\Koopa.h">
+      <Filter>Header Files\GameObjects\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameObjects\Chuck.h">
+      <Filter>Header Files\GameObjects\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameObjects\PPlant.h">
+      <Filter>Header Files\GameObjects\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameObjects\Rex.h">
+      <Filter>Header Files\GameObjects\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameObjects\Player.h">
+      <Filter>Header Files\GameObjects\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameObjects\Collectables.h">
+      <Filter>Header Files\GameObjects\Collectables</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameObjects\Box.h">
+      <Filter>Header Files\GameObjects\Box</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -455,6 +467,9 @@
       <Filter>Resource Files\Sprites</Filter>
     </Image>
     <Image Include="Resources\Sprites\YCoinBB.png">
+      <Filter>Resource Files\Sprites</Filter>
+    </Image>
+    <Image Include="Resources\Sprites\Coin.png">
       <Filter>Resource Files\Sprites</Filter>
     </Image>
   </ItemGroup>

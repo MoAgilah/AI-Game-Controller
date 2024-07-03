@@ -1,14 +1,23 @@
 #pragma once
 #include "../GameObjects/Enemy.h"
 
-class Koopa :
-	public Enemy
+class Koopa : public Enemy
 {
 public:
-	Koopa(int rows, int cols, bool dir = true, bool symmetrical = true, float animSpd = 1, const sf::Vector2f & initPos = sf::Vector2f());
+	Koopa(bool dir, const sf::Vector2f& initPos);
 	~Koopa() final = default;
+
+	void Reset() final;
+
+	bool GetAirbourne() const = delete;
+	void SetAirbourne(bool air) = delete;
+	float GetAirTime() const = delete;
+	void SetAirTime(float val) = delete;
+	void IncAirTime(float val) = delete;
+
 	void Die() final;
 
 private:
+
 	void Animate(float deltaTime) final;
 };

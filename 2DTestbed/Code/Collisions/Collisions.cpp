@@ -3,12 +3,13 @@
 #include "../Game/Camera.h"
 #include "../Game/Game.h"
 
-#include "../GameObjects/GameObject.h"
-#include "../GameObjects/Player.h"
-
-#include "../GameObjects/Enemy.h"
-#include "../GameObjects/Chuck.h"
 #include "../GameObjects/Object.h"
+#include "../GameObjects/Player.h"
+#include "../GameObjects/Enemy.h"
+#include "../GameObjects/Box.h"
+#include "../GameObjects/Collectables.h"
+
+#include "../GameObjects/Chuck.h"
 #include "../GameObjects/Rex.h"
 #include "../GameObjects/Bill.h"
 
@@ -53,7 +54,7 @@ Collisions* Collisions::Get()
 	return instance;
 }
 
-void Collisions::AddCollidable(GameObject* bbox)
+void Collisions::AddCollidable(Object* bbox)
 {
 	m_collidables.push_back(bbox);
 }
@@ -68,7 +69,7 @@ void Collisions::ReplacePlayer(Player * currPlayer)
 	m_collidables[0] = currPlayer;
 }
 
-GameObject* Collisions::GetLastAdded()
+Object* Collisions::GetLastAdded()
 {
 	return m_collidables.back();
 }
@@ -97,7 +98,7 @@ void Collisions::Render(sf::RenderWindow& window)
 	grid.Render(window);
 }
 
-void Collisions::ProcessCollisions(GameObject* gobj)
+void Collisions::ProcessCollisions(Object* gobj)
 {
 	int numchecks = 0;
 	//check for collision with tilemap
@@ -126,7 +127,19 @@ void Collisions::ProcessCollisions(GameObject* gobj)
 
 	if (!Col)
 	{
-		((AnimatedObject*)gobj)->SetOnGround(false);
+		int id = gobj->GetBBox()->GetID();
+		if (id >= PlyBgn && id <= PlyEnd)
+		{
+			((Player*)gobj)->SetOnGround(false);
+		}
+		else if (id >= EnmyBgn && id <= EnmyEnd)
+		{
+			((Enemy*)gobj)->SetOnGround(false);
+		}
+		else if (id == (int)TexID::ShroomBB)
+		{
+			((Mushroom*)gobj)->SetOnGround(false);
+		}
 	}
 
 	for (int g = 0; g < m_collidables.size(); ++g)
@@ -157,7 +170,7 @@ std::vector<Tile*> Collisions::GetGrid()
 	return grid.GetGrid();
 }
 
-std::vector<GameObject*> Collisions::GetCollidables()
+std::vector<Object*> Collisions::GetCollidables()
 {
 	return m_collidables;
 }
@@ -339,13 +352,13 @@ void Collisions::PlayerToObject(Player * ply, Object * obj)
 		obj->SetActive(false);
 		break;
 	case TexID::QBox://question mark box
-		QBoxHit(ply, obj);
+		QBoxHit(ply, (QBox*)obj);
 		break;
-	case TexID::Box://smashable box
-		SmashBoxHit(ply, obj);
-		break;
+	//case TexID::Box://smashable box
+	//	SmashBoxHit(ply, (SBox*)obj);
+	//	break;
 	case TexID::SBox://spin box
-		SpinBoxHit(ply, obj);
+		SpinBoxHit(ply, (SBox*)obj);
 		break;
 	case TexID::ChkPnt://check point
 		ply->SetSpawnLoc(obj->GetPosition());
@@ -363,7 +376,7 @@ void Collisions::PlayerToObject(Player * ply, Object * obj)
 	}
 }
 
-void Collisions::ObjectToTile(AnimatedObject* obj, Tile * tile)
+void Collisions::ObjectToTile(DynamicObject* obj, Tile * tile)
 {
 	//ground and one way platforms
 	if (tile->GetType() == GRND || tile->GetType() == OWAY)
@@ -390,7 +403,7 @@ void Collisions::ObjectToTile(AnimatedObject* obj, Tile * tile)
 				obj->SetPosition(sf::Vector2f(obj->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (obj->GetOrigin().y * sY) + 2.5f));
 			}
 
-			obj->SetOnGround(true);
+			((Enemy*)obj)->SetOnGround(true);
 		}
 
 		return;
@@ -399,7 +412,7 @@ void Collisions::ObjectToTile(AnimatedObject* obj, Tile * tile)
 	//corner tile or wall tile
 	if (tile->GetType() == CRN || tile->GetType() == WALL)
 	{
-		switch (GetDirTravelling((AnimatedObject*)obj))
+		switch (GetDirTravelling(obj))
 		{
 		case RDIR:
 			if (obj->GetBBox()->GetID() == (int)TexID::RexBB)
@@ -419,7 +432,7 @@ void Collisions::ObjectToTile(AnimatedObject* obj, Tile * tile)
 			else if (obj->GetBBox()->GetID() == (int)TexID::ShroomBB)
 			{
 				//set to minimum closest dist
-				((Object*)obj)->SetPosition(sf::Vector2f((tile->GetPosition().x - tile->GetOrigin().x * sX) - (obj->GetOrigin().x * sX) -4.f, obj->GetPosition().y));
+				obj->SetPosition(sf::Vector2f((tile->GetPosition().x - tile->GetOrigin().x * sX) - (obj->GetOrigin().x * sX) -4.f, obj->GetPosition().y));
 			}
 			else
 			{
@@ -456,7 +469,7 @@ void Collisions::ObjectToTile(AnimatedObject* obj, Tile * tile)
 			else if (obj->GetBBox()->GetID() == (int)TexID::ShroomBB)
 			{
 				//set to minimum closest dist
-				((Object*)obj)->SetPosition(sf::Vector2f((tile->GetPosition().x + tile->GetOrigin().x * sX) + (obj->GetOrigin().x * sX) + 4.f, obj->GetPosition().y));
+				obj->SetPosition(sf::Vector2f((tile->GetPosition().x + tile->GetOrigin().x * sX) + (obj->GetOrigin().x * sX) + 4.f, obj->GetPosition().y));
 			}
 			else
 			{
@@ -490,11 +503,18 @@ void Collisions::ObjectToTile(AnimatedObject* obj, Tile * tile)
 		{
 			if (obj->GetBBox()->GetSprite()->getGlobalBounds().intersects(tmpSlope[i].getGlobalBounds()))
 			{
-				switch (GetDirTravelling((AnimatedObject*)obj))
+				switch (GetDirTravelling(obj))
 				{
 				case DDIR:
 					obj->SetPosition(sf::Vector2f(obj->GetPosition().x, tmpSlope[i].getPosition().y - tmpSlope[i].getOrigin().y*sY - obj->GetOrigin().y*sX));
-					obj->SetOnGround(true);
+					if ((int)obj->GetID() >= (int)EnmyBgn && (int)obj->GetID() <= (int)EnmyEnd)
+					{
+						((Enemy*)obj)->SetOnGround(true);
+					}
+					else if (obj->GetID() == TexID::ShroomBB)
+					{
+						((Mushroom*)obj)->SetOnGround(true);
+					}
 					colFound = true;
 					break;
 				case UDIR:
@@ -505,14 +525,21 @@ void Collisions::ObjectToTile(AnimatedObject* obj, Tile * tile)
 
 		if (!colFound)
 		{
-			obj->SetOnGround(false);
+			if ((int)obj->GetID() >= (int)EnmyBgn && (int)obj->GetID() <= (int)EnmyEnd)
+			{
+				((Enemy*)obj)->SetOnGround(false);
+			}
+			else if (obj->GetID() == TexID::ShroomBB)
+			{
+				((Mushroom*)obj)->SetOnGround(false);
+			}
 		}
 
 		return;
 	}
 }
 
-void Collisions::ColObjectToTile(GameObject * c_obj, Tile * tile)
+void Collisions::ColObjectToTile(Object * c_obj, Tile * tile)
 {
 	int id = c_obj->GetBBox()->GetID();
 	if (id >= PlyBgn && id <= PlyEnd)
@@ -521,11 +548,11 @@ void Collisions::ColObjectToTile(GameObject * c_obj, Tile * tile)
 	}
 	else if (id >= EnmyBgn && id <= EnmyEnd)
 	{
-		ObjectToTile((AnimatedObject*)c_obj, tile);
+		ObjectToTile((DynamicObject*)c_obj, tile);
 	}
 	else if (id == (int)TexID::ShroomBB)
 	{
-		ObjectToTile((AnimatedObject*)c_obj, tile);
+		ObjectToTile((DynamicObject*)c_obj, tile);
 	}
 }
 
@@ -580,7 +607,7 @@ void Collisions::EnemyToEnemy(Enemy * enmy1, Enemy* enmy2)
 	};
 }
 
-void Collisions::ColObjectToColObject(GameObject * colObj1, GameObject * colObj2)
+void Collisions::ColObjectToColObject(Object * colObj1, Object * colObj2)
 {
 	int col1Typ = colObj1->GetBBox()->GetID();
 	int col2Typ = colObj2->GetBBox()->GetID();
@@ -599,7 +626,7 @@ void Collisions::ColObjectToColObject(GameObject * colObj1, GameObject * colObj2
 		}
 		else if (col2Typ >= ColBgn && col2Typ <= ObjEnd)
 		{
-			PlayerToObject((Player*)colObj1, (Object*)colObj2);
+			PlayerToObject((Player*)colObj1, colObj2);
 		}
 	}
 	else if (isPlayer == 2)//if player is obj 2
@@ -610,7 +637,7 @@ void Collisions::ColObjectToColObject(GameObject * colObj1, GameObject * colObj2
 		}
 		else if (col1Typ >= ColBgn && col1Typ <= ObjEnd)
 		{
-			PlayerToObject((Player*)colObj2, (Object*)colObj1);
+			PlayerToObject((Player*)colObj2, colObj1);
 		}
 	}
 	else // if neither are the player
@@ -626,7 +653,7 @@ void Collisions::ColObjectToColObject(GameObject * colObj1, GameObject * colObj2
 	}
 }
 
-int Collisions::GetDirTravelling(AnimatedObject * obj)
+int Collisions::GetDirTravelling(DynamicObject* obj)
 {
 	//direction travelling
 	sf::Vector2f dirV = obj->GetPosition() - obj->GetPrevPostion();
@@ -649,52 +676,51 @@ int Collisions::GetDirTravelling(AnimatedObject * obj)
 	return dir;
 }
 
-void Collisions::QBoxHit(Player * ply, Object * obj)
+void Collisions::QBoxHit(Player * ply, QBox* box)
 {
 	switch (GetDirTravelling(ply))
 	{
 	case UDIR:
-		if (obj->IsAnimated() == false)//if not yet been hit
+		if (box->GetCanHit())//if not yet been hit
 		{
 			//ply->UpdateFitness(100);
 			//add to the level
-			Game::GetGameMgr()->GetLevel()->AddObject(obj->GetPosition() - sf::Vector2f(0, (obj->GetOrigin().y * sY) * 2.f - 20.f));
+			//Game::GetGameMgr()->GetLevel()->AddObject(obj->GetPosition() - sf::Vector2f(0, (obj->GetOrigin().y * sY) * 2.f - 20.f));
 
-			obj->GetAnimSpr()->ChangeAnim(1);//change to inactive box
-			obj->SetIsAnimated(true);//set can be hit to false
+			box->SetJustHit(true);
 		}
 		//resove collision
-		ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (obj->GetPosition().y + obj->GetOrigin().y * sY) + (ply->GetOrigin().y * sY) + 4.f));
+		ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (box->GetPosition().y + box->GetOrigin().y * sY) + (ply->GetOrigin().y * sY) + 4.f));
 		ply->ForceFall();//make mario fall
 		break;
 	case DDIR:
 		//set to top of qbox
-		ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (obj->GetPosition().y - obj->GetOrigin().y * sY) - (ply->GetOrigin().y * sY) + 4.f));
+		ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * sY) - (ply->GetOrigin().y * sY) + 4.f));
 		ply->SetOnGround(true);
 		break;
 	case RDIR:
 		//set to right of qbox
-		ply->SetPosition(sf::Vector2f((obj->GetPosition().x - obj->GetOrigin().x * sX) - (ply->GetOrigin().x * sX) + 7.5f, ply->GetPosition().y));
+		ply->SetPosition(sf::Vector2f((box->GetPosition().x - box->GetOrigin().x * sX) - (ply->GetOrigin().x * sX) + 7.5f, ply->GetPosition().y));
 		break;
 	case LDIR:
 		//set to left of qbox
-		ply->SetPosition(sf::Vector2f((obj->GetPosition().x + obj->GetOrigin().x * sX) + (ply->GetOrigin().x * sX) - 7.5f, ply->GetPosition().y));
+		ply->SetPosition(sf::Vector2f((box->GetPosition().x + box->GetOrigin().x * sX) + (ply->GetOrigin().x * sX) - 7.5f, ply->GetPosition().y));
 		break;
 	}
 }
 
-void Collisions::SmashBoxHit(Player * ply, Object * obj)
+void Collisions::SmashBoxHit(Player * ply, SBox* box)
 {
 	switch (GetDirTravelling(ply))
 	{
 	case DDIR:
 		if (ply->GetIsSuper())
 		{
-			ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (obj->GetPosition().y - obj->GetOrigin().y * sY) - (ply->GetOrigin().y * sY) + 4.f));
+			ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * sY) - (ply->GetOrigin().y * sY) + 4.f));
 		}
 		else
 		{
-			ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (obj->GetPosition().y - obj->GetOrigin().y * sY) - (ply->GetOrigin().y * 2.f) - 2.f));
+			ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * sY) - (ply->GetOrigin().y * 2.f) - 2.f));
 		}
 		ply->SetOnGround(true);
 		break;
@@ -706,21 +732,20 @@ void Collisions::SmashBoxHit(Player * ply, Object * obj)
 	*/
 }
 
-void Collisions::SpinBoxHit(Player * ply, Object * obj)
+void Collisions::SpinBoxHit(Player * ply, SBox* box)
 {
-	if (obj->IsAnimated() == false)//if not spinning
+	if (box->GetCanHit())//if not yet been hit
 	{
 		switch (GetDirTravelling(ply))
 		{
 		case UDIR://if going up
-			ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (obj->GetPosition().y - obj->GetOrigin().y * sY) - (ply->GetOrigin().y * sY) + 4.f));
-			//make box spin
-			obj->SetIsAnimated(true);
-			obj->GetAnimSpr()->ChangeAnim(1);
+			if (!box->GetJustHit())
+				box->SetJustHit(true);
+			ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * sY) - (ply->GetOrigin().y * sY) + 4.f));
 			break;
 		case DDIR://if falling
 			//land on object
-			ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (obj->GetPosition().y - obj->GetOrigin().y * sY) - (ply->GetOrigin().y * sY) + 4.f));
+			ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * sY) - (ply->GetOrigin().y * sY) + 4.f));
 			ply->SetOnGround(true);
 			break;
 		}

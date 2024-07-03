@@ -19,7 +19,7 @@ Controller::Controller()
 		//let's create the players
 		for (int i = 0; i< iNumPlayers; ++i)
 		{
-			m_vecMarios.push_back(new Player());
+			m_vecMarios.push_back(new AutomatedPlayer(sf::Vector2f(75, 454)));
 		}
 
 		m_pPop = new Cga(CParams::iNumPlayers,
@@ -199,7 +199,7 @@ std::vector<double> Controller::GetFitnessScores() const
 	return scores;
 }
 
-void Controller::EndOfRunCalculation(Player* ply)
+void Controller::EndOfRunCalculation(AutomatedPlayer* ply)
 {
 	float percent = 0;
 	float endX = ply->GetPosition().x;

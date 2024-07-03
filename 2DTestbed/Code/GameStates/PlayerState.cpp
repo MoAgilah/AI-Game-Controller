@@ -5,7 +5,7 @@
 
 void GroundedState::Initialise()
 {
-	GetPlayer()->GetAnimSpr()->ChangeAnim(IDLE);
+	static_cast<AnimatedSprite*>(GetPlayer()->GetSprite())->ChangeAnim(IDLE);
 }
 
 void GroundedState::Resume()
@@ -13,9 +13,9 @@ void GroundedState::Resume()
 	Player* player = GetPlayer();
 
 	if (player->GetXVelocity() == 0)
-		player->GetAnimSpr()->ChangeAnim(IDLE);
+		static_cast<AnimatedSprite*>(player->GetSprite())->ChangeAnim(IDLE);
 	else
-		player->GetAnimSpr()->ChangeAnim(MOVING);
+		static_cast<AnimatedSprite*>(player->GetSprite())->ChangeAnim(MOVING);
 
 	PlayerState::Resume();
 }
@@ -30,7 +30,7 @@ void GroundedState::ProcessInputs()
 		if (player->GetDirection())
 			player->SetDirection(false);
 
-		player->GetAnimSpr()->ChangeAnim(MOVING);
+		static_cast<AnimatedSprite*>(player->GetSprite())->ChangeAnim(MOVING);
 		player->SetXVelocity(-c_moveSpeed);
 	}
 
@@ -39,18 +39,18 @@ void GroundedState::ProcessInputs()
 		if (!player->GetDirection())
 			player->SetDirection(true);
 
-		player->GetAnimSpr()->ChangeAnim(MOVING);
+		static_cast<AnimatedSprite*>(player->GetSprite())->ChangeAnim(MOVING);
 		player->SetXVelocity(c_moveSpeed);
 	}
 
 	if (keyStates[UP_KEY])
-		player->GetAnimSpr()->ChangeAnim(LOOKUP);
+		static_cast<AnimatedSprite*>(player->GetSprite())->ChangeAnim(LOOKUP);
 
 	if (keyStates[JUMP_KEY])
 	{
 		if (!player->GetCantJump())
 		{
-			player->GetAnimSpr()->ChangeAnim(JUMP);
+			static_cast<AnimatedSprite*>(player->GetSprite())->ChangeAnim(JUMP);
 			player->SetAirbourne(true);
 			player->SetOnGround(false);
 			player->DecrementYVelocity(c_jumpSpeed);
@@ -62,7 +62,7 @@ void GroundedState::ProcessInputs()
 	{
 		if (!player->GetCantSpinJump())
 		{
-			player->GetAnimSpr()->ChangeAnim(SPINJUMP);
+			static_cast<AnimatedSprite*>(player->GetSprite())->ChangeAnim(SPINJUMP);
 			player->SetAirbourne(true);
 			player->SetOnGround(false);
 			player->DecrementYVelocity(c_jumpSpeed);
@@ -105,7 +105,7 @@ void AirborneState::ProcessInputs()
 		if (player->GetAirbourne() && player->GetCantJump())
 		{
 			if (!player->GetIsCrouched())
-				player->GetAnimSpr()->ChangeAnim(FALL);
+				static_cast<AnimatedSprite*>(player->GetSprite())->ChangeAnim(FALL);
 			player->SetAirTime(c_maxAirTime);
 		}
 	}
@@ -127,13 +127,13 @@ void CrouchingState::Initialise()
 {
 	Player* player = GetPlayer();
 	player->SetXVelocity(0);
-	player->GetAnimSpr()->ChangeAnim(CROUCH);
+	static_cast<AnimatedSprite*>(player->GetSprite())->ChangeAnim(CROUCH);
 }
 
 void CrouchingState::Resume()
 {
 	Player* player = GetPlayer();
-	player->GetAnimSpr()->ChangeAnim(CROUCH);
+	static_cast<AnimatedSprite*>(player->GetSprite())->ChangeAnim(CROUCH);
 
 	player->SetXVelocity(0);
 
@@ -180,7 +180,7 @@ void CrouchingState::ProcessInputs()
 	{
 		if (!player->GetCantSpinJump())
 		{
-			player->GetAnimSpr()->ChangeAnim(SPINJUMP);
+			static_cast<AnimatedSprite*>(player->GetSprite())->ChangeAnim(SPINJUMP);
 			player->SetAirbourne(true);
 			player->SetOnGround(false);
 			player->DecrementYVelocity(c_jumpSpeed);
@@ -196,7 +196,7 @@ void CrouchingState::Update(float deltaTime)
 void DieingState::Initialise()
 {
 	Player* player = GetPlayer();
-	player->GetAnimSpr()->ChangeAnim(DIE);
+	static_cast<AnimatedSprite*>(player->GetSprite())->ChangeAnim(DIE);
 	player->SetAirTime(0.66f);
 	player->SetAirbourne(true);
 	player->DecrementYVelocity(c_jumpSpeed);

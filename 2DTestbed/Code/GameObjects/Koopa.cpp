@@ -1,28 +1,35 @@
-#include "../GameObjects/Koopa.h"
+#include "Koopa.h"
 #include "../Collisions/Collisions.h"
 #include "../Game/Constants.h"
 
-
-Koopa::Koopa(int rows, int cols, bool dir, bool symmetrical, float animSpd, const sf::Vector2f& initPos)
-	:Enemy(TexID::Koopa, rows, cols, (int)TexID::KoopaBB, dir, symmetrical, animSpd)
+Koopa::Koopa(bool dir, const sf::Vector2f& initPos)
+	: Enemy(TexID::Koopa, TexID::KoopaBB, AnimationData{2,1, false, 0.5f})
 {
-	std::vector<int> frames{ 1, 2, 1};
-	GetAnimSpr()->SetFrames(frames);
-
-	SetInitialPosition(sf::Vector2f(400, 524));
+	SetInitialDirection(dir);
+	SetDirection(GetInitialDirection());
+	SetInitialPosition(initPos);
 	SetPosition(GetInitialPosition());
-	SetID(TexID::Koopa);
-	m_numLives = m_maxLives = 1;
+
+	std::vector<int> frames{ 1, 2, 1 };
+	static_cast<AnimatedSprite*>(GetSprite())->SetFrames(frames);
+}
+
+void Koopa::Reset()
+{
+	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(0);
+	Enemy::Reset();
 }
 
 void Koopa::Die()
 {
-	GetAnimSpr()->ChangeAnim(2);
-	m_timeLeftActive = 0.5f;
+	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(2);
+	SetTimeLeftActive(0.5f);
 }
 
 void Koopa::Animate(float deltaTime)
 {
+	static_cast<AnimatedSprite*>(GetSprite())->Update(deltaTime);
+
 	SetPrevPosition(GetPosition());
 
 	if (GetDirection())
@@ -37,7 +44,6 @@ void Koopa::Animate(float deltaTime)
 	if (GetOnGround())
 	{
 		SetYVelocity(0);
-		m_airtime = 0;
 	}
 	else
 	{

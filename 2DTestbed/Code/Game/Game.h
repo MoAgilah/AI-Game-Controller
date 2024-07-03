@@ -37,7 +37,7 @@ private:
 	static std::shared_ptr<Game>	m_instance;
 	std::unique_ptr<TextureManager>	m_texureManager;
 	std::unique_ptr<Camera>			m_camera;
-	std::unique_ptr<Player>			m_player;
+	std::unique_ptr<Player>		m_player;
 	std::unique_ptr<World>			m_world;
 	std::unique_ptr<Logger>			m_logger;
 	GameStateMgr m_stateMgr;

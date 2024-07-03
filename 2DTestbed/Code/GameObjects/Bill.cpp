@@ -1,11 +1,11 @@
-#include "../GameObjects/Bill.h"
+#include "Bill.h"
 #include "../Collisions/Collisions.h"
-#include "../Collisions/BoundingBox.h"
-#include "../Game/Constants.h"
 
 Bill::Bill(bool dir, const sf::Vector2f& initPos)
-	:Enemy(TexID::Bill, 1, 1, (int)TexID::BillBB, dir)
+	: Enemy(TexID::Bill, TexID::BillBB, 2)
 {
+	SetInitialDirection(dir);
+	SetDirection(GetInitialDirection());
 	SetInitialPosition(initPos);
 	SetPosition(GetInitialPosition());
 
@@ -19,21 +19,16 @@ Bill::Bill(bool dir, const sf::Vector2f& initPos)
 	m_colbody.back.setOutlineColor(sf::Color::Red);
 	m_colbody.back.setOutlineThickness(2.0f);
 	m_colbody.back.setSize(sf::Vector2f(15.f, (float)GetBBox()->GetSprite()->getTexture()->getSize().y - 2.f));
-	m_colbody.back.setOrigin(sf::Vector2f(7.f, (float)GetAnimSpr()->GetTextureSize().y / 2.f));
+	m_colbody.back.setOrigin(sf::Vector2f(7.f, (float)GetSprite()->GetTextureSize().y / 2.f));
 	m_colbody.back.setScale(sX, sY);
 	m_colbody.back.setFillColor(sf::Color::Transparent);
 }
 
 void Bill::Render(sf::RenderWindow& window)
 {
-	window.draw(*GetAnimSpr()->GetSprite());
+	window.draw(*GetSprite()->GetSprite());
 	window.draw(m_colbody.front);
 	window.draw(m_colbody.back);
-}
-
-void Bill::Die()
-{
-	m_timeLeftActive = 2.f;
 }
 
 void Bill::Animate(float deltaTime)
@@ -49,16 +44,18 @@ void Bill::Animate(float deltaTime)
 		SetXVelocity(-c_moveSpeed);
 	}
 
-	if (!GetIsAlive())
+	if (GetIsAlive())
+	{
+		if (GetXVelocity() != 0)
+		{
+			Move(GetXVelocity() * FPS * deltaTime, 0);
+			Collisions::Get()->ProcessCollisions(this);
+		}
+	}
+	else
 	{
 		SetVelocity(0, c_jumpSpeed);
 		Move(0, GetYVelocity() * FPS * deltaTime);
-	}
-
-	if (GetXVelocity() != 0)
-	{
-		Move(GetXVelocity() * FPS * deltaTime, 0);
-		Collisions::Get()->ProcessCollisions(this);
 	}
 
 	if (GetDirection())
@@ -73,9 +70,9 @@ void Bill::Animate(float deltaTime)
 	}
 
 	//check for leftmost and rightmost boundary
-	if (GetAnimSpr()->GetPosition().x < GetAnimSpr()->GetOrigin().x || GetAnimSpr()->GetPosition().x > 11776 - GetAnimSpr()->GetOrigin().x)
+	if (GetPosition().x < GetOrigin().x || GetPosition().x > 11776 - GetOrigin().x)
 	{
-		GetAnimSpr()->Move(-GetXVelocity() * FPS * deltaTime, 0);
+		Move(-GetXVelocity() * FPS * deltaTime, 0);
 		SetDirection(!GetDirection());
 	}
 }

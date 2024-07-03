@@ -1,103 +1,49 @@
-#include "../GameObjects/Rex.h"
+#include "Rex.h"
 #include "../Collisions/Collisions.h"
 #include "../Game/Camera.h"
 #include "../Game/Game.h"
 #include "../Game/Constants.h"
 
-Rex::Rex(bool dir, float animSpd, const sf::Vector2f& initPos)
-	: Enemy(TexID::Rex, 3, 2, (int)TexID::RexBB, dir, false, animSpd)
+Rex::Rex(bool dir, const sf::Vector2f& initPos)
+	: Enemy(TexID::Rex, TexID::RexBB, AnimationData{ 3,2,false,0.5f }, 2)
 {
+	SetInitialDirection(dir);
+	SetDirection(GetInitialDirection());
 	SetInitialPosition(initPos);
 	SetPosition(GetInitialPosition());
 
 	std::vector<int> frames{ 2, 2, 1 };
-	GetAnimSpr()->SetFrames(frames);
-
-	m_numLives = m_maxLives = 2;
-}
-
-void Rex::Update(float deltaTime)
-{
-	if (GetActive())
-	{
-		if (m_timeLeftActive > 0)
-		{
-			m_timeLeftActive -= deltaTime;
-		}
-
-		if (m_timeLeftActive < 0)
-		{
-			m_numLives = 0;
-		}
-
-		if (m_resetAllowed)
-		{
-			m_resetAllowed = false;
-		}
-
-		if (GetIsAlive())
-		{
-			Animate(deltaTime);
-
-			GetAnimSpr()->Update(deltaTime);
-
-			if (GetDirection())
-			{
-				if (m_numLives == m_maxLives)
-				{
-					//+
-					GetBBox()->Update(sf::Vector2f(GetPosition().x - 2.f, GetPosition().y));
-				}
-				else
-				{
-					//+
-					GetBBox()->Update(sf::Vector2f(GetPosition().x - 4.f, GetPosition().y + 18.5f));
-				}
-
-			}
-			else
-			{
-				if (m_numLives == m_maxLives)
-				{
-					//+
-					GetBBox()->Update(sf::Vector2f(GetPosition().x + 2.f, GetPosition().y));
-				}
-				else
-				{
-					//-
-					GetBBox()->Update(sf::Vector2f(GetPosition().x + 4.f, GetPosition().y + 18.5f));
-				}
-			}
-		}
-	}
-	//if off screen
-	else
-	{
-		m_tillReset = 1;
-		m_resetAllowed = true;
-	}
-
-	if (m_resetAllowed)
-	{
-		m_tillReset -= deltaTime;
-		if (m_tillReset <= 0)
-		{
-			if (!Game::GetGameMgr()->GetCamera()->IsInView(GetInitialPosition(), GetOrigin()))
-			{
-				Reset();
-			}
-		}
-	}
+	static_cast<AnimatedSprite*>(GetSprite())->SetFrames(frames);
 }
 
 void Rex::Reset()
 {
+	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(0);
 	GetBBox()->SetTexture(TexID::RexBB);
 	Enemy::Reset();
 }
 
+void Rex::Die()
+{
+	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(2);
+	SetTimeLeftActive(0.5f);
+}
+
+void Rex::DecrementLife()
+{
+	if (Tall())
+	{
+		static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(1);
+		GetBBox()->SetTexture(TexID::RexSmlBB);
+	}
+
+	Enemy::DecrementLife();
+}
+
 void Rex::Animate(float deltaTime)
 {
+	static_cast<AnimatedSprite*>(GetSprite())->Update(deltaTime);
+
 	SetPrevPosition(GetPosition());
 
 	if (GetDirection())
@@ -112,7 +58,6 @@ void Rex::Animate(float deltaTime)
 	if (GetOnGround())
 	{
 		SetYVelocity(0);
-		m_airtime = 0;
 	}
 	else
 	{
@@ -139,14 +84,21 @@ void Rex::Animate(float deltaTime)
 	}
 }
 
-void Rex::Die()
+void Rex::UpdateBoundingBox()
 {
-	GetAnimSpr()->ChangeAnim(2);
-	m_timeLeftActive = 0.5f;
-}
-
-void Rex::Change()
-{
-	GetAnimSpr()->ChangeAnim(1);
-	GetBBox()->SetTexture(TexID::RexSmlBB);
+	if (Tall())
+	{
+		if (GetDirection())
+		{
+			GetBBox()->Update(sf::Vector2f(GetPosition().x - 4.f, GetPosition().y + 18.5f));
+		}
+		else
+		{
+			GetBBox()->Update(sf::Vector2f(GetPosition().x + 4.f, GetPosition().y + 18.5f));
+		}
+	}
+	else
+	{
+		Enemy::UpdateBoundingBox();
+	}
 }

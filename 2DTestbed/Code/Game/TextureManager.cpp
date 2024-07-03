@@ -25,11 +25,13 @@ std::string TexIDToString(TexID id)
 	case TexID::PPlantBB:		return "PPlantBB";
 	case TexID::Chuck:			return "Chuck";
 	case TexID::ChuckBB:		return "ChuckBB";
+	case TexID::Coin:			return "Coin";
+	case TexID::CoinBB:			return "CoinBB";
 	case TexID::YCoin:			return "YCoin";
 	case TexID::YcoinBB:		return "YcoinBB";
 	case TexID::QBox:			return "QBox";
 	case TexID::SBox:			return "SBox";
-	case TexID::Box:			return "Box";
+	case TexID::BoxPiece:		return "BoxPiece";
 	case TexID::BoxBB:			return "BoxBB";
 	case TexID::Shroom:			return "Shroom";
 	case TexID::ShroomBB:		return "ShroomBB";

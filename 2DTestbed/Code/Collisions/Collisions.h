@@ -11,41 +11,43 @@ enum Direction
 	LDIR, RDIR, UDIR, DDIR
 };
 
-class GameObject;
-class AnimatedObject;
 class Object;
-class Camera;
+class DynamicObject;
 class Player;
 class Enemy;
+class QBox;
+class SBox;
+class Camera;
+
 class Collisions
 {
 public:
 	static Collisions* Get();
 	~Collisions();
-	void AddCollidable(GameObject* ngo);
+	void AddCollidable(Object* ngo);
 	void RemoveLastAdded();
 	void ReplacePlayer(Player* currPlayer);
-	GameObject* GetLastAdded();
+	Object* GetLastAdded();
 	void Render(sf::RenderWindow & window);
-	void ProcessCollisions(GameObject * object);
+	void ProcessCollisions(Object* object);
 	Tile GetTile(int x, int y);
 	std::vector<Tile*> GetGrid();
-	std::vector<GameObject*> GetCollidables();
+	std::vector<Object*> GetCollidables();
 private:
-	void ColObjectToTile(GameObject* colObj, Tile* tile);
+	void ColObjectToTile(Object* colObj, Tile* tile);
 	void PlayerToTile(Player* ply, Tile* tile);
-	void ObjectToTile(AnimatedObject* enmy, Tile* tile);
+	void ObjectToTile(DynamicObject* enmy, Tile* tile);
 
-	void ColObjectToColObject(GameObject* colObj1, GameObject* colObj2);
+	void ColObjectToColObject(Object* colObj1, Object* colObj2);
 	void PlayerToEnemy(Player* ply, Enemy* enmy);
 	void PlayerToObject(Player* ply, Object* obj);
 
 	void EnemyToEnemy(Enemy* enmy1, Enemy* enmy2);
 
-	int GetDirTravelling(AnimatedObject* obj);
-	void QBoxHit(Player* ply, Object* obj);
-	void SmashBoxHit(Player* ply, Object* obj);
-	void SpinBoxHit(Player* ply, Object* obj);
+	int GetDirTravelling(DynamicObject* obj);
+	void QBoxHit(Player* ply, QBox* obj);
+	void SmashBoxHit(Player* ply, SBox* obj);
+	void SpinBoxHit(Player* ply, SBox* obj);
 
 	bool CircleToRect(sf::CircleShape circle, Player* spr);
 
@@ -54,5 +56,5 @@ private:
 	Grid grid;
 
 	std::vector<Tile*> m_grid;
-	std::vector<GameObject*> m_collidables;
+	std::vector<Object*> m_collidables;
 };

@@ -99,7 +99,7 @@ void ANNView::Update()
 
 	//colour m_visible tiles
 	sf::RectangleShape tmp;
-	std::vector<GameObject*> gobj = Collisions::Get()->GetCollidables();
+	std::vector<Object*> gobj = Collisions::Get()->GetCollidables();
 	for (int i = 0; i < m_vecView.size(); i++)
 	{
 		if (m_vecView[i]->GetType() == EMPTY)

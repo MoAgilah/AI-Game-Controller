@@ -1,4 +1,4 @@
-#include "../GameObjects/Player.h"
+#include "Player.h"
 #include "../Collisions/Collisions.h"
 #include "../Game/Camera.h"
 #include "../Game/Timer.h"
@@ -8,27 +8,21 @@
 #include <iostream>
 #include "../GameStates/PlayerState.h"
 
-bool Player::s_playerInserted = false;
-
-Player::Player()
-	: AnimatedObject(TexID::Mario, (int)TexID::MarioBB, true, false, 0.5f)
+Player::Player(const sf::Vector2f& pos)
+	: DynamicObject(new AnimatedSprite(TexID::Mario, 14, 4, FPS, false, 0.5f), TexID::MarioBB)
 {
+	SetInitialDirection(true);
+	SetDirection(GetInitialDirection());
+	SetInitialPosition(pos);
+	SetPosition(GetInitialPosition());
+
+	m_keyStates.fill(false);
+
 	m_fragShader.loadFromFile("Resources/Shaders/FlashShader.frag", sf::Shader::Fragment);
 	m_fragShader.setUniform("flashColor", sf::Glsl::Vec4(1, 1, 1, 1));
 
-	SetInitialPosition(sf::Vector2f(75, 454));
-	SetPosition(GetInitialPosition());
-	m_keyStates.fill(false);
-
-	GetAnimSpr()->SetFrameData(14, 4, { 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4 });
-
-	if (Automated)
-	{
-		if (s_playerInserted)
-			Collisions::Get()->RemoveLastAdded();
-	}
-
-	s_playerInserted = true;
+	std::vector<int> frames{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4 };
+	static_cast<AnimatedSprite*>(GetSprite())->SetFrames(frames);
 }
 
 void Player::Update(float deltaTime)
@@ -40,7 +34,7 @@ void Player::Update(float deltaTime)
 
 	m_stateMgr.Update(deltaTime);
 
-	GetAnimSpr()->Update(deltaTime);
+	static_cast<AnimatedSprite*>(GetSprite())->Update(deltaTime);
 
 	if (GetIsAlive())
 	{
@@ -116,7 +110,7 @@ void Player::Update(float deltaTime)
 		if (GetVelocity() == sf::Vector2f())
 		{
 			if (!m_keyStates[DOWN_KEY] && !m_keyStates[UP_KEY])
-				GetAnimSpr()->ChangeAnim(IDLE);
+				static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(IDLE);
 		}
 
 		//decomposition of movement
@@ -134,7 +128,7 @@ void Player::Update(float deltaTime)
 			Collisions::Get()->ProcessCollisions(this);
 		}
 
-		if (GetPosition().x < (GetOrigin().x * sX)*0.5)
+		if (GetPosition().x < (GetOrigin().x * sX) * 0.5)
 		{
 			Move(sf::Vector2f(-GetXVelocity() * FPS * deltaTime, 0));
 		}
@@ -166,25 +160,25 @@ void Player::Update(float deltaTime)
 
 void Player::Render(sf::RenderWindow& window)
 {
-
-	window.draw(*GetAnimSpr()->GetSprite(), &m_fragShader);
+	window.draw(*GetSprite()->GetSprite(), &m_fragShader);
 	GetBBox()->Render(window);
 }
 
 void Player::Reset()
 {
-	if (GetAnimSpr()->GetTexID() != TexID::Mario)
+	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(0);
+	if (GetSprite()->GetTexID() != TexID::Mario)
 	{
 		//change spr and bbox
-		GetAnimSpr()->SetTexture(TexID::Mario);
-		GetAnimSpr()->SetFrameData(14, 4, { 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4 });
+		GetSprite()->SetTexture(TexID::Mario);
+		GetSprite()->SetFrameSize(sf::Vector2u(GetSprite()->GetTextureSize().x / 14, GetSprite()->GetTextureSize().y / 4));
 		GetBBox()->SetTexture(TexID::MarioBB);
 
 		//adjust position
-		SetPosition(GetAnimSpr()->GetPosition() + sf::Vector2f(0, m_heightDiff));
+		SetPosition(GetPosition() + sf::Vector2f(0, m_heightDiff));
 	}
 
-	GameObject::Reset();
+	DynamicObject::Reset();
 
 	m_spawnLoc = GetInitialPosition();
 
@@ -217,25 +211,31 @@ void Player::SetIsSuper(bool super)
 	if (m_super)
 	{
 		//if current spr and bbox is not super
-		if (GetAnimSpr()->GetTexID() != TexID::Super)
+		if (GetSprite()->GetTexID() != TexID::Super)
 		{
 			//change spr and bbox
-			GetAnimSpr()->SetTexture(TexID::Super);
-			GetAnimSpr()->SetFrameData(14, 4, { 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4 });
+			GetSprite()->SetTexture(TexID::Super);
+			GetSprite()->SetFrameSize(sf::Vector2u(GetSprite()->GetTextureSize().x / 14, GetSprite()->GetTextureSize().y / 4));
 			GetBBox()->SetTexture(TexID::SuperBB);
 			SetPosition(GetPosition() - sf::Vector2f(0, m_heightDiff));
 		}
 	}
 	else
 	{
-		if (GetAnimSpr()->GetTexID() != TexID::Mario)
+		if (GetSprite()->GetTexID() != TexID::Mario)
 		{
-			GetAnimSpr()->SetTexture(TexID::Mario);
-			GetAnimSpr()->SetFrameData(14, 4, { 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4 });
+			GetSprite()->SetTexture(TexID::Mario);
+			GetSprite()->SetFrameSize(sf::Vector2u(GetSprite()->GetTextureSize().x / 14, GetSprite()->GetTextureSize().y / 4));
 			GetBBox()->SetTexture(TexID::MarioBB);
 			SetPosition(GetPosition() + sf::Vector2f(0, m_heightDiff));
 		}
 	}
+}
+
+void Player::SetKeyState(int index, bool val)
+{
+	if (index < m_keyStates.size())
+		m_keyStates[index] = val;
 }
 
 void Player::SetSpawnLoc(sf::Vector2f loc)
@@ -257,80 +257,76 @@ void Player::ForceFall()
 	SetAirbourne(false);
 }
 
-void Player::JusyHitEnemy(float val)
-{
-	m_justHitEnemy = true;
-	m_noGravTime = val;
-}
-
 void Player::JustBeenHit(bool hit)
 {
 	m_justBeenHit = hit;
 	m_InvulTime = 1.f;
 }
 
-bool Player::UpdateANN()
+void Player::JusyHitEnemy(float val)
 {
-	std::vector<double> inputs;
-
-	inputs = CtrlMgr::GetCtrlMgr()->GetController()->GetGridInputs();
-
-	outputs = m_itsBrain->Update(inputs, CNeuralNet::active);
-
-	if (outputs.size() < CParams::iNumOutputs)
-		return false;
-
-	return true;
+	m_justHitEnemy = true;
+	m_noGravTime = val;
 }
 
-void Player::ControllerInput()
+void Player::ProcessInput()
 {
-	Game::GetGameMgr()->GetLogger()->AddDebugLog(std::format("Player {}", CtrlMgr::GetCtrlMgr()->GetController()->GetCurrentPlayerNum()), false);
+	if (!GetIsAlive())
+		return;
 
-	for (int i = 0; i < outputs.size(); ++i)
+	Input();
+
+	m_stateMgr.ProcessInputs();
+
+	if (m_keyStates[DOWN_KEY])
 	{
-		bool output = false;
-		double oval = outputs[i];
-
-		std::string move = "";
-		switch (i)
+		if (!GetIsCrouched())
 		{
-		case LEFT_KEY:
-			move = "left";
-			break;
-		case RIGHT_KEY:
-			move = "rght";
-			break;
-		case UP_KEY:
-			move = "look";
-			break;
-		case DOWN_KEY:
-			move = "down";
-			break;
-		case JUMP_KEY:
-			move = "jump";
-			break;
-		case SJUMP_KEY:
-			move = "sJmp";
-			break;
-		default:
-			break;
+			//get current position
+			sf::Vector2f pos = GetPosition();
+
+			if (m_super)
+			{
+				GetBBox()->SetTexture(TexID::MarioSmlBB);
+
+				//adjust bbox position
+				if (GetDirection())
+					GetBBox()->Update(sf::Vector2f(GetPosition().x - 1.f, GetPosition().y + 22.f));
+				else
+					GetBBox()->Update(sf::Vector2f(GetPosition().x + 1.f, GetPosition().y + 22.f));
+			}
+			else
+			{
+				GetBBox()->SetTexture(TexID::MarioSmlBB);
+
+				//adjust bbox position
+				if (GetDirection())
+					GetBBox()->Update(sf::Vector2f(GetPosition().x - 2.f, GetPosition().y + 12.f));
+				else
+					GetBBox()->Update(sf::Vector2f(GetPosition().x + 2.f, GetPosition().y + 12.f));
+			}
+
+			SetIsCrouched(true);
 		}
-
-		//clamp output
-		if (oval <= 0.1) output = false;
-		else if (oval >= 0.9) output = true;
-		else output = false;
-
-		Game::GetGameMgr()->GetLogger()->AddDebugLog(std::format("{} = {} = {}", move, oval, output), false);
-		Game::GetGameMgr()->GetLogger()->AddDebugLog("\t", false);
-		//store output
-		m_keyStates[i] = output;
 	}
-	Game::GetGameMgr()->GetLogger()->AddDebugLog("");
+	else
+	{
+		//if was crouched
+		if (GetIsCrouched())
+		{
+			SetIsCrouched(false);
+
+			if (m_super)
+				GetBBox()->SetTexture(TexID::SuperBB);
+			else
+				GetBBox()->SetTexture(TexID::MarioBB);
+
+			SetPosition(GetPosition());
+		}
+	}
 }
 
-void Player::HumanInput()
+void Player::Input()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad4))
 	{
@@ -393,66 +389,75 @@ void Player::HumanInput()
 	}
 }
 
-void Player::ProcessInput()
+bool AutomatedPlayer::s_playerInserted = false;
+
+AutomatedPlayer::AutomatedPlayer(const sf::Vector2f& pos)
+	: Player(pos)
 {
-	if (!GetIsAlive())
-		return;
+	if (s_playerInserted)
+		Collisions::Get()->RemoveLastAdded();
 
-	if (Automated)
-	{
-		ControllerInput();
-	}
-	else
-	{
-		HumanInput();
-	}
+	s_playerInserted = true;
+}
 
-	m_stateMgr.ProcessInputs();
+bool AutomatedPlayer::UpdateANN()
+{
+	std::vector<double> inputs;
 
-	if (m_keyStates[DOWN_KEY])
+	inputs = CtrlMgr::GetCtrlMgr()->GetController()->GetGridInputs();
+
+	outputs = m_itsBrain->Update(inputs, CNeuralNet::active);
+
+	if (outputs.size() < CParams::iNumOutputs)
+		return false;
+
+	return true;
+}
+
+void AutomatedPlayer::Input()
+{
+	Game::GetGameMgr()->GetLogger()->AddDebugLog(std::format("Player {}", CtrlMgr::GetCtrlMgr()->GetController()->GetCurrentPlayerNum()), false);
+
+	for (int i = 0; i < outputs.size(); ++i)
 	{
-		if (!GetIsCrouched())
+		bool output = false;
+		double oval = outputs[i];
+
+		std::string move = "";
+		switch (i)
 		{
-			//get current position
-			sf::Vector2f pos = GetPosition();
-
-			if (m_super)
-			{
-				GetBBox()->SetTexture(TexID::MarioSmlBB);
-
-				//adjust bbox position
-				if (GetDirection())
-					GetBBox()->Update(sf::Vector2f(GetPosition().x - 1.f, GetPosition().y + 22.f));
-				else
-					GetBBox()->Update(sf::Vector2f(GetPosition().x + 1.f, GetPosition().y + 22.f));
-			}
-			else
-			{
-				GetBBox()->SetTexture(TexID::MarioSmlBB);
-
-				//adjust bbox position
-				if (GetDirection())
-					GetBBox()->Update(sf::Vector2f(GetPosition().x - 2.f, GetPosition().y + 12.f));
-				else
-					GetBBox()->Update(sf::Vector2f(GetPosition().x + 2.f, GetPosition().y + 12.f));
-			}
-
-			SetIsCrouched(true);
+		case LEFT_KEY:
+			move = "left";
+			break;
+		case RIGHT_KEY:
+			move = "rght";
+			break;
+		case UP_KEY:
+			move = "look";
+			break;
+		case DOWN_KEY:
+			move = "down";
+			break;
+		case JUMP_KEY:
+			move = "jump";
+			break;
+		case SJUMP_KEY:
+			move = "sJmp";
+			break;
+		default:
+			break;
 		}
-	}
-	else
-	{
-		//if was crouched
-		if (GetIsCrouched())
-		{
-			SetIsCrouched(false);
 
-			if (m_super)
-				GetBBox()->SetTexture(TexID::SuperBB);
-			else
-				GetBBox()->SetTexture(TexID::MarioBB);
+		//clamp output
+		if (oval <= 0.1) output = false;
+		else if (oval >= 0.9) output = true;
+		else output = false;
 
-			SetPosition(GetPosition());
-		}
+		Game::GetGameMgr()->GetLogger()->AddDebugLog(std::format("{} = {} = {}", move, oval, output), false);
+		Game::GetGameMgr()->GetLogger()->AddDebugLog("\t", false);
+		//store output
+		SetKeyState(i, output);
 	}
+
+	Game::GetGameMgr()->GetLogger()->AddDebugLog("");
 }

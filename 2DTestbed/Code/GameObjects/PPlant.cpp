@@ -1,20 +1,34 @@
-#include "../GameObjects/PPlant.h"
+#include "PPlant.h"
 #include "../Collisions/Collisions.h"
 #include "../Game/Constants.h"
 
-
 PPlant::PPlant(const sf::Vector2f& initPos)
-	:Enemy(TexID::PPlant, 2, 2, (int)TexID::PPlantBB, false, false)
+	: Enemy(TexID::PPlant, TexID::PPlantBB, AnimationData{ 2, 2, true, 1.f })
 {
+	SetInitialDirection(false);
+	SetDirection(GetInitialDirection());
 	SetInitialPosition(initPos);
 	SetPosition(GetInitialPosition());
 
-	std::vector<int> cframes{ 1, 2};
-	GetAnimSpr()->SetFrames(cframes);
+	std::vector<int> cframes{ 1, 2 };
+	static_cast<AnimatedSprite*>(GetSprite())->SetFrames(cframes);
+}
+
+void PPlant::Reset()
+{
+	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(0);
+	Enemy::Reset();
+}
+
+void PPlant::Die()
+{
+	// no way to destroy currently, requires fireplant mario
 }
 
 void PPlant::Animate(float deltaTime)
 {
+	auto animSpr = static_cast<AnimatedSprite*>(GetSprite());
+
 	SetPrevPosition(GetPosition());
 
 	if (GetDirection())
@@ -37,7 +51,7 @@ void PPlant::Animate(float deltaTime)
 	if (currentPos.y > 390)
 	{
 		SetDirection(false);
-		GetAnimSpr()->ChangeAnim(0);
+		animSpr->ChangeAnim(0);
 		//set wait timer
 		//go up
 	}
@@ -45,8 +59,7 @@ void PPlant::Animate(float deltaTime)
 	if (currentPos.y < 160)
 	{
 		SetDirection(true);
-		GetAnimSpr()->ChangeAnim(1);
+		animSpr->ChangeAnim(1);
 		//go down
 	}
-
 }

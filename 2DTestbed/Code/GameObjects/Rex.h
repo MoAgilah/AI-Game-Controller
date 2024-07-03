@@ -1,21 +1,23 @@
 #pragma once
-
 #include "../GameObjects/Enemy.h"
 
-class BoundingBox;
 class Rex : public Enemy
 {
 public:
-	Rex(bool dir, float animSpd, const sf::Vector2f& initPos);
+	Rex(bool dir, const sf::Vector2f& initPos);
 	~Rex() final = default;
 
-	void Update(float deltaTime) final;
 	void Reset() final;
 	void Die() final;
 
-	bool Tall() const { return m_numLives == m_maxLives; }
-	void Change();
+	bool Tall() const { return !m_squished; }
+	void DecrementLife() final;
+
+	void UpdateBoundingBox() final;
 
 private:
+
 	void Animate(float deltaTime) final;
+
+	bool m_squished = false;
 };

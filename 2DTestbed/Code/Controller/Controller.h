@@ -6,6 +6,7 @@
 class ANNView;
 class Sensors;
 class Player;
+class AutomatedPlayer;
 class Controller
 {
 public:
@@ -22,7 +23,7 @@ public:
 	bool Update();
 	std::vector<double>  GetFitnessScores()const;//body needs to be written
 private:
-	void EndOfRunCalculation(Player* ply);
+	void EndOfRunCalculation(AutomatedPlayer* ply);
 
 	int currPlayer;
 	int	iNumPlayers;
@@ -43,7 +44,7 @@ private:
 	//generation counter
 	int m_iGenerations;
 	//array of players
-	std::vector<Player*> m_vecMarios;
+	std::vector<AutomatedPlayer*> m_vecMarios;
 
 	//points container
 	std::vector<sf::Vector2f> points;

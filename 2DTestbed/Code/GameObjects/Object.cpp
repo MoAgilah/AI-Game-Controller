@@ -1,132 +1,83 @@
-#include "../GameObjects/Object.h"
+#include "Object.h"
 #include "../Collisions/Collisions.h"
-#include "../Game/Camera.h"
-#include "../Game/Constants.h"
 
-Object::Object(TexID id, int rows, int cols, int bTyp, bool dir, bool symmetrical, int initAnim, float animSpd, const sf::Vector2f& initPos)
-	:AnimatedObject(id, bTyp, dir, Cells(rows, cols), symmetrical, animSpd)
+int Object::s_objectNum = 0;
+
+Object::Object(TexID sprId, TexID boxId)
+	: m_type(sprId)
 {
-	SetInitialPosition(initPos);
-	SetPosition(GetInitialPosition());
+	m_sprite = std::make_shared<Sprite>(sprId);
+	m_bbox = std::make_shared<BoundingBox>(boxId);
+	m_objectID = s_objectNum++;
+	Collisions::Get()->AddCollidable(this);
 }
 
-void Object::Update(float deltaTime)
+Object::Object(AnimatedSprite* sprite, TexID boxId)
 {
-	if (GetActive())
-	{
-		if (m_isAnimating && this->GetBBox()->GetID() == (int)TexID::Box)
-		{
-			if (GetAnimSpr()->PlayedNumTimes(2))
-			{
-				m_isAnimating = false;
-				GetAnimSpr()->ChangeAnim(0);
-			}
-		}
-
-		Animate(deltaTime);
-
-		GetAnimSpr()->Update(deltaTime);
-
-		if (GetDirection())
-		{
-			//+
-			GetBBox()->Update(sf::Vector2f(GetPosition().x - 2, GetPosition().y));
-		}
-		else
-		{
-			//-
-			GetBBox()->Update(sf::Vector2f(GetPosition().x + 2, GetPosition().y));
-		}
-	}
+	m_sprite.reset(std::move(sprite));
+	m_bbox = std::make_shared<BoundingBox>(boxId);
+	m_objectID = s_objectNum++;
+	Collisions::Get()->AddCollidable(this);
 }
 
-void Object::Render(sf::RenderWindow & window)
+void Object::Render(sf::RenderWindow& window)
 {
-	window.draw(*GetAnimSpr()->GetSprite());
+	m_sprite->Render(window);
+	m_bbox->Render(window);
 }
 
 void Object::Reset()
 {
-	m_isAnimating = false;
-	m_goingUp = false;
-	GetAnimSpr()->ChangeAnim(0);
-	SetActive(false);
+	m_active = false;
+	SetDirection(GetInitialDirection());
+	SetPosition(GetInitialPosition());
 }
 
-void Object::Animate(float deltaTime)
+void Object::SetDirection(bool dir)
 {
-	if (this->GetBBox()->GetID() == (int)TexID::ShroomBB)
+	m_direction = dir;
+	if (m_direction)
 	{
-		SetPrevPosition(GetPosition());
-
-		if (GetDirection())
-		{
-			SetXVelocity(2);
-		}
-		else
-		{
-			SetXVelocity(-2);
-		}
-
-		if (GetOnGround())
-		{
-			SetYVelocity(0);
-			m_airtime = 0;
-		}
-		else
-		{
-			IncrementYVelocity(c_gravity);
-		}
-
-		if (GetXVelocity() != 0)
-		{
-			Move(GetXVelocity() * FPS * deltaTime, 0);
-			Collisions::Get()->ProcessCollisions(this);
-		}
-
-		//check for leftmost and rightmost boundary
-		if (GetPosition().x < GetOrigin().x || GetPosition().x > 11776 - GetOrigin().x)
-		{
-			Move(-GetXVelocity() * FPS * deltaTime, 0);
-			SetDirection(!GetDirection());
-		}
-
-		if (GetYVelocity() != 0)
-		{
-			Move(0, GetYVelocity() * FPS * deltaTime);
-			Collisions::Get()->ProcessCollisions(this);
-		}
+		// flip X
+		m_sprite->SetScale({ sX, sY });
 	}
-
-	if (this->GetBBox()->GetID() == (int)TexID::GoalBB)
+	else
 	{
-		if (m_goingUp)
-		{
-			SetYVelocity(2.5);
-		}
-		else
-		{
-			SetYVelocity(-2.5);
-		}
-
-		if (GetYVelocity() != 0)
-		{
-			Move(0, GetYVelocity() * FPS * deltaTime);
-		}
-
-		sf::Vector2f currentPos = GetPosition();
-		if (currentPos.y > 470)
-		{
-			m_goingUp = false;
-		}
-
-		if (currentPos.y < 150)
-		{
-			m_goingUp = true;
-		}
-
-		Collisions::Get()->ProcessCollisions(this);
+		//unflip x
+		m_sprite->SetScale({ -sX, sY });
 	}
 }
 
+void Object::SetPosition(const sf::Vector2f& pos)
+{
+	m_sprite->SetPosition(pos);
+	m_bbox->Update(sf::Vector2f(m_sprite->GetPosition().x, m_sprite->GetPosition().y + 3.5f));
+}
 
+void Object::SetPosition(float x, float y)
+{
+	m_sprite->SetPosition(sf::Vector2f(x, y));
+	m_bbox->Update(sf::Vector2f(m_sprite->GetPosition().x, m_sprite->GetPosition().y + 3.5f));
+}
+
+DynamicObject::DynamicObject(TexID sprId, TexID boxId)
+	: Object(sprId, boxId)
+{
+}
+
+DynamicObject::DynamicObject(AnimatedSprite* sprite, TexID boxId)
+	: Object(sprite, boxId)
+{
+}
+
+void DynamicObject::Move(float x, float y)
+{
+	GetSprite()->Move(x, y);
+	GetBBox()->GetSprite()->move(sf::Vector2f(x, y));
+}
+
+void DynamicObject::Move(const sf::Vector2f& pos)
+{
+	GetSprite()->Move(pos.x, pos.y);
+	GetBBox()->GetSprite()->move(pos);
+}
