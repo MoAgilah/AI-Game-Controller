@@ -9,6 +9,9 @@ Chuck::Chuck(bool dir, const sf::Vector2f& initPos)
 	SetDirection(GetInitialDirection());
 	SetInitialPosition(initPos);
 	SetPosition(GetInitialPosition());
+
+	std::vector<int> frames{ 1, 2, 1, 1, 1, 1 };
+	static_cast<AnimatedSprite*>(GetSprite())->SetFrames(frames);
 }
 
 void Chuck::Reset()

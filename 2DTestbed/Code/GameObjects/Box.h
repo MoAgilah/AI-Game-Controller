@@ -20,8 +20,6 @@ public:
 
 private:
 
-	virtual void Animate(float deltaTime) = 0;
-
 	bool m_canHit = true;
 	bool m_justHit = false;
 };

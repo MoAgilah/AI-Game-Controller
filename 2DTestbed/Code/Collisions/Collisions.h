@@ -46,8 +46,7 @@ private:
 
 	int GetDirTravelling(DynamicObject* obj);
 	void QBoxHit(Player* ply, QBox* obj);
-	void SmashBoxHit(Player* ply, SBox* obj);
-	void SpinBoxHit(Player* ply, SBox* obj);
+	void SBoxHit(Player* ply, SBox* obj);
 
 	bool CircleToRect(sf::CircleShape circle, Player* spr);
 

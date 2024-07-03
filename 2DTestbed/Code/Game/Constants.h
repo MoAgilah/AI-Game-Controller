@@ -4,7 +4,7 @@
 #define DControl
 
 //DRender shows debug for the testbed
-#define DRender
+//#define DRender
 
 //scale factor
 constexpr float sX = 2.34375f;

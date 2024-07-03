@@ -354,11 +354,8 @@ void Collisions::PlayerToObject(Player * ply, Object * obj)
 	case TexID::QBox://question mark box
 		QBoxHit(ply, (QBox*)obj);
 		break;
-	//case TexID::Box://smashable box
-	//	SmashBoxHit(ply, (SBox*)obj);
-	//	break;
 	case TexID::SBox://spin box
-		SpinBoxHit(ply, (SBox*)obj);
+		SBoxHit(ply, (SBox*)obj);
 		break;
 	case TexID::ChkPnt://check point
 		ply->SetSpawnLoc(obj->GetPosition());
@@ -709,30 +706,7 @@ void Collisions::QBoxHit(Player * ply, QBox* box)
 	}
 }
 
-void Collisions::SmashBoxHit(Player * ply, SBox* box)
-{
-	switch (GetDirTravelling(ply))
-	{
-	case DDIR:
-		if (ply->GetIsSuper())
-		{
-			ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * sY) - (ply->GetOrigin().y * sY) + 4.f));
-		}
-		else
-		{
-			ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * sY) - (ply->GetOrigin().y * 2.f) - 2.f));
-		}
-		ply->SetOnGround(true);
-		break;
-	};
-	/*
-	if player is spinning down
-	break box
-	no smash animation at current
-	*/
-}
-
-void Collisions::SpinBoxHit(Player * ply, SBox* box)
+void Collisions::SBoxHit(Player * ply, SBox* box)
 {
 	if (box->GetCanHit())//if not yet been hit
 	{
@@ -746,7 +720,14 @@ void Collisions::SpinBoxHit(Player * ply, SBox* box)
 		case DDIR://if falling
 			//land on object
 			ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * sY) - (ply->GetOrigin().y * sY) + 4.f));
-			ply->SetOnGround(true);
+			if (ply->GetCantSpinJump())
+			{
+				box->SetJustSmashed(true);
+			}
+			else
+			{
+				ply->SetOnGround(true);
+			}
 			break;
 		}
 	}

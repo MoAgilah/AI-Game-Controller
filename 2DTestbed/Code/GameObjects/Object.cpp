@@ -13,6 +13,7 @@ Object::Object(TexID sprId, TexID boxId)
 }
 
 Object::Object(AnimatedSprite* sprite, TexID boxId)
+	: m_type(sprite->GetTexID())
 {
 	m_sprite.reset(std::move(sprite));
 	m_bbox = std::make_shared<BoundingBox>(boxId);

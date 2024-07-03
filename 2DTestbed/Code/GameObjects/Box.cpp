@@ -25,9 +25,11 @@ void Box::WasJustHit()
 }
 
 QBox::QBox(const sf::Vector2f& initPos)
-	: Box(new AnimatedSprite(TexID::QBox, 2, 4, FPS, false, 1.f), TexID::BoxBB, initPos)
+	: Box(new AnimatedSprite(TexID::QBox, 2, 4, FPS, false, 0.35f), TexID::BoxBB, initPos)
 {
 	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(1);
+	std::vector<int> frames{ 1, 4 };
+	static_cast<AnimatedSprite*>(GetSprite())->SetFrames(frames);
 }
 
 void QBox::Update(float deltaTime)
@@ -35,9 +37,7 @@ void QBox::Update(float deltaTime)
 	if (GetActive())
 	{
 		auto animSpr = static_cast<AnimatedSprite*>(GetSprite());
-
-		if (GetCanHit())
-			animSpr->Update(deltaTime);
+		animSpr->Update(deltaTime);
 
 		if (GetJustHit())
 		{
@@ -55,11 +55,16 @@ void QBox::Reset()
 }
 
 SBox::SBox(const sf::Vector2f& initPos)
-	: Box(new AnimatedSprite(TexID::SBox, 2, 4, FPS, false, 1.f), TexID::BoxBB, initPos)
+	: Box(new AnimatedSprite(TexID::SBox, 2, 4, FPS, false, 0.35f), TexID::BoxBB, initPos)
 {
+	std::vector<int> frames{ 1, 4 };
+	static_cast<AnimatedSprite*>(GetSprite())->SetFrames(frames);
+
 	for (size_t i = 0; i < 4; i++)
 	{
 		m_boxPieces.push_back(std::make_shared<AnimatedSprite>(TexID::BoxPiece, 1, 8, FPS, false, 1.f));
+		std::vector<int> frames{ 8 };
+		m_boxPieces[i]->SetFrames(frames);
 	}
 }
 

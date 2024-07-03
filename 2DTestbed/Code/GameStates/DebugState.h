@@ -5,6 +5,7 @@
 #include "GameState.h"
 #include "../Game/Game.h"
 #include "../Collisions/BoundingVolume.h"
+#include "../GameObjects/Box.h"
 #include <SFML/Graphics.hpp>
 
 class DebugState : public GameState
@@ -22,5 +23,6 @@ public:
 
 private:
 	AABB m_aabb;
+	SBox m_box;
 	std::shared_ptr<Game> m_gameMgr;
 };
