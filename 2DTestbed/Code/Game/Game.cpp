@@ -26,7 +26,7 @@ Game::Game()
 	m_world = std::make_unique<World>();
 	m_logger = std::make_unique<Logger>();
 
-	m_stateMgr.ChangeState(new MainState(this));
+	m_stateMgr.ChangeState(new DebugState(this));
 }
 
 void Game::ChangePlayer(Player * ply)

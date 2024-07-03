@@ -22,7 +22,7 @@ Tile::Tile(const sf::Font& font)
 void Tile::SetID(int gX, int gY)
 {
 	//set id
-	m_id = std::format("{}{}", gX, gY);
+	m_id = std::format("{},{}", gX, gY);
 
 	//numerical id
 	m_colNum = gX;

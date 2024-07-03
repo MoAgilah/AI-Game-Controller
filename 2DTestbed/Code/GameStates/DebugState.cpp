@@ -16,6 +16,7 @@ DebugState::DebugState(Game* gameMgr)
 
 void DebugState::Initialise()
 {
+	m_aabb.GetShape()->setOutlineColor(sf::Color::Red);
 	auto level = m_gameMgr->GetLevel();
 	level->AddForeGroundSprites();
 }
@@ -37,11 +38,14 @@ void DebugState::Update(float deltaTime)
 	m_gameMgr->GetCamera()->Update();
 	Timer::Get()->UpdateTime(deltaTime);
 
-	if (Automated)
-		CtrlMgr::GetCtrlMgr()->GetController()->Update();
+	/*if (Automated)
+		CtrlMgr::GetCtrlMgr()->GetController()->Update();*/
+
+	Tile tmp = Collisions::Get()->GetTile(1,14);
+	m_aabb.Update(tmp.GetPosition());
 
 	m_gameMgr->GetLevel()->Update(deltaTime);
-	m_gameMgr->GetPlayer()->Update(deltaTime);
+	//m_gameMgr->GetPlayer()->Update(deltaTime);
 }
 
 void DebugState::Render(sf::RenderWindow& window)
@@ -50,7 +54,11 @@ void DebugState::Render(sf::RenderWindow& window)
 	m_gameMgr->CheckInView();
 
 	m_gameMgr->GetLevel()->Render(window);
-	m_gameMgr->GetPlayer()->Render(window);
+	//m_gameMgr->GetPlayer()->Render(window);
+
+	
 
 	Collisions::Get()->Render(window);
+
+	m_aabb.Render(window);
 }

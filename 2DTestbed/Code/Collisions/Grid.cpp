@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
+#include <format>
 
 
 Grid::Grid()
@@ -91,7 +92,7 @@ void Grid::Render(sf::RenderWindow & window)
 Tile* Grid::GetTile(int x, int y)
 {
 	//create id
-	std::string id = std::to_string(x) + std::to_string(y);
+	std::string id = std::format("{},{}", x, y);
 
 	//extract tile if tile exists
 	return *std::find_if(m_grid.begin(), m_grid.end(), [id](Tile* n) { return n->GetID() == id;});
