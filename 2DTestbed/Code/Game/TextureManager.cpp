@@ -31,7 +31,7 @@ std::string TexIDToString(TexID id)
 	case TexID::YcoinBB:		return "YcoinBB";
 	case TexID::QBox:			return "QBox";
 	case TexID::SBox:			return "SBox";
-	case TexID::BoxPiece:		return "BoxPiece";
+	case TexID::BreakingBox:	return "BreakingBox";
 	case TexID::BoxBB:			return "BoxBB";
 	case TexID::Shroom:			return "Shroom";
 	case TexID::ShroomBB:		return "ShroomBB";

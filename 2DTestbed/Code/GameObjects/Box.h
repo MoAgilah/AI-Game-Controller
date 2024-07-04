@@ -51,8 +51,7 @@ public:
 	void SetJustSmashed(bool justSmashed) { m_justSmashed = justSmashed; }
 
 private:
-	void Scatter(int idx, AnimatedSprite* sprite);
+	void Scatter();
 
 	bool m_justSmashed = false;
-	std::vector<std::shared_ptr<AnimatedSprite>> m_boxPieces;
 };

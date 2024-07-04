@@ -59,36 +59,30 @@ SBox::SBox(const sf::Vector2f& initPos)
 {
 	std::vector<int> frames{ 1, 4 };
 	static_cast<AnimatedSprite*>(GetSprite())->SetFrames(frames);
-
-	for (size_t i = 0; i < 4; i++)
-	{
-		m_boxPieces.push_back(std::make_shared<AnimatedSprite>(TexID::BoxPiece, 1, 8, FPS, false, 1.f));
-		std::vector<int> frames{ 8 };
-		m_boxPieces[i]->SetFrames(frames);
-	}
 }
 
 void SBox::Update(float deltaTime)
 {
 	if (GetActive())
 	{
+		auto animSpr = static_cast<AnimatedSprite*>(GetSprite());
+
 		if (GetJustSmashed())
 		{
-			const Camera* camera = Game::GetGameMgr()->GetCamera();
-
-			for (int i = 0; i < m_boxPieces.size(); i++)
+			if (GetSprite()->GetTexID() != TexID::BreakingBox)
 			{
-				if (camera->IsInView(m_boxPieces[i]->GetSprite()))
-				{
-					m_boxPieces[i]->Update(deltaTime);
-					Scatter(i, m_boxPieces[i].get());
-				}
+				animSpr->SetTexture(TexID::BreakingBox);
+				animSpr->SetFrameData(2, 9, { 9, 9 });
+				animSpr->SetScale(sf::Vector2f(1, 1));
+				animSpr->ChangeAnim(0);
+				animSpr->SetShouldLoop(false);
 			}
+
+			animSpr->Update(deltaTime);
+			Scatter();
 		}
 		else
 		{
-			auto animSpr = static_cast<AnimatedSprite*>(GetSprite());
-
 			if (!GetCanHit())
 			{
 				animSpr->Update(deltaTime);
@@ -113,8 +107,7 @@ void SBox::Render(sf::RenderWindow& window)
 {
 	if (GetJustSmashed())
 	{
-		for (const auto& piece : m_boxPieces)
-			piece->Render(window);
+		window.draw(*GetSprite()->GetSprite());
 	}
 	else
 	{
@@ -124,10 +117,31 @@ void SBox::Render(sf::RenderWindow& window)
 
 void SBox::Reset()
 {
-	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(0);
+	auto animSpr = static_cast<AnimatedSprite*>(GetSprite());
+
+	if (GetSprite()->GetTexID() != TexID::SBox)
+	{
+		animSpr->SetTexture(TexID::SBox);
+		animSpr->SetFrameData(2, 4, { 1, 4 });
+	}
+	animSpr->ChangeAnim(0);
 	Box::Reset();
 }
 
-void SBox::Scatter(int idx, AnimatedSprite* sprite)
+void SBox::Scatter()
 {
+	auto animSpr = static_cast<AnimatedSprite*>(GetSprite());
+
+	animSpr->Move(0, c_moveSpeed*0.75);
+
+	if (GetPosition().y > 600.f + (float)animSpr->GetFrameSize().y)
+	{
+		SetActive(false);
+	}
+
+	if (animSpr->PlayedOnce())
+	{
+		animSpr->ChangeAnim(1);
+		animSpr->SetShouldLoop(true);
+	}
 }

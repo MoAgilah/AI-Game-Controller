@@ -52,6 +52,12 @@ AnimatedSprite::AnimatedSprite(TexID id, float framesPerSec, bool symmetrical, f
 
 void AnimatedSprite::Update(float dt)
 {
+	if (!m_loop)
+	{
+		if (m_frame.m_current == m_numFrames[m_animation.m_current])
+			return;
+	}
+
 	m_currentTime += m_animSpeed * dt;
 
 	if (m_currentTime >= m_framesPerSecond)
@@ -71,7 +77,10 @@ void AnimatedSprite::Update(float dt)
 		{
 			if (m_frame.m_current >= m_numFrames[m_animation.m_current])
 			{
-				m_frame.m_current = 0;
+				if (m_loop)
+					m_frame.m_current = 0;
+				else
+					--m_frame.m_current;
 				++m_animCycles;
 			}
 		}

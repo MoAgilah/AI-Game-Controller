@@ -67,8 +67,11 @@ public:
 	void SetFrameData(int rows, int columns, const std::vector<int>& numFrames);
 
 	bool PlayedNumTimes(int val) const { return m_animCycles == val; }
-	bool playedOnce() const { return m_animCycles > 0; }
+	bool PlayedOnce() const { return m_animCycles > 0; }
+
+	void SetShouldLoop(bool loop) { m_loop = loop; }
 private:
+	bool m_loop = true;
 	int m_animCycles = 0;
 	float m_currentTime = 0;
 	int m_frameTime = 0;

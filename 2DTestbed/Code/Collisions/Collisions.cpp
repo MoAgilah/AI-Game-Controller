@@ -715,7 +715,6 @@ void Collisions::SBoxHit(Player * ply, SBox* box)
 		case UDIR://if going up
 			if (!box->GetJustHit())
 				box->SetJustHit(true);
-			ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * sY) - (ply->GetOrigin().y * sY) + 4.f));
 			break;
 		case DDIR://if falling
 			//land on object
