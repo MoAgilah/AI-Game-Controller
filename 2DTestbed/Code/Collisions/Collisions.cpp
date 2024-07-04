@@ -718,13 +718,13 @@ void Collisions::SBoxHit(Player * ply, SBox* box)
 			break;
 		case DDIR://if falling
 			//land on object
-			ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * sY) - (ply->GetOrigin().y * sY) + 4.f));
-			if (ply->GetCantSpinJump())
+			if (ply->GetIsSuper() && ply->GetCantSpinJump())
 			{
 				box->SetJustSmashed(true);
 			}
 			else
 			{
+				ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * sY) - (ply->GetOrigin().y * sY) + 4.f));
 				ply->SetOnGround(true);
 			}
 			break;
