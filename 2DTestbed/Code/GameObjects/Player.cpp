@@ -15,6 +15,7 @@ Player::Player(const sf::Vector2f& pos)
 	SetDirection(GetInitialDirection());
 	SetInitialPosition(pos);
 	SetPosition(GetInitialPosition());
+	GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
 
 	m_keyStates.fill(false);
 
@@ -171,11 +172,12 @@ void Player::Reset()
 	{
 		//change spr and bbox
 		GetSprite()->SetTexture(TexID::Mario);
-		GetSprite()->SetFrameSize(sf::Vector2u(GetSprite()->GetTextureSize().x / 14, GetSprite()->GetTextureSize().y / 4));
+		GetSprite()->SetFrameSize(sf::Vector2u(GetSprite()->GetTextureSize().x / 4, GetSprite()->GetTextureSize().y / 14));
 		GetBBox()->SetTexture(TexID::MarioBB);
 
 		//adjust position
 		SetPosition(GetPosition() + sf::Vector2f(0, m_heightDiff));
+		GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
 	}
 
 	DynamicObject::Reset();
@@ -215,9 +217,10 @@ void Player::SetIsSuper(bool super)
 		{
 			//change spr and bbox
 			GetSprite()->SetTexture(TexID::Super);
-			GetSprite()->SetFrameSize(sf::Vector2u(GetSprite()->GetTextureSize().x / 14, GetSprite()->GetTextureSize().y / 4));
+			GetSprite()->SetFrameSize(sf::Vector2u(GetSprite()->GetTextureSize().x / 4, GetSprite()->GetTextureSize().y / 14));
 			GetBBox()->SetTexture(TexID::SuperBB);
 			SetPosition(GetPosition() - sf::Vector2f(0, m_heightDiff));
+			GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
 		}
 	}
 	else
@@ -225,9 +228,10 @@ void Player::SetIsSuper(bool super)
 		if (GetSprite()->GetTexID() != TexID::Mario)
 		{
 			GetSprite()->SetTexture(TexID::Mario);
-			GetSprite()->SetFrameSize(sf::Vector2u(GetSprite()->GetTextureSize().x / 14, GetSprite()->GetTextureSize().y / 4));
+			GetSprite()->SetFrameSize(sf::Vector2u(GetSprite()->GetTextureSize().x / 4, GetSprite()->GetTextureSize().y / 14));
 			GetBBox()->SetTexture(TexID::MarioBB);
 			SetPosition(GetPosition() + sf::Vector2f(0, m_heightDiff));
+			GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
 		}
 	}
 }
@@ -322,6 +326,7 @@ void Player::ProcessInput()
 				GetBBox()->SetTexture(TexID::MarioBB);
 
 			SetPosition(GetPosition());
+			GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
 		}
 	}
 }

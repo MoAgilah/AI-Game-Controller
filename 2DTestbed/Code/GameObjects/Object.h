@@ -56,8 +56,8 @@ public:
 	void SetDirection(bool dir);
 
 	const sf::Vector2f& GetPosition() const { return m_sprite->GetPosition(); };
-	void SetPosition(const sf::Vector2f& pos);
-	void SetPosition(float x, float y);
+	void SetPosition(const sf::Vector2f& pos) { m_sprite->SetPosition(pos); }
+	void SetPosition(float x, float y) { m_sprite->SetPosition(sf::Vector2f(x, y)); }
 
 	sf::Vector2f GetOrigin() const { return m_sprite->GetOrigin(); }
 

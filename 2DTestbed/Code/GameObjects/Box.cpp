@@ -9,6 +9,7 @@ Box::Box(AnimatedSprite* sprite, TexID boxId, const sf::Vector2f& initPos)
 	SetDirection(GetInitialDirection());
 	SetInitialPosition(initPos);
 	SetPosition(GetInitialPosition());
+	GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
 }
 
 void Box::Reset()

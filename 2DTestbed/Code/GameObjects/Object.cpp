@@ -32,6 +32,7 @@ void Object::Reset()
 	m_active = false;
 	SetDirection(GetInitialDirection());
 	SetPosition(GetInitialPosition());
+	GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
 }
 
 void Object::SetDirection(bool dir)
@@ -47,18 +48,6 @@ void Object::SetDirection(bool dir)
 		//unflip x
 		m_sprite->SetScale({ -sX, sY });
 	}
-}
-
-void Object::SetPosition(const sf::Vector2f& pos)
-{
-	m_sprite->SetPosition(pos);
-	m_bbox->Update(sf::Vector2f(m_sprite->GetPosition().x, m_sprite->GetPosition().y + 3.5f));
-}
-
-void Object::SetPosition(float x, float y)
-{
-	m_sprite->SetPosition(sf::Vector2f(x, y));
-	m_bbox->Update(sf::Vector2f(m_sprite->GetPosition().x, m_sprite->GetPosition().y + 3.5f));
 }
 
 DynamicObject::DynamicObject(TexID sprId, TexID boxId)

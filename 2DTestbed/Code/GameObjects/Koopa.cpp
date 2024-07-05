@@ -9,6 +9,7 @@ Koopa::Koopa(bool dir, const sf::Vector2f& initPos)
 	SetDirection(GetInitialDirection());
 	SetInitialPosition(initPos);
 	SetPosition(GetInitialPosition());
+	GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
 
 	std::vector<int> frames{ 1, 2, 1 };
 	static_cast<AnimatedSprite*>(GetSprite())->SetFrames(frames);

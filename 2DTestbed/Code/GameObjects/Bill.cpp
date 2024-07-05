@@ -8,6 +8,7 @@ Bill::Bill(bool dir, const sf::Vector2f& initPos)
 	SetDirection(GetInitialDirection());
 	SetInitialPosition(initPos);
 	SetPosition(GetInitialPosition());
+	GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
 
 	m_colbody.front.setOutlineColor(sf::Color::Red);
 	m_colbody.front.setOutlineThickness(2.0f);

@@ -57,7 +57,7 @@ public:
 
 private:
 
-	bool m_onGround;
+	bool m_onGround = false;
 };
 
 class Mushroom : public DynamicCollectable
