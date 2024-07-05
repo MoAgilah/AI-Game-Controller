@@ -18,6 +18,9 @@ public:
 	void Update(float deltaTime) final;
 
 	int Collect();
+
+	void ResolveCollisions(Object* other);
+	void ResolveCollisions(Tile* tile);
 };
 
 class YCoin : public StaticCollectable
@@ -32,6 +35,8 @@ public:
 
 	int Collect();
 
+	void ResolveCollisions(Object* other);
+	void ResolveCollisions(Tile* tile);
 private:
 
 	static int s_collected;
@@ -44,6 +49,9 @@ public:
 	~CheckPoint() final = default;
 
 	void Update(float deltaTime) final;
+
+	void ResolveCollisions(Object* other);
+	void ResolveCollisions(Tile* tile);
 };
 
 class DynamicCollectable : public DynamicObject
@@ -67,6 +75,9 @@ public:
 	~Mushroom() final = default;
 
 	void Update(float deltaTime) final;
+
+	void ResolveCollisions(Object* other);
+	void ResolveCollisions(Tile* tile);
 };
 
 class Goal : public DynamicCollectable
@@ -76,4 +87,7 @@ public:
 	~Goal() final = default;
 
 	void Update(float deltaTime) final;
+
+	void ResolveCollisions(Object* other);
+	void ResolveCollisions(Tile* tile);
 };

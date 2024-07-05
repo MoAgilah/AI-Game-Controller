@@ -273,6 +273,14 @@ void Player::JusyHitEnemy(float val)
 	m_noGravTime = val;
 }
 
+void Player::ResolveCollisions(Object* other)
+{
+}
+
+void Player::ResolveCollisions(Tile* tile)
+{
+}
+
 void Player::ProcessInput()
 {
 	if (!GetIsAlive())

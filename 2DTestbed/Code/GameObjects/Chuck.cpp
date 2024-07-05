@@ -25,6 +25,14 @@ void Chuck::Die()
 {
 }
 
+void Chuck::ResolveCollisions(Object* other)
+{
+}
+
+void Chuck::ResolveCollisions(Tile* tile)
+{
+}
+
 void Chuck::Animate(float deltaTime)
 {
 	auto animSpr = static_cast<AnimatedSprite*>(GetSprite());

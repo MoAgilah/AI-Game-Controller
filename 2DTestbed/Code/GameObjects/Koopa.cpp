@@ -27,6 +27,14 @@ void Koopa::Die()
 	SetTimeLeftActive(0.5f);
 }
 
+void Koopa::ResolveCollisions(Object* other)
+{
+}
+
+void Koopa::ResolveCollisions(Tile* tile)
+{
+}
+
 void Koopa::Animate(float deltaTime)
 {
 	static_cast<AnimatedSprite*>(GetSprite())->Update(deltaTime);

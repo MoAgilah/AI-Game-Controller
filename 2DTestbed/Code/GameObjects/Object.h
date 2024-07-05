@@ -29,6 +29,7 @@ enum GOTYPE
 	ObjBgn = (int)TexID::QBox, ObjEnd = (int)TexID::BoxBB
 };
 
+class Tile;
 class Object
 {
 public:
@@ -67,6 +68,8 @@ public:
 	const sf::Vector2f& GetInitialPosition() const { return m_spawnData.initialPos; }
 	void SetInitialPosition(const sf::Vector2f& pos) { m_spawnData.initialPos = pos; }
 
+	virtual void ResolveCollisions(Object* other) = 0;
+	virtual void ResolveCollisions(Tile* tile) = 0;
 private:
 
 	TexID m_type = TexID::None;
@@ -106,6 +109,7 @@ public:
 
 	void Move(float x, float y);
 	void Move(const sf::Vector2f& pos);
+
 
 private:
 

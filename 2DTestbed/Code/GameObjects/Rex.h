@@ -15,6 +15,8 @@ public:
 
 	void UpdateBoundingBox() final;
 
+	void ResolveCollisions(Object* other);
+	void ResolveCollisions(Tile* tile);
 private:
 
 	void Animate(float deltaTime) final;

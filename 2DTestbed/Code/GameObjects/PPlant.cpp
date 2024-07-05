@@ -26,6 +26,14 @@ void PPlant::Die()
 	// no way to destroy currently, requires fireplant mario
 }
 
+void PPlant::ResolveCollisions(Object* other)
+{
+}
+
+void PPlant::ResolveCollisions(Tile* tile)
+{
+}
+
 void PPlant::Animate(float deltaTime)
 {
 	auto animSpr = static_cast<AnimatedSprite*>(GetSprite());

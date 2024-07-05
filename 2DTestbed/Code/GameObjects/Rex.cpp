@@ -103,3 +103,11 @@ void Rex::UpdateBoundingBox()
 		Enemy::UpdateBoundingBox();
 	}
 }
+
+void Rex::ResolveCollisions(Object* other)
+{
+}
+
+void Rex::ResolveCollisions(Tile* tile)
+{
+}

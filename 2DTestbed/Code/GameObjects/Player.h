@@ -64,6 +64,8 @@ public:
 	void SetAirTime(float val) { m_airtime = val; }
 	void IncAirTime(float val) { m_airtime += val; }
 
+	void ResolveCollisions(Object* other);
+	void ResolveCollisions(Tile* tile);
 private:
 
 	void ProcessInput();

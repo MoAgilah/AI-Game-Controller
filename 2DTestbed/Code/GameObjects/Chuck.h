@@ -10,6 +10,9 @@ public:
 	void Reset() final;
 
 	void Die() final;
+
+	void ResolveCollisions(Object* other);
+	void ResolveCollisions(Tile* tile);
 private:
 
 	void Animate(float deltaTime) final;
