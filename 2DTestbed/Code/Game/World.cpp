@@ -247,7 +247,7 @@ void World::AddObjects()
 	m_objects.push_back(std::make_unique<Object>(TexID::YCoin, 1, 1, (int)TexID::YcoinBB, true, true, 1.f, sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * 2.f - 4.f)));
 
 	tmp = Collisions::Get()->GetTile(302, 11);
-	m_objects.push_back(std::make_unique<Object>(TexID::Goal, 1, 1, (int)TexID::GoalBB, true, true, 1.f, sf::Vector2f(tmp.GetPosition().x - 6.f, tmp.GetPosition().y - tmp.GetOrigin().y * sY + 30.f)));*/
+	m_objects.push_back(std::make_unique<Object>(TexID::Goal, 1, 1, (int)TexID::GoalBB, true, true, 1.f, sf::Vector2f(tmp.GetPosition().x - 7.f, tmp.GetPosition().y)));*/
 }
 
 void World::AddForeGroundSprites()

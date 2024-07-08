@@ -23,6 +23,7 @@ public:
 	void Render(sf::RenderWindow& window) override;
 
 private:
-	QBox m_col;
+	Sprite spr;
+	Goal m_col;
 	std::shared_ptr<Game> m_gameMgr;
 };

@@ -67,10 +67,7 @@ public:
 	~DynamicCollectable() override = default;
 
 	bool GetOnGround() const { return m_onGround; }
-	void SetOnGround(bool grnd)
-	{
-		m_onGround = grnd;
-	}
+	void SetOnGround(bool grnd) { m_onGround = grnd; }
 
 	bool GetActive() const final { return !m_collected && Object::GetActive(); }
 
@@ -102,4 +99,13 @@ public:
 
 	void ResolveCollisions(Object* other);
 	void ResolveCollisions(Tile* tile);
+
+	float GetAirTime() const { return m_travelTime; }
+	void SetAirTime(float val) { m_travelTime = val; }
+	void IncAirTime(float val) { m_travelTime += val; }
+
+private:
+
+	float m_travelTime = 0;
+	const float c_maxTravelTime = 2.15;
 };

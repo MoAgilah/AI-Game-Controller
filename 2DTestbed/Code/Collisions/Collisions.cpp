@@ -107,7 +107,7 @@ void Collisions::ProcessCollisions(Object* gobj)
 	{
 		Tile* tile = m_grid[t];
 
-		if (tile->GetType() == EMPTY || gobj->GetID() == TexID::ChkPnt || gobj->GetID() == TexID::Goal)
+		if (tile->GetType() == EMPTY || gobj->GetID() == TexID::ChkPnt /*|| gobj->GetID() == TexID::Goal*/)
 		{
 			continue;
 		}
@@ -412,10 +412,10 @@ void Collisions::ObjectToTile(DynamicObject* obj, Tile * tile)
 					rtmp->GetBBox()->Update(sf::Vector2f(rtmp->GetPosition().x, rtmp->GetPosition().y + 3.5f));
 				}
 			}
-			else if (obj->GetID() == TexID::Shroom)
+			else if (obj->GetID() == TexID::Shroom || obj->GetID() == TexID::Goal)
 			{
-				((Mushroom*)obj)->SetOnGround(true);
-				obj->SetPosition(sf::Vector2f(obj->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (obj->GetOrigin().y * sY) + 4.f));
+				((DynamicCollectable*)obj)->SetOnGround(true);
+				obj->SetPosition(sf::Vector2f(obj->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (obj->GetOrigin().y * sY)));
 				obj->GetBBox()->Update(obj->GetPosition());
 			}
 			else
@@ -460,7 +460,7 @@ void Collisions::ObjectToTile(DynamicObject* obj, Tile * tile)
 			{
 				//set to minimum closest dist
 				obj->SetPosition(sf::Vector2f((tile->GetPosition().x - tile->GetOrigin().x * sX) - (obj->GetOrigin().x * sX) -4.f, obj->GetPosition().y));
-				obj->GetBBox()->Update(sf::Vector2f(obj->GetPosition().x, obj->GetPosition().y + 3.5f));
+				obj->GetBBox()->Update(obj->GetPosition());
 			}
 			else
 			{
@@ -507,7 +507,7 @@ void Collisions::ObjectToTile(DynamicObject* obj, Tile * tile)
 			{
 				//set to minimum closest dist
 				obj->SetPosition(sf::Vector2f((tile->GetPosition().x + tile->GetOrigin().x * sX) + (obj->GetOrigin().x * sX) - 7.5f, obj->GetPosition().y));
-				obj->GetBBox()->Update(sf::Vector2f(obj->GetPosition().x, obj->GetPosition().y + 3.5f));
+				obj->GetBBox()->Update(obj->GetPosition());
 			}
 
 			//flip direction
@@ -584,7 +584,7 @@ void Collisions::ColObjectToTile(Object * c_obj, Tile * tile)
 	{
 		ObjectToTile((DynamicObject*)c_obj, tile);
 	}
-	else if (id == (int)TexID::ShroomBB)
+	else if (id >= (int)TexID::ShroomBB && id <= (int)TexID::GoalBB)
 	{
 		ObjectToTile((DynamicObject*)c_obj, tile);
 	}
