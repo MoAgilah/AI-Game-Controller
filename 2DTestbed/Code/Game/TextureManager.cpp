@@ -55,8 +55,12 @@ TextureManager::TextureManager()
 
 const sf::Texture& TextureManager::GetTexture(TexID id)
 {
-	if (auto it = m_textureMap.find(id); it == m_textureMap.end())
+	auto it = m_textureMap.find(id);
+	if (it == m_textureMap.end())
+	{
 		throw std::invalid_argument(std::format("Texture {} not recognised", (int)id));
+		return sf::Texture();
+	}
 
 	return m_textureMap[id];
 }

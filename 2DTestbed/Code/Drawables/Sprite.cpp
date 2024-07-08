@@ -4,10 +4,6 @@
 #include "../Game/Constants.h"
 #include "../Game/Game.h"
 
-Sprite::Sprite()
-{
-}
-
 Sprite::Sprite(TexID id)
 {
 	SetTexture(id);
@@ -18,14 +14,14 @@ void Sprite::SetTexture(TexID id)
 	m_texID = id;
 	try
 	{
-		m_sprite.setTexture(Game::GetGameMgr()->GetTexturMgr()->GetTexture(m_texID),true);
+		m_sprite.setTexture(Game::GetGameMgr()->GetTexturMgr()->GetTexture(m_texID), true);
 	}
 	catch (const std::invalid_argument& e)
 	{
 		std::cout << e.what() << std::endl;
 	}
 
-	SetOrigin(sf::Vector2f((float)m_texture.getSize().x * 0.5f, (float)m_texture.getSize().y * 0.5f));
+	SetOrigin(sf::Vector2f((float)m_sprite.getTexture()->getSize().x * 0.5f, (float)m_sprite.getTexture()->getSize().y * 0.5f));
 }
 
 void Sprite::SetFrameSize(const sf::Vector2u& size, int currentFrame, int currentAnim)

@@ -350,14 +350,17 @@ void Collisions::PlayerToObject(Player * ply, Object * obj)
 	case TexID::Shroom://super mushroom
 		ply->SetIsSuper(true);
 		obj->SetActive(false);
+		((Mushroom*)obj)->SetCollected();
 		//ply->UpdateFitness(200);
 		break;
 	case TexID::Coin:
+		((Coin*)obj)->SetCollected();
 		ply->IncreaseCoins(((Coin*)obj)->Collect());
 		//ply->UpdateFitness(10);
 		obj->SetActive(false);
 		break;
 	case TexID::YCoin://yoshi coin
+		((YCoin*)obj)->SetCollected();
 		ply->IncreaseCoins(((YCoin*)obj)->Collect());
 		//ply->UpdateFitness(100);
 		obj->SetActive(false);
@@ -369,12 +372,14 @@ void Collisions::PlayerToObject(Player * ply, Object * obj)
 		SBoxHit(ply, (SBox*)obj);
 		break;
 	case TexID::ChkPnt://check point
+		((CheckPoint*)obj)->SetCollected();
 		ply->SetSpawnLoc(obj->GetPosition());
 		//ply->UpdateFitness(200);
 		ply->SetIsSuper(true);
 		obj->SetActive(false);
 		break;
 	case TexID::Goal://end goal
+		((Goal*)obj)->SetCollected();
 		//ply->UpdateFitness(200);
 		ply->GoalHit();
 		break;
@@ -410,8 +415,8 @@ void Collisions::ObjectToTile(DynamicObject* obj, Tile * tile)
 			else if (obj->GetID() == TexID::Shroom)
 			{
 				((Mushroom*)obj)->SetOnGround(true);
-				obj->SetPosition(sf::Vector2f(obj->GetPosition().x, (tile->GetPosition().y - (tile->GetOrigin().y * sY)*3)));
-				obj->GetBBox()->Update(obj->GetBBox()->GetSprite()->getPosition() - sf::Vector2f((float)obj->GetSprite()->GetTextureSize().x + 4, -(float)obj->GetSprite()->GetTextureSize().y));
+				obj->SetPosition(sf::Vector2f(obj->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (obj->GetOrigin().y * sY) + 4.f));
+				obj->GetBBox()->Update(obj->GetPosition());
 			}
 			else
 			{
@@ -540,7 +545,7 @@ void Collisions::ObjectToTile(DynamicObject* obj, Tile * tile)
 					{
 						((Enemy*)obj)->SetOnGround(true);
 					}
-					else if (obj->GetID() == TexID::ShroomBB)
+					else if (obj->GetID() == TexID::Shroom)
 					{
 						((Mushroom*)obj)->SetOnGround(true);
 					}
@@ -685,6 +690,13 @@ void Collisions::ColObjectToColObject(Object * colObj1, Object * colObj2)
 				EnemyToEnemy((Enemy*)colObj1, (Enemy*)colObj2);
 			}
 		}
+		else if ((col1Typ == (int)TexID::ShroomBB) && (col2Typ == (int)TexID::BoxBB))
+		{
+			if (colObj1->GetActive() && colObj2->GetActive())
+			{
+				QBoxHit((Mushroom*)colObj1, (QBox*)colObj2);
+			}
+		}
 	}
 }
 
@@ -720,7 +732,7 @@ void Collisions::QBoxHit(Player * ply, QBox* box)
 		{
 			//ply->UpdateFitness(100);
 			//add to the level
-			//Game::GetGameMgr()->GetLevel()->AddObject(obj->GetPosition() - sf::Vector2f(0, (obj->GetOrigin().y * sY) * 2.f - 20.f));
+			Game::GetGameMgr()->GetLevel()->AddObject(sf::Vector2f(box->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * sY) - (box->GetOrigin().y * sY) + 4.f));
 
 			box->SetJustHit(true);
 		}
@@ -744,6 +756,19 @@ void Collisions::QBoxHit(Player * ply, QBox* box)
 		//set to left of qbox
 		ply->SetPosition(sf::Vector2f((box->GetPosition().x + box->GetOrigin().x * sX) + (ply->GetOrigin().x * sX) - 7.5f, ply->GetPosition().y));
 		ply->GetBBox()->Update(sf::Vector2f(ply->GetPosition().x, ply->GetPosition().y + 3.5f));
+		break;
+	}
+}
+
+void Collisions::QBoxHit(Mushroom* shm, QBox* box)
+{
+	switch (GetDirTravelling(shm))
+	{
+	case DDIR:
+		//set to top of qbox
+		shm->SetPosition(sf::Vector2f(shm->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * sY) - (shm->GetOrigin().y * sY) + 4.f));
+		shm->GetBBox()->Update(shm->GetPosition());
+		shm->SetOnGround(true);
 		break;
 	}
 }

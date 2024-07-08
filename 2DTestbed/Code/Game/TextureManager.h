@@ -11,7 +11,7 @@ enum class TexID
 	Background,
 	Mario, MarioBB, MarioSmlBB, Super, SuperBB,
 	Koopa, KoopaBB, Bill, BillBB, Rex, RexBB, RexSmlBB, PPlant, PPlantBB, Chuck, ChuckBB,
-	Coin, CoinBB, YCoin, YcoinBB, Shroom, ShroomBB, ChkPnt, ChkPntBB, Goal, GoalBB, QBox, SBox, BreakingBox, BoxBB,
+	Coin, CoinBB, YCoin, YcoinBB, ChkPnt, ChkPntBB, Shroom, ShroomBB,  Goal, GoalBB, QBox, SBox, BreakingBox, BoxBB,
 	Pipe1, Pipe2, Pipe3, Name, Time, Max,
 };
 

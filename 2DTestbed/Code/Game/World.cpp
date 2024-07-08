@@ -7,6 +7,7 @@
 
 #include "../Collisions/BoundingBox.h"
 #include "../Collisions/Collisions.h"
+#include "../GameObjects/Collectables.h"
 #include "../GameObjects/Koopa.h"
 #include "../GameObjects/Bill.h"
 #include "../GameObjects/Rex.h"
@@ -110,7 +111,8 @@ void World::CheckIsInView()
 
 void World::AddObject(const sf::Vector2f& pos)
 {
-	//m_objects.push_back(std::make_unique<StaticObject>(TexID::Shroom, (int)TexID::ShroomBB, true, pos));
+	m_objects.push_back(std::make_unique<Mushroom>(pos));
+	//((Mushroom*)m_objects.back().get())->SetOnGround(true);
 }
 
 void World::AddEnemies()

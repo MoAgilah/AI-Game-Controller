@@ -10,7 +10,7 @@
 class Sprite
 {
 public:
-	Sprite();
+	Sprite() = default;
 	explicit Sprite(TexID id);
 	virtual ~Sprite() = default;
 
@@ -42,7 +42,6 @@ private:
 
 	TexID m_texID;
 	sf::Sprite m_sprite;
-	sf::Texture m_texture;
 	sf::Vector2u m_frameSize;
 };
 

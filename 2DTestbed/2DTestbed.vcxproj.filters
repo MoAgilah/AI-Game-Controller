@@ -82,9 +82,6 @@
     <Filter Include="Source Files\Utilities">
       <UniqueIdentifier>{4d8f9274-f969-48f2-a751-f73326dedef4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\GameObjects\Objects">
-      <UniqueIdentifier>{e22cd43b-c194-41c8-b335-af7ae20b85bd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\GameObjects\Collectables">
       <UniqueIdentifier>{814790be-f987-47e5-bd6f-ffe858cea289}</UniqueIdentifier>
     </Filter>
@@ -299,9 +296,6 @@
     <ClInclude Include="Code\Utilities\MathHelper.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="Code\GameObjects\Object.h">
-      <Filter>Header Files\GameObjects\Objects</Filter>
-    </ClInclude>
     <ClInclude Include="Code\GameStates\GameState.h">
       <Filter>Header Files\GameStates</Filter>
     </ClInclude>
@@ -343,6 +337,9 @@
     </ClInclude>
     <ClInclude Include="Code\GameObjects\Box.h">
       <Filter>Header Files\GameObjects\Box</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameObjects\Object.h">
+      <Filter>Header Files\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

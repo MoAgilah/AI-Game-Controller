@@ -6,11 +6,11 @@ int YCoin::s_collected = 1;
 StaticCollectable::StaticCollectable(TexID sprID, TexID boxID, const sf::Vector2f& initPos)
 	: Object(sprID, boxID)
 {
-	SetInitialDirection(false);
+	SetInitialDirection(true);
 	SetDirection(GetInitialDirection());
 	SetInitialPosition(initPos);
 	SetPosition(GetInitialPosition());
-	GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
+	GetBBox()->Update(GetPosition());
 }
 
 StaticCollectable::StaticCollectable(AnimatedSprite* sprite, TexID boxId, const sf::Vector2f& initPos)
@@ -20,7 +20,7 @@ StaticCollectable::StaticCollectable(AnimatedSprite* sprite, TexID boxId, const 
 	SetDirection(GetInitialDirection());
 	SetInitialPosition(initPos);
 	SetPosition(GetInitialPosition());
-	GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
+	GetBBox()->Update(GetPosition());
 }
 
 Coin::Coin(const sf::Vector2f& initPos)
@@ -87,7 +87,6 @@ void YCoin::ResolveCollisions(Tile* tile)
 CheckPoint::CheckPoint(const sf::Vector2f& initPos)
 	: StaticCollectable(TexID::ChkPnt, TexID::ChkPntBB, initPos)
 {
-	GetBBox()->Update(GetBBox()->GetSprite()->getPosition() - sf::Vector2f((float)GetSprite()->GetTextureSize().x+4, 0));
 }
 
 void CheckPoint::Update(float deltaTime)
@@ -116,7 +115,6 @@ DynamicCollectable::DynamicCollectable(TexID sprID, TexID boxID, const sf::Vecto
 Mushroom::Mushroom(const sf::Vector2f& initPos)
 	: DynamicCollectable(TexID::Shroom, TexID::ShroomBB, initPos)
 {
-	GetBBox()->Update(GetBBox()->GetSprite()->getPosition() - sf::Vector2f((float)GetSprite()->GetTextureSize().x + 4, -(float)GetSprite()->GetTextureSize().y));
 }
 
 void Mushroom::Update(float deltaTime)
@@ -150,7 +148,7 @@ void Mushroom::Update(float deltaTime)
 	//check for leftmost and rightmost boundary
 	if (GetPosition().x < GetOrigin().x || GetPosition().x > 11776 - GetOrigin().x)
 	{
-		//Move(-GetXVelocity() * FPS * deltaTime, 0);
+		Move(-GetXVelocity() * FPS * deltaTime, 0);
 		SetDirection(!GetDirection());
 	}
 
@@ -172,6 +170,8 @@ void Mushroom::ResolveCollisions(Tile* tile)
 Goal::Goal(const sf::Vector2f& initPos)
 	: DynamicCollectable(TexID::Goal, TexID::GoalBB, initPos)
 {
+	SetInitialDirection(true);
+	SetDirection(GetInitialDirection());
 }
 
 void Goal::Update(float deltaTime)
