@@ -5,16 +5,17 @@
 #include "../Game/Constants.h"
 
 Rex::Rex(bool dir, const sf::Vector2f& initPos)
-	: Enemy(TexID::Rex, TexID::RexBB, AnimationData{ 3,2,false,0.5f }, 2)
+	: Enemy(TexID::Rex, TexID::RexBB, AnimationData{ 3, 2, false, 0.5f }, 2)
 {
 	SetInitialDirection(dir);
 	SetDirection(GetInitialDirection());
 	SetInitialPosition(initPos);
 	SetPosition(GetInitialPosition());
-	GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
 
 	std::vector<int> frames{ 2, 2, 1 };
 	static_cast<AnimatedSprite*>(GetSprite())->SetFrames(frames);
+
+	//DecrementLife();
 }
 
 void Rex::Reset()
@@ -36,6 +37,7 @@ void Rex::DecrementLife()
 	{
 		static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(1);
 		GetBBox()->SetTexture(TexID::RexSmlBB);
+		m_squished = true;
 	}
 
 	Enemy::DecrementLife();
@@ -89,18 +91,18 @@ void Rex::UpdateBoundingBox()
 {
 	if (Tall())
 	{
-		if (GetDirection())
-		{
-			GetBBox()->Update(sf::Vector2f(GetPosition().x - 4.f, GetPosition().y + 18.5f));
-		}
-		else
-		{
-			GetBBox()->Update(sf::Vector2f(GetPosition().x + 4.f, GetPosition().y + 18.5f));
-		}
+		GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
 	}
 	else
 	{
-		Enemy::UpdateBoundingBox();
+		if (GetDirection())
+		{
+			GetBBox()->Update(sf::Vector2f(GetPosition().x - 6, GetPosition().y + 17));
+		}
+		else
+		{
+			GetBBox()->Update(sf::Vector2f(GetPosition().x + 6, GetPosition().y + 17));
+		}
 	}
 }
 

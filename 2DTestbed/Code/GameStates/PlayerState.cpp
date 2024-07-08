@@ -140,22 +140,22 @@ void CrouchingState::Resume()
 	//get current position
 	sf::Vector2f pos = player->GetPosition();
 
-	if (player->GetIsSuper())
-	{
-		//adjust bbox position
-		if (player->GetDirection())
-			player->GetBBox()->Update(sf::Vector2f(player->GetPosition().x - 1.f, player->GetPosition().y + 22.f));
-		else
-			player->GetBBox()->Update(sf::Vector2f(player->GetPosition().x + 1.f, player->GetPosition().y + 22.f));
-	}
-	else
-	{
-		//adjust bbox position
-		if (player->GetDirection())
-			player->GetBBox()->Update(sf::Vector2f(player->GetPosition().x - 2.f, player->GetPosition().y + 12.f));
-		else
-			player->GetBBox()->Update(sf::Vector2f(player->GetPosition().x + 2.f, player->GetPosition().y + 12.f));
-	}
+	//if (player->GetIsSuper())
+	//{
+	//	//adjust bbox position
+	//	if (player->GetDirection())
+	//		player->GetBBox()->Update(sf::Vector2f(player->GetPosition().x - 1.f, player->GetPosition().y + 22.f));
+	//	else
+	//		player->GetBBox()->Update(sf::Vector2f(player->GetPosition().x + 1.f, player->GetPosition().y + 22.f));
+	//}
+	//else
+	//{
+	//	//adjust bbox position
+	//	if (player->GetDirection())
+	//		player->GetBBox()->Update(sf::Vector2f(player->GetPosition().x - 2.f, player->GetPosition().y + 12.f));
+	//	else
+	//		player->GetBBox()->Update(sf::Vector2f(player->GetPosition().x + 2.f, player->GetPosition().y + 12.f));
+	//}
 
 	PlayerState::Resume();
 }

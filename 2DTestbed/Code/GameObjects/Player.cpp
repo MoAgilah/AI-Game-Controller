@@ -33,6 +33,8 @@ void Player::Update(float deltaTime)
 
 	ProcessInput();
 
+	UpdateBoundingBox();
+
 	m_stateMgr.Update(deltaTime);
 
 	static_cast<AnimatedSprite*>(GetSprite())->Update(deltaTime);
@@ -177,7 +179,6 @@ void Player::Reset()
 
 		//adjust position
 		SetPosition(GetPosition() + sf::Vector2f(0, m_heightDiff));
-		GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
 	}
 
 	DynamicObject::Reset();
@@ -220,7 +221,6 @@ void Player::SetIsSuper(bool super)
 			GetSprite()->SetFrameSize(sf::Vector2u(GetSprite()->GetTextureSize().x / 4, GetSprite()->GetTextureSize().y / 14));
 			GetBBox()->SetTexture(TexID::SuperBB);
 			SetPosition(GetPosition() - sf::Vector2f(0, m_heightDiff));
-			GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
 		}
 	}
 	else
@@ -231,7 +231,6 @@ void Player::SetIsSuper(bool super)
 			GetSprite()->SetFrameSize(sf::Vector2u(GetSprite()->GetTextureSize().x / 4, GetSprite()->GetTextureSize().y / 14));
 			GetBBox()->SetTexture(TexID::MarioBB);
 			SetPosition(GetPosition() + sf::Vector2f(0, m_heightDiff));
-			GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
 		}
 	}
 }
@@ -279,6 +278,33 @@ void Player::ResolveCollisions(Object* other)
 
 void Player::ResolveCollisions(Tile* tile)
 {
+
+}
+
+void Player::UpdateBoundingBox()
+{
+	if (GetIsCrouched())
+	{
+		if (GetIsSuper())
+		{
+			if (GetDirection())
+				GetBBox()->Update(sf::Vector2f(GetPosition().x - 1.f, GetPosition().y + 22.f));
+			else
+				GetBBox()->Update(sf::Vector2f(GetPosition().x + 1.f, GetPosition().y + 22.f));
+		}
+		else
+		{
+			//adjust bbox position
+			if (GetDirection())
+				GetBBox()->Update(sf::Vector2f(GetPosition().x - 2.f, GetPosition().y + 12.f));
+			else
+				GetBBox()->Update(sf::Vector2f(GetPosition().x + 2.f, GetPosition().y + 12.f));
+		}
+	}
+	else
+	{
+		GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
+	}
 }
 
 void Player::ProcessInput()
@@ -300,22 +326,10 @@ void Player::ProcessInput()
 			if (m_super)
 			{
 				GetBBox()->SetTexture(TexID::MarioSmlBB);
-
-				//adjust bbox position
-				if (GetDirection())
-					GetBBox()->Update(sf::Vector2f(GetPosition().x - 1.f, GetPosition().y + 22.f));
-				else
-					GetBBox()->Update(sf::Vector2f(GetPosition().x + 1.f, GetPosition().y + 22.f));
 			}
 			else
 			{
 				GetBBox()->SetTexture(TexID::MarioSmlBB);
-
-				//adjust bbox position
-				if (GetDirection())
-					GetBBox()->Update(sf::Vector2f(GetPosition().x - 2.f, GetPosition().y + 12.f));
-				else
-					GetBBox()->Update(sf::Vector2f(GetPosition().x + 2.f, GetPosition().y + 12.f));
 			}
 
 			SetIsCrouched(true);
@@ -334,7 +348,6 @@ void Player::ProcessInput()
 				GetBBox()->SetTexture(TexID::MarioBB);
 
 			SetPosition(GetPosition());
-			GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
 		}
 	}
 }

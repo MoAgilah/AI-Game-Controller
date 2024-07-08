@@ -79,11 +79,11 @@ void Enemy::UpdateBoundingBox()
 	if (GetDirection())
 	{
 		//+
-		GetBBox()->Update(sf::Vector2f(GetPosition().x - 2, GetPosition().y));
+		GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y));
 	}
 	else
 	{
 		//-
-		GetBBox()->Update(sf::Vector2f(GetPosition().x + 2, GetPosition().y));
+		GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y));
 	}
 }

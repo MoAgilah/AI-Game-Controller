@@ -110,7 +110,7 @@ public:
 	void Move(float x, float y);
 	void Move(const sf::Vector2f& pos);
 
-
+	virtual void UpdateBoundingBox() {}
 private:
 
 	sf::Vector2f m_velocity;

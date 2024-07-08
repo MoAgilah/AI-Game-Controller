@@ -30,7 +30,7 @@ public:
 
 	void SetTimeLeftActive(float time) { m_timeLeftActive = time; }
 
-	virtual void UpdateBoundingBox();
+	void UpdateBoundingBox() override;
 private:
 	virtual void Animate(float deltaTime) = 0;
 

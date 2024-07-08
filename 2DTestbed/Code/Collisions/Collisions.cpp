@@ -186,7 +186,6 @@ void Collisions::PlayerToTile(Player* ply, Tile * tile)
 		{
 			//move to top of tile
 			ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (ply->GetOrigin().y * sY) +4.f));
-			ply->GetBBox()->Update(sf::Vector2f(ply->GetPosition().x, ply->GetPosition().y + 3.5f));
 			ply->SetOnGround(true);
 			return;
 		}
@@ -206,7 +205,6 @@ void Collisions::PlayerToTile(Player* ply, Tile * tile)
 			{
 				//move to top of tile
 				ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (ply->GetOrigin().y * sY) + 4.f));
-				ply->GetBBox()->Update(sf::Vector2f(ply->GetPosition().x, ply->GetPosition().y + 3.5f));
 				ply->SetOnGround(true);
 				return;
 			}
@@ -233,18 +231,15 @@ void Collisions::PlayerToTile(Player* ply, Tile * tile)
 		case DDIR:
 			//move to tile top
 			ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (ply->GetOrigin().y * sY) + 4.f));
-			ply->GetBBox()->Update(sf::Vector2f(ply->GetPosition().x, ply->GetPosition().y + 3.5f));
 			ply->SetOnGround(true);
 			return;
 		case RDIR:
 			//move to closest point without a collision to remove jittering
 			ply->SetPosition(sf::Vector2f((tile->GetPosition().x - tile->GetOrigin().x * sX) - (ply->GetOrigin().x * sX) + 7.5f, ply->GetPosition().y));
-			ply->GetBBox()->Update(sf::Vector2f(ply->GetPosition().x, ply->GetPosition().y + 3.5f));
 			return;
 		case LDIR:
 			//move to closest point without a collision to remove jittering
 			ply->SetPosition(sf::Vector2f((tile->GetPosition().x + tile->GetOrigin().x * sX) + (ply->GetOrigin().x * sX) - 7.5f, ply->GetPosition().y));
-			ply->GetBBox()->Update(sf::Vector2f(ply->GetPosition().x, ply->GetPosition().y + 3.5f));
 			return;
 		}
 	}
@@ -266,7 +261,6 @@ void Collisions::PlayerToTile(Player* ply, Tile * tile)
 				case DDIR:
 					//set to slope top
 					ply->SetPosition(sf::Vector2f(ply->GetPosition().x, tmpSlope[i].getPosition().y - tmpSlope[i].getOrigin().y * sY - (ply->GetOrigin().y * sX)));
-					ply->GetBBox()->Update(sf::Vector2f(ply->GetPosition().x, ply->GetPosition().y + 3.5f));
 					ply->SetOnGround(true);
 					colFound = true;
 					return;
@@ -403,13 +397,11 @@ void Collisions::ObjectToTile(DynamicObject* obj, Tile * tile)
 				{
 					//set to tile top
 					rtmp->SetPosition(sf::Vector2f(obj->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (obj->GetOrigin().y * sY) + 3.5f));
-					rtmp->GetBBox()->Update(sf::Vector2f(rtmp->GetPosition().x, rtmp->GetPosition().y + 3.5f));
 				}
 				else//if squished
 				{
 					//set to tile top
 					rtmp->SetPosition(sf::Vector2f(obj->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (obj->GetOrigin().y * sY) + 4.f));
-					rtmp->GetBBox()->Update(sf::Vector2f(rtmp->GetPosition().x, rtmp->GetPosition().y + 3.5f));
 				}
 			}
 			else if (obj->GetID() == TexID::Shroom || obj->GetID() == TexID::Goal)
@@ -447,13 +439,11 @@ void Collisions::ObjectToTile(DynamicObject* obj, Tile * tile)
 				{
 					//set to minimum closest dist
 					rtmp->SetPosition(sf::Vector2f((tile->GetPosition().x - tile->GetOrigin().x * sX) - (obj->GetOrigin().x * sX) + 7, obj->GetPosition().y));
-					rtmp->GetBBox()->Update(sf::Vector2f(rtmp->GetPosition().x, rtmp->GetPosition().y + 3.5f));
 				}
 				else//squished
 				{
 					//set to minimum closest dist
 					rtmp->SetPosition(sf::Vector2f((tile->GetPosition().x - tile->GetOrigin().x * sX) - (obj->GetOrigin().x * sX) + 3, obj->GetPosition().y));
-					rtmp->GetBBox()->Update(sf::Vector2f(rtmp->GetPosition().x, rtmp->GetPosition().y + 3.5f));
 				}
 			}
 			else if (obj->GetBBox()->GetID() == (int)TexID::ShroomBB)
@@ -488,13 +478,11 @@ void Collisions::ObjectToTile(DynamicObject* obj, Tile * tile)
 				{
 					//set to minimum closest dist
 					rtmp->SetPosition(sf::Vector2f((tile->GetPosition().x + tile->GetOrigin().x * sX) + (obj->GetOrigin().x * sX) - 7.f, obj->GetPosition().y));
-					rtmp->GetBBox()->Update(sf::Vector2f(rtmp->GetPosition().x, rtmp->GetPosition().y + 3.5f));
 				}
 				else//squished
 				{
 					//set to minimum closest dist
 					rtmp->SetPosition(sf::Vector2f((tile->GetPosition().x + tile->GetOrigin().x * sX) + (obj->GetOrigin().x * sX) - 3.f, obj->GetPosition().y));
-					rtmp->GetBBox()->Update(sf::Vector2f(rtmp->GetPosition().x, rtmp->GetPosition().y + 3.5f));
 				}
 			}
 			else if (obj->GetBBox()->GetID() == (int)TexID::ShroomBB)
@@ -605,20 +593,17 @@ void Collisions::EnemyToEnemy(Enemy * enmy1, Enemy* enmy2)
 			{
 				//resolve collision
 				enmy1->SetPosition(sf::Vector2f((enmy2->GetPosition().x - enmy2->GetOrigin().x * sX) - (enmy1->GetOrigin().x * sX) + 8, enmy1->GetPosition().y));
-				enmy1->GetBBox()->Update(sf::Vector2f(enmy1->GetPosition().x, enmy1->GetPosition().y + 3.5f));
 			}
 			else//squished
 			{
 				//resolve collision
 				enmy1->SetPosition(sf::Vector2f((enmy2->GetPosition().x - enmy2->GetOrigin().x * sX) - (enmy1->GetOrigin().x * sX) + 7.f, enmy1->GetPosition().y));
-				enmy1->GetBBox()->Update(sf::Vector2f(enmy1->GetPosition().x, enmy1->GetPosition().y + 3.5f));
 			}
 		}
 		else
 		{
 			//resolve collision
 			enmy1->SetPosition(sf::Vector2f((enmy2->GetPosition().x - enmy2->GetOrigin().x * sX) - (enmy1->GetOrigin().x * sX) + 7.5f, enmy1->GetPosition().y));
-			enmy1->GetBBox()->Update(sf::Vector2f(enmy1->GetPosition().x, enmy1->GetPosition().y + 3.5f));
 		}
 		break;
 	case LDIR:
@@ -628,20 +613,17 @@ void Collisions::EnemyToEnemy(Enemy * enmy1, Enemy* enmy2)
 			{
 				//resolve collision
 				enmy1->SetPosition(sf::Vector2f((enmy2->GetPosition().x - enmy2->GetOrigin().x * sX) - (enmy1->GetOrigin().x * sX) - 8.f, enmy1->GetPosition().y));
-				enmy1->GetBBox()->Update(sf::Vector2f(enmy1->GetPosition().x, enmy1->GetPosition().y + 3.5f));
 			}
 			else//suqished
 			{
 				//resolve collision
 				enmy1->SetPosition(sf::Vector2f((enmy2->GetPosition().x + enmy2->GetOrigin().x * sX) + (enmy1->GetOrigin().x * sX) - 7.f, enmy1->GetPosition().y));
-				enmy1->GetBBox()->Update(sf::Vector2f(enmy1->GetPosition().x, enmy1->GetPosition().y + 3.5f));
 			}
 		}
 		else
 		{
 			//resolve collision
 			enmy1->SetPosition(sf::Vector2f((enmy2->GetPosition().x + enmy2->GetOrigin().x * sX) + (enmy1->GetOrigin().x * sX) - 7.5f, enmy1->GetPosition().y));
-			enmy1->GetBBox()->Update(sf::Vector2f(enmy1->GetPosition().x, enmy1->GetPosition().y + 3.5f));
 		}
 		break;
 	};
@@ -738,24 +720,20 @@ void Collisions::QBoxHit(Player * ply, QBox* box)
 		}
 		//resove collision
 		ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (box->GetPosition().y + box->GetOrigin().y * sY) + (ply->GetOrigin().y * sY) + 4.f));
-		ply->GetBBox()->Update(sf::Vector2f(ply->GetPosition().x, ply->GetPosition().y + 3.5f));
 		ply->ForceFall();//make mario fall
 		break;
 	case DDIR:
 		//set to top of qbox
 		ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * sY) - (ply->GetOrigin().y * sY) + 4.f));
-		ply->GetBBox()->Update(sf::Vector2f(ply->GetPosition().x, ply->GetPosition().y + 3.5f));
 		ply->SetOnGround(true);
 		break;
 	case RDIR:
 		//set to right of qbox
 		ply->SetPosition(sf::Vector2f((box->GetPosition().x - box->GetOrigin().x * sX) - (ply->GetOrigin().x * sX) + 7.5f, ply->GetPosition().y));
-		ply->GetBBox()->Update(sf::Vector2f(ply->GetPosition().x, ply->GetPosition().y + 3.5f));
 		break;
 	case LDIR:
 		//set to left of qbox
 		ply->SetPosition(sf::Vector2f((box->GetPosition().x + box->GetOrigin().x * sX) + (ply->GetOrigin().x * sX) - 7.5f, ply->GetPosition().y));
-		ply->GetBBox()->Update(sf::Vector2f(ply->GetPosition().x, ply->GetPosition().y + 3.5f));
 		break;
 	}
 }
@@ -792,7 +770,6 @@ void Collisions::SBoxHit(Player * ply, SBox* box)
 			else
 			{
 				ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * sY) - (ply->GetOrigin().y * sY) + 4.f));
-				ply->GetBBox()->Update(sf::Vector2f(ply->GetPosition().x, ply->GetPosition().y + 3.5f));
 				ply->SetOnGround(true);
 			}
 			break;

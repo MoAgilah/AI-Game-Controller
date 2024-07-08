@@ -9,11 +9,10 @@
 #include "../Game/Constants.h"
 
 DebugState::DebugState(Game* gameMgr)
-	: GameState("Debug"), m_col{ Collisions::Get()->GetTile(302, 11).GetPosition() - sf::Vector2f(7.f,0)}, spr(TexID::GoalPost)
+	: GameState("Debug"), m_col{ false, Collisions::Get()->GetTile(10, 8).GetPosition()}, m_col2{ true, Collisions::Get()->GetTile(3, 8).GetPosition() }
 {
-	/*spr.SetPosition(Collisions::Get()->GetTile(302, 7).GetPosition());
-	spr.SetScale(sf::Vector2f(sX, sY));*/
-	m_col.SetActive(true);
+	/*m_col.SetActive(true);
+	m_col2.SetActive(true);*/
 	m_gameMgr.reset(gameMgr);
 }
 
@@ -47,6 +46,7 @@ void DebugState::Update(float deltaTime)
 	m_aabb.Update(tmp.GetPosition());*/
 
 	m_col.Update(deltaTime);
+	m_col2.Update(deltaTime);
 
 	m_gameMgr->GetLevel()->Update(deltaTime);
 	m_gameMgr->GetPlayer()->Update(deltaTime);
@@ -62,7 +62,8 @@ void DebugState::Render(sf::RenderWindow& window)
 	if (m_col.GetActive())
 		m_col.Render(window);
 
-	/*spr.Render(window);*/
+	if (m_col2.GetActive())
+		m_col2.Render(window);
 
 	m_gameMgr->GetPlayer()->Render(window);
 
