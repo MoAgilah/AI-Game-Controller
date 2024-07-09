@@ -44,6 +44,7 @@ public:
 
 	int GetObjectNum() const { return m_objectID; }
 
+	AnimatedSprite* GetAnimSpr() { return static_cast<AnimatedSprite*>(GetSprite()); }
 	Sprite* GetSprite() { return m_sprite.get(); }
 	BoundingBox* GetBBox() { return m_bbox.get(); }
 

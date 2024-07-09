@@ -27,12 +27,12 @@ Coin::Coin(const sf::Vector2f& initPos)
 	: StaticCollectable(new AnimatedSprite(TexID::Coin, 1,4, FPS, false, 0.5f), TexID::CoinBB, initPos)
 {
 	std::vector<int> frames{ 4 };
-	static_cast<AnimatedSprite*>(GetSprite())->SetFrames(frames);
+	GetAnimSpr()->SetFrames(frames);
 }
 
 void Coin::Update(float deltaTime)
 {
-	static_cast<AnimatedSprite*>(GetSprite())->Update(deltaTime);
+	GetAnimSpr()->Update(deltaTime);
 }
 
 int Coin::Collect()
@@ -53,12 +53,12 @@ YCoin::YCoin(const sf::Vector2f& initPos)
 	: StaticCollectable(new AnimatedSprite(TexID::YCoin, 1,6, FPS, false, 0.5f), TexID::YcoinBB, initPos)
 {
 	std::vector<int> frames{ 6 };
-	static_cast<AnimatedSprite*>(GetSprite())->SetFrames(frames);
+	GetAnimSpr()->SetFrames(frames);
 }
 
 void YCoin::Update(float deltaTime)
 {
-	static_cast<AnimatedSprite*>(GetSprite())->Update(deltaTime);
+	GetAnimSpr()->Update(deltaTime);
 }
 
 void YCoin::Reset()

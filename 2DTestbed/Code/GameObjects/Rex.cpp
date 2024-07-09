@@ -13,21 +13,21 @@ Rex::Rex(bool dir, const sf::Vector2f& initPos)
 	SetPosition(GetInitialPosition());
 
 	std::vector<int> frames{ 2, 3, 2, 1 };
-	static_cast<AnimatedSprite*>(GetSprite())->SetFrames(frames);
+	GetAnimSpr()->SetFrames(frames);
 
 	//DecrementLife();
 }
 
 void Rex::Reset()
 {
-	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(RexAnims::WALKTALL);
+	GetAnimSpr()->ChangeAnim(RexAnims::WALKTALL);
 	GetBBox()->SetTexture(TexID::RexBB);
 	Enemy::Reset();
 }
 
 void Rex::Die()
 {
-	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(RexAnims::FLATTEN);
+	GetAnimSpr()->ChangeAnim(RexAnims::FLATTEN);
 	SetTimeLeftActive(0.5f);
 }
 
@@ -35,7 +35,7 @@ void Rex::DecrementLife()
 {
 	if (Tall())
 	{
-		static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(RexAnims::TRANSITION);
+		GetAnimSpr()->ChangeAnim(RexAnims::TRANSITION);
 		GetBBox()->SetTexture(TexID::RexSmlBB);
 		m_transitioning = true;
 		m_squished = true;
@@ -46,7 +46,7 @@ void Rex::DecrementLife()
 
 void Rex::Animate(float deltaTime)
 {
-	auto animSpr = static_cast<AnimatedSprite*>(GetSprite());
+	auto animSpr = GetAnimSpr();
 	animSpr->Update(deltaTime);
 
 	if (m_transitioning)

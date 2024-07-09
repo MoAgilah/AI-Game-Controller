@@ -12,18 +12,19 @@ Chuck::Chuck(bool dir, const sf::Vector2f& initPos)
 	GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
 
 	std::vector<int> frames{ 7, 3, 1, 5, 9, 3 };
-	static_cast<AnimatedSprite*>(GetSprite())->SetFrames(frames);
+	GetAnimSpr()->SetFrames(frames);
 }
 
 void Chuck::Reset()
 {
-	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(ChuckAnims::LOOK);
+	GetAnimSpr()->ChangeAnim(ChuckAnims::LOOK);
 	Enemy::Reset();
 }
 
 void Chuck::Die()
 {
-	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(ChuckAnims::WHIPLASH);
+	GetAnimSpr()->ChangeAnim(ChuckAnims::WHIPLASH);
+	SetTimeLeftActive(0.5f);
 }
 
 void Chuck::DecrementLife()
@@ -33,7 +34,7 @@ void Chuck::DecrementLife()
 	if (GetIsAlive())
 	{
 		m_tookHit = true;
-		static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(ChuckAnims::HIT);
+		GetAnimSpr()->ChangeAnim(ChuckAnims::HIT);
 	}
 }
 
@@ -47,7 +48,7 @@ void Chuck::ResolveCollisions(Tile* tile)
 
 void Chuck::Animate(float deltaTime)
 {
-	auto animSpr = static_cast<AnimatedSprite*>(GetSprite());
+	auto animSpr = GetAnimSpr();
 	animSpr->Update(deltaTime);
 
 	m_waitTime += deltaTime;

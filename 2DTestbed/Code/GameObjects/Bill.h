@@ -17,6 +17,7 @@ public:
 
 	void Render(sf::RenderWindow& window) final;
 
+	AnimatedSprite* GetAnimSpr() = delete;
 	bool GetOnGround() const = delete;
 	void SetOnGround(bool grnd) = delete;
 	bool GetAirbourne() const = delete;

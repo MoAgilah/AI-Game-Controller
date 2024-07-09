@@ -23,7 +23,7 @@ Player::Player(const sf::Vector2f& pos)
 	m_fragShader.setUniform("flashColor", sf::Glsl::Vec4(1, 1, 1, 1));
 
 	std::vector<int> frames{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4 };
-	static_cast<AnimatedSprite*>(GetSprite())->SetFrames(frames);
+	GetAnimSpr()->SetFrames(frames);
 }
 
 void Player::Update(float deltaTime)
@@ -37,7 +37,9 @@ void Player::Update(float deltaTime)
 
 	m_stateMgr.Update(deltaTime);
 
-	static_cast<AnimatedSprite*>(GetSprite())->Update(deltaTime);
+	auto animSpr = GetAnimSpr();
+
+	animSpr->Update(deltaTime);
 
 	if (GetIsAlive())
 	{
@@ -104,16 +106,16 @@ void Player::Update(float deltaTime)
 			}
 		}
 
-		if ((m_keyStates[LEFT_KEY] == false && m_keyStates[RIGHT_KEY] == false))
+		if ((m_keyStates[Keys::LEFT_KEY] == false && m_keyStates[Keys::RIGHT_KEY] == false))
 			SetXVelocity(0.0f);
 
-		if (!m_keyStates[JUMP_KEY] && !m_keyStates[SJUMP_KEY])
+		if (!m_keyStates[Keys::JUMP_KEY] && !m_keyStates[Keys::SJUMP_KEY])
 			m_cantjump = m_cantSpinJump = false;
 
 		if (GetVelocity() == sf::Vector2f())
 		{
-			if (!m_keyStates[DOWN_KEY] && !m_keyStates[UP_KEY])
-				static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(IDLE);
+			if (!m_keyStates[Keys::DOWN_KEY] && !m_keyStates[Keys::UP_KEY])
+				animSpr->ChangeAnim(MarioAnims::IDLE);
 		}
 
 		//decomposition of movement
@@ -169,7 +171,7 @@ void Player::Render(sf::RenderWindow& window)
 
 void Player::Reset()
 {
-	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(0);
+	GetAnimSpr()->ChangeAnim(MarioAnims::IDLE);
 	if (GetSprite()->GetTexID() != TexID::Mario)
 	{
 		//change spr and bbox
@@ -316,7 +318,7 @@ void Player::ProcessInput()
 
 	m_stateMgr.ProcessInputs();
 
-	if (m_keyStates[DOWN_KEY])
+	if (m_keyStates[Keys::DOWN_KEY])
 	{
 		if (!GetIsCrouched())
 		{
@@ -356,62 +358,62 @@ void Player::Input()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad4))
 	{
-		m_keyStates[LEFT_KEY] = true;
+		m_keyStates[Keys::LEFT_KEY] = true;
 	}
 	else
 	{
-		if (m_keyStates[LEFT_KEY])
-			m_keyStates[LEFT_KEY] = false;
+		if (m_keyStates[Keys::LEFT_KEY])
+			m_keyStates[Keys::LEFT_KEY] = false;
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad6))
 	{
-		m_keyStates[RIGHT_KEY] = true;
+		m_keyStates[Keys::RIGHT_KEY] = true;
 	}
 	else
 	{
-		if (m_keyStates[RIGHT_KEY])
-			m_keyStates[RIGHT_KEY] = false;
+		if (m_keyStates[Keys::RIGHT_KEY])
+			m_keyStates[Keys::RIGHT_KEY] = false;
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
-		m_keyStates[JUMP_KEY] = true;
+		m_keyStates[Keys::JUMP_KEY] = true;
 	}
 	else
 	{
-		if (m_keyStates[JUMP_KEY])
-			m_keyStates[JUMP_KEY] = false;
+		if (m_keyStates[Keys::JUMP_KEY])
+			m_keyStates[Keys::JUMP_KEY] = false;
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
-		m_keyStates[SJUMP_KEY] = true;
+		m_keyStates[Keys::SJUMP_KEY] = true;
 	}
 	else
 	{
-		if (m_keyStates[SJUMP_KEY])
-			m_keyStates[SJUMP_KEY] = false;
+		if (m_keyStates[Keys::SJUMP_KEY])
+			m_keyStates[Keys::SJUMP_KEY] = false;
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad8))
 	{
-		m_keyStates[UP_KEY] = true;
+		m_keyStates[Keys::UP_KEY] = true;
 	}
 	else
 	{
-		if (m_keyStates[UP_KEY])
-			m_keyStates[UP_KEY] = false;
+		if (m_keyStates[Keys::UP_KEY])
+			m_keyStates[Keys::UP_KEY] = false;
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad2))
 	{
-		m_keyStates[DOWN_KEY] = true;
+		m_keyStates[Keys::DOWN_KEY] = true;
 	}
 	else
 	{
-		if (m_keyStates[DOWN_KEY])
-			m_keyStates[DOWN_KEY] = false;
+		if (m_keyStates[Keys::DOWN_KEY])
+			m_keyStates[Keys::DOWN_KEY] = false;
 	}
 }
 
@@ -452,22 +454,22 @@ void AutomatedPlayer::Input()
 		std::string move = "";
 		switch (i)
 		{
-		case LEFT_KEY:
+		case Keys::LEFT_KEY:
 			move = "left";
 			break;
-		case RIGHT_KEY:
+		case Keys::RIGHT_KEY:
 			move = "rght";
 			break;
-		case UP_KEY:
+		case Keys::UP_KEY:
 			move = "look";
 			break;
-		case DOWN_KEY:
+		case Keys::DOWN_KEY:
 			move = "down";
 			break;
-		case JUMP_KEY:
+		case Keys::JUMP_KEY:
 			move = "jump";
 			break;
-		case SJUMP_KEY:
+		case Keys::SJUMP_KEY:
 			move = "sJmp";
 			break;
 		default:

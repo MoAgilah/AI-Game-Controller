@@ -12,19 +12,20 @@ Koopa::Koopa(bool dir, const sf::Vector2f& initPos)
 	GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
 
 	std::vector<int> frames{ 2, 3, 1 };
-	static_cast<AnimatedSprite*>(GetSprite())->SetFrames(frames);
-	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(KoopaAnims::WALK);
+	auto animSpr = GetAnimSpr();
+	animSpr->SetFrames(frames);
+	animSpr->ChangeAnim(KoopaAnims::WALK);
 }
 
 void Koopa::Reset()
 {
-	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(KoopaAnims::WALK);
+	GetAnimSpr()->ChangeAnim(KoopaAnims::WALK);
 	Enemy::Reset();
 }
 
 void Koopa::Die()
 {
-	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(KoopaAnims::COMPRESS);
+	GetAnimSpr()->ChangeAnim(KoopaAnims::COMPRESS);
 	SetTimeLeftActive(0.5f);
 }
 
@@ -38,7 +39,7 @@ void Koopa::ResolveCollisions(Tile* tile)
 
 void Koopa::Animate(float deltaTime)
 {
-	static_cast<AnimatedSprite*>(GetSprite())->Update(deltaTime);
+	GetAnimSpr()->Update(deltaTime);
 
 	SetPrevPosition(GetPosition());
 

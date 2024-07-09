@@ -56,6 +56,8 @@ public:
 
 	void Update(float deltaTime) final;
 
+	AnimatedSprite* GetAnimSpr() = delete;
+
 	void ResolveCollisions(Object* other);
 	void ResolveCollisions(Tile* tile);
 };
@@ -85,6 +87,8 @@ public:
 
 	void Update(float deltaTime) final;
 
+	AnimatedSprite* GetAnimSpr() = delete;
+
 	void ResolveCollisions(Object* other);
 	void ResolveCollisions(Tile* tile);
 };
@@ -96,6 +100,8 @@ public:
 	~Goal() final = default;
 
 	void Update(float deltaTime) final;
+
+	AnimatedSprite* GetAnimSpr() = delete;
 
 	void ResolveCollisions(Object* other);
 	void ResolveCollisions(Tile* tile);

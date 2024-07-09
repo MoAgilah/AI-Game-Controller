@@ -8,9 +8,9 @@
 
 #include "../GameStates/GameStateMgr.h"
 
-enum Anims { IDLE, LOOKUP, JUMP, FALL, RUNJUMP, SKID, SLIDE, VICTORY, CROUCH, GROW, DIE, MOVING, RUNNING, SPINJUMP };
+enum MarioAnims { IDLE, LOOKUP, JUMP, FALL, RUNJUMP, SKID, SLIDE, VICTORY, CROUCH, GROW, DIE, MOVING, RUNNING, SPINJUMP };
 
-enum Actions { LEFT_KEY, RIGHT_KEY, UP_KEY, DOWN_KEY, JUMP_KEY, SJUMP_KEY };
+enum Keys { LEFT_KEY, RIGHT_KEY, UP_KEY, DOWN_KEY, JUMP_KEY, SJUMP_KEY, MAXKEYS };
 
 class Player : public DynamicObject
 {
@@ -33,7 +33,7 @@ public:
 
 	void IncreaseCoins(int num) { m_coinTotal = +num; }
 
-	const std::array<bool, MAXKEYS>& GetKeyStates() const { return m_keyStates; }
+	const std::array<bool, Keys::MAXKEYS>& GetKeyStates() const { return m_keyStates; }
 	void SetKeyState(int index, bool val);
 
 	bool GetIfInvulnerable() const { return m_justBeenHit; }
@@ -84,7 +84,7 @@ private:
 	bool m_onGround = false;
 	bool m_airbourne = false;
 
-	std::array<bool, MAXKEYS> m_keyStates;
+	std::array<bool, Keys::MAXKEYS> m_keyStates;
 
 	int m_coinTotal = 0;
 

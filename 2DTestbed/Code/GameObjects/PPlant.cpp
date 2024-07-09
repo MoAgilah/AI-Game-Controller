@@ -12,12 +12,12 @@ PPlant::PPlant(const sf::Vector2f& initPos)
 	GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
 
 	std::vector<int> cframes{ 1, 2 };
-	static_cast<AnimatedSprite*>(GetSprite())->SetFrames(cframes);
+	GetAnimSpr()->SetFrames(cframes);
 }
 
 void PPlant::Reset()
 {
-	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(PPlantAnims::SINK);
+	GetAnimSpr()->ChangeAnim(PPlantAnims::SINK);
 	Enemy::Reset();
 }
 
@@ -36,7 +36,7 @@ void PPlant::ResolveCollisions(Tile* tile)
 
 void PPlant::Animate(float deltaTime)
 {
-	auto animSpr = static_cast<AnimatedSprite*>(GetSprite());
+	auto animSpr = GetAnimSpr();
 
 	SetPrevPosition(GetPosition());
 
