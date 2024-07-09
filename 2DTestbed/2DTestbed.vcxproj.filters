@@ -73,9 +73,6 @@
     <Filter Include="Header Files\Utilities">
       <UniqueIdentifier>{36e40ffc-78be-4991-9049-a9f4778ec180}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utilities">
-      <UniqueIdentifier>{4d8f9274-f969-48f2-a751-f73326dedef4}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Collisions\BoundingBox.cpp">

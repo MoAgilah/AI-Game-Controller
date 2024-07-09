@@ -9,10 +9,10 @@
 #include "../Game/Constants.h"
 
 DebugState::DebugState(Game* gameMgr)
-	: GameState("Debug"), m_col{ false, Collisions::Get()->GetTile(10, 8).GetPosition()}, m_col2{ true, Collisions::Get()->GetTile(3, 8).GetPosition() }
+	: GameState("Debug"), m_col{ true, Collisions::Get()->GetTile(4, 11).GetPosition()}, m_col2{ false, Collisions::Get()->GetTile(11,11).GetPosition() }
 {
-	/*m_col.SetActive(true);
-	m_col2.SetActive(true);*/
+	m_col.SetActive(true);
+	m_col2.SetActive(true);
 	m_gameMgr.reset(gameMgr);
 }
 
@@ -41,9 +41,6 @@ void DebugState::Update(float deltaTime)
 
 	if (Automated)
 		CtrlMgr::GetCtrlMgr()->GetController()->Update();
-
-	/*Tile tmp = Collisions::Get()->GetTile(6,8);
-	m_aabb.Update(tmp.GetPosition());*/
 
 	m_col.Update(deltaTime);
 	m_col2.Update(deltaTime);

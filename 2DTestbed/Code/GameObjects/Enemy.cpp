@@ -17,10 +17,10 @@ void Enemy::Update(float deltaTime)
 {
 	if (GetActive())
 	{
+		Animate(deltaTime);
+
 		if (GetIsAlive())
 		{
-			Animate(deltaTime);
-
 			UpdateBoundingBox();
 		}
 		else
