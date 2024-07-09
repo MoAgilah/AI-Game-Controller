@@ -8,6 +8,7 @@
 #include "../Collisions/BoundingBox.h"
 #include "../Collisions/Collisions.h"
 #include "../GameObjects/Collectables.h"
+#include "../GameObjects/Box.h"
 #include "../GameObjects/Koopa.h"
 #include "../GameObjects/Bill.h"
 #include "../GameObjects/Rex.h"
@@ -112,7 +113,6 @@ void World::CheckIsInView()
 void World::AddObject(const sf::Vector2f& pos)
 {
 	m_objects.push_back(std::make_unique<Mushroom>(pos));
-	//((Mushroom*)m_objects.back().get())->SetOnGround(true);
 }
 
 void World::AddEnemies()
@@ -198,56 +198,47 @@ void World::AddEnemies()
 
 void World::AddObjects()
 {
-	/*Tile tmp = Collisions::Get()->GetTile(17, 5);
-	m_objects.push_back(std::make_unique<Object>(TexID::YCoin, 1, 1, (int)TexID::YcoinBB, true, true, 1.f, sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * 2.f - 4.f)));
+	Tile tmp = Collisions::Get()->GetTile(17, 5);
+	m_objects.push_back(std::make_unique<YCoin>(sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * 2.f - 4.f)));
 
 	tmp = Collisions::Get()->GetTile(37, 8);
-	m_objects.push_back(std::make_unique<Object>(TexID::QBox, 2, 1, (int)TexID::BoxBB, true, false, 1.f, tmp.GetPosition()));
-	std::vector<int> frames{ 1, 1 };
-	m_objects.back()->GetAnimSpr()->SetFrames(frames);
+	m_objects.push_back(std::make_unique<QBox>(tmp.GetPosition()));
 
 	tmp = Collisions::Get()->GetTile(88, 5);
-	m_objects.push_back(std::make_unique<Object>(TexID::YCoin, 1, 1, (int)TexID::YcoinBB, true, true, 1.f, sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * 2.f - 4.f)));
+	m_objects.push_back(std::make_unique<YCoin>(sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * 2.f - 4.f)));
 
 	tmp = Collisions::Get()->GetTile(102, 11);
-	m_objects.push_back(std::make_unique<Object>(TexID::Shroom, 1, 1, (int)TexID::ShroomBB, true, true, 1.f, tmp.GetPosition()));
+	m_objects.push_back(std::make_unique<Mushroom>(tmp.GetPosition()));
 
 	tmp = Collisions::Get()->GetTile(120, 8);
-	m_objects.push_back(std::make_unique<Object>(TexID::Box, 1, 1, (int)TexID::BoxBB, true, true, 1.f, tmp.GetPosition()));
+	m_objects.push_back(std::make_unique<SBox>(tmp.GetPosition()));
 
 	tmp = Collisions::Get()->GetTile(121, 8);
-	m_objects.push_back(std::make_unique<Object>(TexID::Box, 1, 1, (int)TexID::BoxBB, true, true, 1.f, tmp.GetPosition()));
+	m_objects.push_back(std::make_unique<SBox>(tmp.GetPosition()));
 
 	tmp = Collisions::Get()->GetTile(151, 9);
-	m_objects.push_back(std::make_unique<Object>(TexID::ChkPnt, 1, 1, (int)TexID::ChkPntBB, true, true, 1.f, sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY + 10.f)));
+	m_objects.push_back(std::make_unique<CheckPoint>(sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY + 10.f)));
 
 	tmp = Collisions::Get()->GetTile(179, 3);
-	m_objects.push_back(std::make_unique<Object>(TexID::YCoin, 1, 1, (int)TexID::YcoinBB, true, true, 1.f, sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * 2.f - 4.f)));
-
-	frames = { 1, 4 };
+	m_objects.push_back(std::make_unique<YCoin>(sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * 2.f - 4.f)));
 
 	tmp = Collisions::Get()->GetTile(239, 8);
-	m_objects.push_back(std::make_unique<Object>(TexID::SBox, 2, 4, (int)TexID::BoxBB, true, false, 0.25f, tmp.GetPosition()));
-	m_objects.back()->GetAnimSpr()->SetFrames(frames);
+	m_objects.push_back(std::make_unique<SBox>(tmp.GetPosition()));
 
 	tmp = Collisions::Get()->GetTile(243, 9);
-	m_objects.push_back(std::make_unique<Object>(TexID::SBox, 2, 4, (int)TexID::BoxBB, true, false, 0.25f, tmp.GetPosition()));
-	m_objects.back()->GetAnimSpr()->SetFrames(frames);
+	m_objects.push_back(std::make_unique<SBox>(tmp.GetPosition()));
 
 	tmp = Collisions::Get()->GetTile(247, 8);
-	m_objects.push_back(std::make_unique<Object>(TexID::SBox, 2, 4, (int)TexID::BoxBB, true, false, 0.25f, tmp.GetPosition()));
-	m_objects.back()->GetAnimSpr()->SetFrames(frames);
+	m_objects.push_back(std::make_unique<SBox>(tmp.GetPosition()));
 
 	tmp = Collisions::Get()->GetTile(243, 5);
-	m_objects.push_back(std::make_unique<Object>(TexID::QBox, 2, 1, (int)TexID::BoxBB, true, false, 1.f, tmp.GetPosition()));
-	frames = { 1, 1 };
-	m_objects.back()->GetAnimSpr()->SetFrames(frames);
+	m_objects.push_back(std::make_unique<QBox>(tmp.GetPosition()));
 
 	tmp = Collisions::Get()->GetTile(288, 5);
-	m_objects.push_back(std::make_unique<Object>(TexID::YCoin, 1, 1, (int)TexID::YcoinBB, true, true, 1.f, sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * 2.f - 4.f)));
+	m_objects.push_back(std::make_unique<YCoin>(sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * 2.f - 4.f)));
 
 	tmp = Collisions::Get()->GetTile(302, 11);
-	m_objects.push_back(std::make_unique<Object>(TexID::Goal, 1, 1, (int)TexID::GoalBB, true, true, 1.f, sf::Vector2f(tmp.GetPosition().x - 7.f, tmp.GetPosition().y)));*/
+	m_objects.push_back(std::make_unique<Goal>(sf::Vector2f(tmp.GetPosition().x - 7.f, tmp.GetPosition().y)));
 }
 
 void World::AddForeGroundSprites()
