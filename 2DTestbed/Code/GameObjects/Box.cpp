@@ -158,7 +158,7 @@ void SBox::Scatter()
 
 	if (animSpr->PlayedOnce())
 	{
-		animSpr->ChangeAnim(ShatterAnims::FAll);
+		animSpr->ChangeAnim(ShatterAnims::DROP);
 		animSpr->SetShouldLoop(true);
 	}
 }

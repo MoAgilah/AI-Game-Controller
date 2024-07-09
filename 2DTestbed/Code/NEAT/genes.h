@@ -69,18 +69,18 @@ struct SNeuronGene
 struct SLinkGene
 {
 	//the IDs of the two neurons this link connects
-	int     FromNeuron,
-			ToNeuron;
+	int     FromNeuron{},
+		ToNeuron{};
 
-	double	dWeight;
+	double	dWeight{};
 
   //flag to indicate if this link is currently enabled or not
-  bool    bEnabled;
+	bool    bEnabled{};
 
   //flag to indicate if this link is recurrent or not
-  bool    bRecurrent;
+	bool    bRecurrent{};
 
-	int     InnovationID;
+	int     InnovationID{};
 
   SLinkGene(){}
 

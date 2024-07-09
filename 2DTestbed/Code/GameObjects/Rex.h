@@ -1,7 +1,7 @@
 #pragma once
 #include "../GameObjects/Enemy.h"
 
-enum RexAnims { WALK, TRANSITION, SQUISHED, DIE, MAXANIM };
+enum RexAnims { WALKTALL, TRANSITION, WALKSHORT, FLATTEN };
 
 class Rex : public Enemy
 {

@@ -17,7 +17,7 @@ PPlant::PPlant(const sf::Vector2f& initPos)
 
 void PPlant::Reset()
 {
-	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(PPlantAnims::FALL);
+	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(PPlantAnims::SINK);
 	Enemy::Reset();
 }
 
@@ -60,7 +60,7 @@ void PPlant::Animate(float deltaTime)
 	if (currentPos.y > 390)
 	{
 		SetDirection(false);
-		animSpr->ChangeAnim(PPlantAnims::FALL);
+		animSpr->ChangeAnim(PPlantAnims::SINK);
 		//set wait timer
 		//go up
 	}
@@ -68,7 +68,7 @@ void PPlant::Animate(float deltaTime)
 	if (currentPos.y < 160)
 	{
 		SetDirection(true);
-		animSpr->ChangeAnim(PPlantAnims::JUMP);
+		animSpr->ChangeAnim(PPlantAnims::BITING);
 		//go down
 	}
 }

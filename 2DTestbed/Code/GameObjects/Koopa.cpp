@@ -24,7 +24,7 @@ void Koopa::Reset()
 
 void Koopa::Die()
 {
-	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(KoopaAnims::DIE);
+	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(KoopaAnims::COMPRESS);
 	SetTimeLeftActive(0.5f);
 }
 

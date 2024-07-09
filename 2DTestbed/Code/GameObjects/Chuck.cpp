@@ -2,8 +2,6 @@
 #include "../Collisions/Collisions.h"
 #include "../Game/Constants.h"
 
-//enum ChuckAnims { LOOK, JUMP, CLAP, RUN, HIT, DIE, MAXANIM };
-
 Chuck::Chuck(bool dir, const sf::Vector2f& initPos)
 	: Enemy(TexID::Chuck, TexID::ChuckBB, AnimationData{ 6, 9, false, 0.5f }, 2)
 {
@@ -25,7 +23,7 @@ void Chuck::Reset()
 
 void Chuck::Die()
 {
-	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(ChuckAnims::DIE);
+	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(ChuckAnims::WHIPLASH);
 }
 
 void Chuck::DecrementLife()
@@ -68,7 +66,7 @@ void Chuck::Animate(float deltaTime)
 		{
 			if (m_waitTime > 0.5f)
 			{
-				animSpr->ChangeAnim(ChuckAnims::JUMP);
+				animSpr->ChangeAnim(ChuckAnims::LEAP);
 				SetYVelocity(-c_jumpSpeed);
 			}
 			else

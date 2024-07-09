@@ -120,6 +120,7 @@ Mushroom::Mushroom(const sf::Vector2f& initPos)
 void Mushroom::Update(float deltaTime)
 {
 	SetPrevPosition(GetPosition());
+	UpdateBoundingBox();
 
 	if (GetDirection())
 	{
@@ -177,6 +178,8 @@ Goal::Goal(const sf::Vector2f& initPos)
 
 void Goal::Update(float deltaTime)
 {
+	UpdateBoundingBox();
+
 	if (GetOnGround())
 	{
 		IncAirTime(-deltaTime);

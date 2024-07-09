@@ -30,7 +30,7 @@ public:
 
 	void SetTimeLeftActive(float time) { m_timeLeftActive = time; }
 
-	void UpdateBoundingBox() override;
+	void UpdateBoundingBox() override { GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f)); };
 private:
 	virtual void Animate(float deltaTime) = 0;
 

@@ -73,17 +73,3 @@ void Enemy::DecrementLife()
 	if (--m_numLives == 0)
 		Die();
 }
-
-void Enemy::UpdateBoundingBox()
-{
-	if (GetDirection())
-	{
-		//+
-		GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y));
-	}
-	else
-	{
-		//-
-		GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y));
-	}
-}

@@ -20,14 +20,14 @@ Rex::Rex(bool dir, const sf::Vector2f& initPos)
 
 void Rex::Reset()
 {
-	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(RexAnims::WALK);
+	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(RexAnims::WALKTALL);
 	GetBBox()->SetTexture(TexID::RexBB);
 	Enemy::Reset();
 }
 
 void Rex::Die()
 {
-	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(RexAnims::DIE);
+	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(RexAnims::FLATTEN);
 	SetTimeLeftActive(0.5f);
 }
 
@@ -53,7 +53,7 @@ void Rex::Animate(float deltaTime)
 	{
 		if (animSpr->PlayedNumTimes(1))
 		{
-			animSpr->ChangeAnim(RexAnims::SQUISHED);
+			animSpr->ChangeAnim(RexAnims::WALKSHORT);
 			m_transitioning = false;
 		}
 	}

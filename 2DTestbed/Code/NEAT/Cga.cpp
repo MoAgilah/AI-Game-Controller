@@ -170,7 +170,7 @@ std::vector<CNeuralNet*> Cga::Epoch(const std::vector<double> &FitnessScores)
 	{
 	  //this is the amount of offspring this species is required to
 	  // spawn. Rounded simply rounds the double up or down.
-	  int NumToSpawn = std::round(m_vecSpecies[spc].NumToSpawn());
+	  int NumToSpawn = (int)std::round(m_vecSpecies[spc].NumToSpawn());
 
 	  bool bChosenBestYet = false;
 
@@ -603,7 +603,7 @@ CGenome Cga::Crossover(CGenome& mum, CGenome& dad)
 	else if (curDad->InnovationID < curMum->InnovationID)
 	{
 	  //if dad is fittest add gene
-	  if (best = DAD)
+	  if (best == DAD)
 	  {
 		SelectedGene = *curDad;
 	  }

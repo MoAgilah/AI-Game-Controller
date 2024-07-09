@@ -34,7 +34,7 @@ enum innov_type
 struct	SInnovation
 {
   //new neuron or new link?
-  innov_type  InnovationType;
+	innov_type  InnovationType{};
 
   int         InnovationID;
 
@@ -47,8 +47,8 @@ struct	SInnovation
 
   //if the innovation is a neuron we need to keep a record
   //of its position in the tree (for display purposes)
-  double      dSplitY;
-  double		dSplitX;
+  double    dSplitY;
+  double	dSplitX;
 
 	SInnovation(int        in,
 			  int        out,

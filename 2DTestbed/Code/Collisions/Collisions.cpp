@@ -408,13 +408,11 @@ void Collisions::ObjectToTile(DynamicObject* obj, Tile * tile)
 			{
 				((DynamicCollectable*)obj)->SetOnGround(true);
 				obj->SetPosition(sf::Vector2f(obj->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (obj->GetOrigin().y * sY)));
-				obj->GetBBox()->Update(obj->GetPosition());
 			}
 			else
 			{
 				//set to tile top
 				obj->SetPosition(sf::Vector2f(obj->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (obj->GetOrigin().y * sY) + 2.5f));
-				obj->GetBBox()->Update(sf::Vector2f(obj->GetPosition().x, obj->GetPosition().y + 3.5f));
 			}
 
 			if ((int)obj->GetID() >= (int)EnmyBgn && (int)obj->GetID() <= (int)EnmyEnd)
@@ -450,13 +448,11 @@ void Collisions::ObjectToTile(DynamicObject* obj, Tile * tile)
 			{
 				//set to minimum closest dist
 				obj->SetPosition(sf::Vector2f((tile->GetPosition().x - tile->GetOrigin().x * sX) - (obj->GetOrigin().x * sX) -4.f, obj->GetPosition().y));
-				obj->GetBBox()->Update(obj->GetPosition());
 			}
 			else
 			{
 				//set to minimum closest dist
 				obj->SetPosition(sf::Vector2f((tile->GetPosition().x - tile->GetOrigin().x * sX) - (obj->GetOrigin().x * sX) + 7.5f, obj->GetPosition().y));
-				obj->GetBBox()->Update(sf::Vector2f(obj->GetPosition().x, obj->GetPosition().y + 3.5f));
 			}
 
 			//flip direction
@@ -489,13 +485,11 @@ void Collisions::ObjectToTile(DynamicObject* obj, Tile * tile)
 			{
 				//set to minimum closest dist
 				obj->SetPosition(sf::Vector2f((tile->GetPosition().x + tile->GetOrigin().x * sX) + (obj->GetOrigin().x * sX) + 4.f, obj->GetPosition().y));
-				obj->GetBBox()->Update(sf::Vector2f(obj->GetPosition().x, obj->GetPosition().y + 3.5f));
 			}
 			else
 			{
 				//set to minimum closest dist
 				obj->SetPosition(sf::Vector2f((tile->GetPosition().x + tile->GetOrigin().x * sX) + (obj->GetOrigin().x * sX) - 7.5f, obj->GetPosition().y));
-				obj->GetBBox()->Update(obj->GetPosition());
 			}
 
 			//flip direction
@@ -528,7 +522,6 @@ void Collisions::ObjectToTile(DynamicObject* obj, Tile * tile)
 				{
 				case DDIR:
 					obj->SetPosition(sf::Vector2f(obj->GetPosition().x, tmpSlope[i].getPosition().y - tmpSlope[i].getOrigin().y*sY - obj->GetOrigin().y*sX));
-					obj->GetBBox()->Update(sf::Vector2f(obj->GetPosition().x, obj->GetPosition().y + 3.5f));
 					if ((int)obj->GetID() >= (int)EnmyBgn && (int)obj->GetID() <= (int)EnmyEnd)
 					{
 						((Enemy*)obj)->SetOnGround(true);
@@ -745,7 +738,6 @@ void Collisions::QBoxHit(Mushroom* shm, QBox* box)
 	case DDIR:
 		//set to top of qbox
 		shm->SetPosition(sf::Vector2f(shm->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * sY) - (shm->GetOrigin().y * sY) + 4.f));
-		shm->GetBBox()->Update(shm->GetPosition());
 		shm->SetOnGround(true);
 		break;
 	}

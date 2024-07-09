@@ -87,8 +87,6 @@ public:
 
 	void ResolveCollisions(Object* other);
 	void ResolveCollisions(Tile* tile);
-
-	
 };
 
 class Goal : public DynamicCollectable
@@ -109,5 +107,5 @@ public:
 private:
 
 	float m_travelTime = 0;
-	const float c_maxTravelTime = 2.15;
+	const float c_maxTravelTime = 2.15f;
 };
