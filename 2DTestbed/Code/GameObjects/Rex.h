@@ -1,6 +1,8 @@
 #pragma once
 #include "../GameObjects/Enemy.h"
 
+enum RexAnims { WALK, TRANSITION, SQUISHED, DIE, MAXANIM };
+
 class Rex : public Enemy
 {
 public:
@@ -22,4 +24,5 @@ private:
 	void Animate(float deltaTime) final;
 
 	bool m_squished = false;
+	bool m_transitioning = false;
 };

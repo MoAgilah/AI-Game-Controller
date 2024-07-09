@@ -256,7 +256,6 @@
     <Image Include="Resources\Sprites\Background.png" />
     <Image Include="Resources\Sprites\Bill.png" />
     <Image Include="Resources\Sprites\BillBB.png" />
-    <Image Include="Resources\Sprites\Box.png" />
     <Image Include="Resources\Sprites\BoxBB.png" />
     <Image Include="Resources\Sprites\ChkPnt.png" />
     <Image Include="Resources\Sprites\ChkPntBB.png" />

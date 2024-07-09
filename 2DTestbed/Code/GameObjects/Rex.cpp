@@ -5,14 +5,14 @@
 #include "../Game/Constants.h"
 
 Rex::Rex(bool dir, const sf::Vector2f& initPos)
-	: Enemy(TexID::Rex, TexID::RexBB, AnimationData{ 3, 2, false, 0.5f }, 2)
+	: Enemy(TexID::Rex, TexID::RexBB, AnimationData{ 4, 3, false, 0.5f }, 2)
 {
 	SetInitialDirection(dir);
 	SetDirection(GetInitialDirection());
 	SetInitialPosition(initPos);
 	SetPosition(GetInitialPosition());
 
-	std::vector<int> frames{ 2, 2, 1 };
+	std::vector<int> frames{ 2, 3, 2, 1 };
 	static_cast<AnimatedSprite*>(GetSprite())->SetFrames(frames);
 
 	//DecrementLife();
@@ -20,14 +20,14 @@ Rex::Rex(bool dir, const sf::Vector2f& initPos)
 
 void Rex::Reset()
 {
-	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(0);
+	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(RexAnims::WALK);
 	GetBBox()->SetTexture(TexID::RexBB);
 	Enemy::Reset();
 }
 
 void Rex::Die()
 {
-	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(2);
+	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(RexAnims::DIE);
 	SetTimeLeftActive(0.5f);
 }
 
@@ -35,8 +35,9 @@ void Rex::DecrementLife()
 {
 	if (Tall())
 	{
-		static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(1);
+		static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(RexAnims::TRANSITION);
 		GetBBox()->SetTexture(TexID::RexSmlBB);
+		m_transitioning = true;
 		m_squished = true;
 	}
 
@@ -45,7 +46,17 @@ void Rex::DecrementLife()
 
 void Rex::Animate(float deltaTime)
 {
-	static_cast<AnimatedSprite*>(GetSprite())->Update(deltaTime);
+	auto animSpr = static_cast<AnimatedSprite*>(GetSprite());
+	animSpr->Update(deltaTime);
+
+	if (m_transitioning)
+	{
+		if (animSpr->PlayedNumTimes(1))
+		{
+			animSpr->ChangeAnim(RexAnims::SQUISHED);
+			m_transitioning = false;
+		}
+	}
 
 	SetPrevPosition(GetPosition());
 

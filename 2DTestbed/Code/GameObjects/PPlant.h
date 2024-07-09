@@ -1,6 +1,8 @@
 #pragma once
 #include "../GameObjects/Enemy.h"
 
+enum PPlantAnims { FALL, JUMP, MAXANIM };
+
 class PPlant : public Enemy
 {
 public:

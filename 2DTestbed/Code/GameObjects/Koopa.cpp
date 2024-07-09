@@ -3,7 +3,7 @@
 #include "../Game/Constants.h"
 
 Koopa::Koopa(bool dir, const sf::Vector2f& initPos)
-	: Enemy(TexID::Koopa, TexID::KoopaBB, AnimationData{2,1, false, 0.5f})
+	: Enemy(TexID::Koopa, TexID::KoopaBB, AnimationData{3, 3, false, 0.5f})
 {
 	SetInitialDirection(dir);
 	SetDirection(GetInitialDirection());
@@ -11,19 +11,20 @@ Koopa::Koopa(bool dir, const sf::Vector2f& initPos)
 	SetPosition(GetInitialPosition());
 	GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
 
-	std::vector<int> frames{ 1, 2, 1 };
+	std::vector<int> frames{ 2, 3, 1 };
 	static_cast<AnimatedSprite*>(GetSprite())->SetFrames(frames);
+	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(KoopaAnims::WALK);
 }
 
 void Koopa::Reset()
 {
-	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(0);
+	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(KoopaAnims::WALK);
 	Enemy::Reset();
 }
 
 void Koopa::Die()
 {
-	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(2);
+	static_cast<AnimatedSprite*>(GetSprite())->ChangeAnim(KoopaAnims::DIE);
 	SetTimeLeftActive(0.5f);
 }
 

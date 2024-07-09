@@ -24,6 +24,8 @@ private:
 	bool m_justHit = false;
 };
 
+enum QBoxAnims { DUD, ROTATE, MAXANIM };
+
 class QBox : public Box
 {
 public:
@@ -37,6 +39,9 @@ public:
 	void ResolveCollisions(Object* other);
 	void ResolveCollisions(Tile* tile);
 };
+
+enum SBoxAnims { WAIT, SPIN, MAXANIM };
+enum ShatterAnims { SCATTER, FAll, MAXANIM };
 
 class SBox : public Box
 

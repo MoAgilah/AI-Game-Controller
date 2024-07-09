@@ -1,6 +1,8 @@
 #pragma once
 #include "../GameObjects/Enemy.h"
 
+enum KoopaAnims { SLIDE, WALK, DIE, MAXANIM };
+
 class Koopa : public Enemy
 {
 public:
