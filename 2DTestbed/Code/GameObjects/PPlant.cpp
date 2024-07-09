@@ -10,9 +10,7 @@ PPlant::PPlant(const sf::Vector2f& initPos)
 	SetInitialPosition(initPos);
 	SetPosition(GetInitialPosition());
 	GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
-
-	std::vector<int> cframes{ 1, 2 };
-	GetAnimSpr()->SetFrames(cframes);
+	GetAnimSpr()->SetFrames({ 1, 2 });
 }
 
 void PPlant::Reset()

@@ -10,10 +10,8 @@ Koopa::Koopa(bool dir, const sf::Vector2f& initPos)
 	SetInitialPosition(initPos);
 	SetPosition(GetInitialPosition());
 	GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
-
-	std::vector<int> frames{ 2, 3, 1 };
 	auto animSpr = GetAnimSpr();
-	animSpr->SetFrames(frames);
+	animSpr->SetFrames({ 2, 3, 1 });
 	animSpr->ChangeAnim(KoopaAnims::WALK);
 }
 

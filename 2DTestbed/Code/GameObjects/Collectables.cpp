@@ -26,8 +26,7 @@ StaticCollectable::StaticCollectable(AnimatedSprite* sprite, TexID boxId, const 
 Coin::Coin(const sf::Vector2f& initPos)
 	: StaticCollectable(new AnimatedSprite(TexID::Coin, 1,4, FPS, false, 0.5f), TexID::CoinBB, initPos)
 {
-	std::vector<int> frames{ 4 };
-	GetAnimSpr()->SetFrames(frames);
+	GetAnimSpr()->SetFrames({ 4 });
 }
 
 void Coin::Update(float deltaTime)
@@ -52,8 +51,7 @@ void Coin::ResolveCollisions(Tile* tile)
 YCoin::YCoin(const sf::Vector2f& initPos)
 	: StaticCollectable(new AnimatedSprite(TexID::YCoin, 1,6, FPS, false, 0.5f), TexID::YcoinBB, initPos)
 {
-	std::vector<int> frames{ 6 };
-	GetAnimSpr()->SetFrames(frames);
+	GetAnimSpr()->SetFrames({ 6 });
 }
 
 void YCoin::Update(float deltaTime)

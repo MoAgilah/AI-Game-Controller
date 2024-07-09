@@ -11,11 +11,7 @@ Rex::Rex(bool dir, const sf::Vector2f& initPos)
 	SetDirection(GetInitialDirection());
 	SetInitialPosition(initPos);
 	SetPosition(GetInitialPosition());
-
-	std::vector<int> frames{ 2, 3, 2, 1 };
-	GetAnimSpr()->SetFrames(frames);
-
-	//DecrementLife();
+	GetAnimSpr()->SetFrames({ 2, 3, 2, 1 });
 }
 
 void Rex::Reset()

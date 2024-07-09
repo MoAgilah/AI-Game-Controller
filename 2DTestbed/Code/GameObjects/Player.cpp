@@ -22,8 +22,7 @@ Player::Player(const sf::Vector2f& pos)
 	m_fragShader.loadFromFile("Resources/Shaders/FlashShader.frag", sf::Shader::Fragment);
 	m_fragShader.setUniform("flashColor", sf::Glsl::Vec4(1, 1, 1, 1));
 
-	std::vector<int> frames{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4 };
-	GetAnimSpr()->SetFrames(frames);
+	GetAnimSpr()->SetFrames({ 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4 });
 }
 
 void Player::Update(float deltaTime)

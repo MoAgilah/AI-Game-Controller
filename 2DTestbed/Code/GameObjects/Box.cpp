@@ -28,9 +28,8 @@ void Box::WasJustHit()
 QBox::QBox(const sf::Vector2f& initPos)
 	: Box(new AnimatedSprite(TexID::QBox, 2, 4, FPS, false, 0.35f), TexID::BoxBB, initPos)
 {
-	std::vector<int> frames{ 1, 4 };
 	auto animSpr = GetAnimSpr();
-	animSpr->SetFrames(frames);
+	animSpr->SetFrames({ 1, 4 });
 	animSpr->ChangeAnim(QBoxAnims::ROTATE);
 }
 
@@ -67,8 +66,7 @@ void QBox::ResolveCollisions(Tile* tile)
 SBox::SBox(const sf::Vector2f& initPos)
 	: Box(new AnimatedSprite(TexID::SBox, 2, 4, FPS, false, 0.35f), TexID::BoxBB, initPos)
 {
-	std::vector<int> frames{ 1, 4 };
-	GetAnimSpr()->SetFrames(frames);
+	GetAnimSpr()->SetFrames({ 1, 4 });
 }
 
 void SBox::Update(float deltaTime)

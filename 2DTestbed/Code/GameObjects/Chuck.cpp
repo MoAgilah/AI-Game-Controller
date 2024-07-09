@@ -10,9 +10,7 @@ Chuck::Chuck(bool dir, const sf::Vector2f& initPos)
 	SetInitialPosition(initPos);
 	SetPosition(GetInitialPosition());
 	GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
-
-	std::vector<int> frames{ 7, 3, 1, 5, 9, 3 };
-	GetAnimSpr()->SetFrames(frames);
+	GetAnimSpr()->SetFrames({ 7, 3, 1, 5, 9, 3 });
 }
 
 void Chuck::Reset()

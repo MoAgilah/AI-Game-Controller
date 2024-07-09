@@ -62,7 +62,7 @@ public:
 
 	void ChangeAnim(int animNum);
 
-	void SetFrames(std::span<int> numFrames);
+	void SetFrames(const std::vector<int>& numFrames);
 	void SetFrameData(int rows, int columns, const std::vector<int>& numFrames);
 
 	bool PlayedNumTimes(int val) const { return m_animCycles == val; }

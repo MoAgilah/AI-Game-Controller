@@ -92,7 +92,7 @@ void  AnimatedSprite::ChangeAnim(int animNum)
 	m_animation.m_current = animNum;
 }
 
-void AnimatedSprite::SetFrames(std::span<int> numFrames)
+void AnimatedSprite::SetFrames(const std::vector<int>& numFrames)
 {
 	m_numFrames.assign(numFrames.begin(), numFrames.end());
 	m_animation.m_max = m_numFrames[m_animation.m_current];
