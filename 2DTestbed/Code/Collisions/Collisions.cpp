@@ -107,7 +107,7 @@ void Collisions::ProcessCollisions(Object* gobj)
 	{
 		Tile* tile = m_grid[t];
 
-		if (tile->GetType() == EMPTY || gobj->GetID() == TexID::ChkPnt /*|| gobj->GetID() == TexID::Goal*/)
+		if (tile->GetType() == EMPTY || gobj->GetID() == TexID::ChkPnt)
 		{
 			continue;
 		}
@@ -230,16 +230,16 @@ void Collisions::PlayerToTile(Player* ply, Tile * tile)
 		{
 		case DDIR:
 			//move to tile top
-			ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (ply->GetOrigin().y * sY) + 4.f));
+			ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (ply->GetOrigin().y * sY) + 5.f));
 			ply->SetOnGround(true);
 			return;
 		case RDIR:
 			//move to closest point without a collision to remove jittering
-			ply->SetPosition(sf::Vector2f((tile->GetPosition().x - tile->GetOrigin().x * sX) - (ply->GetOrigin().x * sX) + 7.5f, ply->GetPosition().y));
+			ply->SetPosition(sf::Vector2f((tile->GetPosition().x - tile->GetOrigin().x * sX) - (ply->GetOrigin().x * sX) + 9.5f, ply->GetPosition().y));
 			return;
 		case LDIR:
 			//move to closest point without a collision to remove jittering
-			ply->SetPosition(sf::Vector2f((tile->GetPosition().x + tile->GetOrigin().x * sX) + (ply->GetOrigin().x * sX) - 7.5f, ply->GetPosition().y));
+			ply->SetPosition(sf::Vector2f((tile->GetPosition().x + tile->GetOrigin().x * sX) + (ply->GetOrigin().x * sX) - 9.5f, ply->GetPosition().y));
 			return;
 		}
 	}

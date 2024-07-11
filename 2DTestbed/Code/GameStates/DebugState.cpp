@@ -19,6 +19,8 @@ DebugState::DebugState(Game* gameMgr)
 void DebugState::Initialise()
 {
 	auto level = m_gameMgr->GetLevel();
+
+	level->AddObjects();
 	level->AddForeGroundSprites();
 }
 
@@ -42,8 +44,8 @@ void DebugState::Update(float deltaTime)
 	if (Automated)
 		CtrlMgr::GetCtrlMgr()->GetController()->Update();
 
-	m_col.Update(deltaTime);
-	m_col2.Update(deltaTime);
+	/*m_col.Update(deltaTime);
+	m_col2.Update(deltaTime);*/
 
 	m_gameMgr->GetLevel()->Update(deltaTime);
 	m_gameMgr->GetPlayer()->Update(deltaTime);
@@ -56,11 +58,11 @@ void DebugState::Render(sf::RenderWindow& window)
 
 	m_gameMgr->GetLevel()->Render(window);
 
-	if (m_col.GetActive())
+	/*if (m_col.GetActive())
 		m_col.Render(window);
 
 	if (m_col2.GetActive())
-		m_col2.Render(window);
+		m_col2.Render(window);*/
 
 	m_gameMgr->GetPlayer()->Render(window);
 

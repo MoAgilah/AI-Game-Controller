@@ -24,7 +24,7 @@ Object::Object(AnimatedSprite* sprite, TexID boxId)
 void Object::Render(sf::RenderWindow& window)
 {
 	m_sprite->Render(window);
-	m_bbox->Render(window);
+	//m_bbox->Render(window);
 }
 
 void Object::Reset()

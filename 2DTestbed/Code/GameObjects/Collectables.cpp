@@ -142,6 +142,7 @@ void Mushroom::Update(float deltaTime)
 	{
 		Move(GetXVelocity() * FPS * deltaTime, 0);
 		Collisions::Get()->ProcessCollisions(this);
+		UpdateBoundingBox();
 	}
 
 	//check for leftmost and rightmost boundary
@@ -155,6 +156,7 @@ void Mushroom::Update(float deltaTime)
 	{
 		Move(0, GetYVelocity() * FPS * deltaTime);
 		Collisions::Get()->ProcessCollisions(this);
+		UpdateBoundingBox();
 	}
 }
 
@@ -192,6 +194,7 @@ void Goal::Update(float deltaTime)
 	{
 		Move(0, GetYVelocity() * FPS * deltaTime);
 		Collisions::Get()->ProcessCollisions(this);
+		UpdateBoundingBox();
 	}
 
 	if (GetAirTime() < 0)

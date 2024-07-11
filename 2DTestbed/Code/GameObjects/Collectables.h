@@ -8,7 +8,7 @@ public:
 	StaticCollectable(AnimatedSprite* sprite, TexID boxId, const sf::Vector2f& initPos);
 	~StaticCollectable() override = default;
 
-	bool GetActive() const final { return m_collected && Object::GetActive(); }
+	bool GetActive() const final { return !m_collected && Object::GetActive(); }
 
 	void SetCollected() { m_collected = true; }
 private:

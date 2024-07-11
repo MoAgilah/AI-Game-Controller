@@ -51,6 +51,7 @@ void PPlant::Animate(float deltaTime)
 	{
 		Move(0, GetYVelocity() * FPS * deltaTime);
 		Collisions::Get()->ProcessCollisions(this);
+		UpdateBoundingBox();
 	}
 
 	sf::Vector2f currentPos = GetPosition();

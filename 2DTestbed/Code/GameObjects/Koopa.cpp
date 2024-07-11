@@ -63,6 +63,7 @@ void Koopa::Animate(float deltaTime)
 	{
 		Move(GetXVelocity() * FPS * deltaTime, 0);
 		Collisions::Get()->ProcessCollisions(this);
+		UpdateBoundingBox();
 	}
 
 	//check for leftmost and rightmost boundary
@@ -76,5 +77,6 @@ void Koopa::Animate(float deltaTime)
 	{
 		Move(0, GetYVelocity() * FPS * deltaTime);
 		Collisions::Get()->ProcessCollisions(this);
+		UpdateBoundingBox();
 	}
 }

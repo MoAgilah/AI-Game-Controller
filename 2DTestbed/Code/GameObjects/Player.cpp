@@ -29,7 +29,6 @@ void Player::Update(float deltaTime)
 		return;
 
 	ProcessInput();
-
 	UpdateBoundingBox();
 
 	m_stateMgr.Update(deltaTime);
@@ -121,6 +120,7 @@ void Player::Update(float deltaTime)
 			SetPrevPosition(GetPosition());
 			Move(sf::Vector2f(GetXVelocity() * FPS * deltaTime, 0));
 			Collisions::Get()->ProcessCollisions(this);
+			UpdateBoundingBox();
 		}
 
 		if (GetYVelocity() != 0)
@@ -128,11 +128,13 @@ void Player::Update(float deltaTime)
 			SetPrevPosition(GetPosition());
 			Move(sf::Vector2f(0, GetYVelocity() * FPS * deltaTime));
 			Collisions::Get()->ProcessCollisions(this);
+			UpdateBoundingBox();
 		}
 
 		if (GetPosition().x < (GetOrigin().x * sX) * 0.5)
 		{
 			Move(sf::Vector2f(-GetXVelocity() * FPS * deltaTime, 0));
+			UpdateBoundingBox();
 		}
 
 		if (GetPosition().x > RightMost)
@@ -302,7 +304,20 @@ void Player::UpdateBoundingBox()
 	}
 	else
 	{
-		GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
+		if (GetIsSuper())
+		{
+			if (GetDirection())
+				GetBBox()->Update(sf::Vector2f(GetPosition().x - 1.f, GetPosition().y + 3.5f));
+			else
+				GetBBox()->Update(sf::Vector2f(GetPosition().x + 1.f, GetPosition().y + 3.5f));
+		}
+		else
+		{
+			if (GetDirection())
+				GetBBox()->Update(sf::Vector2f(GetPosition().x - 2.f, GetPosition().y + 3.5f));
+			else
+				GetBBox()->Update(sf::Vector2f(GetPosition().x + 2.f, GetPosition().y + 3.5f));
+		}
 	}
 }
 
