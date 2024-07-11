@@ -20,8 +20,8 @@ void DebugState::Initialise()
 {
 	auto level = m_gameMgr->GetLevel();
 
-	level->AddObjects();
-	level->AddForeGroundSprites();
+	level->AddEnemies();
+	//level->AddForeGroundSprites();
 }
 
 void DebugState::Pause()

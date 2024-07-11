@@ -117,19 +117,14 @@ void World::AddObject(const sf::Vector2f& pos)
 
 void World::AddEnemies()
 {
-	Tile tmp/* = Collisions::Get()->GetTile(13, 5);
-	m_enemies.push_back(std::make_unique<Koopa>(false, tmp.GetPosition()))*/;
+	Tile tmp;
+	/*tmp = Collisions::Get()->GetTile(13, 5);
+	m_enemies.push_back(std::make_unique<Koopa>(false, tmp.GetPosition()));
 
 	tmp = Collisions::Get()->GetTile(32, 8);
-	m_enemies.push_back(std::make_unique<Bill>(false, tmp.GetPosition() - sf::Vector2f(0,-16)));
+	m_enemies.push_back(std::make_unique<Bill>(false, tmp.GetPosition() - sf::Vector2f(0, -16)));
 
-	/*tmp = Collisions::Get()->GetTile(203, 10);
-	m_enemies.push_back(std::make_unique<Bill>(true, tmp.GetPosition()));*/
-
-	tmp = Collisions::Get()->GetTile(227, 10);
-	m_enemies.push_back(std::make_unique<Bill>(true, tmp.GetPosition()));
-
-	/*tmp = Collisions::Get()->GetTile(33, 11);
+	tmp = Collisions::Get()->GetTile(33, 11);
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
 	tmp = Collisions::Get()->GetTile(47, 11);
@@ -148,62 +143,61 @@ void World::AddEnemies()
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
 	tmp = Collisions::Get()->GetTile(112, 11);
-	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));*/
+	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
-	/*
-	tmp = Collisions::Get()->GetTile(113, 9);
-	m_enemies.push_back(std::make_unique<PPlant>(sf::Vector2f(tmp.GetPosition().x + tmp.GetOrigin().x * sX, tmp.GetPosition().y - tmp.GetOrigin().y * sY)));
+	tmp = Collisions::Get()->GetTile(113, 10);
+	m_enemies.push_back(std::make_unique<PPlant>(tmp.GetPosition() + sf::Vector2f(18,0)));
 
 	tmp = Collisions::Get()->GetTile(138, 11);
-	m_enemies.push_back(std::make_unique<Rex>(false, .5f, sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY)));
+	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
-	tmp = Collisions::Get()->GetTile(139, 8);
-	m_enemies.push_back(std::make_unique<PPlant>(sf::Vector2f(tmp.GetPosition().x + tmp.GetOrigin().x * sX, tmp.GetPosition().y - tmp.GetOrigin().y * sY)));
+	tmp = Collisions::Get()->GetTile(139, 10);
+	m_enemies.push_back(std::make_unique<PPlant>(tmp.GetPosition() + sf::Vector2f(18, 0)));
 
 	tmp = Collisions::Get()->GetTile(172, 11);
-	m_enemies.push_back(std::make_unique<Rex>(false, .5f, sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY)));
+	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
 	tmp = Collisions::Get()->GetTile(182, 11);
-	m_enemies.push_back(std::make_unique<Rex>(false, .5f, sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY)));
+	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
 	tmp = Collisions::Get()->GetTile(184, 11);
-	m_enemies.push_back(std::make_unique<Rex>(false, .5f, sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY)));
+	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
 	tmp = Collisions::Get()->GetTile(186, 11);
-	m_enemies.push_back(std::make_unique<Rex>(false, .5f, sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY)));
+	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
 	tmp = Collisions::Get()->GetTile(189, 11);
-	m_enemies.push_back(std::make_unique<Rex>(false, .5f, sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY)));
+	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
 	tmp = Collisions::Get()->GetTile(203, 10);
 	m_enemies.push_back(std::make_unique<Bill>(true, tmp.GetPosition()));
 
 	tmp = Collisions::Get()->GetTile(207, 11);
-	m_enemies.push_back(std::make_unique<Rex>(false, .5f, sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY)));
+	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
 	tmp = Collisions::Get()->GetTile(227, 10);
-	m_enemies.push_back(std::make_unique<Bill>(true, sf::Vector2f(tmp.GetPosition().x + tmp.GetOrigin().x * sX - 10.f, tmp.GetPosition().y - tmp.GetOrigin().y * sY + 3.f)));
+	m_enemies.push_back(std::make_unique<Bill>(true, tmp.GetPosition()));
 
 	tmp = Collisions::Get()->GetTile(242, 11);
-	m_enemies.push_back(std::make_unique<Rex>(false, .5f, sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY)));
+	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
 	tmp = Collisions::Get()->GetTile(257, 11);
-	m_enemies.push_back(std::make_unique<Rex>(false, .5f, sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY)));
+	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
 	tmp = Collisions::Get()->GetTile(263, 11);
-	m_enemies.push_back(std::make_unique<Rex>(false, .5f, sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY)));
+	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
 	tmp = Collisions::Get()->GetTile(280, 10);
-	m_enemies.push_back(std::make_unique<Bill>(true, sf::Vector2f(tmp.GetPosition().x + tmp.GetOrigin().x * sX - 10.f, tmp.GetPosition().y - tmp.GetOrigin().y * sY + 3.f)));
+	m_enemies.push_back(std::make_unique<Bill>(false, tmp.GetPosition()));
 
-	tmp = Collisions::Get()->GetTile(284, 8);
-	m_enemies.push_back(std::make_unique<PPlant>(sf::Vector2f(tmp.GetPosition().x + tmp.GetOrigin().x * sX, tmp.GetPosition().y - tmp.GetOrigin().y * sY)));
+	tmp = Collisions::Get()->GetTile(284, 9);
+	m_enemies.push_back(std::make_unique<PPlant>(tmp.GetPosition() + sf::Vector2f(18, 0)));
 
 	tmp = Collisions::Get()->GetTile(290, 8);
-	m_enemies.push_back(std::make_unique<Rex>(false, .5f, sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY)));
+	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));*/
 
-	tmp = Collisions::Get()->GetTile(298, 11);
-	m_enemies.push_back(std::make_unique<Chuck>(false, 3, 0.5f, sf::Vector2f(tmp.GetPosition().x, tmp.GetPosition().y - tmp.GetOrigin().y * sY + 6.f)));*/
+	tmp = Collisions::Get()->GetTile(298, 10);
+	m_enemies.push_back(std::make_unique<Chuck>(false, tmp.GetPosition() + sf::Vector2f(0,26)));
 }
 
 void World::AddObjects()

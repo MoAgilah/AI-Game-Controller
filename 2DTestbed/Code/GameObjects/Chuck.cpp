@@ -3,19 +3,19 @@
 #include "../Game/Constants.h"
 
 Chuck::Chuck(bool dir, const sf::Vector2f& initPos)
-	: Enemy(TexID::Chuck, TexID::ChuckBB, AnimationData{ 6, 9, false, 0.5f }, 2)
+	: Enemy(TexID::Chuck, TexID::ChuckBB, AnimationData{ 5, 7, false, 0.5f }, 2)
 {
 	SetInitialDirection(dir);
 	SetDirection(GetInitialDirection());
 	SetInitialPosition(initPos);
 	SetPosition(GetInitialPosition());
 	GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
-	GetAnimSpr()->SetFrames({ 7, 3, 1, 5, 9, 3 });
+	GetAnimSpr()->SetFrames({ 3, 1, 1, 7, 3 });
 }
 
 void Chuck::Reset()
 {
-	GetAnimSpr()->ChangeAnim(ChuckAnims::LOOK);
+	GetAnimSpr()->ChangeAnim(ChuckAnims::BOUNCE);
 	Enemy::Reset();
 }
 
@@ -51,59 +51,45 @@ void Chuck::Animate(float deltaTime)
 
 	m_waitTime += deltaTime;
 
-	if (m_tookHit)
+	if (GetAirbourne())
 	{
-		if (animSpr->PlayedNumTimes(2))
+		if (m_waitTime > 0.5f)
 		{
-			animSpr->ChangeAnim(ChuckAnims::LOOK);
-			m_tookHit = false;
+			SetYVelocity(-c_jumpSpeed);
+			animSpr->ChangeAnim(ChuckAnims::LEAP);
+		}
+		else
+		{
+			SetYVelocity(0);
 		}
 	}
 	else
 	{
-		if (m_goingUp)
+		SetYVelocity(c_jumpSpeed);
+	}
+
+	sf::Vector2f currentPos = GetPosition();
+
+	if (currentPos.y < 325)
+	{
+		animSpr->ChangeAnim(ChuckAnims::CLAP);
+		SetAirbourne(false);
+	}
+
+	if (currentPos.y > GetInitialPosition().y)
+	{
+		if (!GetAirbourne())
 		{
-			if (m_waitTime > 0.5f)
-			{
-				animSpr->ChangeAnim(ChuckAnims::LEAP);
-				SetYVelocity(-c_jumpSpeed);
-			}
-			else
-			{
-				SetYVelocity(0);
-			}
+			animSpr->ChangeAnim(ChuckAnims::BOUNCE);
+			m_waitTime = 0;
+			SetAirbourne(true);
 		}
-		else
-		{
-			IncrementYVelocity(c_gravity);
-		}
+	}
 
-		sf::Vector2f currentPos = GetPosition();
-
-		if (currentPos.y < 357)
-		{
-			animSpr->ChangeAnim(ChuckAnims::CLAP);
-			if (m_goingUp)
-				m_goingUp = false;
-
-		}
-
-		if (currentPos.y > 447)
-		{
-			if (!m_goingUp)
-			{
-				animSpr->ChangeAnim(ChuckAnims::LOOK);
-				m_waitTime = 0;
-				m_goingUp = true;
-			}
-
-		}
-
-		if (GetYVelocity() != 0)
-		{
-			Move(0, GetYVelocity() * FPS * deltaTime);
-			Collisions::Get()->ProcessCollisions(this);
-			UpdateBoundingBox();
-		}
+	if (GetYVelocity() != 0)
+	{
+		Move(0, GetYVelocity() * FPS * deltaTime);
+		/*Collisions::Get()->ProcessCollisions(this);*/
+		/*UpdateBoundingBox();*/
 	}
 }

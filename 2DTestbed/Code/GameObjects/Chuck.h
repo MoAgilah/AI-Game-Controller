@@ -1,7 +1,7 @@
 #pragma once
 #include "../GameObjects/Enemy.h"
 
-enum ChuckAnims { LOOK, LEAP, CLAP, CHARGE, HIT, WHIPLASH };
+enum ChuckAnims { BOUNCE, LEAP, CLAP, HIT, WHIPLASH };
 
 class Chuck : public Enemy
 {

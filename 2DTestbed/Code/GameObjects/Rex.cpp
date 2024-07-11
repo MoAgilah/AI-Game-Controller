@@ -76,7 +76,7 @@ void Rex::Animate(float deltaTime)
 
 	if (GetXVelocity() != 0)
 	{
-		Move(GetXVelocity() * FPS * deltaTime, 0);
+		//Move(GetXVelocity() * FPS * deltaTime, 0);
 		Collisions::Get()->ProcessCollisions(this);
 		UpdateBoundingBox();
 	}
