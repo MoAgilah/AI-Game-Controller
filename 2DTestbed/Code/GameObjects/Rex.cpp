@@ -58,11 +58,11 @@ void Rex::Animate(float deltaTime)
 
 	if (GetDirection())
 	{
-		SetXVelocity(c_moveSpeed);
+		SetXVelocity(1);
 	}
 	else
 	{
-		SetXVelocity(-c_moveSpeed);
+		SetXVelocity(-1);
 	}
 
 	if (GetOnGround())

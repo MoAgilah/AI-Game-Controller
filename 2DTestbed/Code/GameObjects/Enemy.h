@@ -28,12 +28,16 @@ public:
 	virtual void DecrementLife();
 	virtual void Die() = 0;
 
+	bool GetInvulnerabe() const { return m_invulnerable; }
+	void SetInvulnerability(bool val) { m_invulnerable = val; }
+
 	void SetTimeLeftActive(float time) { m_timeLeftActive = time; }
 
 	void UpdateBoundingBox() override { GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f)); };
 private:
 	virtual void Animate(float deltaTime) = 0;
 
+	bool m_invulnerable = false;
 	bool m_resetAllowed = false;
 	bool m_onGround = false;
 	bool m_airbourne = false;

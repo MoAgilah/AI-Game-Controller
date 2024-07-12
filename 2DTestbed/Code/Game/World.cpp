@@ -118,13 +118,13 @@ void World::AddObject(const sf::Vector2f& pos)
 void World::AddEnemies()
 {
 	Tile tmp;
-	tmp = Collisions::Get()->GetTile(13, 5);
-	m_enemies.push_back(std::make_unique<Koopa>(false, tmp.GetPosition()));
+	/*tmp = Collisions::Get()->GetTile(13, 5);
+	m_enemies.push_back(std::make_unique<Koopa>(false, tmp.GetPosition()));*/
 
 	tmp = Collisions::Get()->GetTile(32, 8);
 	m_enemies.push_back(std::make_unique<Bill>(false, tmp.GetPosition() - sf::Vector2f(0, -16)));
 
-	tmp = Collisions::Get()->GetTile(33, 11);
+	tmp = Collisions::Get()->GetTile(35, 11);
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
 	tmp = Collisions::Get()->GetTile(47, 11);
@@ -169,14 +169,14 @@ void World::AddEnemies()
 	tmp = Collisions::Get()->GetTile(189, 11);
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
-	tmp = Collisions::Get()->GetTile(203, 10);
-	m_enemies.push_back(std::make_unique<Bill>(true, tmp.GetPosition()));
+	tmp = Collisions::Get()->GetTile(203, 9);
+	m_enemies.push_back(std::make_unique<Bill>(false, tmp.GetPosition() + sf::Vector2f(0, 20)));
 
 	tmp = Collisions::Get()->GetTile(207, 11);
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
-	tmp = Collisions::Get()->GetTile(227, 10);
-	m_enemies.push_back(std::make_unique<Bill>(true, tmp.GetPosition()));
+	tmp = Collisions::Get()->GetTile(227, 9);
+	m_enemies.push_back(std::make_unique<Bill>(false, tmp.GetPosition() + sf::Vector2f(0, 20)));
 
 	tmp = Collisions::Get()->GetTile(242, 11);
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
@@ -187,8 +187,8 @@ void World::AddEnemies()
 	tmp = Collisions::Get()->GetTile(263, 11);
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
-	tmp = Collisions::Get()->GetTile(280, 10);
-	m_enemies.push_back(std::make_unique<Bill>(false, tmp.GetPosition()));
+	tmp = Collisions::Get()->GetTile(280, 9);
+	m_enemies.push_back(std::make_unique<Bill>(false, tmp.GetPosition() + sf::Vector2f(0, 20)));
 
 	tmp = Collisions::Get()->GetTile(284, 9);
 	m_enemies.push_back(std::make_unique<PPlant>(tmp.GetPosition() + sf::Vector2f(18, 0)));

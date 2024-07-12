@@ -27,11 +27,13 @@ void Chuck::Die()
 
 void Chuck::DecrementLife()
 {
-	Enemy::DecrementLife();
+	if (GetInvulnerabe())
+		Enemy::DecrementLife();
 
 	if (GetIsAlive())
 	{
 		m_tookHit = true;
+		SetInvulnerability(true);
 		GetAnimSpr()->ChangeAnim(ChuckAnims::HIT);
 	}
 }
@@ -51,42 +53,67 @@ void Chuck::Animate(float deltaTime)
 
 	m_waitTime += deltaTime;
 
-	if (GetAirbourne())
+	if (m_tookHit)
 	{
-		if (m_waitTime > 0.5f)
+		if (GetAirbourne())
 		{
-			SetYVelocity(-c_jumpSpeed);
-			IncAirTime(deltaTime);
-			animSpr->ChangeAnim(ChuckAnims::LEAP);
+			SetYVelocity(c_jumpSpeed);
 		}
 		else
 		{
-			SetYVelocity(0);
+			if (animSpr->PlayedNumTimes(2))
+			{
+				m_tookHit = false;
+				SetInvulnerability(false);
+			}
+		}
+
+		if (GetOnGround())
+		{
+			SetAirbourne(false);
 		}
 	}
 	else
 	{
-		SetYVelocity(c_jumpSpeed);
-	}
-
-	sf::Vector2f currentPos = GetPosition();
-
-	if (GetAirTime() >= c_maxAirTime * 0.75f)
-	{
-		animSpr->ChangeAnim(ChuckAnims::CLAP);
-		SetAirbourne(false);
-	}
-
-	if (GetOnGround())
-	{
-		if (!GetAirbourne())
+		if (GetAirbourne())
 		{
-			animSpr->ChangeAnim(ChuckAnims::BOUNCE);
-			m_waitTime = 0;
-			SetAirTime(0);
-			SetAirbourne(true);
+			if (m_waitTime > 0.5f)
+			{
+				SetYVelocity(-c_jumpSpeed);
+				IncAirTime(deltaTime);
+				animSpr->ChangeAnim(ChuckAnims::LEAP);
+			}
+			else
+			{
+				SetYVelocity(0);
+			}
+		}
+		else
+		{
+			SetYVelocity(c_jumpSpeed);
+		}
+
+		sf::Vector2f currentPos = GetPosition();
+
+		if (GetAirTime() >= c_maxAirTime * 0.75f)
+		{
+			animSpr->ChangeAnim(ChuckAnims::CLAP);
+			SetAirbourne(false);
+		}
+
+		if (GetOnGround())
+		{
+			if (!GetAirbourne())
+			{
+				animSpr->ChangeAnim(ChuckAnims::BOUNCE);
+				m_waitTime = 0;
+				SetAirTime(0);
+				SetAirbourne(true);
+			}
 		}
 	}
+
+	
 
 	if (GetYVelocity() != 0)
 	{

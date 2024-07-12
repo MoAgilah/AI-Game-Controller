@@ -46,18 +46,18 @@ void Bill::Animate(float deltaTime)
 
 	if (GetDirection())
 	{
-		SetXVelocity(c_moveSpeed);
+		SetXVelocity(1);
 	}
 	else
 	{
-		SetXVelocity(-c_moveSpeed);
+		SetXVelocity(-1);
 	}
 
 	if (GetIsAlive())
 	{
 		if (GetXVelocity() != 0)
 		{
-			//Move(GetXVelocity() * FPS * deltaTime, 0);
+			Move(GetXVelocity() * FPS * deltaTime, 0);
 			Collisions::Get()->ProcessCollisions(this);
 			UpdateBoundingBox();
 		}
