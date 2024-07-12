@@ -123,17 +123,13 @@ void Player::Update(float deltaTime)
 			UpdateBoundingBox();
 		}
 
+		CheckForHorizontalBounds(deltaTime);
+
 		if (GetYVelocity() != 0)
 		{
 			SetPrevPosition(GetPosition());
 			Move(sf::Vector2f(0, GetYVelocity() * FPS * deltaTime));
 			Collisions::Get()->ProcessCollisions(this);
-			UpdateBoundingBox();
-		}
-
-		if (GetPosition().x < (GetOrigin().x * sX) * 0.5)
-		{
-			Move(sf::Vector2f(-GetXVelocity() * FPS * deltaTime, 0));
 			UpdateBoundingBox();
 		}
 
@@ -165,7 +161,9 @@ void Player::Update(float deltaTime)
 void Player::Render(sf::RenderWindow& window)
 {
 	window.draw(*GetSprite()->GetSprite(), &m_fragShader);
+#if defined _DEBUG
 	GetBBox()->Render(window);
+#endif
 }
 
 void Player::Reset()

@@ -112,6 +112,8 @@ public:
 	void Move(const sf::Vector2f& pos);
 
 	virtual void UpdateBoundingBox() { GetBBox()->Update(GetPosition()); }
+
+	void CheckForHorizontalBounds(float deltaTime);
 private:
 
 	sf::Vector2f m_velocity;

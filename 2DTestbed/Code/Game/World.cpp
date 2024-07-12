@@ -118,7 +118,7 @@ void World::AddObject(const sf::Vector2f& pos)
 void World::AddEnemies()
 {
 	Tile tmp;
-	/*tmp = Collisions::Get()->GetTile(13, 5);
+	tmp = Collisions::Get()->GetTile(13, 5);
 	m_enemies.push_back(std::make_unique<Koopa>(false, tmp.GetPosition()));
 
 	tmp = Collisions::Get()->GetTile(32, 8);
@@ -194,10 +194,10 @@ void World::AddEnemies()
 	m_enemies.push_back(std::make_unique<PPlant>(tmp.GetPosition() + sf::Vector2f(18, 0)));
 
 	tmp = Collisions::Get()->GetTile(290, 8);
-	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));*/
+	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
 	tmp = Collisions::Get()->GetTile(298, 10);
-	m_enemies.push_back(std::make_unique<Chuck>(false, tmp.GetPosition() + sf::Vector2f(0,26)));
+	m_enemies.push_back(std::make_unique<Chuck>(false, tmp.GetPosition() + sf::Vector2f(0,24)));
 }
 
 void World::AddObjects()

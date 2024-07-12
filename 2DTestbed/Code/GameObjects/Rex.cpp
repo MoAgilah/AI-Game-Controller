@@ -76,17 +76,12 @@ void Rex::Animate(float deltaTime)
 
 	if (GetXVelocity() != 0)
 	{
-		//Move(GetXVelocity() * FPS * deltaTime, 0);
+		Move(GetXVelocity() * FPS * deltaTime, 0);
 		Collisions::Get()->ProcessCollisions(this);
 		UpdateBoundingBox();
 	}
 
-	//check for leftmost and rightmost boundary
-	if (GetPosition().x < GetOrigin().x || GetPosition().x > 11776 - GetOrigin().x)
-	{
-		//Move(-GetXVelocity() * FPS * deltaTime, 0);
-		SetDirection(!GetDirection());
-	}
+	CheckForHorizontalBounds(deltaTime);
 
 	if (GetYVelocity() != 0)
 	{

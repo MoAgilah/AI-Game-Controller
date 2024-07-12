@@ -89,7 +89,7 @@ void Chuck::Animate(float deltaTime)
 	if (GetYVelocity() != 0)
 	{
 		Move(0, GetYVelocity() * FPS * deltaTime);
-		/*Collisions::Get()->ProcessCollisions(this);*/
-		/*UpdateBoundingBox();*/
+		Collisions::Get()->ProcessCollisions(this);
+		UpdateBoundingBox();
 	}
 }

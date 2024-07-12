@@ -145,12 +145,7 @@ void Mushroom::Update(float deltaTime)
 		UpdateBoundingBox();
 	}
 
-	//check for leftmost and rightmost boundary
-	if (GetPosition().x < GetOrigin().x || GetPosition().x > 11776 - GetOrigin().x)
-	{
-		Move(-GetXVelocity() * FPS * deltaTime, 0);
-		SetDirection(!GetDirection());
-	}
+	CheckForHorizontalBounds(deltaTime);
 
 	if (GetYVelocity() != 0)
 	{

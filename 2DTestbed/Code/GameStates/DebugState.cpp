@@ -19,8 +19,8 @@ DebugState::DebugState(Game* gameMgr)
 void DebugState::Initialise()
 {
 	auto level = m_gameMgr->GetLevel();
-
-	level->AddEnemies();
+	//level->AddObjects();
+	//level->AddEnemies();
 	//level->AddForeGroundSprites();
 }
 

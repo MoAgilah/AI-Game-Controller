@@ -24,7 +24,9 @@ Object::Object(AnimatedSprite* sprite, TexID boxId)
 void Object::Render(sf::RenderWindow& window)
 {
 	m_sprite->Render(window);
+#if defined _DEBUG
 	m_bbox->Render(window);
+#endif
 }
 
 void Object::Reset()
@@ -70,4 +72,13 @@ void DynamicObject::Move(const sf::Vector2f& pos)
 {
 	GetSprite()->Move(pos.x, pos.y);
 	GetBBox()->GetSprite()->move(pos);
+}
+
+void DynamicObject::CheckForHorizontalBounds(float deltaTime)
+{
+	if (GetPosition().x < GetOrigin().x || GetPosition().x > RightMost - GetOrigin().x)
+	{
+		Move(-GetXVelocity() * FPS * deltaTime, 0);
+		SetDirection(!GetDirection());
+	}
 }

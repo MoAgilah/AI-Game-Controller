@@ -79,10 +79,5 @@ void Bill::Animate(float deltaTime)
 		m_colbody.back.setPosition(GetPosition() + sf::Vector2f(GetBBox()->GetSprite()->getOrigin().x * sX - 17, 7));
 	}
 
-	//check for leftmost and rightmost boundary
-	if (GetPosition().x < GetOrigin().x || GetPosition().x > 11776 - GetOrigin().x)
-	{
-		Move(-GetXVelocity() * FPS * deltaTime, 0);
-		SetDirection(!GetDirection());
-	}
+	CheckForHorizontalBounds(deltaTime);
 }
