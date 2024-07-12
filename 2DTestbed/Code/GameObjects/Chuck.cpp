@@ -56,6 +56,7 @@ void Chuck::Animate(float deltaTime)
 		if (m_waitTime > 0.5f)
 		{
 			SetYVelocity(-c_jumpSpeed);
+			IncAirTime(deltaTime);
 			animSpr->ChangeAnim(ChuckAnims::LEAP);
 		}
 		else
@@ -70,18 +71,19 @@ void Chuck::Animate(float deltaTime)
 
 	sf::Vector2f currentPos = GetPosition();
 
-	if (currentPos.y < 325)
+	if (GetAirTime() >= c_maxAirTime * 0.75f)
 	{
 		animSpr->ChangeAnim(ChuckAnims::CLAP);
 		SetAirbourne(false);
 	}
 
-	if (currentPos.y > GetInitialPosition().y)
+	if (GetOnGround())
 	{
 		if (!GetAirbourne())
 		{
 			animSpr->ChangeAnim(ChuckAnims::BOUNCE);
 			m_waitTime = 0;
+			SetAirTime(0);
 			SetAirbourne(true);
 		}
 	}

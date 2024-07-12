@@ -7,7 +7,7 @@
 #include "../Collisions/BoundingVolume.h"
 #include "../GameObjects/Box.h"
 #include "../GameObjects/Collectables.h"
-#include "../GameObjects/Rex.h"
+#include "../GameObjects/Chuck.h"
 #include <SFML/Graphics.hpp>
 
 class DebugState : public GameState
@@ -24,7 +24,5 @@ public:
 	void Render(sf::RenderWindow& window) override;
 
 private:
-	Rex m_col;
-	Rex m_col2;
 	std::shared_ptr<Game> m_gameMgr;
 };
