@@ -19,6 +19,7 @@ void Rex::Reset()
 	GetAnimSpr()->ChangeAnim(RexAnims::WALKTALL);
 	GetBBox()->SetTexture(TexID::RexBB);
 	Enemy::Reset();
+	SetPosition(GetPosition() + sf::Vector2f(0, -16));
 }
 
 void Rex::Die()

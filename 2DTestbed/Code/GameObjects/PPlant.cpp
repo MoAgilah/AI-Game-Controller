@@ -55,15 +55,24 @@ void PPlant::Animate(float deltaTime)
 		UpdateBoundingBox();
 	}
 
-	sf::Vector2f currentPos = GetPosition();
-
-	if (currentPos.y > GetInitialPosition().y)
+	if (GetAirbourne())
 	{
 		SetDirection(false);
+		IncAirTime(deltaTime);
 	}
-
-	if (currentPos.y < GetInitialPosition().y - 230)
+	else
 	{
 		SetDirection(true);
+	}
+
+	if (GetPosition().y > GetInitialPosition().y)
+	{
+		SetAirbourne(true);
+	}
+
+	if (GetAirTime() >= c_maxAirTime)
+	{
+		SetAirbourne(false);
+		SetAirTime(0);
 	}
 }
