@@ -36,7 +36,7 @@ void Tile::SetID(int gX, int gY)
 
 void Tile::SetPosition(sf::Vector2f pos)
 {
-	m_aabb.GetShape()->setPosition(pos);
+	m_aabb.Update(pos);
 	m_text.setPosition(m_aabb.GetShape()->getPosition().x - 10.f, m_aabb.GetShape()->getPosition().y - 7.5f);
 }
 

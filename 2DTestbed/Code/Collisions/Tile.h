@@ -34,6 +34,7 @@ public:
 	const sf::Vector2f& GetPosition() { return m_aabb.GetShape()->getPosition(); }
 	const sf::Vector2f& GetOrigin() { return m_aabb.GetShape()->getOrigin(); }
 
+	AABB* GetBox() { return &m_aabb; }
 	sf::RectangleShape GetRect() { return *static_cast<sf::RectangleShape*>(m_aabb.GetShape()); }
 	const std::vector<sf::RectangleShape>& GetSlopeBBox() const { return m_slope; }
 
