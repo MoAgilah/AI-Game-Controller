@@ -24,5 +24,7 @@ public:
 	void Render(sf::RenderWindow& window) override;
 
 private:
+	AABB box1;
+	AABB box2;
 	std::shared_ptr<Game> m_gameMgr;
 };

@@ -28,8 +28,9 @@ BoundingVolume::BoundingVolume(sf::Shape* shape)
 }
 
 AABB::AABB()
-	: BoundingVolume(new sf::RectangleShape(sf::Vector2f(16, 16)))
+	: BoundingVolume(new sf::RectangleShape(sf::Vector2f(16, 16))), m_size(sf::Vector2f(16,16))
 {
+
 	GetShape()->setOrigin(8, 8);
 	GetShape()->setScale(sX,sY);
 	GetShape()->setOutlineColor(sf::Color::Black);
@@ -64,6 +65,7 @@ void AABB::Reset(const sf::Vector2f& size)
 void AABB::Update(const sf::Vector2f& position)
 {
 	GetShape()->setPosition(position);
+
 	m_min = Vector<float>(GetShape()->getTransform().transformPoint(sf::Vector2f(0, 0)));
 	m_max = Vector<float>(GetShape()->getTransform().transformPoint(sf::Vector2f(m_size.x, m_size.y)));
 	SetCenter(sf::Vector2f((m_min.x + m_max.x) / 2, (m_min.y + m_max.y) / 2));
