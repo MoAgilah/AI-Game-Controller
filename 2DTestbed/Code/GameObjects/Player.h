@@ -10,6 +10,8 @@
 
 enum MarioAnims { IDLE, LOOKUP, JUMP, FALL, RUNJUMP, SKID, SLIDE, VICTORY, CROUCH, GROW, DIE, MOVING, RUNNING, SPINJUMP };
 
+enum MarioBoxes { REGULAR, SUPER, CROUCHED, NUMBOXES};
+
 enum Keys { LEFT_KEY, RIGHT_KEY, UP_KEY, DOWN_KEY, JUMP_KEY, SJUMP_KEY, MAXKEYS };
 
 class Player : public DynamicObject
@@ -85,6 +87,7 @@ private:
 	bool m_airbourne = false;
 
 	std::array<bool, Keys::MAXKEYS> m_keyStates;
+	std::array<sf::Vector2f, MarioBoxes::NUMBOXES> m_boxSizes{sf::Vector2f(9,16),sf::Vector2f(9,25),sf::Vector2f(14,14) };
 
 	int m_coinTotal = 0;
 

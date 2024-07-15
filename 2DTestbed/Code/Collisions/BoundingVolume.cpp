@@ -33,7 +33,7 @@ AABB::AABB()
 
 	GetShape()->setOrigin(8, 8);
 	GetShape()->setScale(sX,sY);
-	GetShape()->setOutlineColor(sf::Color::Black);
+	GetShape()->setOutlineColor(sf::Color::Red);
 	GetShape()->setOutlineThickness(1);
 	GetShape()->setFillColor(sf::Color::Transparent);
 }
@@ -103,12 +103,12 @@ bool AABB::IntersectMoving(const AABB* other, const sf::Vector2f& va, const sf::
 				return false; // Nonintersecting and moving apart
 
 			if (GetMax()[i] < other->GetMin()[i])
-				tfirst = std::min((GetMax()[i] - other->GetMin()[i]) / v[i], tfirst);
+				tfirst = std::max((GetMax()[i] - other->GetMin()[i]) / v[i], tfirst);
 
 			if (other->GetMax()[i] > GetMin()[i])
 				tlast = std::min((GetMin()[i] - other->GetMax()[i]) / v[i], tlast);
 		}
-		else if (v[i] > 0.0f)
+		if (v[i] > 0.0f)
 		{
 			if (other->GetMin()[i] > GetMax()[i])
 				return false; // Nonintersecting and moving apart

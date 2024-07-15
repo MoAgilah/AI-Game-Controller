@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include "../Drawables/Sprite.h"
 #include "../Collisions/BoundingBox.h"
+#include "../Collisions/BoundingVolume.h"
 #include "../Game/Constants.h"
 
 struct SpawnData
@@ -47,6 +48,7 @@ public:
 	AnimatedSprite* GetAnimSpr() { return static_cast<AnimatedSprite*>(GetSprite()); }
 	Sprite* GetSprite() { return m_sprite.get(); }
 	BoundingBox* GetBBox() { return m_bbox.get(); }
+	AABB* GetBox() { return m_box.get(); }
 
 	TexID GetID() const { return m_type; }
 	void SetID(TexID id) { m_type = id; }
@@ -80,6 +82,7 @@ private:
 	static int s_objectNum;
 	SpawnData m_spawnData;
 	std::shared_ptr<Sprite> m_sprite;
+	std::shared_ptr<AABB> m_box;
 	std::shared_ptr<BoundingBox> m_bbox;
 };
 

@@ -6,6 +6,8 @@
 Tile::Tile(const sf::Font& font)
 	: m_hasFont(true)
 {
+	m_aabb.GetShape()->setOutlineColor(sf::Color::Black);
+
 	m_srect.setSize(sf::Vector2f(1, 1));
 	m_srect.setFillColor(sf::Color::Transparent);
 	m_srect.setOutlineColor(sf::Color::Black);

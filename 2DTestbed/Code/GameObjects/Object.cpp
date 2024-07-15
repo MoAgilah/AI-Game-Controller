@@ -8,6 +8,7 @@ Object::Object(TexID sprId, TexID boxId)
 {
 	m_sprite = std::make_shared<Sprite>(sprId);
 	m_bbox = std::make_shared<BoundingBox>(boxId);
+	m_box = std::make_shared<AABB>();
 	m_objectID = s_objectNum++;
 	Collisions::Get()->AddCollidable(this);
 }
@@ -17,6 +18,7 @@ Object::Object(AnimatedSprite* sprite, TexID boxId)
 {
 	m_sprite.reset(std::move(sprite));
 	m_bbox = std::make_shared<BoundingBox>(boxId);
+	m_box = std::make_shared<AABB>();
 	m_objectID = s_objectNum++;
 	Collisions::Get()->AddCollidable(this);
 }
@@ -24,9 +26,10 @@ Object::Object(AnimatedSprite* sprite, TexID boxId)
 void Object::Render(sf::RenderWindow& window)
 {
 	m_sprite->Render(window);
-#if defined _DEBUG
-	m_bbox->Render(window);
-#endif
+	m_box->Render(window);
+//#if defined _DEBUG
+//	m_bbox->Render(window);
+//#endif
 }
 
 void Object::Reset()
@@ -65,6 +68,7 @@ DynamicObject::DynamicObject(AnimatedSprite* sprite, TexID boxId)
 void DynamicObject::Move(float x, float y)
 {
 	GetSprite()->Move(x, y);
+	GetBox()->GetShape()->move(sf::Vector2f(x, y));
 	GetBBox()->GetSprite()->move(sf::Vector2f(x, y));
 }
 

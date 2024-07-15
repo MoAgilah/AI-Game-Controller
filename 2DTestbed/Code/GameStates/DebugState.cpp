@@ -17,6 +17,8 @@ DebugState::DebugState(Game* gameMgr)
 void DebugState::Initialise()
 {
 	auto level = m_gameMgr->GetLevel();
+
+	box1.Update(Collisions::Get()->GetTile(1, 11).GetPosition());
 	//level->AddObjects();
 	//level->AddEnemies();
 	//level->AddForeGroundSprites();
@@ -38,10 +40,6 @@ void DebugState::Update(float deltaTime)
 {
 	m_gameMgr->GetCamera()->Update();
 	Timer::Get()->UpdateTime(deltaTime);
-
-	box1.Update(Collisions::Get()->GetTile(3, 11).GetPosition());
-
-	bool res = box2.Intersects(&box1);
 
 	if (Automated)
 		CtrlMgr::GetCtrlMgr()->GetController()->Update();
