@@ -18,7 +18,6 @@ void DebugState::Initialise()
 {
 	auto level = m_gameMgr->GetLevel();
 
-	box1.Update(Collisions::Get()->GetTile(1, 11).GetPosition());
 	//level->AddObjects();
 	//level->AddEnemies();
 	//level->AddForeGroundSprites();
@@ -56,9 +55,6 @@ void DebugState::Render(sf::RenderWindow& window)
 	m_gameMgr->GetLevel()->Render(window);
 
 	m_gameMgr->GetPlayer()->Render(window);
-
-	box1.Render(window);
-	/*box2.Render(window);*/
 
 	Collisions::Get()->Render(window);
 }

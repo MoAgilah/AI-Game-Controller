@@ -1,8 +1,6 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "../Collisions/BoundingVolume.h"
-
 #include <vector>
 
 enum Types
@@ -31,14 +29,13 @@ public:
 	void SetActive(bool vis) { m_visible = vis; }
 
 	void SetPosition(sf::Vector2f pos);
-	const sf::Vector2f& GetPosition() { return m_aabb.GetShape()->getPosition(); }
-	const sf::Vector2f& GetOrigin() { return m_aabb.GetShape()->getOrigin(); }
+	const sf::Vector2f& GetPosition() { return m_rect.getPosition(); }
+	const sf::Vector2f& GetOrigin() { return m_rect.getOrigin(); }
 
-	AABB* GetBox() { return &m_aabb; }
-	sf::RectangleShape GetRect() { return *static_cast<sf::RectangleShape*>(m_aabb.GetShape()); }
+	const sf::RectangleShape& GetRect() { return m_rect; }
 	const std::vector<sf::RectangleShape>& GetSlopeBBox() const { return m_slope; }
 
-	void SetFillColour(sf::Color col) { m_aabb.GetShape()->setFillColor(col); }
+	void SetFillColour(sf::Color col) { m_rect.setFillColor(col); }
 
 	void Render(sf::RenderWindow& window);
 
@@ -53,7 +50,7 @@ private:
 	int m_type = EMPTY;
 
 	std::string m_id;
-	AABB m_aabb;
+	sf::RectangleShape m_rect;
 	sf::Text m_text;
 	sf::RectangleShape m_srect;
 	std::vector<sf::RectangleShape> m_slope;

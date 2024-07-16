@@ -6,7 +6,12 @@
 Tile::Tile(const sf::Font& font)
 	: m_hasFont(true)
 {
-	m_aabb.GetShape()->setOutlineColor(sf::Color::Black);
+	m_rect.setSize(sf::Vector2f(16, 16));
+	m_rect.setFillColor(sf::Color::Transparent);
+	m_rect.setOutlineColor(sf::Color::Black);
+	m_rect.setOutlineThickness(1);
+	m_rect.setScale(sX, sY);
+	m_rect.setOrigin(8, 8);
 
 	m_srect.setSize(sf::Vector2f(1, 1));
 	m_srect.setFillColor(sf::Color::Transparent);
@@ -36,8 +41,8 @@ void Tile::SetID(int gX, int gY)
 
 void Tile::SetPosition(sf::Vector2f pos)
 {
-	m_aabb.Update(pos);
-	m_text.setPosition(m_aabb.GetShape()->getPosition().x - 10.f, m_aabb.GetShape()->getPosition().y - 7.5f);
+	m_rect.setPosition(pos);
+	m_text.setPosition(m_rect.getPosition().x - 10.f, m_rect.getPosition().y - 7.5f);
 }
 
 void Tile::CreateDesSlope()
@@ -92,7 +97,7 @@ void Tile::CreateAscSlope()
 
 void Tile::Render(sf::RenderWindow& window)
 {
-	window.draw(*m_aabb.GetShape());
+	window.draw(m_rect);
 
 	if (m_hasFont)
 		window.draw(m_text);

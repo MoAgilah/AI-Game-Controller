@@ -70,9 +70,6 @@
     <Filter Include="Resource Files\Shaders">
       <UniqueIdentifier>{a34805c1-89c8-4bdd-8303-c4dbafd411bf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Utilities">
-      <UniqueIdentifier>{36e40ffc-78be-4991-9049-a9f4778ec180}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Collisions\BoundingBox.cpp">
@@ -140,9 +137,6 @@
     </ClCompile>
     <ClCompile Include="Code\main.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Collisions\BoundingVolume.cpp">
-      <Filter>Source Files\Collisions</Filter>
     </ClCompile>
     <ClCompile Include="Code\GameObjects\Object.cpp">
       <Filter>Source Files\GameObjects</Filter>
@@ -268,12 +262,6 @@
     </ClInclude>
     <ClInclude Include="Code\Drawables\Sprite.h">
       <Filter>Header Files\Drawables</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Collisions\BoundingVolume.h">
-      <Filter>Header Files\Collisions</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Utilities\MathHelper.h">
-      <Filter>Header Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="Code\GameStates\GameState.h">
       <Filter>Header Files\GameStates</Filter>

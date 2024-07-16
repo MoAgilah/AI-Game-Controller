@@ -4,7 +4,6 @@
 
 #include "GameState.h"
 #include "../Game/Game.h"
-#include "../Collisions/BoundingVolume.h"
 #include "../GameObjects/Box.h"
 #include "../GameObjects/Collectables.h"
 #include "../GameObjects/Chuck.h"
@@ -24,7 +23,5 @@ public:
 	void Render(sf::RenderWindow& window) override;
 
 private:
-	AABB box1;
-	AABB box2;
 	std::shared_ptr<Game> m_gameMgr;
 };

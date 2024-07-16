@@ -159,7 +159,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Code\Collisions\BoundingBox.cpp" />
-    <ClCompile Include="Code\Collisions\BoundingVolume.cpp" />
     <ClCompile Include="Code\Collisions\Collisions.cpp" />
     <ClCompile Include="Code\Collisions\Grid.cpp" />
     <ClCompile Include="Code\Collisions\Tile.cpp" />
@@ -199,7 +198,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Collisions\BoundingBox.h" />
-    <ClInclude Include="Code\Collisions\BoundingVolume.h" />
     <ClInclude Include="Code\Collisions\Collisions.h" />
     <ClInclude Include="Code\Collisions\Grid.h" />
     <ClInclude Include="Code\Collisions\Tile.h" />
@@ -240,7 +238,6 @@
     <ClInclude Include="Code\NEAT\phenotype.h" />
     <ClInclude Include="Code\NEAT\resource.h" />
     <ClInclude Include="Code\NEAT\Utils.h" />
-    <ClInclude Include="Code\Utilities\MathHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Resources\TileTypes.txt" />
