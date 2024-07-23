@@ -107,8 +107,8 @@ void ANNView::Update()
 			sf::RectangleShape tmp;
 			for (size_t j = 0; j < gobj.size(); j++)
 			{
-				int type = gobj[j]->GetBBox()->GetID();
-				if (type == (int)TexID::BillBB)
+				int type = (int)gobj[j]->GetID();
+				if (type == (int)TexID::Bill)
 				{
 					tmp.setSize(sf::Vector2f(96, 108));
 					tmp.setOrigin(48, 54);

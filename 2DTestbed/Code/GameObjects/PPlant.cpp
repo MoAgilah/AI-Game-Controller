@@ -3,13 +3,13 @@
 #include "../Game/Constants.h"
 
 PPlant::PPlant(const sf::Vector2f& initPos)
-	: Enemy(TexID::PPlant, TexID::PPlantBB, AnimationData{ 1, 2, false, 0.5f })
+	: Enemy(TexID::PPlant, sf::Vector2f(14, 19), AnimationData{1, 2, false, 0.5f})
 {
 	SetInitialDirection(false);
 	SetDirection(GetInitialDirection());
 	SetInitialPosition(initPos);
 	SetPosition(GetInitialPosition());
-	GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
+	GetAABB()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
 	GetAnimSpr()->SetFrames({2});
 }
 

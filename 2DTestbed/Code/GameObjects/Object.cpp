@@ -3,20 +3,20 @@
 
 int Object::s_objectNum = 0;
 
-Object::Object(TexID sprId, TexID boxId)
+Object::Object(TexID sprId, const sf::Vector2f& boxSize)
 	: m_type(sprId)
 {
 	m_sprite = std::make_shared<Sprite>(sprId);
-	m_bbox = std::make_shared<BoundingBox>(boxId);
+	m_aabb = std::make_shared<AABB>(boxSize);
 	m_objectID = s_objectNum++;
 	Collisions::Get()->AddCollidable(this);
 }
 
-Object::Object(AnimatedSprite* sprite, TexID boxId)
+Object::Object(AnimatedSprite* sprite, const sf::Vector2f& boxSize)
 	: m_type(sprite->GetTexID())
 {
 	m_sprite.reset(std::move(sprite));
-	m_bbox = std::make_shared<BoundingBox>(boxId);
+	m_aabb = std::make_shared<AABB>(boxSize);
 	m_objectID = s_objectNum++;
 	Collisions::Get()->AddCollidable(this);
 }
@@ -25,7 +25,7 @@ void Object::Render(sf::RenderWindow& window)
 {
 	m_sprite->Render(window);
 #if defined _DEBUG
-	m_bbox->Render(window);
+	m_aabb->Render(window);
 #endif
 }
 
@@ -34,7 +34,7 @@ void Object::Reset()
 	m_active = false;
 	SetDirection(GetInitialDirection());
 	SetPosition(GetInitialPosition());
-	GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
+	GetAABB()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
 }
 
 void Object::SetDirection(bool dir)
@@ -52,26 +52,26 @@ void Object::SetDirection(bool dir)
 	}
 }
 
-DynamicObject::DynamicObject(TexID sprId, TexID boxId)
-	: Object(sprId, boxId)
+DynamicObject::DynamicObject(TexID sprId, const sf::Vector2f& boxSize)
+	: Object(sprId, boxSize)
 {
 }
 
-DynamicObject::DynamicObject(AnimatedSprite* sprite, TexID boxId)
-	: Object(sprite, boxId)
+DynamicObject::DynamicObject(AnimatedSprite* sprite, const sf::Vector2f& boxSize)
+	: Object(sprite, boxSize)
 {
 }
 
 void DynamicObject::Move(float x, float y)
 {
 	GetSprite()->Move(x, y);
-	GetBBox()->GetSprite()->move(sf::Vector2f(x, y));
+	GetAABB()->Move(sf::Vector2f(x, y));
 }
 
 void DynamicObject::Move(const sf::Vector2f& pos)
 {
 	GetSprite()->Move(pos.x, pos.y);
-	GetBBox()->GetSprite()->move(pos);
+	GetAABB()->Move(pos);
 }
 
 void DynamicObject::CheckForHorizontalBounds(float deltaTime)

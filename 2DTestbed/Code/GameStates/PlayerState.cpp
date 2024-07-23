@@ -1,7 +1,7 @@
 #include "PlayerState.h"
 #include "../Game/Game.h"
 #include "../Game/TextureManager.h"
-#include "../Collisions/BoundingBox.h"
+#include "../Collisions/AABB.h"
 
 void GroundedState::Initialise()
 {

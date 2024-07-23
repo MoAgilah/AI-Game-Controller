@@ -3,28 +3,28 @@
 
 int YCoin::s_collected = 1;
 
-StaticCollectable::StaticCollectable(TexID sprID, TexID boxID, const sf::Vector2f& initPos)
-	: Object(sprID, boxID)
+StaticCollectable::StaticCollectable(TexID sprID, const sf::Vector2f& boxSize, const sf::Vector2f& initPos)
+	: Object(sprID, boxSize)
 {
 	SetInitialDirection(true);
 	SetDirection(GetInitialDirection());
 	SetInitialPosition(initPos);
 	SetPosition(GetInitialPosition());
-	GetBBox()->Update(GetPosition());
+	GetAABB()->Update(GetPosition());
 }
 
-StaticCollectable::StaticCollectable(AnimatedSprite* sprite, TexID boxId, const sf::Vector2f& initPos)
-	: Object(sprite, boxId)
+StaticCollectable::StaticCollectable(AnimatedSprite* sprite, const sf::Vector2f& boxSize, const sf::Vector2f& initPos)
+	: Object(sprite, boxSize)
 {
 	SetInitialDirection(true);
 	SetDirection(GetInitialDirection());
 	SetInitialPosition(initPos);
 	SetPosition(GetInitialPosition());
-	GetBBox()->Update(GetPosition());
+	GetAABB()->Update(GetPosition());
 }
 
 Coin::Coin(const sf::Vector2f& initPos)
-	: StaticCollectable(new AnimatedSprite(TexID::Coin, 1,4, FPS, false, 0.5f), TexID::CoinBB, initPos)
+	: StaticCollectable(new AnimatedSprite(TexID::Coin, 1,4, FPS, false, 0.5f), sf::Vector2f(12, 16), initPos)
 {
 	GetAnimSpr()->SetFrames({ 4 });
 }
@@ -49,7 +49,7 @@ void Coin::ResolveCollisions(Tile* tile)
 }
 
 YCoin::YCoin(const sf::Vector2f& initPos)
-	: StaticCollectable(new AnimatedSprite(TexID::YCoin, 1,6, FPS, false, 0.5f), TexID::YcoinBB, initPos)
+	: StaticCollectable(new AnimatedSprite(TexID::YCoin, 1,6, FPS, false, 0.5f), sf::Vector2f(16,25), initPos)
 {
 	GetAnimSpr()->SetFrames({ 6 });
 }
@@ -83,7 +83,7 @@ void YCoin::ResolveCollisions(Tile* tile)
 }
 
 CheckPoint::CheckPoint(const sf::Vector2f& initPos)
-	: StaticCollectable(TexID::ChkPnt, TexID::ChkPntBB, initPos)
+	: StaticCollectable(TexID::ChkPnt, sf::Vector2f(20, 3), initPos)
 {
 }
 
@@ -100,18 +100,18 @@ void CheckPoint::ResolveCollisions(Tile* tile)
 {
 }
 
-DynamicCollectable::DynamicCollectable(TexID sprID, TexID boxID, const sf::Vector2f& initPos)
-	: DynamicObject(sprID, boxID)
+DynamicCollectable::DynamicCollectable(TexID sprID, const sf::Vector2f& boxSize, const sf::Vector2f& initPos)
+	: DynamicObject(sprID, boxSize)
 {
 	SetInitialDirection(false);
 	SetDirection(GetInitialDirection());
 	SetInitialPosition(initPos);
 	SetPosition(GetInitialPosition());
-	GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
+	GetAABB()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
 }
 
 Mushroom::Mushroom(const sf::Vector2f& initPos)
-	: DynamicCollectable(TexID::Shroom, TexID::ShroomBB, initPos)
+	: DynamicCollectable(TexID::Shroom, sf::Vector2f(13, 14), initPos)
 {
 }
 
@@ -164,7 +164,7 @@ void Mushroom::ResolveCollisions(Tile* tile)
 }
 
 Goal::Goal(const sf::Vector2f& initPos)
-	: DynamicCollectable(TexID::Goal, TexID::GoalBB, initPos)
+	: DynamicCollectable(TexID::Goal, sf::Vector2f(25, 8), initPos)
 {
 	SetInitialDirection(true);
 	SetDirection(GetInitialDirection());

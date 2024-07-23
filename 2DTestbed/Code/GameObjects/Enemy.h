@@ -6,8 +6,8 @@
 class Enemy : public DynamicObject
 {
 public:
-	Enemy(TexID sprId, TexID boxId, int maxLives = 1);
-	Enemy(TexID sprId, TexID boxId, AnimationData animData, int maxLives = 1);
+	Enemy(TexID sprId, const sf::Vector2f& boxSize, int maxLives = 1);
+	Enemy(TexID sprId, const sf::Vector2f& boxSize, AnimationData animData, int maxLives = 1);
 	~Enemy() override = default;
 
 	void Update(float deltaTime) override;
@@ -33,7 +33,7 @@ public:
 
 	void SetTimeLeftActive(float time) { m_timeLeftActive = time; }
 
-	void UpdateBoundingBox() override { GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f)); };
+	void UpdateBoundingBox() override { GetAABB()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f)); };
 private:
 	virtual void Animate(float deltaTime) = 0;
 

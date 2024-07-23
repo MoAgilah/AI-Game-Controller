@@ -4,7 +4,7 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 #include "../Drawables/Sprite.h"
-#include "../Collisions/BoundingBox.h"
+#include "../Collisions/AABB.h"
 #include "../Game/Constants.h"
 
 struct SpawnData
@@ -33,8 +33,8 @@ class Tile;
 class Object
 {
 public:
-	Object(TexID sprId, TexID boxId);
-	Object(AnimatedSprite* sprite, TexID boxId);
+	Object(TexID sprId, const sf::Vector2f& boxSize);
+	Object(AnimatedSprite* sprite, const sf::Vector2f& boxSize);
 	virtual ~Object() = default;
 
 	virtual void Update(float deltaTime) = 0;
@@ -46,7 +46,7 @@ public:
 
 	AnimatedSprite* GetAnimSpr() { return static_cast<AnimatedSprite*>(GetSprite()); }
 	Sprite* GetSprite() { return m_sprite.get(); }
-	BoundingBox* GetBBox() { return m_bbox.get(); }
+	AABB* GetAABB() { return m_aabb.get(); }
 
 	TexID GetID() const { return m_type; }
 	void SetID(TexID id) { m_type = id; }
@@ -80,14 +80,14 @@ private:
 	static int s_objectNum;
 	SpawnData m_spawnData;
 	std::shared_ptr<Sprite> m_sprite;
-	std::shared_ptr<BoundingBox> m_bbox;
+	std::shared_ptr<AABB> m_aabb;
 };
 
 class DynamicObject : public Object
 {
 public:
-	DynamicObject(TexID sprId, TexID boxId);
-	DynamicObject(AnimatedSprite* sprite, TexID boxId);
+	DynamicObject(TexID sprId, const sf::Vector2f& boxSize);
+	DynamicObject(AnimatedSprite* sprite, const sf::Vector2f& boxSize);
 	~DynamicObject() override = default;
 
 	void SetPrevPosition(sf::Vector2f pos) { m_previousPos = pos; }
@@ -111,7 +111,7 @@ public:
 	void Move(float x, float y);
 	void Move(const sf::Vector2f& pos);
 
-	virtual void UpdateBoundingBox() { GetBBox()->Update(GetPosition()); }
+	virtual void UpdateBoundingBox() { GetAABB()->Update(GetPosition()); }
 
 	void CheckForHorizontalBounds(float deltaTime);
 private:

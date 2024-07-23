@@ -3,13 +3,13 @@
 #include "../Game/Game.h"
 #include "../Game/Camera.h"
 
-Enemy::Enemy(TexID sprId, TexID boxId, int maxLives)
-	: DynamicObject(sprId, boxId), m_numLives(maxLives), m_maxLives(m_numLives)
+Enemy::Enemy(TexID sprId, const sf::Vector2f& boxSize, int maxLives)
+	: DynamicObject(sprId, boxSize), m_numLives(maxLives), m_maxLives(m_numLives)
 {
 }
 
-Enemy::Enemy(TexID sprId, TexID boxId, AnimationData animData, int maxLives)
-	: DynamicObject(new AnimatedSprite(sprId, animData.rows, animData.cols, FPS, animData.symmetrical, animData.animationSpeed), boxId), m_numLives(maxLives), m_maxLives(m_numLives)
+Enemy::Enemy(TexID sprId, const sf::Vector2f& boxSize, AnimationData animData, int maxLives)
+	: DynamicObject(new AnimatedSprite(sprId, animData.rows, animData.cols, FPS, animData.symmetrical, animData.animationSpeed), boxSize), m_numLives(maxLives), m_maxLives(m_numLives)
 {
 }
 

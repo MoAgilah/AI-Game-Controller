@@ -4,8 +4,8 @@
 class StaticCollectable : public Object
 {
 public:
-	StaticCollectable(TexID sprID, TexID boxID, const sf::Vector2f& initPos);
-	StaticCollectable(AnimatedSprite* sprite, TexID boxId, const sf::Vector2f& initPos);
+	StaticCollectable(TexID sprID, const sf::Vector2f& boxSize, const sf::Vector2f& initPos);
+	StaticCollectable(AnimatedSprite* sprite, const sf::Vector2f& boxSize, const sf::Vector2f& initPos);
 	~StaticCollectable() override = default;
 
 	bool GetActive() const final { return !m_collected && Object::GetActive(); }
@@ -65,7 +65,7 @@ public:
 class DynamicCollectable : public DynamicObject
 {
 public:
-	DynamicCollectable(TexID sprID, TexID boxID, const sf::Vector2f& initPos);
+	DynamicCollectable(TexID sprID, const sf::Vector2f& boxSize, const sf::Vector2f& initPos);
 	~DynamicCollectable() override = default;
 
 	bool GetOnGround() const { return m_onGround; }

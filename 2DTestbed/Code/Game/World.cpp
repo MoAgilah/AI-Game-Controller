@@ -5,7 +5,7 @@
 #include "../Game/Constants.h"
 #include "../Game/Camera.h"
 
-#include "../Collisions/BoundingBox.h"
+#include "../Collisions/AABB.h"
 #include "../Collisions/Collisions.h"
 #include "../GameObjects/Collectables.h"
 #include "../GameObjects/Box.h"

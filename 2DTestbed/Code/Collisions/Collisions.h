@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "../Collisions/Tile.h"
-#include "../Collisions/BoundingBox.h"
+#include "../Collisions/AABB.h"
 #include "../Collisions/Grid.h"
 
 enum Direction

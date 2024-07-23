@@ -3,13 +3,13 @@
 #include "../Game/Constants.h"
 
 Chuck::Chuck(bool dir, const sf::Vector2f& initPos)
-	: Enemy(TexID::Chuck, TexID::ChuckBB, AnimationData{ 5, 7, false, 0.5f }, 2)
+	: Enemy(TexID::Chuck, sf::Vector2f(24, 25), AnimationData{5, 7, false, 0.5f}, 2)
 {
 	SetInitialDirection(dir);
 	SetDirection(GetInitialDirection());
 	SetInitialPosition(initPos);
 	SetPosition(GetInitialPosition());
-	GetBBox()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
+	GetAABB()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
 	GetAnimSpr()->SetFrames({ 3, 1, 1, 7, 3 });
 }
 
@@ -112,8 +112,6 @@ void Chuck::Animate(float deltaTime)
 			}
 		}
 	}
-
-	
 
 	if (GetYVelocity() != 0)
 	{

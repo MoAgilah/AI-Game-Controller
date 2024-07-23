@@ -6,7 +6,7 @@
 class Box : public Object
 {
 public:
-	Box(AnimatedSprite* sprite, TexID boxId, const sf::Vector2f& initPos);
+	Box(AnimatedSprite* sprite, const sf::Vector2f& initPos);
 	~Box() override = default;
 
 	void Reset() override;

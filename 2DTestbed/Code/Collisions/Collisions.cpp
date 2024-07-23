@@ -76,24 +76,15 @@ Object* Collisions::GetLastAdded()
 
 void Collisions::Render(sf::RenderWindow& window)
 {
-	const Camera* camera = Game::GetGameMgr()->GetCamera();
-
+#ifdef DRender
 	for (int i = 0; i < m_collidables.size(); ++i)
 	{
-		if (m_collidables[i]->GetActive())
-		{
-			bool inView = camera->IsInView(m_collidables[i]->GetBBox()->GetSprite());
+		if (!m_collidables[i]->GetActive())
+			continue;
 
-			if (inView)
-			{
-	#ifdef DRender
-					m_collidables[i]->GetBBox()->Render(window);
-	#endif //DRender
-			}
-		}
+		m_collidables[i]->GetBBox()->Render(window);
 	}
-
-	camera = nullptr;
+#endif
 
 	grid.Render(window);
 }
@@ -115,7 +106,8 @@ void Collisions::ProcessCollisions(Object* gobj)
 		if (!tile->GetActive()) continue;
 
 		numchecks++;
-		Col = gobj->GetBBox()->Intersects(*tile);
+
+		Col = gobj->GetAABB()->GetRect().getGlobalBounds().intersects(tile->GetRect().getGlobalBounds());
 
 		if (Col)
 		{
@@ -127,7 +119,7 @@ void Collisions::ProcessCollisions(Object* gobj)
 
 	if (!Col)
 	{
-		int id = gobj->GetBBox()->GetID();
+		int id = (int)gobj->GetID();
 		if (id >= PlyBgn && id <= PlyEnd)
 		{
 			((Player*)gobj)->SetOnGround(false);
@@ -150,7 +142,7 @@ void Collisions::ProcessCollisions(Object* gobj)
 		if (!m_collidables[g]->GetActive())
 			continue;
 
-		Col = gobj->GetBBox()->Intersects(m_collidables[g]->GetBBox());
+		Col = gobj->GetAABB()->Intersects(m_collidables[g]->GetAABB());
 
 		if (Col)
 		{
@@ -194,7 +186,7 @@ void Collisions::PlayerToTile(Player* ply, Tile * tile)
 	//oway is a one way tile can be fell upon and jumped through
 	if (tile->GetType() == OWAY)
 	{
-		float plyBot = ply->GetBBox()->GetSprite()->getPosition().y + ply->GetOrigin().y;
+		float plyBot = ply->GetAABB()->GetPosition().y + ply->GetOrigin().y;
 		float tiletop = tile->GetPosition().y - tile->GetOrigin().y;
 
 		//if above the tile
@@ -254,7 +246,7 @@ void Collisions::PlayerToTile(Player* ply, Tile * tile)
 		for (int i = 0; i < tmpSlope.size(); i++)
 		{
 			//if collision with slope
-			if (ply->GetBBox()->GetSprite()->getGlobalBounds().intersects(tmpSlope[i].getGlobalBounds()))
+			if (ply->GetAABB()->GetRect().getGlobalBounds().intersects(tmpSlope[i].getGlobalBounds()))
 			{
 				switch (dir)
 				{
@@ -274,11 +266,11 @@ void Collisions::PlayerToTile(Player* ply, Tile * tile)
 
 void Collisions::PlayerToEnemy(Player * ply, Enemy * enmy)
 {
-	float pBot = ply->GetBBox()->GetSprite()->getPosition().y + ply->GetBBox()->GetSprite()->getOrigin().y;
-	float eTop = enmy->GetBBox()->GetSprite()->getPosition().y - enmy->GetBBox()->GetSprite()->getOrigin().y;
+	float pBot = ply->GetAABB()->GetPosition().y + ply->GetAABB()->GetOrigin().y;
+	float eTop = enmy->GetAABB()->GetPosition().y - enmy->GetAABB()->GetOrigin().y;
 
 	bool col = false;
-	if (enmy->GetBBox()->GetID() == (int)TexID::BillBB)
+	if (enmy->GetID() == TexID::Bill)
 	{
 		Bill* bill = (Bill*)enmy;
 
@@ -288,7 +280,7 @@ void Collisions::PlayerToEnemy(Player * ply, Enemy * enmy)
 			col = true;
 		}
 		//check for collision with back rect
-		else if (ply->GetBBox()->GetSprite()->getGlobalBounds().intersects(bill->GetBody().back.getGlobalBounds()))
+		else if (ply->GetAABB()->GetRect().getGlobalBounds().intersects(bill->GetBody().back.getGlobalBounds()))
 		{
 			col = true;
 		}
@@ -390,7 +382,7 @@ void Collisions::ObjectToTile(DynamicObject* obj, Tile * tile)
 	{
 		if(GetDirTravelling(obj) == DDIR)
 		{
-			if (obj->GetBBox()->GetID() == (int)TexID::RexBB || tile->GetType() == OWAY)
+			if (obj->GetID() == TexID::Rex || tile->GetType() == OWAY)
 			{
 				Rex* rtmp = (Rex*)obj;
 				if (rtmp->Tall())//if regular
@@ -430,7 +422,7 @@ void Collisions::ObjectToTile(DynamicObject* obj, Tile * tile)
 		switch (GetDirTravelling(obj))
 		{
 		case RDIR:
-			if (obj->GetBBox()->GetID() == (int)TexID::RexBB)
+			if (obj->GetID() == TexID::Rex)
 			{
 				Rex* rtmp = (Rex*)obj;
 				if (rtmp->Tall())//regular
@@ -444,7 +436,7 @@ void Collisions::ObjectToTile(DynamicObject* obj, Tile * tile)
 					rtmp->SetPosition(sf::Vector2f((tile->GetPosition().x - tile->GetOrigin().x * sX) - (obj->GetOrigin().x * sX) + 3, obj->GetPosition().y));
 				}
 			}
-			else if (obj->GetBBox()->GetID() == (int)TexID::ShroomBB)
+			else if (obj->GetID() == TexID::Shroom)
 			{
 				//set to minimum closest dist
 				obj->SetPosition(sf::Vector2f((tile->GetPosition().x - tile->GetOrigin().x * sX) - (obj->GetOrigin().x * sX) -4.f, obj->GetPosition().y));
@@ -467,7 +459,7 @@ void Collisions::ObjectToTile(DynamicObject* obj, Tile * tile)
 
 			break;
 		case LDIR:
-			if (obj->GetBBox()->GetID() == (int)TexID::RexBB)
+			if (obj->GetID() == TexID::Rex)
 			{
 				Rex* rtmp = (Rex*)obj;
 				if (rtmp->Tall())//regular
@@ -481,7 +473,7 @@ void Collisions::ObjectToTile(DynamicObject* obj, Tile * tile)
 					rtmp->SetPosition(sf::Vector2f((tile->GetPosition().x + tile->GetOrigin().x * sX) + (obj->GetOrigin().x * sX) - 3.f, obj->GetPosition().y));
 				}
 			}
-			else if (obj->GetBBox()->GetID() == (int)TexID::ShroomBB)
+			else if (obj->GetID() == TexID::Shroom)
 			{
 				//set to minimum closest dist
 				obj->SetPosition(sf::Vector2f((tile->GetPosition().x + tile->GetOrigin().x * sX) + (obj->GetOrigin().x * sX) + 4.f, obj->GetPosition().y));
@@ -516,7 +508,7 @@ void Collisions::ObjectToTile(DynamicObject* obj, Tile * tile)
 		bool colFound = false;
 		for (int i = 0; i < tmpSlope.size(); i++)
 		{
-			if (obj->GetBBox()->GetSprite()->getGlobalBounds().intersects(tmpSlope[i].getGlobalBounds()))
+			if (obj->GetAABB()->GetRect().getGlobalBounds().intersects(tmpSlope[i].getGlobalBounds()))
 			{
 				switch (GetDirTravelling(obj))
 				{
@@ -556,7 +548,7 @@ void Collisions::ObjectToTile(DynamicObject* obj, Tile * tile)
 
 void Collisions::ColObjectToTile(Object * c_obj, Tile * tile)
 {
-	int id = c_obj->GetBBox()->GetID();
+	int id = (int)c_obj->GetID();
 	if (id >= PlyBgn && id <= PlyEnd)
 	{
 		PlayerToTile((Player*)c_obj, tile);
@@ -580,9 +572,9 @@ void Collisions::EnemyToEnemy(Enemy * enmy1, Enemy* enmy2)
 	switch (GetDirTravelling(enmy1))
 	{
 	case RDIR:
-		if (enmy1->GetBBox()->GetID() == (int)TexID::RexBB)
+		if (enmy1->GetID() == TexID::Rex)
 		{
-			if (enmy2->GetBBox()->GetID() == (int)TexID::RexBB)//regular
+			if (enmy2->GetID() == TexID::Rex)//regular
 			{
 				//resolve collision
 				enmy1->SetPosition(sf::Vector2f((enmy2->GetPosition().x - enmy2->GetOrigin().x * sX) - (enmy1->GetOrigin().x * sX) + 8, enmy1->GetPosition().y));
@@ -600,9 +592,9 @@ void Collisions::EnemyToEnemy(Enemy * enmy1, Enemy* enmy2)
 		}
 		break;
 	case LDIR:
-		if (enmy1->GetBBox()->GetID() == (int)TexID::RexBB)
+		if (enmy1->GetID() == TexID::Rex)
 		{
-			if (enmy2->GetBBox()->GetID() == (int)TexID::RexBB)//regular
+			if (enmy2->GetID() == TexID::Rex)//regular
 			{
 				//resolve collision
 				enmy1->SetPosition(sf::Vector2f((enmy2->GetPosition().x - enmy2->GetOrigin().x * sX) - (enmy1->GetOrigin().x * sX) - 8.f, enmy1->GetPosition().y));
@@ -624,8 +616,8 @@ void Collisions::EnemyToEnemy(Enemy * enmy1, Enemy* enmy2)
 
 void Collisions::ColObjectToColObject(Object * colObj1, Object * colObj2)
 {
-	int col1Typ = colObj1->GetBBox()->GetID();
-	int col2Typ = colObj2->GetBBox()->GetID();
+	int col1Typ = (int)colObj1->GetID();
+	int col2Typ = (int)colObj2->GetID();
 
 	int isPlayer = -1;
 
@@ -772,8 +764,7 @@ void Collisions::SBoxHit(Player * ply, SBox* box)
 bool Collisions::CircleToRect(sf::CircleShape circle, Player* ply)
 {
 	//convert object into sphere
-	sf::Sprite* pspr = ply->GetBBox()->GetSprite();
-	sf::Vector2f Obj1Size = sf::Vector2f(pspr->getOrigin().x * 2, pspr->getOrigin().y * 2);
+	sf::Vector2f Obj1Size = sf::Vector2f(ply->GetAABB()->GetOrigin().x * 2, ply->GetAABB()->GetOrigin().y * 2);
 
 	Obj1Size.x *= sX;
 	Obj1Size.y *= sY;
@@ -783,7 +774,7 @@ bool Collisions::CircleToRect(sf::CircleShape circle, Player* ply)
 	float Radius2 = circle.getRadius();
 
 	//collision check
-	sf::Vector2f Distance = pspr->getPosition() -  circle.getPosition();
+	sf::Vector2f Distance = ply->GetAABB()->GetPosition() -  circle.getPosition();
 
 	return (Distance.x * Distance.x + Distance.y * Distance.y <= (Radius1 + Radius2) * (Radius1 + Radius2));
 }

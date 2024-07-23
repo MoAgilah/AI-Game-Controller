@@ -2,14 +2,14 @@
 #include "../Game/Game.h"
 #include "../Game/Camera.h"
 
-Box::Box(AnimatedSprite* sprite, TexID boxId, const sf::Vector2f& initPos)
-	: Object(sprite, boxId)
+Box::Box(AnimatedSprite* sprite, const sf::Vector2f& initPos)
+	: Object(sprite, sf::Vector2f(16,16))
 {
 	SetInitialDirection(true);
 	SetDirection(GetInitialDirection());
 	SetInitialPosition(initPos);
 	SetPosition(GetInitialPosition());
-	GetBBox()->Update(GetPosition());
+	GetAABB()->Update(GetPosition());
 }
 
 void Box::Reset()
@@ -26,7 +26,7 @@ void Box::WasJustHit()
 }
 
 QBox::QBox(const sf::Vector2f& initPos)
-	: Box(new AnimatedSprite(TexID::QBox, 2, 4, FPS, false, 0.35f), TexID::BoxBB, initPos)
+	: Box(new AnimatedSprite(TexID::QBox, 2, 4, FPS, false, 0.35f), initPos)
 {
 	auto animSpr = GetAnimSpr();
 	animSpr->SetFrames({ 1, 4 });
@@ -64,7 +64,7 @@ void QBox::ResolveCollisions(Tile* tile)
 }
 
 SBox::SBox(const sf::Vector2f& initPos)
-	: Box(new AnimatedSprite(TexID::SBox, 2, 4, FPS, false, 0.35f), TexID::BoxBB, initPos)
+	: Box(new AnimatedSprite(TexID::SBox, 2, 4, FPS, false, 0.35f), initPos)
 {
 	GetAnimSpr()->SetFrames({ 1, 4 });
 }
