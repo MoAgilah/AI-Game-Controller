@@ -91,7 +91,7 @@ void Collisions::ProcessCollisions(Object* gobj)
 
 		numchecks++;
 
-		Col = gobj->GetAABB()->GetRect().getGlobalBounds().intersects(tile->GetRect().getGlobalBounds());
+		Col = gobj->GetAABB()->Intersects(tile->GetAABB());
 
 		if (Col)
 		{
@@ -161,7 +161,7 @@ void Collisions::PlayerToTile(Player* ply, Tile * tile)
 		if (dir == DDIR)
 		{
 			//move to top of tile
-			ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (ply->GetOrigin().y * sY) +4.f));
+			ply->SetPosition(ply->GetPosition() - sf::Vector2f(0, ply->GetAABB()->GetOverlap().y));
 			ply->SetOnGround(true);
 			return;
 		}
@@ -180,7 +180,7 @@ void Collisions::PlayerToTile(Player* ply, Tile * tile)
 			if (dir == DDIR)
 			{
 				//move to top of tile
-				ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (ply->GetOrigin().y * sY) + 4.f));
+				ply->SetPosition(ply->GetPosition() - sf::Vector2f(0, ply->GetAABB()->GetOverlap().y));
 				ply->SetOnGround(true);
 				return;
 			}
@@ -205,17 +205,15 @@ void Collisions::PlayerToTile(Player* ply, Tile * tile)
 		switch (dir)
 		{
 		case DDIR:
-			//move to tile top
-			ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (ply->GetOrigin().y * sY) + 4.f));
+			//move to top of tile
+			ply->SetPosition(ply->GetPosition() - sf::Vector2f(0, ply->GetAABB()->GetOverlap().y));
 			ply->SetOnGround(true);
 			return;
 		case RDIR:
-			//move to closest point without a collision to remove jittering
-			ply->SetPosition(sf::Vector2f((tile->GetPosition().x - tile->GetOrigin().x * sX) - (ply->GetOrigin().x * sX) + 9.f, ply->GetPosition().y));
+			ply->SetPosition(ply->GetPosition() - sf::Vector2f(ply->GetAABB()->GetOverlap().x, 0));
 			return;
 		case LDIR:
-			//move to closest point without a collision to remove jittering
-			ply->SetPosition(sf::Vector2f((tile->GetPosition().x + tile->GetOrigin().x * sX) + (ply->GetOrigin().x * sX) - 9.f, ply->GetPosition().y));
+			ply->SetPosition(ply->GetPosition() + sf::Vector2f(ply->GetAABB()->GetOverlap().x, 0));
 			return;
 		}
 	}
@@ -224,19 +222,20 @@ void Collisions::PlayerToTile(Player* ply, Tile * tile)
 	if (tile->GetType() == DIAGU || tile->GetType() == DIAGD)
 	{
 		//extract slope
-		std::vector<sf::RectangleShape> tmpSlope = tile->GetSlopeBBox();
+		std::vector<AABB> tmpSlope = tile->GetSlopeBBox();
 
 		bool colFound = false;
 		for (int i = 0; i < tmpSlope.size(); i++)
 		{
 			//if collision with slope
-			if (ply->GetAABB()->GetRect().getGlobalBounds().intersects(tmpSlope[i].getGlobalBounds()))
+			if (ply->GetAABB()->Intersects(&tmpSlope[i]))
 			{
 				switch (dir)
 				{
 				case DDIR:
 					//set to slope top
-					ply->SetPosition(sf::Vector2f(ply->GetPosition().x, tmpSlope[i].getPosition().y - tmpSlope[i].getOrigin().y * sY - (ply->GetOrigin().y * sX)));
+					//move to top of tile
+					ply->SetPosition(ply->GetPosition() - sf::Vector2f(0, ply->GetAABB()->GetOverlap().y));
 					ply->SetOnGround(true);
 					colFound = true;
 					return;
@@ -488,16 +487,16 @@ void Collisions::ObjectToTile(DynamicObject* obj, Tile * tile)
 	if (tile->GetType() == DIAGU || tile->GetType() == DIAGD)
 	{
 		//extract slope
-		std::vector<sf::RectangleShape> tmpSlope = tile->GetSlopeBBox();
+		std::vector<AABB> tmpSlope = tile->GetSlopeBBox();
 		bool colFound = false;
 		for (int i = 0; i < tmpSlope.size(); i++)
 		{
-			if (obj->GetAABB()->GetRect().getGlobalBounds().intersects(tmpSlope[i].getGlobalBounds()))
+			if (obj->GetAABB()->Intersects(&tmpSlope[i]))
 			{
 				switch (GetDirTravelling(obj))
 				{
 				case DDIR:
-					obj->SetPosition(sf::Vector2f(obj->GetPosition().x, tmpSlope[i].getPosition().y - tmpSlope[i].getOrigin().y*sY - obj->GetOrigin().y*sX));
+					obj->SetPosition(sf::Vector2f(obj->GetPosition().x, tmpSlope[i].GetPosition().y - tmpSlope[i].GetOrigin().y * sY - obj->GetOrigin().y * sX));
 					if ((int)obj->GetID() >= (int)EnmyBgn && (int)obj->GetID() <= (int)EnmyEnd)
 					{
 						((Enemy*)obj)->SetOnGround(true);

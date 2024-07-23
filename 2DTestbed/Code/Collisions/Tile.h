@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Collisions/AABB.h"
 #include <SFML/Graphics.hpp>
 #include <vector>
 
@@ -12,7 +13,7 @@ class Camera;
 class Tile
 {
 public:
-	Tile() = default;
+	Tile();
 	explicit Tile(const sf::Font& font);
 	~Tile() = default;
 
@@ -29,13 +30,15 @@ public:
 	void SetActive(bool vis) { m_visible = vis; }
 
 	void SetPosition(sf::Vector2f pos);
-	const sf::Vector2f& GetPosition() { return m_rect.getPosition(); }
-	const sf::Vector2f& GetOrigin() { return m_rect.getOrigin(); }
+	const sf::Vector2f& GetPosition() { return m_aabb.GetPosition(); }
+	const sf::Vector2f& GetOrigin() { return m_aabb.GetOrigin(); }
 
-	const sf::RectangleShape& GetRect() { return m_rect; }
-	const std::vector<sf::RectangleShape>& GetSlopeBBox() const { return m_slope; }
+	AABB* GetAABB() { return &m_aabb; }
+	const sf::RectangleShape& GetRect() { return m_aabb.GetRect(); }
+	std::vector<AABB>& GetSlopeBBox() { return m_slope; }
 
-	void SetFillColour(sf::Color col) { m_rect.setFillColor(col); }
+	void SetFillColour(sf::Color col) { m_aabb.SetFillColour(col); }
+	void SetOutlineColour(sf::Color col) { m_aabb.SetOutlineColour(col); }
 
 	void Render(sf::RenderWindow& window);
 
@@ -50,8 +53,7 @@ private:
 	int m_type = EMPTY;
 
 	std::string m_id;
-	sf::RectangleShape m_rect;
+	AABB m_aabb;
 	sf::Text m_text;
-	sf::RectangleShape m_srect;
-	std::vector<sf::RectangleShape> m_slope;
+	std::vector<AABB> m_slope;
 };
