@@ -27,6 +27,8 @@ public:
 
 	const sf::Vector2f& GetOrigin() const { return m_rect.getOrigin(); }
 	const Point& GetExtents() const { return m_extents; }
+	const Point& GetOverlap() const { return m_overlap; }
+	const Point& GetPreviousOverlap() const { return m_previousOverlap; }
 
 	void SetFillColour(const sf::Color& col) { m_rect.setFillColor(col); }
 	void SetOutlineColour(const sf::Color& col) { m_rect.setOutlineColor(col); }
@@ -44,5 +46,7 @@ private:
 	Point m_max;
 	Point m_center;
 	Point m_extents;
+	Point m_overlap;
+	Point m_previousOverlap;
 	sf::RectangleShape m_rect;
 };

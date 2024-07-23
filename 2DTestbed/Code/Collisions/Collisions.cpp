@@ -23,20 +23,18 @@ Collisions* Collisions::instance = nullptr;
 
 Collisions::Collisions()
 {
-	m_grid = grid.GetGrid();
+	for (auto& gridTile : m_grid.GetGrid())
+	{
+		if (gridTile->GetType() == EMPTY)
+			continue;
+		std::shared_ptr<Tile> tile;
+		tile.reset(gridTile);
+		m_tiles.push_back(tile);
+	}
 }
 
 Collisions::~Collisions()
 {
-	if (m_collidables.empty() == false)
-	{
-		for (int i = 0; i < m_collidables.size(); ++i)
-		{
-			delete m_collidables[i];
-			m_collidables[i] = nullptr;
-		}
-	}
-
 	if (instance)
 	{
 		delete instance;
@@ -54,9 +52,11 @@ Collisions* Collisions::Get()
 	return instance;
 }
 
-void Collisions::AddCollidable(Object* bbox)
+void Collisions::AddCollidable(Object* go)
 {
-	m_collidables.push_back(bbox);
+	std::shared_ptr<Object> obj;
+	obj.reset(go);
+	m_collidables.push_back(obj);
 }
 
 void Collisions::RemoveLastAdded()
@@ -66,27 +66,17 @@ void Collisions::RemoveLastAdded()
 
 void Collisions::ReplacePlayer(Player * currPlayer)
 {
-	m_collidables[0] = currPlayer;
+	m_collidables[0].reset(currPlayer);
 }
 
 Object* Collisions::GetLastAdded()
 {
-	return m_collidables.back();
+	return m_collidables.back().get();
 }
 
 void Collisions::Render(sf::RenderWindow& window)
 {
-#ifdef DRender
-	for (int i = 0; i < m_collidables.size(); ++i)
-	{
-		if (!m_collidables[i]->GetActive())
-			continue;
-
-		m_collidables[i]->GetBBox()->Render(window);
-	}
-#endif
-
-	grid.Render(window);
+	m_grid.Render(window);
 }
 
 void Collisions::ProcessCollisions(Object* gobj)
@@ -94,16 +84,10 @@ void Collisions::ProcessCollisions(Object* gobj)
 	int numchecks = 0;
 	//check for collision with tilemap
 	bool Col = false;
-	for (int t = 0; t < m_grid.size(); ++t)
+	for (auto& tile : m_tiles)
 	{
-		Tile* tile = m_grid[t];
-
-		if (tile->GetType() == EMPTY || gobj->GetID() == TexID::ChkPnt)
-		{
+		if (!tile->GetActive())
 			continue;
-		}
-
-		if (!tile->GetActive()) continue;
 
 		numchecks++;
 
@@ -112,7 +96,7 @@ void Collisions::ProcessCollisions(Object* gobj)
 		if (Col)
 		{
 			++numchecks;
-			ColObjectToTile(gobj, tile);
+			ColObjectToTile(gobj, tile.get());
 			break;
 		}
 	}
@@ -146,7 +130,7 @@ void Collisions::ProcessCollisions(Object* gobj)
 
 		if (Col)
 		{
-			ColObjectToColObject(gobj, m_collidables[g]);
+			ColObjectToColObject(gobj, m_collidables[g].get());
 			break;
 		}
 	}
@@ -154,15 +138,15 @@ void Collisions::ProcessCollisions(Object* gobj)
 
 Tile Collisions::GetTile(int x, int y)
 {
-	return *grid.GetTile(x, y);
+	return *m_grid.GetTile(x, y);
 }
 
 std::vector<Tile*> Collisions::GetGrid()
 {
-	return grid.GetGrid();
+	return m_grid.GetGrid();
 }
 
-std::vector<Object*> Collisions::GetCollidables()
+std::vector<std::shared_ptr<Object>> Collisions::GetCollidables()
 {
 	return m_collidables;
 }

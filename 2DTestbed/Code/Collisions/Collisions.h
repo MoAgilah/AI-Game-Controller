@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 
+
 #include "../Collisions/Tile.h"
 #include "../Collisions/AABB.h"
 #include "../Collisions/Grid.h"
@@ -34,7 +35,7 @@ public:
 	void ProcessCollisions(Object* object);
 	Tile GetTile(int x, int y);
 	std::vector<Tile*> GetGrid();
-	std::vector<Object*> GetCollidables();
+	std::vector<std::shared_ptr<Object>> GetCollidables();
 private:
 	void ColObjectToTile(Object* colObj, Tile* tile);
 	void PlayerToTile(Player* ply, Tile* tile);
@@ -55,8 +56,8 @@ private:
 
 	Collisions();
 	static Collisions* instance;
-	Grid grid;
+	Grid m_grid;
 
-	std::vector<Tile*> m_grid;
-	std::vector<Object*> m_collidables;
+	std::vector<std::shared_ptr<Tile>> m_tiles;
+	std::vector<std::shared_ptr<Object>> m_collidables;
 };
