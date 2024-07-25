@@ -89,37 +89,9 @@ void CollisionManager::Render(sf::RenderWindow& window)
 
 void CollisionManager::ProcessCollisions(Object* gobj)
 {
-	for (auto tile : m_tiles)
-		tile->GetAABB()->SetHit(false);
-
 	int id = (int)gobj->GetID();
 	if (id >= PlyBgn && id <= (int)TexID::Goal)
-	{
-		bool collided = false;
-		std::vector<std::shared_ptr<Tile>> collidedWith;
-
-		for (auto tile : m_tiles)
-		{
-			if (!tile->GetActive())
-				continue;
-
-			if (tile->GetAABB()->Intersects(gobj->GetAABB()))
-				collidedWith.push_back(tile);
-		}
-
-		if (collided = !collidedWith.empty())
-		{
-			if (gobj->GetDirection())
-				SortCollidedTiles(collidedWith);
-
-			for (auto tile : collidedWith)
-				if (tile->GetAABB()->Intersects(gobj->GetAABB()))
-					DynamicObjectToTile((DynamicObject*)gobj, tile.get());
-		}
-
-		if (!collided)
-			((DynamicObject*)gobj)->SetOnGround(false);
-	}
+		DynamicObjectToTileCollisions((DynamicObject*)gobj);
 
 	for (int g = 0; g < m_collidables.size(); ++g)
 	{
@@ -152,7 +124,38 @@ std::vector<std::shared_ptr<Object>> CollisionManager::GetCollidables()
 	return m_collidables;
 }
 
-void CollisionManager::DynamicObjectToTile(DynamicObject* obj, Tile* tile)
+void CollisionManager::DynamicObjectToTileCollisions(DynamicObject* obj)
+{
+	for (auto tile : m_tiles)
+		tile->GetAABB()->SetHit(false);
+
+	bool collided = false;
+	std::vector<std::shared_ptr<Tile>> collidedWith;
+
+	for (auto tile : m_tiles)
+	{
+		if (!tile->GetActive())
+			continue;
+
+		if (tile->GetAABB()->Intersects(obj->GetAABB()))
+			collidedWith.push_back(tile);
+	}
+
+	if (collided = !collidedWith.empty())
+	{
+		if (obj->GetDirection())
+			SortCollidedTiles(collidedWith);
+
+		for (auto tile : collidedWith)
+			if (tile->GetAABB()->Intersects(obj->GetAABB()))
+				DynamicObjectToTileResolution(obj, tile.get());
+	}
+
+	if (!collided)
+		obj->SetOnGround(false);
+}
+
+void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* tile)
 {
 	int dir = GetDirTravelling(obj);
 
