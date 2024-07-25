@@ -204,8 +204,8 @@ void CollisionManager::PlayerToTile(Player* ply, Tile * tile)
 				//move to top of tile
 				ply->Move(0, -tile->GetAABB()->GetOverlap().y);
 				ply->SetOnGround(true);
-				return;
 			}
+			return;
 		}
 		case RDIR:
 			if (ply->GetAirbourne())
@@ -242,14 +242,14 @@ void CollisionManager::PlayerToTile(Player* ply, Tile * tile)
 		for (int i = 0; i < tmpSlope.size(); i++)
 		{
 			//if collision with slope
-			if (ply->GetAABB()->Intersects(&tmpSlope[i]))
+			if (tmpSlope[i].Intersects(ply->GetAABB()))
 			{
 				switch (dir)
 				{
 				case DDIR:
 					//set to slope top
 					//move to top of tile
-					ply->Move(0, -tile->GetAABB()->GetOverlap().y);
+					ply->Move(0, -tmpSlope[i].GetOverlap().y);
 					ply->SetOnGround(true);
 					colFound = true;
 					return;
