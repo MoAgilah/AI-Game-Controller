@@ -202,13 +202,13 @@ void CollisionManager::PlayerToTile(Player* ply, Tile * tile)
 	//corner tile or wall tile
 	if (tile->GetType() == CRN)
 	{
+		float plyBot = ply->GetAABB()->GetPosition().y + ply->GetOrigin().y;
+		float tiletop = tile->GetPosition().y - tile->GetOrigin().y;
+
 		switch (dir)
 		{
 		case DDIR:
 		{
-			float plyBot = ply->GetAABB()->GetPosition().y + ply->GetOrigin().y;
-			float tiletop = tile->GetPosition().y - tile->GetOrigin().y;
-
 			//if above the tile
 			if (plyBot < tiletop)
 			{
@@ -219,13 +219,17 @@ void CollisionManager::PlayerToTile(Player* ply, Tile * tile)
 			return;
 		}
 		case RDIR:
-			if (ply->GetAirbourne())
+		{
+			if (plyBot > tiletop)
 				ply->Move(-tile->GetAABB()->GetOverlap().x, 0);
 			return;
+		}
 		case LDIR:
-			if (ply->GetAirbourne())
+		{
+			if (plyBot > tiletop)
 				ply->Move(tile->GetAABB()->GetOverlap().x, 0);
 			return;
+		}
 		}
 	}
 
