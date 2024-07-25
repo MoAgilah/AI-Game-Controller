@@ -78,6 +78,8 @@ void CollisionManager::ProcessCollisions(Object* gobj)
 	for (auto tile : m_tiles)
 		tile->GetAABB()->SetHit(false);
 
+	std::vector<std::shared_ptr<Tile>> collidedWith;
+
 	//check for collision with tilemap
 	bool Col = false;
 	for (auto tile : m_tiles)
@@ -85,14 +87,17 @@ void CollisionManager::ProcessCollisions(Object* gobj)
 		if (!tile->GetActive())
 			continue;
 
-		Col = gobj->GetAABB()->Intersects(tile->GetAABB());
-
-		if (Col)
-		{
-			ColObjectToTile(gobj, tile.get());
-			break;
-		}
+		if (gobj->GetAABB()->Intersects(tile->GetAABB()))
+			collidedWith.push_back(tile);
 	}
+
+	if (!collidedWith.empty())
+	{
+		Col = true;
+		for (auto tile : collidedWith)
+			ColObjectToTile(gobj, tile.get());
+	}
+
 
 	if (!Col)
 	{
