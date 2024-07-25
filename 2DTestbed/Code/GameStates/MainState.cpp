@@ -36,7 +36,6 @@ void MainState::ProcessInputs()
 
 void MainState::Update(float deltaTime)
 {
-	m_gameMgr->GetCamera()->Update();
 	Timer::Get()->UpdateTime(deltaTime);
 
 	if (Automated)
@@ -44,6 +43,8 @@ void MainState::Update(float deltaTime)
 
 	m_gameMgr->GetLevel()->Update(deltaTime);
 	m_gameMgr->GetPlayer()->Update(deltaTime);
+
+	m_gameMgr->GetCamera()->Update();
 }
 
 void MainState::Render(sf::RenderWindow& window)
