@@ -22,11 +22,12 @@ class QBox;
 class SBox;
 class Camera;
 
-class Collisions
+class CollisionManager
 {
 public:
-	static Collisions* Get();
-	~Collisions();
+	CollisionManager();
+	~CollisionManager() = default;
+
 	void AddCollidable(Object* ngo);
 	void RemoveLastAdded();
 	void ReplacePlayer(Player* currPlayer);
@@ -54,10 +55,7 @@ private:
 
 	bool CircleToRect(sf::CircleShape circle, Player* spr);
 
-	Collisions();
-	static Collisions* instance;
 	Grid m_grid;
-
 	std::vector<std::shared_ptr<Tile>> m_tiles;
 	std::vector<std::shared_ptr<Object>> m_collidables;
 };

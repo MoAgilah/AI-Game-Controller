@@ -1,5 +1,5 @@
 #include "Player.h"
-#include "../Collisions/Collisions.h"
+#include "../Collisions/CollisionManager.h"
 #include "../Game/Camera.h"
 #include "../Game/Timer.h"
 #include "../Game/Game.h"
@@ -119,7 +119,7 @@ void Player::Update(float deltaTime)
 		{
 			SetPrevPosition(GetPosition());
 			Move(sf::Vector2f(GetXVelocity() * FPS * deltaTime, 0));
-			Collisions::Get()->ProcessCollisions(this);
+			Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
 		}
 
 		CheckForHorizontalBounds(deltaTime);
@@ -128,7 +128,7 @@ void Player::Update(float deltaTime)
 		{
 			SetPrevPosition(GetPosition());
 			Move(sf::Vector2f(0, GetYVelocity() * FPS * deltaTime));
-			Collisions::Get()->ProcessCollisions(this);
+			Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
 		}
 
 		if (GetPosition().x > RightMost)
@@ -441,7 +441,7 @@ AutomatedPlayer::AutomatedPlayer(const sf::Vector2f& pos)
 	: Player(pos)
 {
 	if (s_playerInserted)
-		Collisions::Get()->RemoveLastAdded();
+		Game::GetGameMgr()->GetCollisionMgr()->RemoveLastAdded();
 
 	s_playerInserted = true;
 }

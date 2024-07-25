@@ -1,5 +1,6 @@
 #include "Koopa.h"
-#include "../Collisions/Collisions.h"
+#include "../Game/Game.h"
+#include "../Collisions/CollisionManager.h"
 #include "../Game/Constants.h"
 
 Koopa::Koopa(bool dir, const sf::Vector2f& initPos)
@@ -62,7 +63,7 @@ void Koopa::Animate(float deltaTime)
 	if (GetXVelocity() != 0)
 	{
 		Move(GetXVelocity() * FPS * deltaTime, 0);
-		Collisions::Get()->ProcessCollisions(this);
+		Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
 		UpdateBoundingBox();
 	}
 
@@ -71,7 +72,7 @@ void Koopa::Animate(float deltaTime)
 	if (GetYVelocity() != 0)
 	{
 		Move(0, GetYVelocity() * FPS * deltaTime);
-		Collisions::Get()->ProcessCollisions(this);
+		Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
 		UpdateBoundingBox();
 	}
 }

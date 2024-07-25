@@ -3,7 +3,7 @@
 #include "../GameObjects/Player.h"
 #include "../GameObjects/Enemy.h"
 #include "../GameObjects/Object.h"
-#include "../Collisions/Collisions.h"
+#include "../Collisions/CollisionManager.h"
 #include "../Collisions/Grid.h"
 #include "../Controller/CtrlMgr.h"
 #include "../Game/Constants.h"
@@ -57,5 +57,5 @@ void DebugState::Render(sf::RenderWindow& window)
 
 	m_gameMgr->GetPlayer()->Render(window);
 
-	Collisions::Get()->Render(window);
+	Game::GetGameMgr()->GetCollisionMgr()->Render(window);
 }

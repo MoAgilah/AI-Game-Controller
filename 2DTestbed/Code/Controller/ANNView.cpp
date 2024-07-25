@@ -2,7 +2,7 @@
 #include "../Game/Camera.h"
 #include "../Game/Game.h"
 #include "../GameObjects/Player.h"
-#include "../Collisions/Collisions.h"
+#include "../Collisions/CollisionManager.h"
 #include "../Controller/CtrlMgr.h"
 #include "../Game/Constants.h"
 
@@ -80,7 +80,7 @@ void ANNView::Update()
 
 	//extract m_visible tiles
 	int num(0),cnt(0);
-	std::vector<Tile*> grid = Collisions::Get()->GetGrid();
+	std::vector<Tile*> grid = Game::GetGameMgr()->GetCollisionMgr()->GetGrid();
 	for (int i = 0; i < grid.size(); i++)
 	{
 		if (cnt == 240) break;
@@ -99,7 +99,7 @@ void ANNView::Update()
 
 	//colour m_visible tiles
 	sf::RectangleShape tmp;
-	std::vector<std::shared_ptr<Object>> gobj = Collisions::Get()->GetCollidables();
+	std::vector<std::shared_ptr<Object>> gobj = Game::GetGameMgr()->GetCollisionMgr()->GetCollidables();
 	for (int i = 0; i < m_vecView.size(); i++)
 	{
 		if (m_vecView[i]->GetType() == EMPTY)

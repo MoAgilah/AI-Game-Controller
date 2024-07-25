@@ -78,7 +78,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Code\Collisions\Collisions.cpp">
+    <ClCompile Include="Code\Collisions\CollisionManager.cpp">
       <Filter>Source Files\Collisions</Filter>
     </ClCompile>
     <ClCompile Include="Code\Collisions\Grid.cpp">
@@ -194,7 +194,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Code\Collisions\Collisions.h">
+    <ClInclude Include="Code\Collisions\CollisionManager.h">
       <Filter>Header Files\Collisions</Filter>
     </ClInclude>
     <ClInclude Include="Code\Collisions\Grid.h">

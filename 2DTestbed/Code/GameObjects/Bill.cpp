@@ -1,5 +1,6 @@
 #include "Bill.h"
-#include "../Collisions/Collisions.h"
+#include "../Game/Game.h"
+#include "../Collisions/CollisionManager.h"
 
 Bill::Bill(bool dir, const sf::Vector2f& initPos)
 	: Enemy(TexID::Bill, sf::Vector2f(64,59), 2)
@@ -58,7 +59,7 @@ void Bill::Animate(float deltaTime)
 		if (GetXVelocity() != 0)
 		{
 			Move(GetXVelocity() * FPS * deltaTime, 0);
-			Collisions::Get()->ProcessCollisions(this);
+			Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
 			UpdateBoundingBox();
 		}
 	}

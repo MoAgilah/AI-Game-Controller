@@ -9,6 +9,7 @@
 #include "Timer.h"
 #include "TextureManager.h"
 
+#include "../Collisions/CollisionManager.h"
 #include "../GameStates/GameStateMgr.h"
 
 class Player;
@@ -25,6 +26,7 @@ public:
 	World* GetLevel() { return m_world.get(); }
 	Logger* GetLogger() { return m_logger.get(); }
 	TextureManager* GetTexturMgr() { return m_texureManager.get(); }
+	CollisionManager* GetCollisionMgr() { return m_collisionManager.get(); }
 
 	void ChangePlayer(Player* ply);
 
@@ -34,11 +36,12 @@ public:
 	void CheckInView();
 private:
 
-	static std::shared_ptr<Game>	m_instance;
-	std::unique_ptr<TextureManager>	m_texureManager;
-	std::unique_ptr<Camera>			m_camera;
-	std::unique_ptr<Player>		m_player;
-	std::unique_ptr<World>			m_world;
-	std::unique_ptr<Logger>			m_logger;
+	static std::shared_ptr<Game>		m_instance;
+	std::unique_ptr<TextureManager>		m_texureManager;
+	std::unique_ptr<Camera>				m_camera;
+	std::unique_ptr<Player>				m_player;
+	std::unique_ptr<World>				m_world;
+	std::unique_ptr<CollisionManager>	m_collisionManager;
+	std::unique_ptr<Logger>				m_logger;
 	GameStateMgr m_stateMgr;
 };

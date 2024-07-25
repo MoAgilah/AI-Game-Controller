@@ -159,7 +159,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Code\Collisions\AABB.cpp" />
-    <ClCompile Include="Code\Collisions\Collisions.cpp" />
+    <ClCompile Include="Code\Collisions\CollisionManager.cpp" />
     <ClCompile Include="Code\Collisions\Grid.cpp" />
     <ClCompile Include="Code\Collisions\Tile.cpp" />
     <ClCompile Include="Code\Controller\ANNView.cpp" />
@@ -199,7 +199,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Collisions\AABB.h" />
-    <ClInclude Include="Code\Collisions\Collisions.h" />
+    <ClInclude Include="Code\Collisions\CollisionManager.h" />
     <ClInclude Include="Code\Collisions\Grid.h" />
     <ClInclude Include="Code\Collisions\Tile.h" />
     <ClInclude Include="Code\Controller\ANNView.h" />

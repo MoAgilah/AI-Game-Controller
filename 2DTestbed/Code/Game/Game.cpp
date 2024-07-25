@@ -3,7 +3,7 @@
 #include "../GameObjects/Player.h"
 #include "../GameObjects/Enemy.h"
 #include "../GameObjects/Object.h"
-#include "../Collisions/Collisions.h"
+#include "../Collisions/CollisionManager.h"
 #include "../Collisions/Grid.h"
 #include "../Controller/CtrlMgr.h"
 #include "../Game/Constants.h"
@@ -16,12 +16,13 @@ Game::Game()
 {
 	m_instance.reset(this);
 	m_texureManager = std::make_unique<TextureManager>();
+	m_collisionManager = std::make_unique<CollisionManager>();
 	m_camera = std::make_unique<Camera>();
 
 	if (Automated)
 		m_player.reset(CtrlMgr::GetCtrlMgr()->GetController()->GetCurrentPlayer());
 	else
-		m_player = std::make_unique<Player>(Collisions::Get()->GetTile(1, 11).GetPosition());
+		m_player = std::make_unique<Player>(m_collisionManager->GetTile(1, 11).GetPosition());
 
 	m_world = std::make_unique<World>();
 	m_logger = std::make_unique<Logger>();
@@ -32,7 +33,7 @@ Game::Game()
 void Game::ChangePlayer(Player * ply)
 {
 	m_player.reset(ply);
-	Collisions::Get()->ReplacePlayer(m_player.get());
+	m_collisionManager->ReplacePlayer(m_player.get());
 }
 
 void Game::Update(float deltaTime)
@@ -49,7 +50,7 @@ void Game::CheckInView()
 {
 	m_player->SetActive(m_camera->IsInView(m_player->GetAnimSpr()->GetSprite()));
 
-	for (auto& tile : Collisions::Get()->GetGrid())
+	for (auto& tile : m_collisionManager->GetGrid())
 		tile->SetActive(m_camera->IsinView(tile->GetRect()));
 
 	m_world->CheckIsInView();

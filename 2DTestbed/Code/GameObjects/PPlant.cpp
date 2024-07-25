@@ -1,5 +1,6 @@
 #include "PPlant.h"
-#include "../Collisions/Collisions.h"
+#include "../Game/Game.h"
+#include "../Collisions/CollisionManager.h"
 #include "../Game/Constants.h"
 
 PPlant::PPlant(const sf::Vector2f& initPos)
@@ -51,7 +52,7 @@ void PPlant::Animate(float deltaTime)
 	if (GetYVelocity() != 0)
 	{
 		Move(0, GetYVelocity() * FPS * deltaTime);
-		Collisions::Get()->ProcessCollisions(this);
+		Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
 		UpdateBoundingBox();
 	}
 

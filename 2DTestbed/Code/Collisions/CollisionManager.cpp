@@ -1,4 +1,4 @@
-#include "Collisions.h"
+#include "CollisionManager.h"
 
 #include "../Game/Camera.h"
 #include "../Game/Game.h"
@@ -19,9 +19,7 @@
 
 #include <algorithm>
 
-Collisions* Collisions::instance = nullptr;
-
-Collisions::Collisions()
+CollisionManager::CollisionManager()
 {
 	for (auto& gridTile : m_grid.GetGrid())
 	{
@@ -33,48 +31,29 @@ Collisions::Collisions()
 	}
 }
 
-Collisions::~Collisions()
-{
-	if (instance)
-	{
-		delete instance;
-		instance = nullptr;
-	}
-}
-
-Collisions* Collisions::Get()
-{
-	if (instance == nullptr)
-	{
-		instance = new Collisions();
-	}
-
-	return instance;
-}
-
-void Collisions::AddCollidable(Object* go)
+void CollisionManager::AddCollidable(Object* go)
 {
 	std::shared_ptr<Object> obj;
 	obj.reset(go);
 	m_collidables.push_back(obj);
 }
 
-void Collisions::RemoveLastAdded()
+void CollisionManager::RemoveLastAdded()
 {
 	m_collidables.pop_back();
 }
 
-void Collisions::ReplacePlayer(Player * currPlayer)
+void CollisionManager::ReplacePlayer(Player * currPlayer)
 {
 	m_collidables[0].reset(currPlayer);
 }
 
-Object* Collisions::GetLastAdded()
+Object* CollisionManager::GetLastAdded()
 {
 	return m_collidables.back().get();
 }
 
-void Collisions::Render(sf::RenderWindow& window)
+void CollisionManager::Render(sf::RenderWindow& window)
 {
 	m_grid.Render(window);
 
@@ -94,7 +73,7 @@ void Collisions::Render(sf::RenderWindow& window)
 	}
 }
 
-void Collisions::ProcessCollisions(Object* gobj)
+void CollisionManager::ProcessCollisions(Object* gobj)
 {
 	for (auto tile : m_tiles)
 		tile->GetAABB()->SetHit(false);
@@ -150,22 +129,22 @@ void Collisions::ProcessCollisions(Object* gobj)
 	}
 }
 
-Tile Collisions::GetTile(int x, int y)
+Tile CollisionManager::GetTile(int x, int y)
 {
 	return *m_grid.GetTile(x, y);
 }
 
-std::vector<Tile*> Collisions::GetGrid()
+std::vector<Tile*> CollisionManager::GetGrid()
 {
 	return m_grid.GetGrid();
 }
 
-std::vector<std::shared_ptr<Object>> Collisions::GetCollidables()
+std::vector<std::shared_ptr<Object>> CollisionManager::GetCollidables()
 {
 	return m_collidables;
 }
 
-void Collisions::PlayerToTile(Player* ply, Tile * tile)
+void CollisionManager::PlayerToTile(Player* ply, Tile * tile)
 {
 	int dir = GetDirTravelling(ply);
 
@@ -261,7 +240,7 @@ void Collisions::PlayerToTile(Player* ply, Tile * tile)
 	ply->SetOnGround(false);
 }
 
-void Collisions::PlayerToEnemy(Player * ply, Enemy * enmy)
+void CollisionManager::PlayerToEnemy(Player * ply, Enemy * enmy)
 {
 	float pBot = ply->GetAABB()->GetPosition().y + ply->GetAABB()->GetOrigin().y;
 	float eTop = enmy->GetAABB()->GetPosition().y - enmy->GetAABB()->GetOrigin().y;
@@ -325,7 +304,7 @@ void Collisions::PlayerToEnemy(Player * ply, Enemy * enmy)
 	}
 }
 
-void Collisions::PlayerToObject(Player * ply, Object * obj)
+void CollisionManager::PlayerToObject(Player * ply, Object * obj)
 {
 	sf::Vector2f pos;
 	switch (obj->GetID())
@@ -372,7 +351,7 @@ void Collisions::PlayerToObject(Player * ply, Object * obj)
 	}
 }
 
-void Collisions::ObjectToTile(DynamicObject* obj, Tile * tile)
+void CollisionManager::ObjectToTile(DynamicObject* obj, Tile * tile)
 {
 	//ground and one way platforms
 	if (tile->GetType() == GRND || tile->GetType() == OWAY)
@@ -543,7 +522,7 @@ void Collisions::ObjectToTile(DynamicObject* obj, Tile * tile)
 	}
 }
 
-void Collisions::ColObjectToTile(Object * c_obj, Tile * tile)
+void CollisionManager::ColObjectToTile(Object * c_obj, Tile * tile)
 {
 	int id = (int)c_obj->GetID();
 	if (id >= PlyBgn && id <= PlyEnd)
@@ -560,7 +539,7 @@ void Collisions::ColObjectToTile(Object * c_obj, Tile * tile)
 	}
 }
 
-void Collisions::EnemyToEnemy(Enemy * enmy1, Enemy* enmy2)
+void CollisionManager::EnemyToEnemy(Enemy * enmy1, Enemy* enmy2)
 {
 	bool enmy2Dir = enmy1->GetDirection();
 	enmy1->SetDirection(enmy2->GetDirection());
@@ -611,7 +590,7 @@ void Collisions::EnemyToEnemy(Enemy * enmy1, Enemy* enmy2)
 	};
 }
 
-void Collisions::ColObjectToColObject(Object * colObj1, Object * colObj2)
+void CollisionManager::ColObjectToColObject(Object * colObj1, Object * colObj2)
 {
 	int col1Typ = (int)colObj1->GetID();
 	int col2Typ = (int)colObj2->GetID();
@@ -664,7 +643,7 @@ void Collisions::ColObjectToColObject(Object * colObj1, Object * colObj2)
 	}
 }
 
-int Collisions::GetDirTravelling(DynamicObject* obj)
+int CollisionManager::GetDirTravelling(DynamicObject* obj)
 {
 	//direction travelling
 	sf::Vector2f dirV = obj->GetPosition() - obj->GetPrevPostion();
@@ -687,7 +666,7 @@ int Collisions::GetDirTravelling(DynamicObject* obj)
 	return dir;
 }
 
-void Collisions::QBoxHit(Player * ply, QBox* box)
+void CollisionManager::QBoxHit(Player * ply, QBox* box)
 {
 	switch (GetDirTravelling(ply))
 	{
@@ -720,7 +699,7 @@ void Collisions::QBoxHit(Player * ply, QBox* box)
 	}
 }
 
-void Collisions::QBoxHit(Mushroom* shm, QBox* box)
+void CollisionManager::QBoxHit(Mushroom* shm, QBox* box)
 {
 	switch (GetDirTravelling(shm))
 	{
@@ -732,7 +711,7 @@ void Collisions::QBoxHit(Mushroom* shm, QBox* box)
 	}
 }
 
-void Collisions::SBoxHit(Player * ply, SBox* box)
+void CollisionManager::SBoxHit(Player * ply, SBox* box)
 {
 	if (box->GetCanHit())//if not yet been hit
 	{
@@ -758,7 +737,7 @@ void Collisions::SBoxHit(Player * ply, SBox* box)
 	}
 }
 
-bool Collisions::CircleToRect(sf::CircleShape circle, Player* ply)
+bool CollisionManager::CircleToRect(sf::CircleShape circle, Player* ply)
 {
 	//convert object into sphere
 	sf::Vector2f Obj1Size = sf::Vector2f(ply->GetAABB()->GetOrigin().x * 2, ply->GetAABB()->GetOrigin().y * 2);

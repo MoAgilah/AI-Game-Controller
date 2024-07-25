@@ -1,5 +1,6 @@
 #include "Collectables.h"
-#include "../Collisions/Collisions.h"
+#include "../Game/Game.h"
+#include "../Collisions/CollisionManager.h"
 
 int YCoin::s_collected = 1;
 
@@ -141,7 +142,7 @@ void Mushroom::Update(float deltaTime)
 	if (GetXVelocity() != 0)
 	{
 		Move(GetXVelocity() * FPS * deltaTime, 0);
-		Collisions::Get()->ProcessCollisions(this);
+		Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
 		UpdateBoundingBox();
 	}
 
@@ -150,7 +151,7 @@ void Mushroom::Update(float deltaTime)
 	if (GetYVelocity() != 0)
 	{
 		Move(0, GetYVelocity() * FPS * deltaTime);
-		Collisions::Get()->ProcessCollisions(this);
+		Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
 		UpdateBoundingBox();
 	}
 }
@@ -188,7 +189,7 @@ void Goal::Update(float deltaTime)
 	if (GetYVelocity() != 0)
 	{
 		Move(0, GetYVelocity() * FPS * deltaTime);
-		Collisions::Get()->ProcessCollisions(this);
+		Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
 		UpdateBoundingBox();
 	}
 
