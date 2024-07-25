@@ -87,7 +87,7 @@ void CollisionManager::ProcessCollisions(Object* gobj)
 		if (!tile->GetActive())
 			continue;
 
-		if (gobj->GetAABB()->Intersects(tile->GetAABB()))
+		if (tile->GetAABB()->Intersects(gobj->GetAABB()))
 			collidedWith.push_back(tile);
 	}
 
@@ -159,7 +159,7 @@ void CollisionManager::PlayerToTile(Player* ply, Tile * tile)
 		if (dir == DDIR)
 		{
 			//move to top of tile
-			ply->Move(0, -ply->GetAABB()->GetOverlap().y);
+			ply->Move(0, -tile->GetAABB()->GetOverlap().y);
 			ply->SetOnGround(true);
 			return;
 		}
@@ -178,40 +178,53 @@ void CollisionManager::PlayerToTile(Player* ply, Tile * tile)
 			if (dir == DDIR)
 			{
 				//move to top of tile
-				ply->Move(0, -ply->GetAABB()->GetOverlap().y);
+				ply->Move(0, -tile->GetAABB()->GetOverlap().y);
 				ply->SetOnGround(true);
 				return;
-			}
-		}
-		else
-		{
-			if (ply->GetIsSuper())
-			{
-				//error occured with super mario colliding with tile above him when on the ground
-				//this skips collision with that tile as way to alleiviate the problem
-				if (tile->GetID() == "1794")
-				{
-					ply->SetOnGround(false);
-				}
 			}
 		}
 	}
 
 	//corner tile or wall tile
-	if (tile->GetType() == CRN || tile->GetType() == WALL)
+	if (tile->GetType() == CRN)
 	{
 		switch (dir)
 		{
 		case DDIR:
-			//move to top of tile
-			ply->Move(-0, ply->GetAABB()->GetOverlap().y);
-			ply->SetOnGround(true);
-			return;
+		{
+			float plyBot = ply->GetAABB()->GetPosition().y + ply->GetOrigin().y;
+			float tiletop = tile->GetPosition().y - tile->GetOrigin().y;
+
+			//if above the tile
+			if (plyBot < tiletop)
+			{
+				//move to top of tile
+				ply->Move(0, -tile->GetAABB()->GetOverlap().y);
+				ply->SetOnGround(true);
+				return;
+			}
+		}
 		case RDIR:
-			ply->Move(-ply->GetAABB()->GetOverlap().x, 0);
+			if (ply->GetAirbourne())
+				ply->Move(-tile->GetAABB()->GetOverlap().x, 0);
 			return;
 		case LDIR:
-			ply->Move(ply->GetAABB()->GetOverlap().x, 0);
+			if (ply->GetAirbourne())
+				ply->Move(tile->GetAABB()->GetOverlap().x, 0);
+			return;
+		}
+	}
+
+	//corner tile or wall tile
+	if (tile->GetType() == WALL)
+	{
+		switch (dir)
+		{
+		case RDIR:
+			ply->Move(-tile->GetAABB()->GetOverlap().x, 0);
+			return;
+		case LDIR:
+			ply->Move(tile->GetAABB()->GetOverlap().x, 0);
 			return;
 		}
 	}
@@ -233,7 +246,7 @@ void CollisionManager::PlayerToTile(Player* ply, Tile * tile)
 				case DDIR:
 					//set to slope top
 					//move to top of tile
-					ply->Move(0, -ply->GetAABB()->GetOverlap().y);
+					ply->Move(0, -tile->GetAABB()->GetOverlap().y);
 					ply->SetOnGround(true);
 					colFound = true;
 					return;
