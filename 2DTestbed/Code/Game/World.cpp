@@ -288,13 +288,13 @@ void World::UpdateGUI()
 	auto curScrBounds = Game::GetGameMgr()->GetCamera()->GetCurrentScreenBounds();
 	auto view = Game::GetGameMgr()->GetCamera()->GetView();
 
-	m_sprites[(int)Sprites::Name].SetPosition(sf::Vector2f(curScrBounds.left + 20, 20));
+	m_sprites[(int)Sprites::Name].SetPosition(sf::Vector2f(curScrBounds.left + 30, 20));
 
-	m_texts[(int)Texts::Name].setPosition(m_sprites[(int)Sprites::Name].GetPosition() + sf::Vector2f((float)m_sprites[(int)Sprites::Name].GetTextureSize().x * 0.5f + 25, 0));
+	m_texts[(int)Texts::Name].setPosition(m_sprites[(int)Sprites::Name].GetPosition() + sf::Vector2f((float)m_sprites[(int)Sprites::Name].GetTextureSize().x * 0.5f + 20, -10));
 
-	m_sprites[(int)Sprites::Time].SetPosition(sf::Vector2f(view.getCenter().x + 20, 20));
+	m_sprites[(int)Sprites::Time].SetPosition(sf::Vector2f(view.getCenter().x, 20));
 
-	m_texts[(int)Texts::Time].setPosition(m_sprites[(int)Sprites::Time].GetPosition() + sf::Vector2f((float)m_sprites[(int)Sprites::Time].GetTextureSize().x * 0.5f + 25, 0));
+	m_texts[(int)Texts::Time].setPosition(m_sprites[(int)Sprites::Time].GetPosition() + sf::Vector2f((float)m_sprites[(int)Sprites::Time].GetTextureSize().x * 0.5f + 20, -10));
 
 	m_texts[(int)Texts::Time].setString(std::to_string((int)Timer::Get()->CurrentTime()));
 }

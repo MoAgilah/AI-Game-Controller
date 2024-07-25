@@ -44,13 +44,12 @@ void DebugState::Update(float deltaTime)
 
 	m_gameMgr->GetLevel()->Update(deltaTime);
 	m_gameMgr->GetPlayer()->Update(deltaTime);
-
-	m_gameMgr->GetCamera()->Update();
 }
 
 void DebugState::Render(sf::RenderWindow& window)
 {
 	m_gameMgr->GetCamera()->Reset(window);
+
 	m_gameMgr->CheckInView();
 
 	m_gameMgr->GetLevel()->Render(window);

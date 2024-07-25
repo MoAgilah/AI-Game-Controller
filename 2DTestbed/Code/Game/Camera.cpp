@@ -112,4 +112,5 @@ bool Camera::IsinView(const sf::RectangleShape& rect) const
 void Camera::Reset(sf::RenderWindow& window)
 {
 	window.setView(m_camera);
+	Update();
 }

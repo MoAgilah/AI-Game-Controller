@@ -95,7 +95,10 @@ void CollisionManager::ProcessCollisions(Object* gobj)
 	{
 		Col = true;
 		for (auto tile : collidedWith)
-			ColObjectToTile(gobj, tile.get());
+		{
+			if (tile->GetAABB()->Intersects(gobj->GetAABB()))
+				ColObjectToTile(gobj, tile.get());
+		}
 	}
 
 
