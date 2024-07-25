@@ -68,15 +68,12 @@ public:
 	DynamicCollectable(TexID sprID, const sf::Vector2f& boxSize, const sf::Vector2f& initPos);
 	~DynamicCollectable() override = default;
 
-	bool GetOnGround() const { return m_onGround; }
-	void SetOnGround(bool grnd) { m_onGround = grnd; }
-
 	bool GetActive() const final { return !m_collected && Object::GetActive(); }
 
 	void SetCollected() { m_collected = true; }
 private:
+
 	bool m_collected = false;
-	bool m_onGround = false;
 };
 
 class Mushroom : public DynamicCollectable

@@ -19,6 +19,20 @@
 
 #include <algorithm>
 
+namespace
+{
+	void SortCollidedTiles(std::vector<std::shared_ptr<Tile>> collidedWith)
+	{
+		std::sort(collidedWith.begin(), collidedWith.end(), [](const std::shared_ptr<Tile>& a, const std::shared_ptr<Tile>& b)
+			{
+				if (a->GetColNum() == b->GetColNum())
+					return a->GetRowNum() < b->GetRowNum();
+
+				return a->GetColNum() > b->GetColNum();
+			});
+	}
+}
+
 CollisionManager::CollisionManager()
 {
 	for (auto& gridTile : m_grid.GetGrid())
@@ -78,56 +92,33 @@ void CollisionManager::ProcessCollisions(Object* gobj)
 	for (auto tile : m_tiles)
 		tile->GetAABB()->SetHit(false);
 
-	std::vector<std::shared_ptr<Tile>> collidedWith;
-
-	//check for collision with tilemap
-	bool Col = false;
-	for (auto tile : m_tiles)
+	int id = (int)gobj->GetID();
+	if (id >= PlyBgn && id <= (int)TexID::Goal)
 	{
-		if (!tile->GetActive())
-			continue;
+		bool collided = false;
+		std::vector<std::shared_ptr<Tile>> collidedWith;
 
-		if (tile->GetAABB()->Intersects(gobj->GetAABB()))
-			collidedWith.push_back(tile);
-	}
-
-	if (!collidedWith.empty())
-	{
-		if (gobj->GetDirection())
+		for (auto tile : m_tiles)
 		{
-			std::sort(collidedWith.begin(), collidedWith.end(), [](const std::shared_ptr<Tile>& a, const std::shared_ptr<Tile>& b)
-				{
-					if (a->GetColNum() == b->GetColNum())
-						return a->GetRowNum() < b->GetRowNum();
+			if (!tile->GetActive())
+				continue;
 
-					return a->GetColNum() > b->GetColNum();
-				});
-		}
-
-		Col = true;
-		for (auto tile : collidedWith)
-		{
 			if (tile->GetAABB()->Intersects(gobj->GetAABB()))
-				ColObjectToTile(gobj, tile.get());
+				collidedWith.push_back(tile);
 		}
-	}
 
+		if (collided = !collidedWith.empty())
+		{
+			if (gobj->GetDirection())
+				SortCollidedTiles(collidedWith);
 
-	if (!Col)
-	{
-		int id = (int)gobj->GetID();
-		if (id >= PlyBgn && id <= PlyEnd)
-		{
-			((Player*)gobj)->SetOnGround(false);
+			for (auto tile : collidedWith)
+				if (tile->GetAABB()->Intersects(gobj->GetAABB()))
+					DynamicObjectToTile((DynamicObject*)gobj, tile.get());
 		}
-		else if (id >= EnmyBgn && id <= EnmyEnd)
-		{
-			((Enemy*)gobj)->SetOnGround(false);
-		}
-		else if (id == (int)TexID::Shroom)
-		{
-			((Mushroom*)gobj)->SetOnGround(false);
-		}
+
+		if (!collided)
+			((DynamicObject*)gobj)->SetOnGround(false);
 	}
 
 	for (int g = 0; g < m_collidables.size(); ++g)
@@ -138,9 +129,7 @@ void CollisionManager::ProcessCollisions(Object* gobj)
 		if (!m_collidables[g]->GetActive())
 			continue;
 
-		Col = gobj->GetAABB()->Intersects(m_collidables[g]->GetAABB());
-
-		if (Col)
+		if (gobj->GetAABB()->Intersects(m_collidables[g]->GetAABB()))
 		{
 			ColObjectToColObject(gobj, m_collidables[g].get());
 			break;
@@ -163,117 +152,74 @@ std::vector<std::shared_ptr<Object>> CollisionManager::GetCollidables()
 	return m_collidables;
 }
 
-void CollisionManager::PlayerToTile(Player* ply, Tile * tile)
+void CollisionManager::DynamicObjectToTile(DynamicObject* obj, Tile* tile)
 {
-	int dir = GetDirTravelling(ply);
+	int dir = GetDirTravelling(obj);
 
-	if (tile->GetType() == GRND)
+	float objBottom = obj->GetAABB()->GetPosition().y + obj->GetOrigin().y;
+	float tileTop = tile->GetPosition().y - tile->GetOrigin().y;
+
+	if (tile->GetType() != DIAGU && tile->GetType() != DIAGD)
 	{
-		//if falling
-		if (dir == DDIR)
-		{
-			//move to top of tile
-			ply->Move(0, -tile->GetAABB()->GetOverlap().y);
-			ply->SetOnGround(true);
-			return;
-		}
-	}
-
-	//oway is a one way tile can be fell upon and jumped through
-	if (tile->GetType() == OWAY)
-	{
-		float plyBot = ply->GetAABB()->GetPosition().y + ply->GetOrigin().y;
-		float tiletop = tile->GetPosition().y - tile->GetOrigin().y;
-
-		//if above the tile
-		if (plyBot < tiletop)
-		{
-			//if falling
-			if (dir == DDIR)
-			{
-				//move to top of tile
-				ply->Move(0, -tile->GetAABB()->GetOverlap().y);
-				ply->SetOnGround(true);
-				return;
-			}
-		}
-	}
-
-	//corner tile or wall tile
-	if (tile->GetType() == CRN)
-	{
-		float plyBot = ply->GetAABB()->GetPosition().y + ply->GetOrigin().y;
-		float tiletop = tile->GetPosition().y - tile->GetOrigin().y;
-
 		switch (dir)
 		{
 		case DDIR:
 		{
-			//if above the tile
-			if (plyBot < tiletop)
+			switch (tile->GetType())
 			{
-				//move to top of tile
-				ply->Move(0, -tile->GetAABB()->GetOverlap().y);
-				ply->SetOnGround(true);
-			}
-			return;
-		}
-		case RDIR:
-		{
-			if (plyBot > tiletop)
-				ply->Move(-tile->GetAABB()->GetOverlap().x, 0);
-			return;
-		}
-		case LDIR:
-		{
-			if (plyBot > tiletop)
-				ply->Move(tile->GetAABB()->GetOverlap().x, 0);
-			return;
-		}
-		}
-	}
-
-	//corner tile or wall tile
-	if (tile->GetType() == WALL)
-	{
-		switch (dir)
-		{
-		case RDIR:
-			ply->Move(-tile->GetAABB()->GetOverlap().x, 0);
-			return;
-		case LDIR:
-			ply->Move(tile->GetAABB()->GetOverlap().x, 0);
-			return;
-		}
-	}
-
-	//if travelling up or down a slope
-	if (tile->GetType() == DIAGU || tile->GetType() == DIAGD)
-	{
-		//extract slope
-		std::vector<AABB> tmpSlope = tile->GetSlopeBBox();
-
-		bool colFound = false;
-		for (int i = 0; i < tmpSlope.size(); i++)
-		{
-			//if collision with slope
-			if (tmpSlope[i].Intersects(ply->GetAABB()))
+			case GRND:
+			case OWAY:
+			case CRN:
 			{
-				switch (dir)
+				if (objBottom < tileTop)
 				{
-				case DDIR:
-					//set to slope top
-					//move to top of tile
-					ply->Move(0, -tmpSlope[i].GetOverlap().y);
-					ply->SetOnGround(true);
-					colFound = true;
+					obj->Move(0, -tile->GetAABB()->GetOverlap().y);
+					obj->SetOnGround(true);
+					return;
+				}
+			}
+			default:
+				return;
+			}
+		}
+		case RDIR:
+		case LDIR:
+		{
+			bool shouldResolve = true;
+			switch (tile->GetType())
+			{
+			case CRN:
+				shouldResolve = objBottom > tileTop;
+				[[fallthrough]];
+			case WALL:
+			{
+				if (shouldResolve)
+					obj->Move((obj->GetDirection() ? -1 : 1) * tile->GetAABB()->GetOverlap().x, 0);
+				return;
+			}
+			default:
+				return;
+			}
+		}
+		}
+	}
+	else
+	{
+		for (auto& box : tile->GetSlopeBBox())
+		{
+			if (dir == DDIR)
+			{
+				if (box.Intersects(obj->GetAABB()))
+				{
+					obj->Move(0, -box.GetOverlap().y);
+					obj->SetOnGround(true);
 					return;
 				}
 			}
 		}
 	}
 
-	ply->SetOnGround(false);
+	obj->SetOnGround(false);
 }
 
 void CollisionManager::PlayerToEnemy(Player * ply, Enemy * enmy)
@@ -384,194 +330,6 @@ void CollisionManager::PlayerToObject(Player * ply, Object * obj)
 	default:
 		std::cout << "Unknown type!" << std::endl;
 		break;
-	}
-}
-
-void CollisionManager::ObjectToTile(DynamicObject* obj, Tile * tile)
-{
-	//ground and one way platforms
-	if (tile->GetType() == GRND || tile->GetType() == OWAY)
-	{
-		if(GetDirTravelling(obj) == DDIR)
-		{
-			if (obj->GetID() == TexID::Rex || tile->GetType() == OWAY)
-			{
-				Rex* rtmp = (Rex*)obj;
-				if (rtmp->Tall())//if regular
-				{
-					//set to tile top
-					rtmp->SetPosition(sf::Vector2f(obj->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (obj->GetOrigin().y * sY) + 3.5f));
-				}
-				else//if squished
-				{
-					//set to tile top
-					rtmp->SetPosition(sf::Vector2f(obj->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (obj->GetOrigin().y * sY) + 4.f));
-				}
-			}
-			else if (obj->GetID() == TexID::Shroom || obj->GetID() == TexID::Goal)
-			{
-				((DynamicCollectable*)obj)->SetOnGround(true);
-				obj->SetPosition(sf::Vector2f(obj->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (obj->GetOrigin().y * sY)));
-			}
-			else
-			{
-				//set to tile top
-				obj->SetPosition(sf::Vector2f(obj->GetPosition().x, (tile->GetPosition().y - tile->GetOrigin().y * sY) - (obj->GetOrigin().y * sY) + 2.5f));
-			}
-
-			if ((int)obj->GetID() >= (int)EnmyBgn && (int)obj->GetID() <= (int)EnmyEnd)
-			{
-				((Enemy*)obj)->SetOnGround(true);
-			}
-		}
-
-		return;
-	}
-
-	//corner tile or wall tile
-	if (tile->GetType() == CRN || tile->GetType() == WALL)
-	{
-		switch (GetDirTravelling(obj))
-		{
-		case RDIR:
-			if (obj->GetID() == TexID::Rex)
-			{
-				Rex* rtmp = (Rex*)obj;
-				if (rtmp->Tall())//regular
-				{
-					//set to minimum closest dist
-					rtmp->SetPosition(sf::Vector2f((tile->GetPosition().x - tile->GetOrigin().x * sX) - (obj->GetOrigin().x * sX) + 7, obj->GetPosition().y));
-				}
-				else//squished
-				{
-					//set to minimum closest dist
-					rtmp->SetPosition(sf::Vector2f((tile->GetPosition().x - tile->GetOrigin().x * sX) - (obj->GetOrigin().x * sX) + 3, obj->GetPosition().y));
-				}
-			}
-			else if (obj->GetID() == TexID::Shroom)
-			{
-				//set to minimum closest dist
-				obj->SetPosition(sf::Vector2f((tile->GetPosition().x - tile->GetOrigin().x * sX) - (obj->GetOrigin().x * sX) -4.f, obj->GetPosition().y));
-			}
-			else
-			{
-				//set to minimum closest dist
-				obj->SetPosition(sf::Vector2f((tile->GetPosition().x - tile->GetOrigin().x * sX) - (obj->GetOrigin().x * sX) + 7.5f, obj->GetPosition().y));
-			}
-
-			//flip direction
-			if (obj->GetDirection())
-			{
-				obj->SetDirection(false);
-			}
-			else
-			{
-				obj->SetDirection(true);
-			}
-
-			break;
-		case LDIR:
-			if (obj->GetID() == TexID::Rex)
-			{
-				Rex* rtmp = (Rex*)obj;
-				if (rtmp->Tall())//regular
-				{
-					//set to minimum closest dist
-					rtmp->SetPosition(sf::Vector2f((tile->GetPosition().x + tile->GetOrigin().x * sX) + (obj->GetOrigin().x * sX) - 7.f, obj->GetPosition().y));
-				}
-				else//squished
-				{
-					//set to minimum closest dist
-					rtmp->SetPosition(sf::Vector2f((tile->GetPosition().x + tile->GetOrigin().x * sX) + (obj->GetOrigin().x * sX) - 3.f, obj->GetPosition().y));
-				}
-			}
-			else if (obj->GetID() == TexID::Shroom)
-			{
-				//set to minimum closest dist
-				obj->SetPosition(sf::Vector2f((tile->GetPosition().x + tile->GetOrigin().x * sX) + (obj->GetOrigin().x * sX) + 4.f, obj->GetPosition().y));
-			}
-			else
-			{
-				//set to minimum closest dist
-				obj->SetPosition(sf::Vector2f((tile->GetPosition().x + tile->GetOrigin().x * sX) + (obj->GetOrigin().x * sX) - 7.5f, obj->GetPosition().y));
-			}
-
-			//flip direction
-			if (obj->GetDirection())
-			{
-				obj->SetDirection(false);
-			}
-			else
-			{
-				obj->SetDirection(true);
-			}
-
-			break;
-		}
-
-		return;
-	}
-
-	//if travelling up or down a slope
-	if (tile->GetType() == DIAGU || tile->GetType() == DIAGD)
-	{
-		//extract slope
-		std::vector<AABB> tmpSlope = tile->GetSlopeBBox();
-		bool colFound = false;
-		for (int i = 0; i < tmpSlope.size(); i++)
-		{
-			if (obj->GetAABB()->Intersects(&tmpSlope[i]))
-			{
-				switch (GetDirTravelling(obj))
-				{
-				case DDIR:
-					obj->SetPosition(sf::Vector2f(obj->GetPosition().x, tmpSlope[i].GetPosition().y - tmpSlope[i].GetOrigin().y * sY - obj->GetOrigin().y * sX));
-					if ((int)obj->GetID() >= (int)EnmyBgn && (int)obj->GetID() <= (int)EnmyEnd)
-					{
-						((Enemy*)obj)->SetOnGround(true);
-					}
-					else if (obj->GetID() == TexID::Shroom)
-					{
-						((Mushroom*)obj)->SetOnGround(true);
-					}
-					colFound = true;
-					break;
-				case UDIR:
-					break;
-				}
-			}
-		}
-
-		if (!colFound)
-		{
-			if ((int)obj->GetID() >= (int)EnmyBgn && (int)obj->GetID() <= (int)EnmyEnd)
-			{
-				((Enemy*)obj)->SetOnGround(false);
-			}
-			else if (obj->GetID() == TexID::Shroom)
-			{
-				((Mushroom*)obj)->SetOnGround(false);
-			}
-		}
-
-		return;
-	}
-}
-
-void CollisionManager::ColObjectToTile(Object * c_obj, Tile * tile)
-{
-	int id = (int)c_obj->GetID();
-	if (id >= PlyBgn && id <= PlyEnd)
-	{
-		PlayerToTile((Player*)c_obj, tile);
-	}
-	else if (id >= EnmyBgn && id <= EnmyEnd)
-	{
-		ObjectToTile((DynamicObject*)c_obj, tile);
-	}
-	else if (id >= (int)TexID::Shroom && id <= (int)TexID::Goal)
-	{
-		ObjectToTile((DynamicObject*)c_obj, tile);
 	}
 }
 

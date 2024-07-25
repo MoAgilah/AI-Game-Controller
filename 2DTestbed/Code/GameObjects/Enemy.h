@@ -14,9 +14,6 @@ public:
 
 	void Reset() override;
 
-	bool GetOnGround() const { return m_onGround; }
-	void SetOnGround(bool grnd) { m_onGround = grnd; }
-
 	bool GetAirbourne() const { return m_airbourne; }
 	void SetAirbourne(bool air) { m_airbourne = air; }
 
@@ -39,7 +36,6 @@ private:
 
 	bool m_invulnerable = false;
 	bool m_resetAllowed = false;
-	bool m_onGround = false;
 	bool m_airbourne = false;
 	int m_numLives = 1;
 	int m_maxLives;

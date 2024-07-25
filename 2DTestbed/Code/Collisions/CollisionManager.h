@@ -38,9 +38,8 @@ public:
 	std::vector<Tile*> GetGrid();
 	std::vector<std::shared_ptr<Object>> GetCollidables();
 private:
-	void ColObjectToTile(Object* colObj, Tile* tile);
-	void PlayerToTile(Player* ply, Tile* tile);
-	void ObjectToTile(DynamicObject* enmy, Tile* tile);
+
+	void DynamicObjectToTile(DynamicObject* obj, Tile* tile);
 
 	void ColObjectToColObject(Object* colObj1, Object* colObj2);
 

@@ -25,7 +25,7 @@ enum GOTYPE
 {
 	PlyBgn = (int)TexID::Mario, PlyEnd = (int)TexID::Super,
 	EnmyBgn = (int)TexID::Koopa, EnmyEnd = (int)TexID::Chuck,
-	ColBgn = (int)TexID::Coin, ColEnd = (int)TexID::Goal,
+	ColBgn = (int)TexID::Shroom, ColEnd = (int)TexID::SBox,
 	ObjBgn = (int)TexID::QBox, ObjEnd = (int)TexID::SBox
 };
 
@@ -108,6 +108,9 @@ public:
 	void IncrementYVelocity(float y) { m_velocity.y += y; }
 	void DecrementYVelocity(float y) { m_velocity.y -= y; }
 
+	bool GetOnGround() const { return m_onGround; }
+	void SetOnGround(bool grnd) { m_onGround = grnd; }
+
 	void Move(float x, float y);
 	void Move(const sf::Vector2f& pos);
 
@@ -116,6 +119,7 @@ public:
 	void CheckForHorizontalBounds(float deltaTime);
 private:
 
+	bool m_onGround = false;
 	sf::Vector2f m_velocity;
 	sf::Vector2f m_previousPos;
 };

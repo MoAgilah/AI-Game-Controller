@@ -56,9 +56,6 @@ public:
 	void JustBeenHit(bool hit);
 	void JusyHitEnemy(float val = 1);
 
-	bool GetOnGround() const { return m_onGround; }
-	void SetOnGround(bool grnd) { m_onGround = grnd; }
-
 	bool GetAirbourne() const { return m_airbourne; }
 	void SetAirbourne(bool air) { m_airbourne = air; }
 
@@ -83,7 +80,6 @@ private:
 	bool m_cantjump = false;
 	bool m_cantSpinJump = false;
 	bool m_goalHit = false;
-	bool m_onGround = false;
 	bool m_airbourne = false;
 
 	std::array<bool, Keys::MAXKEYS> m_keyStates;
