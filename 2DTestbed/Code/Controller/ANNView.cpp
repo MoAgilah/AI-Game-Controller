@@ -60,7 +60,7 @@ void ANNView::Update()
 	sf::View standard = camera->GetView();
 
 	//reset mini view with standard view
-	m_view.reset(sf::FloatRect(standard.getCenter().x, standard.getCenter().y, static_cast<float>(size), static_cast<float>(scrY * size / scrX)));
+	m_view.reset(sf::FloatRect(standard.getCenter().x-100, standard.getCenter().y, static_cast<float>(size), static_cast<float>(scrY * size / scrX)));
 	m_view.setViewport(sf::FloatRect(1.f - static_cast<float>(m_view.getSize().x) / scrX - 0.6f, 1.f - static_cast<float>(m_view.getSize().y) / scrY - 0.6f, static_cast<float>(m_view.getSize().x) / scrX, static_cast<float>(m_view.getSize().y) / scrY));
 	m_view.zoom(4.f);
 
