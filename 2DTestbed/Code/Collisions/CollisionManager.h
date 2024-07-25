@@ -28,12 +28,14 @@ public:
 	CollisionManager();
 	~CollisionManager() = default;
 
+	void ProcessCollisions(Object* object);
+	void Render(sf::RenderWindow& window);
+
 	void AddCollidable(Object* ngo);
 	void RemoveLastAdded();
 	void ReplacePlayer(Player* currPlayer);
 	Object* GetLastAdded();
-	void Render(sf::RenderWindow & window);
-	void ProcessCollisions(Object* object);
+
 	Tile GetTile(int x, int y);
 	std::vector<Tile*> GetGrid();
 	std::vector<std::shared_ptr<Object>> GetCollidables();
