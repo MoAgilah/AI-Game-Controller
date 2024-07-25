@@ -9,9 +9,9 @@ enum class TexID
 {
 	None = -1,
 	Background,
-	Mario, MarioBB, MarioSmlBB, Super, SuperBB,
-	Koopa, KoopaBB, Bill, BillBB, Rex, RexBB, RexSmlBB, PPlant, PPlantBB, Chuck, ChuckBB,
-	Coin, CoinBB, YCoin, YcoinBB, ChkPnt, ChkPntBB, Shroom, ShroomBB, Goal, GoalBB, QBox, SBox, BreakingBox, BoxBB,
+	Mario, Super,
+	Koopa, Bill, Rex, PPlant, Chuck,
+	Coin, YCoin, ChkPnt, Shroom, Goal, QBox, SBox, BreakingBox,
 	Pipe1, Pipe2, Pipe3, Name, Time, Max,
 };
 

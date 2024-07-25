@@ -126,7 +126,7 @@ void Collisions::ProcessCollisions(Object* gobj)
 		{
 			((Enemy*)gobj)->SetOnGround(false);
 		}
-		else if (id == (int)TexID::ShroomBB)
+		else if (id == (int)TexID::Shroom)
 		{
 			((Mushroom*)gobj)->SetOnGround(false);
 		}
@@ -533,7 +533,7 @@ void Collisions::ObjectToTile(DynamicObject* obj, Tile * tile)
 			{
 				((Enemy*)obj)->SetOnGround(false);
 			}
-			else if (obj->GetID() == TexID::ShroomBB)
+			else if (obj->GetID() == TexID::Shroom)
 			{
 				((Mushroom*)obj)->SetOnGround(false);
 			}
@@ -554,7 +554,7 @@ void Collisions::ColObjectToTile(Object * c_obj, Tile * tile)
 	{
 		ObjectToTile((DynamicObject*)c_obj, tile);
 	}
-	else if (id >= (int)TexID::ShroomBB && id <= (int)TexID::GoalBB)
+	else if (id >= (int)TexID::Shroom && id <= (int)TexID::Goal)
 	{
 		ObjectToTile((DynamicObject*)c_obj, tile);
 	}
@@ -654,7 +654,7 @@ void Collisions::ColObjectToColObject(Object * colObj1, Object * colObj2)
 				EnemyToEnemy((Enemy*)colObj1, (Enemy*)colObj2);
 			}
 		}
-		else if ((col1Typ == (int)TexID::ShroomBB) && (col2Typ == (int)TexID::BoxBB))
+		else if ((col1Typ == (int)TexID::Shroom) && (col2Typ >= ObjBgn && col2Typ <= ObjEnd))
 		{
 			if (colObj1->GetActive() && colObj2->GetActive())
 			{

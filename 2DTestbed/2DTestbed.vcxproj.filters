@@ -72,9 +72,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Code\Collisions\BoundingBox.cpp">
-      <Filter>Source Files\Collisions</Filter>
-    </ClCompile>
     <ClCompile Include="Code\Collisions\Collisions.cpp">
       <Filter>Source Files\Collisions</Filter>
     </ClCompile>
@@ -183,11 +180,14 @@
     <ClCompile Include="Code\GameObjects\Player.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Collisions\AABB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Utilities\Point.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Code\Collisions\BoundingBox.h">
-      <Filter>Header Files\Collisions</Filter>
-    </ClInclude>
     <ClInclude Include="Code\Collisions\Collisions.h">
       <Filter>Header Files\Collisions</Filter>
     </ClInclude>
@@ -308,6 +308,12 @@
     <ClInclude Include="Code\GameObjects\Player.h">
       <Filter>Header Files\GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="Code\Collisions\AABB.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Utilities\Point.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Resources\TileTypes.txt">
@@ -334,43 +340,19 @@
     <Image Include="Resources\Sprites\Bill.png">
       <Filter>Resource Files\Sprites</Filter>
     </Image>
-    <Image Include="Resources\Sprites\BillBB.png">
-      <Filter>Resource Files\Sprites</Filter>
-    </Image>
-    <Image Include="Resources\Sprites\BoxBB.png">
-      <Filter>Resource Files\Sprites</Filter>
-    </Image>
     <Image Include="Resources\Sprites\ChkPnt.png">
-      <Filter>Resource Files\Sprites</Filter>
-    </Image>
-    <Image Include="Resources\Sprites\ChkPntBB.png">
       <Filter>Resource Files\Sprites</Filter>
     </Image>
     <Image Include="Resources\Sprites\Chuck.png">
       <Filter>Resource Files\Sprites</Filter>
     </Image>
-    <Image Include="Resources\Sprites\ChuckBB.png">
-      <Filter>Resource Files\Sprites</Filter>
-    </Image>
     <Image Include="Resources\Sprites\Goal.png">
-      <Filter>Resource Files\Sprites</Filter>
-    </Image>
-    <Image Include="Resources\Sprites\GoalBB.png">
       <Filter>Resource Files\Sprites</Filter>
     </Image>
     <Image Include="Resources\Sprites\Koopa.png">
       <Filter>Resource Files\Sprites</Filter>
     </Image>
-    <Image Include="Resources\Sprites\KoopaBB.png">
-      <Filter>Resource Files\Sprites</Filter>
-    </Image>
     <Image Include="Resources\Sprites\Mario.png">
-      <Filter>Resource Files\Sprites</Filter>
-    </Image>
-    <Image Include="Resources\Sprites\MarioBB.png">
-      <Filter>Resource Files\Sprites</Filter>
-    </Image>
-    <Image Include="Resources\Sprites\MarioSmlBB.png">
       <Filter>Resource Files\Sprites</Filter>
     </Image>
     <Image Include="Resources\Sprites\Name.png">
@@ -388,19 +370,10 @@
     <Image Include="Resources\Sprites\PPlant.png">
       <Filter>Resource Files\Sprites</Filter>
     </Image>
-    <Image Include="Resources\Sprites\PPlantBB.png">
-      <Filter>Resource Files\Sprites</Filter>
-    </Image>
     <Image Include="Resources\Sprites\QBox.png">
       <Filter>Resource Files\Sprites</Filter>
     </Image>
     <Image Include="Resources\Sprites\Rex.png">
-      <Filter>Resource Files\Sprites</Filter>
-    </Image>
-    <Image Include="Resources\Sprites\RexBB.png">
-      <Filter>Resource Files\Sprites</Filter>
-    </Image>
-    <Image Include="Resources\Sprites\RexSmlBB.png">
       <Filter>Resource Files\Sprites</Filter>
     </Image>
     <Image Include="Resources\Sprites\SBox.png">
@@ -409,25 +382,13 @@
     <Image Include="Resources\Sprites\Shroom.png">
       <Filter>Resource Files\Sprites</Filter>
     </Image>
-    <Image Include="Resources\Sprites\ShroomBB.png">
-      <Filter>Resource Files\Sprites</Filter>
-    </Image>
     <Image Include="Resources\Sprites\Super.png">
-      <Filter>Resource Files\Sprites</Filter>
-    </Image>
-    <Image Include="Resources\Sprites\SuperBB.png">
-      <Filter>Resource Files\Sprites</Filter>
-    </Image>
-    <Image Include="Resources\Sprites\SuperSmlBB.png">
       <Filter>Resource Files\Sprites</Filter>
     </Image>
     <Image Include="Resources\Sprites\Time.png">
       <Filter>Resource Files\Sprites</Filter>
     </Image>
     <Image Include="Resources\Sprites\Ycoin.png">
-      <Filter>Resource Files\Sprites</Filter>
-    </Image>
-    <Image Include="Resources\Sprites\YCoinBB.png">
       <Filter>Resource Files\Sprites</Filter>
     </Image>
     <Image Include="Resources\Sprites\Coin.png">

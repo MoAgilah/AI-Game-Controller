@@ -23,10 +23,10 @@ struct AnimationData
 
 enum GOTYPE
 {
-	PlyBgn = (int)TexID::Mario, PlyEnd = (int)TexID::SuperBB,
-	EnmyBgn = (int)TexID::Koopa, EnmyEnd = (int)TexID::ChuckBB,
-	ColBgn = (int)TexID::Coin, ColEnd = (int)TexID::GoalBB,
-	ObjBgn = (int)TexID::QBox, ObjEnd = (int)TexID::BoxBB
+	PlyBgn = (int)TexID::Mario, PlyEnd = (int)TexID::Super,
+	EnmyBgn = (int)TexID::Koopa, EnmyEnd = (int)TexID::Chuck,
+	ColBgn = (int)TexID::Coin, ColEnd = (int)TexID::Goal,
+	ObjBgn = (int)TexID::QBox, ObjEnd = (int)TexID::SBox
 };
 
 class Tile;
