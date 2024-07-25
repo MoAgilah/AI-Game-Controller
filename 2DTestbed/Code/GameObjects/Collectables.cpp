@@ -108,27 +108,19 @@ DynamicCollectable::DynamicCollectable(TexID sprID, const sf::Vector2f& boxSize,
 	SetDirection(GetInitialDirection());
 	SetInitialPosition(initPos);
 	SetPosition(GetInitialPosition());
-	GetAABB()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
+	GetAABB()->Update(GetPosition());
 }
 
 Mushroom::Mushroom(const sf::Vector2f& initPos)
-	: DynamicCollectable(TexID::Shroom, sf::Vector2f(13, 14), initPos)
+	: DynamicCollectable(TexID::Shroom, sf::Vector2f(13, 10), initPos)
 {
 }
 
 void Mushroom::Update(float deltaTime)
 {
 	SetPrevPosition(GetPosition());
-	UpdateBoundingBox();
 
-	if (GetDirection())
-	{
-		SetXVelocity(2);
-	}
-	else
-	{
-		SetXVelocity(-2);
-	}
+	SetXVelocity((GetDirection() ? 1 : -1) * 2);
 
 	if (GetOnGround())
 	{
@@ -143,7 +135,6 @@ void Mushroom::Update(float deltaTime)
 	{
 		Move(GetXVelocity() * FPS * deltaTime, 0);
 		Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
-		UpdateBoundingBox();
 	}
 
 	CheckForHorizontalBounds(deltaTime);
@@ -152,7 +143,6 @@ void Mushroom::Update(float deltaTime)
 	{
 		Move(0, GetYVelocity() * FPS * deltaTime);
 		Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
-		UpdateBoundingBox();
 	}
 }
 
@@ -170,12 +160,11 @@ Goal::Goal(const sf::Vector2f& initPos)
 	SetInitialDirection(true);
 	SetDirection(GetInitialDirection());
 	SetAirTime(c_maxTravelTime);
+	SetOnGround(false);
 }
 
 void Goal::Update(float deltaTime)
 {
-	UpdateBoundingBox();
-
 	if (GetOnGround())
 	{
 		IncAirTime(-deltaTime);
@@ -190,7 +179,6 @@ void Goal::Update(float deltaTime)
 	{
 		Move(0, GetYVelocity() * FPS * deltaTime);
 		Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
-		UpdateBoundingBox();
 	}
 
 	if (GetAirTime() < 0)

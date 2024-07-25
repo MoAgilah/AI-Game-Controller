@@ -152,7 +152,8 @@ void CollisionManager::DynamicObjectToTileCollisions(DynamicObject* obj)
 	}
 
 	if (!collided)
-		obj->SetOnGround(false);
+		if (obj->GetID() != TexID::Goal)
+			obj->SetOnGround(false);
 }
 
 void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* tile)
@@ -197,7 +198,12 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 			case WALL:
 			{
 				if (shouldResolve)
+				{
 					obj->Move((obj->GetDirection() ? -1 : 1) * tile->GetAABB()->GetOverlap().x, 0);
+
+					if (obj->GetID() == TexID::Shroom)
+						obj->SetDirection(!obj->GetDirection());
+				}
 				return;
 			}
 			default:
