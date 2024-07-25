@@ -93,6 +93,17 @@ void CollisionManager::ProcessCollisions(Object* gobj)
 
 	if (!collidedWith.empty())
 	{
+		if (gobj->GetDirection())
+		{
+			std::sort(collidedWith.begin(), collidedWith.end(), [](const std::shared_ptr<Tile>& a, const std::shared_ptr<Tile>& b)
+				{
+					if (a->GetColNum() == b->GetColNum())
+						return a->GetRowNum() < b->GetRowNum();
+
+					return a->GetColNum() > b->GetColNum();
+				});
+		}
+
 		Col = true;
 		for (auto tile : collidedWith)
 		{

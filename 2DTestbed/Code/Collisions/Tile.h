@@ -21,7 +21,7 @@ public:
 	std::string_view GetID() const { return m_id; }
 
 	int GetRowNum() const { return m_rowNum; }
-	int GetCowNum() const { return m_colNum; }
+	int GetColNum() const { return m_colNum; }
 
 	void SetType(int type);
 	int GetType() const { return m_type; }

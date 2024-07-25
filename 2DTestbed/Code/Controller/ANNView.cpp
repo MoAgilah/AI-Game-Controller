@@ -87,9 +87,9 @@ void ANNView::Update()
 
 		if (grid[i]->GetActive())
 		{
-			if (cnt == 0) num = grid[i]->GetCowNum();
+			if (cnt == 0) num = grid[i]->GetColNum();
 
-			if (grid[i]->GetCowNum() <= num + 15)
+			if (grid[i]->GetColNum() <= num + 15)
 			{
 				m_vecView[cnt] = grid[i];
 				cnt++;
