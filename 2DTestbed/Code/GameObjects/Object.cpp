@@ -77,8 +77,5 @@ void DynamicObject::Move(const sf::Vector2f& pos)
 void DynamicObject::CheckForHorizontalBounds(float deltaTime)
 {
 	if (GetPosition().x < GetOrigin().x || GetPosition().x > RightMost - GetOrigin().x)
-	{
 		Move(-GetXVelocity() * FPS * deltaTime, 0);
-		SetDirection(!GetDirection());
-	}
 }

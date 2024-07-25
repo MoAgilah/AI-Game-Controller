@@ -63,6 +63,7 @@ bool AABB::Intersects(AABB* box)
 	sf::Vector2f delta = sf::Vector2f(std::abs(box->GetPosition().x - GetPosition().x), std::abs(box->GetPosition().y - GetPosition().y));
 	m_overlap = Point((GetExtents().x + box->GetExtents().x) - delta.x, (GetExtents().y + box->GetExtents().y) - delta.y);
 
+	box->SetHit(true);
 	// Overlapping on all axes means AABBs are intersecting
 	return true;
 }
@@ -148,9 +149,11 @@ bool AABB::IntersectsSegment(const Point& point0, const Point& point1)
 void AABB::Move(float x, float y)
 {
 	m_rect.move(sf::Vector2f(x, y));
+	Update(GetPosition());
 }
 
 void AABB::Move(const sf::Vector2f& pos)
 {
 	m_rect.move(pos);
+	Update(GetPosition());
 }

@@ -15,8 +15,8 @@ Player::Player(const sf::Vector2f& pos)
 	SetDirection(GetInitialDirection());
 	SetInitialPosition(pos);
 	SetPosition(GetInitialPosition());
-
 	GetAABB()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
+
 	GetAnimSpr()->SetFrames({ 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4 });
 
 	m_keyStates.fill(false);
@@ -30,7 +30,6 @@ void Player::Update(float deltaTime)
 		return;
 
 	ProcessInput();
-	UpdateBoundingBox();
 
 	m_stateMgr.Update(deltaTime);
 
@@ -121,7 +120,6 @@ void Player::Update(float deltaTime)
 			SetPrevPosition(GetPosition());
 			Move(sf::Vector2f(GetXVelocity() * FPS * deltaTime, 0));
 			Collisions::Get()->ProcessCollisions(this);
-			UpdateBoundingBox();
 		}
 
 		CheckForHorizontalBounds(deltaTime);
@@ -131,7 +129,6 @@ void Player::Update(float deltaTime)
 			SetPrevPosition(GetPosition());
 			Move(sf::Vector2f(0, GetYVelocity() * FPS * deltaTime));
 			Collisions::Get()->ProcessCollisions(this);
-			UpdateBoundingBox();
 		}
 
 		if (GetPosition().x > RightMost)
@@ -178,7 +175,7 @@ void Player::Reset()
 		GetAABB()->Reset(sf::Vector2f(9, 16));
 
 		//adjust position
-		SetPosition(GetPosition() + sf::Vector2f(0, m_heightDiff));
+		Move(0, m_heightDiff);
 	}
 
 	DynamicObject::Reset();
@@ -220,7 +217,7 @@ void Player::SetIsSuper(bool super)
 			GetSprite()->SetTexture(TexID::Super);
 			GetSprite()->SetFrameSize(sf::Vector2u(GetSprite()->GetTextureSize().x / 4, GetSprite()->GetTextureSize().y / 14));
 			GetAABB()->Reset(sf::Vector2f(9, 25));
-			SetPosition(GetPosition() - sf::Vector2f(0, m_heightDiff));
+			Move(0, -m_heightDiff);
 		}
 	}
 	else
@@ -230,7 +227,7 @@ void Player::SetIsSuper(bool super)
 			GetSprite()->SetTexture(TexID::Mario);
 			GetSprite()->SetFrameSize(sf::Vector2u(GetSprite()->GetTextureSize().x / 4, GetSprite()->GetTextureSize().y / 14));
 			GetAABB()->Reset(sf::Vector2f(9, 16));
-			SetPosition(GetPosition() + sf::Vector2f(0, m_heightDiff));
+			Move(0, m_heightDiff);
 		}
 	}
 }

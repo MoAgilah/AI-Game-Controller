@@ -77,25 +77,39 @@ Object* Collisions::GetLastAdded()
 void Collisions::Render(sf::RenderWindow& window)
 {
 	m_grid.Render(window);
-}
 
-void Collisions::ProcessCollisions(Object* gobj)
-{
-	int numchecks = 0;
-	//check for collision with tilemap
-	bool Col = false;
 	for (auto& tile : m_tiles)
 	{
 		if (!tile->GetActive())
 			continue;
 
-		numchecks++;
+		if (!tile->GetAABB()->GetHit())
+			continue;
+
+		tile->GetAABB()->SetFillColour(sf::Color::Transparent);
+		tile->GetAABB()->SetOutlineColour(sf::Color::Red);
+		tile->Render(window);
+		tile->GetAABB()->SetFillColour(sf::Color::White);
+		tile->GetAABB()->SetOutlineColour(sf::Color::Black);
+	}
+}
+
+void Collisions::ProcessCollisions(Object* gobj)
+{
+	for (auto tile : m_tiles)
+		tile->GetAABB()->SetHit(false);
+
+	//check for collision with tilemap
+	bool Col = false;
+	for (auto tile : m_tiles)
+	{
+		if (!tile->GetActive())
+			continue;
 
 		Col = gobj->GetAABB()->Intersects(tile->GetAABB());
 
 		if (Col)
 		{
-			++numchecks;
 			ColObjectToTile(gobj, tile.get());
 			break;
 		}
@@ -161,7 +175,7 @@ void Collisions::PlayerToTile(Player* ply, Tile * tile)
 		if (dir == DDIR)
 		{
 			//move to top of tile
-			ply->SetPosition(ply->GetPosition() - sf::Vector2f(0, ply->GetAABB()->GetOverlap().y));
+			ply->Move(0, -ply->GetAABB()->GetOverlap().y);
 			ply->SetOnGround(true);
 			return;
 		}
@@ -180,7 +194,7 @@ void Collisions::PlayerToTile(Player* ply, Tile * tile)
 			if (dir == DDIR)
 			{
 				//move to top of tile
-				ply->SetPosition(ply->GetPosition() - sf::Vector2f(0, ply->GetAABB()->GetOverlap().y));
+				ply->Move(0, -ply->GetAABB()->GetOverlap().y);
 				ply->SetOnGround(true);
 				return;
 			}
@@ -206,14 +220,14 @@ void Collisions::PlayerToTile(Player* ply, Tile * tile)
 		{
 		case DDIR:
 			//move to top of tile
-			ply->SetPosition(ply->GetPosition() - sf::Vector2f(0, ply->GetAABB()->GetOverlap().y));
+			ply->Move(-0, ply->GetAABB()->GetOverlap().y);
 			ply->SetOnGround(true);
 			return;
 		case RDIR:
-			ply->SetPosition(ply->GetPosition() - sf::Vector2f(ply->GetAABB()->GetOverlap().x, 0));
+			ply->Move(-ply->GetAABB()->GetOverlap().x, 0);
 			return;
 		case LDIR:
-			ply->SetPosition(ply->GetPosition() + sf::Vector2f(ply->GetAABB()->GetOverlap().x, 0));
+			ply->Move(ply->GetAABB()->GetOverlap().x, 0);
 			return;
 		}
 	}
@@ -235,7 +249,7 @@ void Collisions::PlayerToTile(Player* ply, Tile * tile)
 				case DDIR:
 					//set to slope top
 					//move to top of tile
-					ply->SetPosition(ply->GetPosition() - sf::Vector2f(0, ply->GetAABB()->GetOverlap().y));
+					ply->Move(0, -ply->GetAABB()->GetOverlap().y);
 					ply->SetOnGround(true);
 					colFound = true;
 					return;
