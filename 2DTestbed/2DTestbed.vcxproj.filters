@@ -70,6 +70,12 @@
     <Filter Include="Resource Files\Shaders">
       <UniqueIdentifier>{a34805c1-89c8-4bdd-8303-c4dbafd411bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Utilities">
+      <UniqueIdentifier>{cb37fd3f-cd14-4baa-8620-a3c52bae6df9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities">
+      <UniqueIdentifier>{a288947d-441e-4003-b8c0-569d3292e427}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Collisions\Collisions.cpp">
@@ -181,10 +187,10 @@
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Code\Collisions\AABB.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Collisions</Filter>
     </ClCompile>
     <ClCompile Include="Code\Utilities\Point.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Utilities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -309,10 +315,10 @@
       <Filter>Header Files\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Code\Collisions\AABB.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Collisions</Filter>
     </ClInclude>
     <ClInclude Include="Code\Utilities\Point.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
