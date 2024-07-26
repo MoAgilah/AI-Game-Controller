@@ -126,17 +126,17 @@ void CollisionManager::ProcessCollisions(Object* gobj)
 	if (CanCollideWithTile(gobj->GetID()))
 		DynamicObjectToTileCollisions((DynamicObject*)gobj);
 
-	for (int g = 0; g < m_collidables.size(); ++g)
+	for (auto& collidable : m_collidables)
 	{
-		if (gobj->GetObjectNum() == m_collidables[g]->GetObjectNum())
+		if (gobj->GetObjectNum() == collidable->GetObjectNum())
 			continue;
 
-		if (!m_collidables[g]->GetActive())
+		if (!collidable->GetActive())
 			continue;
 
-		if (gobj->GetAABB()->Intersects(m_collidables[g]->GetAABB()))
+		if (gobj->GetAABB()->Intersects(collidable->GetAABB()))
 		{
-			ColObjectToColObject(gobj, m_collidables[g].get());
+			ColObjectToColObject(gobj, collidable.get());
 			break;
 		}
 	}
