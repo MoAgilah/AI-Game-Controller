@@ -124,7 +124,7 @@ void World::AddEnemies()
 	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(32, 8);
 	m_enemies.push_back(std::make_unique<Bill>(false, tmp.GetPosition() - sf::Vector2f(0, -16)));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(35, 11);
+	/*tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(35, 11);
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
 	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(47, 11);
@@ -197,7 +197,7 @@ void World::AddEnemies()
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
 	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(298, 10);
-	m_enemies.push_back(std::make_unique<Chuck>(false, tmp.GetPosition() + sf::Vector2f(0,24)));
+	m_enemies.push_back(std::make_unique<Chuck>(false, tmp.GetPosition() + sf::Vector2f(0,24)));*/
 }
 
 void World::AddObjects()

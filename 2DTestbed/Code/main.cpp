@@ -18,11 +18,12 @@ int main()
 	float t = 0.0f;
 	float dt = 1.f / FPS;
 
+	Game gameMgr;
+
 	//initialise begin
 	CParams g_params;
 	CtrlMgr::GetCtrlMgr()->GetController();
 
-	Game gameMgr;
 	gameMgr.GetLogger()->AddDebugLog("Current Generation: " + std::to_string(CtrlMgr::GetCtrlMgr()->GetController()->GetCurrentGeneration()));
 	gameMgr.GetLogger()->AddExperimentLog("Current Generation: " + std::to_string(CtrlMgr::GetCtrlMgr()->GetController()->GetCurrentGeneration()));
 	gameMgr.GetLogger()->AddExperimentLog(Game::GetGameMgr()->GetLogger()->GetTimeStamp());
