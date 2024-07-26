@@ -70,17 +70,20 @@ void Rex::Animate(float deltaTime)
 		IncrementYVelocity(c_gravity);
 	}
 
-	if (GetXVelocity() != 0)
+	if (HasLifes())
 	{
-		Move(GetXVelocity() * FPS * deltaTime, 0);
-		Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
-	}
+		if (GetXVelocity() != 0)
+		{
+			Move(GetXVelocity() * FPS * deltaTime, 0);
+			Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
+		}
 
-	CheckForHorizontalBounds(deltaTime);
+		CheckForHorizontalBounds(deltaTime);
 
-	if (GetYVelocity() != 0)
-	{
-		Move(0, GetYVelocity() * FPS * deltaTime);
-		Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
+		if (GetYVelocity() != 0)
+		{
+			Move(0, GetYVelocity() * FPS * deltaTime);
+			Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
+		}
 	}
 }
