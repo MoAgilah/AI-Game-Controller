@@ -89,8 +89,7 @@ void CollisionManager::Render(sf::RenderWindow& window)
 
 void CollisionManager::ProcessCollisions(Object* gobj)
 {
-	int id = (int)gobj->GetID();
-	if (id >= PlyBgn && id <= (int)TexID::Goal)
+	if (Game::GetGameMgr()->IsDynamicObject(gobj->GetID()))
 		DynamicObjectToTileCollisions((DynamicObject*)gobj);
 
 	for (int g = 0; g < m_collidables.size(); ++g)
@@ -126,13 +125,13 @@ std::vector<std::shared_ptr<Object>> CollisionManager::GetCollidables()
 
 void CollisionManager::DynamicObjectToTileCollisions(DynamicObject* obj)
 {
-	for (auto tile : m_tiles)
+	for (auto& tile : m_tiles)
 		tile->GetAABB()->SetHit(false);
 
 	bool collided = false;
 	std::vector<std::shared_ptr<Tile>> collidedWith;
 
-	for (auto tile : m_tiles)
+	for (auto& tile : m_tiles)
 	{
 		if (!tile->GetActive())
 			continue;
@@ -146,7 +145,7 @@ void CollisionManager::DynamicObjectToTileCollisions(DynamicObject* obj)
 		if (obj->GetDirection())
 			SortCollidedTiles(collidedWith);
 
-		for (auto tile : collidedWith)
+		for (auto& tile : collidedWith)
 			if (tile->GetAABB()->Intersects(obj->GetAABB()))
 				DynamicObjectToTileResolution(obj, tile.get());
 	}
@@ -179,8 +178,8 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 				{
 					obj->Move(0, -tile->GetAABB()->GetOverlap().y);
 					obj->SetOnGround(true);
-					return;
 				}
+				return;
 			}
 			default:
 				return;
@@ -201,7 +200,7 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 				{
 					obj->Move((obj->GetDirection() ? -1 : 1) * tile->GetAABB()->GetOverlap().x, 0);
 
-					if (obj->GetID() == TexID::Shroom)
+					if (Game::GetGameMgr()->IsDynamicObject(obj->GetID(), (int)TexID::Koopa))
 						obj->SetDirection(!obj->GetDirection());
 				}
 				return;
@@ -401,8 +400,10 @@ void CollisionManager::ColObjectToColObject(Object * colObj1, Object * colObj2)
 	int isPlayer = -1;
 
 	//if either is a player assign id num
-	if (col1Typ >= PlyBgn && col1Typ <= PlyEnd) isPlayer = 1;
-	else if (col2Typ >= PlyBgn && col2Typ <= PlyEnd) isPlayer = 2;
+	if (Game::GetGameMgr()->IsPlayerObject(colObj1->GetID()))
+		isPlayer = 1;
+	else if (Game::GetGameMgr()->IsPlayerObject(colObj2->GetID()))
+		isPlayer = 2;
 
 	if (isPlayer == 1)//if player is obj 1
 	{
