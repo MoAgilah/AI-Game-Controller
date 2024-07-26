@@ -1,6 +1,6 @@
 #include "../Controller/ANNView.h"
 #include "../Game/Camera.h"
-#include "../Game/Game.h"
+#include "../Game/GameManager.h"
 #include "../GameObjects/Player.h"
 #include "../Collisions/CollisionManager.h"
 #include "../Controller/CtrlMgr.h"
@@ -54,7 +54,7 @@ ANNView::ANNView()
 
 void ANNView::Update()
 {
-	const Camera* camera = Game::GetGameMgr()->GetCamera();
+	const Camera* camera = GameManager::GetGameMgr()->GetCamera();
 
 	//get main view
 	sf::View standard = camera->GetView();
@@ -80,7 +80,7 @@ void ANNView::Update()
 
 	//extract m_visible tiles
 	int num(0),cnt(0);
-	std::vector<Tile*> grid = Game::GetGameMgr()->GetCollisionMgr()->GetGrid();
+	std::vector<Tile*> grid = GameManager::GetGameMgr()->GetCollisionMgr()->GetGrid();
 	for (int i = 0; i < grid.size(); i++)
 	{
 		if (cnt == 240) break;
@@ -99,7 +99,7 @@ void ANNView::Update()
 
 	//colour m_visible tiles
 	sf::RectangleShape tmp;
-	std::vector<std::shared_ptr<Object>> gobj = Game::GetGameMgr()->GetCollisionMgr()->GetCollidables();
+	std::vector<std::shared_ptr<Object>> gobj = GameManager::GetGameMgr()->GetCollisionMgr()->GetCollidables();
 	for (int i = 0; i < m_vecView.size(); i++)
 	{
 		if (m_vecView[i]->GetType() == EMPTY)

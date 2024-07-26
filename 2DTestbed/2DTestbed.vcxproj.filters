@@ -120,7 +120,7 @@
     <ClCompile Include="Code\Game\Camera.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Game\Game.cpp">
+    <ClCompile Include="Code\Game\GameManager.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
     <ClCompile Include="Code\Game\Logger.cpp">
@@ -251,7 +251,7 @@
     <ClInclude Include="Code\Game\Constants.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Game\Game.h">
+    <ClInclude Include="Code\Game\GameManager.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="Code\Game\Logger.h">

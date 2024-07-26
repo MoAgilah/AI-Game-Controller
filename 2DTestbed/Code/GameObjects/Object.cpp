@@ -1,5 +1,5 @@
 #include "Object.h"
-#include "../Game/Game.h"
+#include "../Game/GameManager.h"
 #include "../Collisions/CollisionManager.h"
 
 int Object::s_objectNum = 0;
@@ -10,7 +10,7 @@ Object::Object(TexID sprId, const sf::Vector2f& boxSize)
 	m_sprite = std::make_shared<Sprite>(sprId);
 	m_aabb = std::make_shared<AABB>(boxSize);
 	m_objectID = s_objectNum++;
-	Game::GetGameMgr()->GetCollisionMgr()->AddCollidable(this);
+	GameManager::GetGameMgr()->GetCollisionMgr()->AddCollidable(this);
 }
 
 Object::Object(AnimatedSprite* sprite, const sf::Vector2f& boxSize)
@@ -19,7 +19,7 @@ Object::Object(AnimatedSprite* sprite, const sf::Vector2f& boxSize)
 	m_sprite.reset(std::move(sprite));
 	m_aabb = std::make_shared<AABB>(boxSize);
 	m_objectID = s_objectNum++;
-	Game::GetGameMgr()->GetCollisionMgr()->AddCollidable(this);
+	GameManager::GetGameMgr()->GetCollisionMgr()->AddCollidable(this);
 }
 
 void Object::Render(sf::RenderWindow& window)

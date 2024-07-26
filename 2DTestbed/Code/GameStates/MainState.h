@@ -1,13 +1,13 @@
 #pragma once
 
 #include "GameState.h"
-#include "../Game/Game.h"
+#include "../Game/GameManager.h"
 #include <SFML/Graphics.hpp>
 
 class MainState : public GameState
 {
 public:
-	explicit MainState(Game* gameMgr);
+	explicit MainState(GameManager* gameMgr);
 	~MainState() override = default;
 
 	void Initialise() override;
@@ -19,5 +19,5 @@ public:
 
 private:
 
-	std::shared_ptr<Game> m_gameMgr;
+	std::shared_ptr<GameManager> m_gameMgr;
 };

@@ -1,5 +1,5 @@
 #include "Koopa.h"
-#include "../Game/Game.h"
+#include "../Game/GameManager.h"
 #include "../Collisions/CollisionManager.h"
 #include "../Game/Constants.h"
 
@@ -57,7 +57,7 @@ void Koopa::Animate(float deltaTime)
 		if (GetXVelocity() != 0)
 		{
 			Move(GetXVelocity() * FPS * deltaTime, 0);
-			Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
+			GameManager::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
 		}
 
 		CheckForHorizontalBounds(deltaTime);
@@ -65,7 +65,7 @@ void Koopa::Animate(float deltaTime)
 		if (GetYVelocity() != 0)
 		{
 			Move(0, GetYVelocity() * FPS * deltaTime);
-			Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
+			GameManager::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
 		}
 	}
 }

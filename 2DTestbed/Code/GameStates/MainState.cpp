@@ -8,7 +8,7 @@
 #include "../Controller/CtrlMgr.h"
 #include "../Game/Constants.h"
 
-MainState::MainState(Game* gameMgr)
+MainState::MainState(GameManager* gameMgr)
 	: GameState("Main")
 {
 	m_gameMgr.reset(gameMgr);
@@ -54,5 +54,5 @@ void MainState::Render(sf::RenderWindow& window)
 	m_gameMgr->GetLevel()->Render(window);
 	m_gameMgr->GetPlayer()->Render(window);
 
-	Game::GetGameMgr()->GetCollisionMgr()->Render(window);
+	GameManager::GetGameMgr()->GetCollisionMgr()->Render(window);
 }

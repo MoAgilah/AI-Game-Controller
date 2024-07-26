@@ -1,5 +1,5 @@
 #include "PPlant.h"
-#include "../Game/Game.h"
+#include "../Game/GameManager.h"
 #include "../Collisions/CollisionManager.h"
 #include "../Game/Constants.h"
 
@@ -44,7 +44,7 @@ void PPlant::Animate(float deltaTime)
 	if (GetYVelocity() != 0)
 	{
 		Move(0, GetYVelocity() * FPS * deltaTime);
-		Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
+		GameManager::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
 	}
 
 	if (GetAirbourne())

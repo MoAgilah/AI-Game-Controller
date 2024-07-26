@@ -1,5 +1,5 @@
 #include "PlayerState.h"
-#include "../Game/Game.h"
+#include "../Game/GameManager.h"
 #include "../Game/TextureManager.h"
 #include "../Collisions/AABB.h"
 
@@ -207,7 +207,7 @@ void DieingState::Update(float deltaTime)
 	else
 	{
 		player->Move(sf::Vector2f(0, -player->GetYVelocity() * FPS * deltaTime));
-		if (!Game::GetGameMgr()->GetCamera()->OnScreen(player))
+		if (!GameManager::GetGameMgr()->GetCamera()->OnScreen(player))
 		{
 			if (!Automated)
 				player->Reset();

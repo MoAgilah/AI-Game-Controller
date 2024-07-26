@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "Game/Constants.h"
 
-#include "Game/Game.h"
+#include "Game/GameManager.h"
 #include "GameObjects/Player.h"
 #include "Game/Camera.h"
 #include "Controller/ANNView.h"
@@ -18,7 +18,7 @@ int main()
 	float t = 0.0f;
 	float dt = 1.f / FPS;
 
-	Game gameMgr;
+	GameManager gameMgr;
 
 	//initialise begin
 	CParams g_params;
@@ -26,7 +26,7 @@ int main()
 
 	gameMgr.GetLogger()->AddDebugLog("Current Generation: " + std::to_string(CtrlMgr::GetCtrlMgr()->GetController()->GetCurrentGeneration()));
 	gameMgr.GetLogger()->AddExperimentLog("Current Generation: " + std::to_string(CtrlMgr::GetCtrlMgr()->GetController()->GetCurrentGeneration()));
-	gameMgr.GetLogger()->AddExperimentLog(Game::GetGameMgr()->GetLogger()->GetTimeStamp());
+	gameMgr.GetLogger()->AddExperimentLog(GameManager::GetGameMgr()->GetLogger()->GetTimeStamp());
 
 	//initialise end
 	sf::Clock clock;

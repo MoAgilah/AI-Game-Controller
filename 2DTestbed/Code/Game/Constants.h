@@ -16,7 +16,7 @@ constexpr int scrY = 600;
 
 constexpr bool Automated = false;
 constexpr float LeftMost = 10.f;
-constexpr float RightMost = 11350.f;
+constexpr float RightMost = 11400.f;
 
 constexpr float FPS = 60.0f;
 

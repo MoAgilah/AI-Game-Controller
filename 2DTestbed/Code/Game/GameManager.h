@@ -14,13 +14,13 @@
 #include "../GameStates/GameStateMgr.h"
 
 class Player;
-class Game
+class GameManager
 {
 public:
-	Game();
-	~Game() = default;
+	GameManager();
+	~GameManager() = default;
 
-	static Game* GetGameMgr() { return m_instance.get(); }
+	static GameManager* GetGameMgr() { return m_instance.get(); }
 
 	Camera* GetCamera() { return m_camera.get(); }
 	Player* GetPlayer() { return m_player.get(); }
@@ -46,7 +46,7 @@ private:
 	std::array<TexID, 5> m_enemyObjIds;
 	std::array<TexID, 7> m_dynamicObjIds;
 	std::array<TexID, 5> m_collectableIds;
-	static std::shared_ptr<Game>		m_instance;
+	static std::shared_ptr<GameManager>		m_instance;
 	std::unique_ptr<TextureManager>		m_texureManager;
 	std::unique_ptr<Camera>				m_camera;
 	std::unique_ptr<Player>				m_player;

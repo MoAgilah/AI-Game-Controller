@@ -1,4 +1,4 @@
-#include "../Game/Game.h"
+#include "../Game/GameManager.h"
 #include "../Game/Camera.h"
 #include "../GameObjects/Player.h"
 #include "../GameObjects/Enemy.h"
@@ -10,9 +10,9 @@
 #include "../GameStates/MainState.h"
 #include "../GameStates/DebugState.h"
 
-std::shared_ptr<Game> Game::m_instance = nullptr;
+std::shared_ptr<GameManager> GameManager::m_instance = nullptr;
 
-Game::Game()
+GameManager::GameManager()
 {
 	m_collectableIds =
 	{
@@ -45,23 +45,23 @@ Game::Game()
 	m_stateMgr.ChangeState(new DebugState(this));
 }
 
-void Game::ChangePlayer(Player * ply)
+void GameManager::ChangePlayer(Player * ply)
 {
 	m_player.reset(ply);
 	m_collisionManager->ReplacePlayer(m_player.get());
 }
 
-void Game::Update(float deltaTime)
+void GameManager::Update(float deltaTime)
 {
 	m_stateMgr.Update(deltaTime);
 }
 
-void Game::Render(sf::RenderWindow & window)
+void GameManager::Render(sf::RenderWindow & window)
 {
 	m_stateMgr.Render(window);
 }
 
-void Game::CheckInView()
+void GameManager::CheckInView()
 {
 	m_player->SetActive(m_camera->IsInView(m_player->GetAnimSpr()->GetSprite()));
 
@@ -71,27 +71,27 @@ void Game::CheckInView()
 	m_world->CheckIsInView();
 }
 
-bool Game::IsBoxObject(TexID id)
+bool GameManager::IsBoxObject(TexID id)
 {
 	return id == TexID::QBox || id == TexID::SBox;
 }
 
-bool Game::IsEnemyObject(TexID id)
+bool GameManager::IsEnemyObject(TexID id)
 {
 	return std::find(m_enemyObjIds.begin(), m_enemyObjIds.end(), id) != m_enemyObjIds.end();
 }
 
-bool Game::IsPlayerObject(TexID id)
+bool GameManager::IsPlayerObject(TexID id)
 {
 	return id == TexID::Mario || id == TexID::Super;
 }
 
-bool Game::IsCollectableObject(TexID id)
+bool GameManager::IsCollectableObject(TexID id)
 {
 	return std::find(m_collectableIds.begin(), m_collectableIds.end(), id) != m_collectableIds.end();
 }
 
-bool Game::IsDynamicObject(TexID id, int first, int last)
+bool GameManager::IsDynamicObject(TexID id, int first, int last)
 {
 	auto start = m_dynamicObjIds.begin() + first;
 	auto end = m_dynamicObjIds.begin() + last;

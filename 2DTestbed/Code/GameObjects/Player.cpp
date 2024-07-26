@@ -2,7 +2,7 @@
 #include "../Collisions/CollisionManager.h"
 #include "../Game/Camera.h"
 #include "../Game/Timer.h"
-#include "../Game/Game.h"
+#include "../Game/GameManager.h"
 #include "../Controller/CtrlMgr.h"
 #include <format>
 #include <iostream>
@@ -119,7 +119,7 @@ void Player::Update(float deltaTime)
 		{
 			SetPrevPosition(GetPosition());
 			Move(sf::Vector2f(GetXVelocity() * FPS * deltaTime, 0));
-			Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
+			GameManager::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
 		}
 
 		CheckForHorizontalBounds(deltaTime);
@@ -128,7 +128,7 @@ void Player::Update(float deltaTime)
 		{
 			SetPrevPosition(GetPosition());
 			Move(sf::Vector2f(0, GetYVelocity() * FPS * deltaTime));
-			Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
+			GameManager::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
 		}
 
 		if (GetPosition().x > RightMost)
@@ -203,7 +203,7 @@ void Player::Reset()
 
 	m_stateMgr.ClearStates();
 	Timer::Get()->ResetTime();
-	Game::GetGameMgr()->GetLevel()->ResetLevel();
+	GameManager::GetGameMgr()->GetLevel()->ResetLevel();
 }
 
 void Player::SetIsSuper(bool super)
@@ -378,7 +378,7 @@ AutomatedPlayer::AutomatedPlayer(const sf::Vector2f& pos)
 	: Player(pos)
 {
 	if (s_playerInserted)
-		Game::GetGameMgr()->GetCollisionMgr()->RemoveLastAdded();
+		GameManager::GetGameMgr()->GetCollisionMgr()->RemoveLastAdded();
 
 	s_playerInserted = true;
 }
@@ -399,7 +399,7 @@ bool AutomatedPlayer::UpdateANN()
 
 void AutomatedPlayer::Input()
 {
-	Game::GetGameMgr()->GetLogger()->AddDebugLog(std::format("Player {}", CtrlMgr::GetCtrlMgr()->GetController()->GetCurrentPlayerNum()), false);
+	GameManager::GetGameMgr()->GetLogger()->AddDebugLog(std::format("Player {}", CtrlMgr::GetCtrlMgr()->GetController()->GetCurrentPlayerNum()), false);
 
 	for (int i = 0; i < outputs.size(); ++i)
 	{
@@ -436,11 +436,11 @@ void AutomatedPlayer::Input()
 		else if (oval >= 0.9) output = true;
 		else output = false;
 
-		Game::GetGameMgr()->GetLogger()->AddDebugLog(std::format("{} = {} = {}", move, oval, output), false);
-		Game::GetGameMgr()->GetLogger()->AddDebugLog("\t", false);
+		GameManager::GetGameMgr()->GetLogger()->AddDebugLog(std::format("{} = {} = {}", move, oval, output), false);
+		GameManager::GetGameMgr()->GetLogger()->AddDebugLog("\t", false);
 		//store output
 		SetKeyState(i, output);
 	}
 
-	Game::GetGameMgr()->GetLogger()->AddDebugLog("");
+	GameManager::GetGameMgr()->GetLogger()->AddDebugLog("");
 }

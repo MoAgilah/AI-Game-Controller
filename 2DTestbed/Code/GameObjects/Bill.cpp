@@ -1,5 +1,5 @@
 #include "Bill.h"
-#include "../Game/Game.h"
+#include "../Game/GameManager.h"
 #include "../Collisions/CollisionManager.h"
 
 Bill::Bill(bool dir, const sf::Vector2f& initPos)
@@ -60,7 +60,7 @@ void Bill::Animate(float deltaTime)
 		if (GetXVelocity() != 0)
 		{
 			Move(GetXVelocity() * FPS * deltaTime, 0);
-			Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
+			GameManager::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
 		}
 	}
 	else

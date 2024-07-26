@@ -8,7 +8,7 @@
 #include "../Controller/CtrlMgr.h"
 #include "../Game/Constants.h"
 
-DebugState::DebugState(Game* gameMgr)
+DebugState::DebugState(GameManager* gameMgr)
 	: GameState("Debug")
 {
 	m_gameMgr.reset(gameMgr);
@@ -19,7 +19,7 @@ void DebugState::Initialise()
 	auto level = m_gameMgr->GetLevel();
 
 	//level->AddObjects();
-	level->AddEnemies();
+	//level->AddEnemies();
 	//level->AddForeGroundSprites();
 }
 
@@ -56,5 +56,5 @@ void DebugState::Render(sf::RenderWindow& window)
 
 	m_gameMgr->GetPlayer()->Render(window);
 
-	Game::GetGameMgr()->GetCollisionMgr()->Render(window);
+	GameManager::GetGameMgr()->GetCollisionMgr()->Render(window);
 }

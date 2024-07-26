@@ -2,7 +2,7 @@
 #include <format>
 #include <iostream>
 #include "../Game/Constants.h"
-#include "../Game/Game.h"
+#include "../Game/GameManager.h"
 
 Sprite::Sprite(TexID id)
 {
@@ -14,7 +14,7 @@ void Sprite::SetTexture(TexID id)
 	m_texID = id;
 	try
 	{
-		m_sprite.setTexture(Game::GetGameMgr()->GetTexturMgr()->GetTexture(m_texID), true);
+		m_sprite.setTexture(GameManager::GetGameMgr()->GetTexturMgr()->GetTexture(m_texID), true);
 	}
 	catch (const std::invalid_argument& e)
 	{

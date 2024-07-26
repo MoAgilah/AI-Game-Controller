@@ -1,5 +1,5 @@
 #include "World.h"
-#include "Game.h"
+#include "GameManager.h"
 #include "Camera.h"
 #include "Timer.h"
 #include "../Game/Constants.h"
@@ -67,7 +67,7 @@ void World::Render(sf::RenderWindow& window)
 		object->Render(window);
 	}
 
-	auto camera = Game::GetGameMgr()->GetCamera();
+	auto camera = GameManager::GetGameMgr()->GetCamera();
 	for (auto i = (int)Sprites::Pipe1; i <= (int)Sprites::Pipe3; i++)
 	{
 		if (!camera->IsInView(m_sprites[i].GetSprite()))
@@ -97,7 +97,7 @@ void World::ResetLevel()
 
 void World::CheckIsInView()
 {
-	auto camera = Game::GetGameMgr()->GetCamera();
+	auto camera = GameManager::GetGameMgr()->GetCamera();
 
 	for (int i = 0; i < m_enemies.size(); i++)
 	{
@@ -118,146 +118,146 @@ void World::AddObject(const sf::Vector2f& pos)
 void World::AddEnemies()
 {
 	Tile tmp;
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(13, 5);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(13, 5);
 	m_enemies.push_back(std::make_unique<Koopa>(false, tmp.GetPosition()));
 
-	/*tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(32, 8);
-	m_enemies.push_back(std::make_unique<Bill>(false, tmp.GetPosition() - sf::Vector2f(0, -16)));*/
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(32, 8);
+	m_enemies.push_back(std::make_unique<Bill>(false, tmp.GetPosition() - sf::Vector2f(0, -16)));
 
-	/*tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(35, 11);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(35, 11);
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(47, 11);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(47, 11);
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(55, 6);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(55, 6);
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(72, 6);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(72, 6);
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(82, 11);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(82, 11);
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(89, 11);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(89, 11);
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(112, 11);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(112, 11);
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(113, 9);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(113, 9);
 	m_enemies.push_back(std::make_unique<PPlant>(tmp.GetPosition() + sf::Vector2f(18, 16)));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(138, 11);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(138, 11);
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(139, 9);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(139, 9);
 	m_enemies.push_back(std::make_unique<PPlant>(tmp.GetPosition() + sf::Vector2f(18, 16)));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(172, 11);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(172, 11);
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(182, 11);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(182, 11);
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(184, 11);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(184, 11);
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(186, 11);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(186, 11);
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(189, 11);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(189, 11);
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(203, 9);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(203, 9);
 	m_enemies.push_back(std::make_unique<Bill>(false, tmp.GetPosition() + sf::Vector2f(0, 20)));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(207, 11);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(207, 11);
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(227, 9);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(227, 9);
 	m_enemies.push_back(std::make_unique<Bill>(false, tmp.GetPosition() + sf::Vector2f(0, 20)));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(242, 11);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(242, 11);
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(257, 11);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(257, 11);
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(263, 11);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(263, 11);
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(280, 9);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(280, 9);
 	m_enemies.push_back(std::make_unique<Bill>(false, tmp.GetPosition() + sf::Vector2f(0, 20)));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(284, 8);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(284, 8);
 	m_enemies.push_back(std::make_unique<PPlant>(tmp.GetPosition() + sf::Vector2f(18, 16)));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(290, 8);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(290, 8);
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp.GetPosition()));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(298, 10);
-	m_enemies.push_back(std::make_unique<Chuck>(false, tmp.GetPosition() + sf::Vector2f(0,24)));*/
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(298, 10);
+	m_enemies.push_back(std::make_unique<Chuck>(false, tmp.GetPosition() + sf::Vector2f(0,24)));
 }
 
 void World::AddObjects()
 {
-	Tile tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(17, 5);
+	Tile tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(17, 5);
 	m_objects.push_back(std::make_unique<YCoin>(tmp.GetPosition()));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(37, 8);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(37, 8);
 	m_objects.push_back(std::make_unique<QBox>(tmp.GetPosition()));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(89, 5);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(89, 5);
 	m_objects.push_back(std::make_unique<YCoin>(tmp.GetPosition()));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(102, 11);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(102, 11);
 	m_objects.push_back(std::make_unique<Mushroom>(tmp.GetPosition()));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(120, 8);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(120, 8);
 	m_objects.push_back(std::make_unique<SBox>(tmp.GetPosition()));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(121, 8);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(121, 8);
 	m_objects.push_back(std::make_unique<SBox>(tmp.GetPosition()));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(151, 9);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(151, 9);
 	m_objects.push_back(std::make_unique<CheckPoint>(tmp.GetPosition() - sf::Vector2f(3, 10.5f)));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(179, 2);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(179, 2);
 	m_objects.push_back(std::make_unique<YCoin>(tmp.GetPosition()));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(239, 8);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(239, 8);
 	m_objects.push_back(std::make_unique<SBox>(tmp.GetPosition()));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(243, 9);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(243, 9);
 	m_objects.push_back(std::make_unique<SBox>(tmp.GetPosition()));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(247, 8);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(247, 8);
 	m_objects.push_back(std::make_unique<SBox>(tmp.GetPosition()));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(243, 5);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(243, 5);
 	m_objects.push_back(std::make_unique<QBox>(tmp.GetPosition()));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(288, 4);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(288, 4);
 	m_objects.push_back(std::make_unique<YCoin>(tmp.GetPosition()));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(302, 11);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(302, 11);
 	m_objects.push_back(std::make_unique<Goal>(sf::Vector2f(tmp.GetPosition().x - 7.f, tmp.GetPosition().y)));
 }
 
 void World::AddForeGroundSprites()
 {
-	auto tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(113, 10);
+	auto tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(113, 10);
 	m_sprites[(int)Sprites::Pipe1].SetTexture(TexID::Pipe1);
 	m_sprites[(int)Sprites::Pipe1].SetScale(sf::Vector2f(sX, sY));
 	m_sprites[(int)Sprites::Pipe1].SetPosition(tmp.GetPosition() + sf::Vector2f(18.5f, 0.f));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(140, 9);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(140, 9);
 	m_sprites[(int)Sprites::Pipe2].SetTexture(TexID::Pipe2);
 	m_sprites[(int)Sprites::Pipe2].SetScale(sf::Vector2f(sX, sY));
 	m_sprites[(int)Sprites::Pipe2].SetPosition(tmp.GetPosition() - sf::Vector2f(18.5f, 0.f));
 
-	tmp = Game::GetGameMgr()->GetCollisionMgr()->GetTile(284, 9);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(284, 9);
 	m_sprites[(int)Sprites::Pipe3].SetTexture(TexID::Pipe3);
 	m_sprites[(int)Sprites::Pipe3].SetScale(sf::Vector2f(sX, sY));
 	m_sprites[(int)Sprites::Pipe3].SetPosition(tmp.GetPosition() + sf::Vector2f(18.5f, 0.f));
@@ -285,8 +285,8 @@ void World::AddGUI()
 
 void World::UpdateGUI()
 {
-	auto curScrBounds = Game::GetGameMgr()->GetCamera()->GetCurrentScreenBounds();
-	auto view = Game::GetGameMgr()->GetCamera()->GetView();
+	auto curScrBounds = GameManager::GetGameMgr()->GetCamera()->GetCurrentScreenBounds();
+	auto view = GameManager::GetGameMgr()->GetCamera()->GetView();
 
 	m_sprites[(int)Sprites::Name].SetPosition(sf::Vector2f(curScrBounds.left + 30, 20));
 

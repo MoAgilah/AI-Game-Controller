@@ -1,5 +1,5 @@
 #include "Collectables.h"
-#include "../Game/Game.h"
+#include "../Game/GameManager.h"
 #include "../Collisions/CollisionManager.h"
 
 int YCoin::s_collected = 1;
@@ -96,7 +96,7 @@ void Mushroom::Update(float deltaTime)
 {
 	SetPrevPosition(GetPosition());
 
-	SetXVelocity((GetDirection() ? 1 : -1) * 2);
+	SetXVelocity((GetDirection() ? 1.f : -1.f) * 2);
 
 	if (GetOnGround())
 	{
@@ -110,7 +110,7 @@ void Mushroom::Update(float deltaTime)
 	if (GetXVelocity() != 0)
 	{
 		Move(GetXVelocity() * FPS * deltaTime, 0);
-		Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
+		GameManager::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
 	}
 
 	CheckForHorizontalBounds(deltaTime);
@@ -118,7 +118,7 @@ void Mushroom::Update(float deltaTime)
 	if (GetYVelocity() != 0)
 	{
 		Move(0, GetYVelocity() * FPS * deltaTime);
-		Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
+		GameManager::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
 	}
 }
 
@@ -146,7 +146,7 @@ void Goal::Update(float deltaTime)
 	if (GetYVelocity() != 0)
 	{
 		Move(0, GetYVelocity() * FPS * deltaTime);
-		Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
+		GameManager::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
 	}
 
 	if (GetAirTime() < 0)

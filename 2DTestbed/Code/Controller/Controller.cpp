@@ -1,7 +1,7 @@
 #include "../Controller/Controller.h"
 #include "../GameObjects/Player.h"
 #include "../Controller/ANNView.h"
-#include "../Game/Game.h"
+#include "../Game/GameManager.h"
 #include "../Game/Constants.h"
 #include <format>
 
@@ -115,8 +115,8 @@ bool Controller::Update()
 
 		if (currPlayer < m_vecMarios.size())
 		{
-			Game::GetGameMgr()->ChangePlayer(m_vecMarios[currPlayer]);
-			Game::GetGameMgr()->GetPlayer()->Reset();
+			GameManager::GetGameMgr()->ChangePlayer(m_vecMarios[currPlayer]);
+			GameManager::GetGameMgr()->GetPlayer()->Reset();
 		}
 	}
 	//if have moved right before timing out
@@ -144,7 +144,7 @@ bool Controller::Update()
 		//and each one has a coefficient)
 		for (int swp = 0; swp< m_vecMarios.size(); ++swp)
 		{
-			Game::GetGameMgr()->GetLogger()->AddExperimentLog("Player: " + std::to_string(swp),false);
+			GameManager::GetGameMgr()->GetLogger()->AddExperimentLog("Player: " + std::to_string(swp),false);
 			EndOfRunCalculation(m_vecMarios[swp]);
 		}
 
@@ -161,26 +161,26 @@ bool Controller::Update()
 		//state
 		for (int i = 0; i< iNumPlayers; ++i)
 		{
-			Game::GetGameMgr()->GetLogger()->AddExperimentLog("Player " + std::to_string(i) + " Fitness: " + std::to_string(m_vecMarios[i]->Fitness()));
+			GameManager::GetGameMgr()->GetLogger()->AddExperimentLog("Player " + std::to_string(i) + " Fitness: " + std::to_string(m_vecMarios[i]->Fitness()));
 
 			m_vecMarios[i]->InsertNewBrain(pBrains[i]);
 			m_vecMarios[i]->Reset();
 		}
 
 		currPlayer = 0;
-		Game::GetGameMgr()->ChangePlayer(m_vecMarios[currPlayer]);
-		Game::GetGameMgr()->GetPlayer()->Reset();
+		GameManager::GetGameMgr()->ChangePlayer(m_vecMarios[currPlayer]);
+		GameManager::GetGameMgr()->GetPlayer()->Reset();
 
 		m_dBestFitness = m_pPop->BestEverFitness();
 
-		Game::GetGameMgr()->GetLogger()->AddExperimentLog("Best Fitness: " + std::to_string(m_dBestFitness));
+		GameManager::GetGameMgr()->GetLogger()->AddExperimentLog("Best Fitness: " + std::to_string(m_dBestFitness));
 
-		Game::GetGameMgr()->GetLogger()->AddExperimentLog("");
-		Game::GetGameMgr()->GetLogger()->AddExperimentLog("Current Generation: " + std::to_string(m_iGenerations));
-		Game::GetGameMgr()->GetLogger()->AddExperimentLog(Game::GetGameMgr()->GetLogger()->GetTimeStamp());
+		GameManager::GetGameMgr()->GetLogger()->AddExperimentLog("");
+		GameManager::GetGameMgr()->GetLogger()->AddExperimentLog("Current Generation: " + std::to_string(m_iGenerations));
+		GameManager::GetGameMgr()->GetLogger()->AddExperimentLog(GameManager::GetGameMgr()->GetLogger()->GetTimeStamp());
 
-		Game::GetGameMgr()->GetLogger()->AddDebugLog("");
-		Game::GetGameMgr()->GetLogger()->AddDebugLog("Current Generation: " + std::to_string(m_iGenerations));
+		GameManager::GetGameMgr()->GetLogger()->AddDebugLog("");
+		GameManager::GetGameMgr()->GetLogger()->AddDebugLog("Current Generation: " + std::to_string(m_iGenerations));
 	}
 
 	return true;
@@ -207,21 +207,21 @@ void Controller::EndOfRunCalculation(AutomatedPlayer* ply)
 	if (endX < startX)
 	{
 		percent = -((endX / startX) * 100);
-		Game::GetGameMgr()->GetLogger()->AddExperimentLog(std::format("Player moved left by {}%!", percent));
+		GameManager::GetGameMgr()->GetLogger()->AddExperimentLog(std::format("Player moved left by {}%!", percent));
 	}
 	else if (endX == startX)
 	{
-		Game::GetGameMgr()->GetLogger()->AddExperimentLog(std::format("Player did not move!"));
+		GameManager::GetGameMgr()->GetLogger()->AddExperimentLog(std::format("Player did not move!"));
 	}
 	else if (ply->GetGoalHit())
 	{
 		percent = 100;
-		Game::GetGameMgr()->GetLogger()->AddExperimentLog("Player completed the level");
+		GameManager::GetGameMgr()->GetLogger()->AddExperimentLog("Player completed the level");
 	}
 	else
 	{
 		percent = ((endX - startX) / RightMost) * 100;
-		Game::GetGameMgr()->GetLogger()->AddExperimentLog(std::format("Player completed {}% of the level!", percent));
+		GameManager::GetGameMgr()->GetLogger()->AddExperimentLog(std::format("Player completed {}% of the level!", percent));
 	}
 
 	ply->UpdateFitness(percent);

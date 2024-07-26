@@ -1,5 +1,5 @@
 #include "Enemy.h"
-#include "../Game/Game.h"
+#include "../Game/GameManager.h"
 #include "../Game/Camera.h"
 
 Enemy::Enemy(TexID sprId, const sf::Vector2f& boxSize, int maxLives)
@@ -40,7 +40,7 @@ void Enemy::Update(float deltaTime)
 			m_tillReset -= deltaTime;
 			if (m_tillReset <= 0)
 			{
-				if (!Game::GetGameMgr()->GetCamera()->IsInView(GetInitialPosition(), GetOrigin()))
+				if (!GameManager::GetGameMgr()->GetCamera()->IsInView(GetInitialPosition(), GetOrigin()))
 				{
 					Reset();
 				}

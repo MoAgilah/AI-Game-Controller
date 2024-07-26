@@ -1,5 +1,5 @@
 #include "Box.h"
-#include "../Game/Game.h"
+#include "../Game/GameManager.h"
 #include "../Game/Camera.h"
 
 Box::Box(AnimatedSprite* sprite, const sf::Vector2f& initPos)

@@ -182,7 +182,7 @@
     <ClCompile Include="Code\GameStates\MainState.cpp" />
     <ClCompile Include="Code\GameStates\PlayerState.cpp" />
     <ClCompile Include="Code\Game\Camera.cpp" />
-    <ClCompile Include="Code\Game\Game.cpp" />
+    <ClCompile Include="Code\Game\GameManager.cpp" />
     <ClCompile Include="Code\Game\Logger.cpp" />
     <ClCompile Include="Code\Game\TextureManager.cpp" />
     <ClCompile Include="Code\Game\Timer.cpp" />
@@ -223,7 +223,7 @@
     <ClInclude Include="Code\GameStates\PlayerState.h" />
     <ClInclude Include="Code\Game\Camera.h" />
     <ClInclude Include="Code\Game\Constants.h" />
-    <ClInclude Include="Code\Game\Game.h" />
+    <ClInclude Include="Code\Game\GameManager.h" />
     <ClInclude Include="Code\Game\Logger.h" />
     <ClInclude Include="Code\Game\TextureManager.h" />
     <ClInclude Include="Code\Game\Timer.h" />

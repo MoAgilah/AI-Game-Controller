@@ -1,7 +1,7 @@
 #include "CollisionManager.h"
 
 #include "../Game/Camera.h"
-#include "../Game/Game.h"
+#include "../Game/GameManager.h"
 
 #include "../GameObjects/Object.h"
 #include "../GameObjects/Player.h"
@@ -89,7 +89,7 @@ void CollisionManager::Render(sf::RenderWindow& window)
 
 void CollisionManager::ProcessCollisions(Object* gobj)
 {
-	if (Game::GetGameMgr()->IsDynamicObject(gobj->GetID()))
+	if (GameManager::GetGameMgr()->IsDynamicObject(gobj->GetID()))
 		DynamicObjectToTileCollisions((DynamicObject*)gobj);
 
 	for (int g = 0; g < m_collidables.size(); ++g)
@@ -200,7 +200,7 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 				{
 					obj->Move((obj->GetDirection() ? -1 : 1) * tile->GetAABB()->GetOverlap().x, 0);
 
-					if (Game::GetGameMgr()->IsDynamicObject(obj->GetID(), (int)TexID::Koopa))
+					if (GameManager::GetGameMgr()->IsDynamicObject(obj->GetID(), (int)TexID::Koopa))
 						obj->SetDirection(!obj->GetDirection());
 				}
 				return;
@@ -400,9 +400,9 @@ void CollisionManager::ColObjectToColObject(Object * colObj1, Object * colObj2)
 	int isPlayer = -1;
 
 	//if either is a player assign id num
-	if (Game::GetGameMgr()->IsPlayerObject(colObj1->GetID()))
+	if (GameManager::GetGameMgr()->IsPlayerObject(colObj1->GetID()))
 		isPlayer = 1;
-	else if (Game::GetGameMgr()->IsPlayerObject(colObj2->GetID()))
+	else if (GameManager::GetGameMgr()->IsPlayerObject(colObj2->GetID()))
 		isPlayer = 2;
 
 	if (isPlayer == 1)//if player is obj 1
@@ -479,7 +479,7 @@ void CollisionManager::QBoxHit(Player * ply, QBox* box)
 		{
 			//ply->UpdateFitness(100);
 			//add to the level
-			Game::GetGameMgr()->GetLevel()->AddObject(sf::Vector2f(box->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * sY) - (box->GetOrigin().y * sY) + 4.f));
+			GameManager::GetGameMgr()->GetLevel()->AddObject(sf::Vector2f(box->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * sY) - (box->GetOrigin().y * sY) + 4.f));
 
 			box->SetJustHit(true);
 		}

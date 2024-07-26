@@ -1,7 +1,7 @@
 #include "../Game/Camera.h"
 #include "../Collisions/Tile.h"
 #include "../Game/Timer.h"
-#include "../Game/Game.h"
+#include "../Game/GameManager.h"
 #include "../GameObjects/Player.h"
 #include <assert.h>
 #include "../Game/Constants.h"
@@ -24,7 +24,7 @@ Camera::Camera()
 void Camera::Update()
 {
 	//scroll the screen view with the player
-	float posX = Game::GetGameMgr()->GetPlayer()->GetPosition().x - scrX * 0.5f;
+	float posX = GameManager::GetGameMgr()->GetPlayer()->GetPosition().x - scrX * 0.5f;
 
 	if (posX < 0)
 		posX = 0;
