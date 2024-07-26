@@ -175,10 +175,7 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 			case CRN:
 			{
 				if (objBottom < tileTop)
-				{
-					obj->Move(0, -tile->GetAABB()->GetOverlap().y);
-					obj->SetOnGround(true);
-				}
+					ResolveObjectToBoxTop(obj, tile->GetAABB());
 				return;
 			}
 			default:
@@ -197,12 +194,7 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 			case WALL:
 			{
 				if (shouldResolve)
-				{
-					obj->Move((obj->GetDirection() ? -1 : 1) * tile->GetAABB()->GetOverlap().x, 0);
-
-					if (GameManager::GetGameMgr()->IsDynamicObject(obj->GetID(), (int)TexID::Koopa))
-						obj->SetDirection(!obj->GetDirection());
-				}
+					ResolveObjectToBoxHorizontally(obj, tile->GetAABB());
 				return;
 			}
 			default:
@@ -219,8 +211,7 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 			{
 				if (box.Intersects(obj->GetAABB()))
 				{
-					obj->Move(0, -box.GetOverlap().y);
-					obj->SetOnGround(true);
+					ResolveObjectToBoxTop(obj, &box);
 					return;
 				}
 			}
@@ -228,6 +219,25 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 	}
 
 	obj->SetOnGround(false);
+}
+
+void CollisionManager::ResolveObjectToBoxTop(DynamicObject* obj, AABB* box)
+{
+	obj->Move(0, -box->GetOverlap().y);
+	obj->SetOnGround(true);
+}
+
+void CollisionManager::ResolveObjectToBoxBottom(DynamicObject* obj, AABB* box)
+{
+	obj->Move(0, box->GetOverlap().y);
+	obj->SetOnGround(false);
+}
+
+void CollisionManager::ResolveObjectToBoxHorizontally(DynamicObject* obj, AABB* box)
+{
+	obj->Move((obj->GetDirection() ? -1 : 1) * box->GetOverlap().x, 0);
+	if (GameManager::GetGameMgr()->IsDynamicObject(obj->GetID(), (int)TexID::Koopa))
+		obj->SetDirection(!obj->GetDirection());
 }
 
 void CollisionManager::PlayerToEnemy(Player * ply, Enemy * enmy)

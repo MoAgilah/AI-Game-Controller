@@ -45,6 +45,10 @@ private:
 	void DynamicObjectToTileCollisions(DynamicObject* obj);
 	void DynamicObjectToTileResolution(DynamicObject* obj, Tile* tile);
 
+	void ResolveObjectToBoxTop(DynamicObject* obj, AABB* box);
+	void ResolveObjectToBoxBottom(DynamicObject* obj, AABB* box);
+	void ResolveObjectToBoxHorizontally(DynamicObject* obj, AABB* box);
+
 	void ColObjectToColObject(Object* colObj1, Object* colObj2);
 
 	void PlayerToEnemy(Player* ply, Enemy* enmy);
