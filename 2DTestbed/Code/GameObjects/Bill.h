@@ -30,8 +30,6 @@ public:
 
 	Body GetBody() const { return m_colbody; }
 
-	void ResolveCollisions(Object* other);
-	void ResolveCollisions(Tile* tile);
 private:
 	void Animate(float deltaTime) final;
 

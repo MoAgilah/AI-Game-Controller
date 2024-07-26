@@ -44,14 +44,6 @@ void Bill::Render(sf::RenderWindow& window)
 	window.draw(m_colbody.back);
 }
 
-void Bill::ResolveCollisions(Object* other)
-{
-}
-
-void Bill::ResolveCollisions(Tile* tile)
-{
-}
-
 void Bill::Animate(float deltaTime)
 {
 	SetPrevPosition(GetPosition());

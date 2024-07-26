@@ -91,30 +91,3 @@ void Rex::Animate(float deltaTime)
 		Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
 	}
 }
-
-void Rex::UpdateBoundingBox()
-{
-	if (Tall())
-	{
-		GetAABB()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
-	}
-	else
-	{
-		if (GetDirection())
-		{
-			GetAABB()->Update(sf::Vector2f(GetPosition().x - 6, GetPosition().y + 17));
-		}
-		else
-		{
-			GetAABB()->Update(sf::Vector2f(GetPosition().x + 6, GetPosition().y + 17));
-		}
-	}
-}
-
-void Rex::ResolveCollisions(Object* other)
-{
-}
-
-void Rex::ResolveCollisions(Tile* tile)
-{
-}

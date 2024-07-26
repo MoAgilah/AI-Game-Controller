@@ -24,9 +24,6 @@ public:
 	void Update(float deltaTime) final;
 
 	int Collect();
-
-	void ResolveCollisions(Object* other);
-	void ResolveCollisions(Tile* tile);
 };
 
 class YCoin : public StaticCollectable
@@ -41,8 +38,6 @@ public:
 
 	int Collect();
 
-	void ResolveCollisions(Object* other);
-	void ResolveCollisions(Tile* tile);
 private:
 
 	static int s_collected;
@@ -58,8 +53,6 @@ public:
 
 	AnimatedSprite* GetAnimSpr() = delete;
 
-	void ResolveCollisions(Object* other);
-	void ResolveCollisions(Tile* tile);
 };
 
 class DynamicCollectable : public DynamicObject
@@ -86,8 +79,6 @@ public:
 
 	AnimatedSprite* GetAnimSpr() = delete;
 
-	void ResolveCollisions(Object* other);
-	void ResolveCollisions(Tile* tile);
 };
 
 class Goal : public DynamicCollectable
@@ -99,9 +90,6 @@ public:
 	void Update(float deltaTime) final;
 
 	AnimatedSprite* GetAnimSpr() = delete;
-
-	void ResolveCollisions(Object* other);
-	void ResolveCollisions(Tile* tile);
 
 	float GetAirTime() const { return m_travelTime; }
 	void SetAirTime(float val) { m_travelTime = val; }

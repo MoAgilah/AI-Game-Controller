@@ -39,14 +39,6 @@ void Chuck::DecrementLife()
 	}
 }
 
-void Chuck::ResolveCollisions(Object* other)
-{
-}
-
-void Chuck::ResolveCollisions(Tile* tile)
-{
-}
-
 void Chuck::Animate(float deltaTime)
 {
 	auto animSpr = GetAnimSpr();
@@ -118,6 +110,5 @@ void Chuck::Animate(float deltaTime)
 	{
 		Move(0, GetYVelocity() * FPS * deltaTime);
 		Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
-		UpdateBoundingBox();
 	}
 }

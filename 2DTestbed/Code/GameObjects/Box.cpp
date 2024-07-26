@@ -55,14 +55,6 @@ void QBox::Reset()
 	Box::Reset();
 }
 
-void QBox::ResolveCollisions(Object* other)
-{
-}
-
-void QBox::ResolveCollisions(Tile* tile)
-{
-}
-
 SBox::SBox(const sf::Vector2f& initPos)
 	: Box(new AnimatedSprite(TexID::SBox, 2, 4, FPS, false, 0.35f), initPos)
 {
@@ -134,14 +126,6 @@ void SBox::Reset()
 	}
 	animSpr->ChangeAnim(SBoxAnims::WAIT);
 	Box::Reset();
-}
-
-void SBox::ResolveCollisions(Object* other)
-{
-}
-
-void SBox::ResolveCollisions(Tile* tile)
-{
 }
 
 void SBox::Scatter()

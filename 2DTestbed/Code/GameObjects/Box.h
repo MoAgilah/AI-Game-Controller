@@ -36,8 +36,6 @@ public:
 
 	void Reset() override;
 
-	void ResolveCollisions(Object* other);
-	void ResolveCollisions(Tile* tile);
 };
 
 enum SBoxAnims { WAIT, SPIN };
@@ -57,8 +55,6 @@ public:
 	bool GetJustSmashed() const { return m_justSmashed; }
 	void SetJustSmashed(bool justSmashed) { m_justSmashed = justSmashed; }
 
-	void ResolveCollisions(Object* other);
-	void ResolveCollisions(Tile* tile);
 private:
 	void Scatter();
 

@@ -28,14 +28,6 @@ void Koopa::Die()
 	SetTimeLeftActive(0.5f);
 }
 
-void Koopa::ResolveCollisions(Object* other)
-{
-}
-
-void Koopa::ResolveCollisions(Tile* tile)
-{
-}
-
 void Koopa::Animate(float deltaTime)
 {
 	GetAnimSpr()->Update(deltaTime);
@@ -64,7 +56,6 @@ void Koopa::Animate(float deltaTime)
 	{
 		Move(GetXVelocity() * FPS * deltaTime, 0);
 		Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
-		UpdateBoundingBox();
 	}
 
 	CheckForHorizontalBounds(deltaTime);
@@ -73,6 +64,5 @@ void Koopa::Animate(float deltaTime)
 	{
 		Move(0, GetYVelocity() * FPS * deltaTime);
 		Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
-		UpdateBoundingBox();
 	}
 }

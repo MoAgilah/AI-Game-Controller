@@ -63,10 +63,6 @@ public:
 	void SetAirTime(float val) { m_airtime = val; }
 	void IncAirTime(float val) { m_airtime += val; }
 
-	void ResolveCollisions(Object* other) override;
-	void ResolveCollisions(Tile* tile) override;
-
-	void UpdateBoundingBox() override;
 private:
 
 	void ProcessInput();

@@ -25,14 +25,6 @@ void PPlant::Die()
 	// no way to destroy currently, requires fireplant mario
 }
 
-void PPlant::ResolveCollisions(Object* other)
-{
-}
-
-void PPlant::ResolveCollisions(Tile* tile)
-{
-}
-
 void PPlant::Animate(float deltaTime)
 {
 	auto animSpr = GetAnimSpr();
@@ -53,7 +45,6 @@ void PPlant::Animate(float deltaTime)
 	{
 		Move(0, GetYVelocity() * FPS * deltaTime);
 		Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
-		UpdateBoundingBox();
 	}
 
 	if (GetAirbourne())

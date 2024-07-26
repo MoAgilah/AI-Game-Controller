@@ -41,14 +41,6 @@ int Coin::Collect()
 	return 1;
 }
 
-void Coin::ResolveCollisions(Object* other)
-{
-}
-
-void Coin::ResolveCollisions(Tile* tile)
-{
-}
-
 YCoin::YCoin(const sf::Vector2f& initPos)
 	: StaticCollectable(new AnimatedSprite(TexID::YCoin, 1,6, FPS, false, 0.5f), sf::Vector2f(16,25), initPos)
 {
@@ -75,14 +67,6 @@ int YCoin::Collect()
 	return s_collected * 1000;
 }
 
-void YCoin::ResolveCollisions(Object* other)
-{
-}
-
-void YCoin::ResolveCollisions(Tile* tile)
-{
-}
-
 CheckPoint::CheckPoint(const sf::Vector2f& initPos)
 	: StaticCollectable(TexID::ChkPnt, sf::Vector2f(20, 3), initPos)
 {
@@ -91,14 +75,6 @@ CheckPoint::CheckPoint(const sf::Vector2f& initPos)
 void CheckPoint::Update(float deltaTime)
 {
 	// nothing to update
-}
-
-void CheckPoint::ResolveCollisions(Object* other)
-{
-}
-
-void CheckPoint::ResolveCollisions(Tile* tile)
-{
 }
 
 DynamicCollectable::DynamicCollectable(TexID sprID, const sf::Vector2f& boxSize, const sf::Vector2f& initPos)
@@ -146,14 +122,6 @@ void Mushroom::Update(float deltaTime)
 	}
 }
 
-void Mushroom::ResolveCollisions(Object* other)
-{
-}
-
-void Mushroom::ResolveCollisions(Tile* tile)
-{
-}
-
 Goal::Goal(const sf::Vector2f& initPos)
 	: DynamicCollectable(TexID::Goal, sf::Vector2f(25, 8), initPos)
 {
@@ -186,12 +154,4 @@ void Goal::Update(float deltaTime)
 		SetAirTime(c_maxTravelTime);
 		SetOnGround(false);
 	}
-}
-
-void Goal::ResolveCollisions(Object* other)
-{
-}
-
-void Goal::ResolveCollisions(Tile* tile)
-{
 }
