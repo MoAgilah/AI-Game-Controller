@@ -36,16 +36,8 @@ public:
 
 	void CheckInView();
 
-	bool IsBoxObject(TexID id);
-	bool IsEnemyObject(TexID id);
-	bool IsPlayerObject(TexID id);
-	bool IsCollectableObject(TexID id);
-	bool IsDynamicObject(TexID id, int bgn = 0, int end = 7);
 private:
 
-	std::array<TexID, 5> m_enemyObjIds;
-	std::array<TexID, 7> m_dynamicObjIds;
-	std::array<TexID, 5> m_collectableIds;
 	static std::shared_ptr<GameManager>		m_instance;
 	std::unique_ptr<TextureManager>		m_texureManager;
 	std::unique_ptr<Camera>				m_camera;

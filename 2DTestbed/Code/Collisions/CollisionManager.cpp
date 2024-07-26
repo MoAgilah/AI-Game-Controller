@@ -21,13 +21,27 @@
 
 namespace
 {
+	bool IsPlayerObject(TexID id)
+	{
+		return id == TexID::Mario || id == TexID::Super;
+	}
+
+	std::array<TexID, 7> canCollideWithTile =
+	{
+		TexID::Mario, TexID::Super, TexID::Koopa, TexID::Rex, TexID::Chuck, TexID::Shroom, TexID::Goal
+	};
+
+	bool CanCollideWithTile(TexID id)
+	{
+		return std::find(canCollideWithTile.begin(), canCollideWithTile.end(), id) != canCollideWithTile.end();
+	}
+
 	void SortCollidedTiles(std::vector<std::shared_ptr<Tile>> collidedWith)
 	{
-		std::sort(collidedWith.begin(), collidedWith.end(), [](const std::shared_ptr<Tile>& a, const std::shared_ptr<Tile>& b)
+		std::ranges::sort(collidedWith, [](const std::shared_ptr<Tile>& a, const std::shared_ptr<Tile>& b)
 			{
 				if (a->GetColNum() == b->GetColNum())
 					return a->GetRowNum() < b->GetRowNum();
-
 				return a->GetColNum() > b->GetColNum();
 			});
 	}
@@ -89,7 +103,7 @@ void CollisionManager::Render(sf::RenderWindow& window)
 
 void CollisionManager::ProcessCollisions(Object* gobj)
 {
-	if (GameManager::GetGameMgr()->IsDynamicObject(gobj->GetID()))
+	if (CanCollideWithTile(gobj->GetID()))
 		DynamicObjectToTileCollisions((DynamicObject*)gobj);
 
 	for (int g = 0; g < m_collidables.size(); ++g)
@@ -236,7 +250,7 @@ void CollisionManager::ResolveObjectToBoxBottom(DynamicObject* obj, AABB* box)
 void CollisionManager::ResolveObjectToBoxHorizontally(DynamicObject* obj, AABB* box)
 {
 	obj->Move((obj->GetDirection() ? -1 : 1) * box->GetOverlap().x, 0);
-	if (GameManager::GetGameMgr()->IsDynamicObject(obj->GetID(), (int)TexID::Koopa))
+	if (!IsPlayerObject(obj->GetID()))
 		obj->SetDirection(!obj->GetDirection());
 }
 
@@ -410,9 +424,9 @@ void CollisionManager::ColObjectToColObject(Object * colObj1, Object * colObj2)
 	int isPlayer = -1;
 
 	//if either is a player assign id num
-	if (GameManager::GetGameMgr()->IsPlayerObject(colObj1->GetID()))
+	if (IsPlayerObject(colObj1->GetID()))
 		isPlayer = 1;
-	else if (GameManager::GetGameMgr()->IsPlayerObject(colObj2->GetID()))
+	else if (IsPlayerObject(colObj2->GetID()))
 		isPlayer = 2;
 
 	if (isPlayer == 1)//if player is obj 1

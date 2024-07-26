@@ -14,21 +14,6 @@ std::shared_ptr<GameManager> GameManager::m_instance = nullptr;
 
 GameManager::GameManager()
 {
-	m_collectableIds =
-	{
-		TexID::Shroom, TexID::Goal, TexID::Coin, TexID::YCoin, TexID::ChkPnt
-	};
-
-	m_enemyObjIds =
-	{
-		TexID::Koopa, TexID::Bill, TexID::Rex, TexID::PPlant, TexID::Chuck
-	};
-
-	m_dynamicObjIds =
-	{
-		TexID::Mario, TexID::Super, TexID::Koopa, TexID::Rex, TexID::Chuck, TexID::Shroom, TexID::Goal
-	};
-
 	m_instance.reset(this);
 	m_texureManager = std::make_unique<TextureManager>();
 	m_collisionManager = std::make_unique<CollisionManager>();
@@ -69,32 +54,4 @@ void GameManager::CheckInView()
 		tile->SetActive(m_camera->IsinView(tile->GetRect()));
 
 	m_world->CheckIsInView();
-}
-
-bool GameManager::IsBoxObject(TexID id)
-{
-	return id == TexID::QBox || id == TexID::SBox;
-}
-
-bool GameManager::IsEnemyObject(TexID id)
-{
-	return std::find(m_enemyObjIds.begin(), m_enemyObjIds.end(), id) != m_enemyObjIds.end();
-}
-
-bool GameManager::IsPlayerObject(TexID id)
-{
-	return id == TexID::Mario || id == TexID::Super;
-}
-
-bool GameManager::IsCollectableObject(TexID id)
-{
-	return std::find(m_collectableIds.begin(), m_collectableIds.end(), id) != m_collectableIds.end();
-}
-
-bool GameManager::IsDynamicObject(TexID id, int first, int last)
-{
-	auto start = m_dynamicObjIds.begin() + first;
-	auto end = m_dynamicObjIds.begin() + last;
-
-	return std::find(start, end, id) != end;
 }
