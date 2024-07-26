@@ -5,13 +5,14 @@
 #include "../Game/Constants.h"
 
 Rex::Rex(bool dir, const sf::Vector2f& initPos)
-	: Enemy(TexID::Rex, sf::Vector2f(10, 28), AnimationData{4, 3, false, 0.5f}, 2)
+	: Enemy(TexID::Rex, sf::Vector2f(10, 26), AnimationData{4, 3, false, 0.5f}, 2)
 {
 	SetInitialDirection(dir);
 	SetDirection(GetInitialDirection());
 	SetInitialPosition(initPos);
 	SetPosition(GetInitialPosition());
 	GetAnimSpr()->SetFrames({ 2, 3, 2, 1 });
+	GetAABB()->Update(GetPosition());
 }
 
 void Rex::Reset()
@@ -19,7 +20,7 @@ void Rex::Reset()
 	GetAnimSpr()->ChangeAnim(RexAnims::WALKTALL);
 	GetAABB()->Reset(sf::Vector2f(10, 28));
 	Enemy::Reset();
-	SetPosition(GetPosition() + sf::Vector2f(0, -16));
+	GetAABB()->Update(GetPosition());
 }
 
 void Rex::Die()
@@ -33,7 +34,8 @@ void Rex::DecrementLife()
 	if (Tall())
 	{
 		GetAnimSpr()->ChangeAnim(RexAnims::TRANSITION);
-		GetAABB()->Reset(sf::Vector2f(16,16));
+		GetAABB()->Reset(sf::Vector2f(14,16));
+		GetAABB()->Move((GetDirection() ? -1 : 1) * 3, 12);
 		m_transitioning = true;
 		m_squished = true;
 	}
@@ -79,7 +81,6 @@ void Rex::Animate(float deltaTime)
 	{
 		Move(GetXVelocity() * FPS * deltaTime, 0);
 		Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
-		UpdateBoundingBox();
 	}
 
 	CheckForHorizontalBounds(deltaTime);
@@ -88,7 +89,6 @@ void Rex::Animate(float deltaTime)
 	{
 		Move(0, GetYVelocity() * FPS * deltaTime);
 		Game::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
-		UpdateBoundingBox();
 	}
 }
 

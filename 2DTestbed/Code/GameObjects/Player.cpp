@@ -183,6 +183,7 @@ void Player::Reset()
 	m_spawnLoc = GetInitialPosition();
 
 	SetVelocity(sf::Vector2f(0.0f, 0.0f));
+	SetOnGround(false);
 
 	m_super = false;
 	m_crouched = false;

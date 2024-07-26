@@ -18,11 +18,7 @@ void Enemy::Update(float deltaTime)
 	{
 		Animate(deltaTime);
 
-		if (GetIsAlive())
-		{
-			UpdateBoundingBox();
-		}
-		else
+		if (!GetIsAlive())
 		{
 			if (m_timeLeftActive > 0)
 				m_timeLeftActive -= deltaTime;
