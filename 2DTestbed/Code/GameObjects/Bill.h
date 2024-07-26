@@ -31,6 +31,8 @@ public:
 	Body GetBody() const { return m_colbody; }
 
 private:
+
+	void UpdateBody();
 	void Animate(float deltaTime) final;
 
 	Body m_colbody;

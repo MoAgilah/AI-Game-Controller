@@ -21,4 +21,5 @@ private:
 
 	bool m_squished = false;
 	bool m_transitioning = false;
+	float m_heightDiff = 12.f;
 };

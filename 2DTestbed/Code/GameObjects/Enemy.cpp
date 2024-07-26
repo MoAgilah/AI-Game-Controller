@@ -18,13 +18,13 @@ void Enemy::Update(float deltaTime)
 	{
 		Animate(deltaTime);
 
-		if (!GetIsAlive())
+		if (!HasLifes())
 		{
 			if (m_timeLeftActive > 0)
 				m_timeLeftActive -= deltaTime;
 
 			if (m_timeLeftActive < 0)
-				SetActive(false);
+				m_isAlive = false;
 		}
 	}
 	else
@@ -55,6 +55,7 @@ void Enemy::Reset()
 	DynamicObject::Reset();
 
 	m_numLives = m_maxLives;
+	m_isAlive = true;
 
 	m_tillReset = 0;
 	m_resetAllowed = false;

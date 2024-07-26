@@ -11,17 +11,6 @@ Bill::Bill(bool dir, const sf::Vector2f& initPos)
 	SetPosition(GetInitialPosition());
 	GetAABB()->Update(GetPosition());
 
-	if (GetDirection())
-	{
-		m_colbody.front.setPosition(GetPosition());
-		m_colbody.back.setPosition(GetPosition() - sf::Vector2f(GetAABB()->GetOrigin().x * sX - 32, -3));
-	}
-	else
-	{
-		m_colbody.front.setPosition(GetPosition());
-		m_colbody.back.setPosition(GetPosition() + sf::Vector2f(GetAABB()->GetOrigin().x * sX - 32, 3));
-	}
-
 	m_colbody.front.setOutlineColor(sf::Color::Red);
 	m_colbody.front.setOutlineThickness(2.0f);
 	m_colbody.front.setFillColor(sf::Color::Transparent);
@@ -35,6 +24,8 @@ Bill::Bill(bool dir, const sf::Vector2f& initPos)
 	m_colbody.back.setOrigin(sf::Vector2f(12.5f, (float)GetAABB()->GetExtents().y / 2.f));
 	m_colbody.back.setScale(sX, sY);
 	m_colbody.back.setFillColor(sf::Color::Transparent);
+
+	UpdateBody();
 }
 
 void Bill::Render(sf::RenderWindow& window)
@@ -42,6 +33,20 @@ void Bill::Render(sf::RenderWindow& window)
 	window.draw(*GetSprite()->GetSprite());
 	window.draw(m_colbody.front);
 	window.draw(m_colbody.back);
+}
+
+void Bill::UpdateBody()
+{
+	if (GetDirection())
+	{
+		m_colbody.front.setPosition(GetPosition());
+		m_colbody.back.setPosition(GetPosition() - sf::Vector2f(GetAABB()->GetOrigin().x * sX - 32, -3));
+	}
+	else
+	{
+		m_colbody.front.setPosition(GetPosition());
+		m_colbody.back.setPosition(GetPosition() + sf::Vector2f(GetAABB()->GetOrigin().x * sX - 32, 3));
+	}
 }
 
 void Bill::Animate(float deltaTime)
@@ -64,16 +69,7 @@ void Bill::Animate(float deltaTime)
 		Move(0, GetYVelocity() * FPS * deltaTime);
 	}
 
-	if (GetDirection())
-	{
-		m_colbody.front.setPosition(GetPosition());
-		m_colbody.back.setPosition(GetPosition() - sf::Vector2f(GetAABB()->GetOrigin().x * sX - 32, -3));
-	}
-	else
-	{
-		m_colbody.front.setPosition(GetPosition());
-		m_colbody.back.setPosition(GetPosition() + sf::Vector2f(GetAABB()->GetOrigin().x * sX - 32, 3));
-	}
+	UpdateBody();
 
 	CheckForHorizontalBounds(deltaTime);
 }
