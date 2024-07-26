@@ -45,6 +45,26 @@ namespace
 				return a->GetColNum() > b->GetColNum();
 			});
 	}
+
+	std::array<TexID, 7> staticObject =
+	{
+		TexID::Coin, TexID::YCoin, TexID::ChkPnt, TexID::QBox, TexID::SBox
+	};
+
+	bool IsStaticObject(TexID id)
+	{
+		return std::find(staticObject.begin(), staticObject.end(), id) != staticObject.end();
+	}
+
+	std::array<TexID, 9> dynamicObject =
+	{
+		TexID::Mario, TexID::Super, TexID::Koopa, TexID::Bill, TexID::Rex, TexID::PPlant, TexID::Chuck, TexID::Shroom, TexID::Goal
+	};
+
+	bool IsDynamicObject(TexID id)
+	{
+		return std::find(dynamicObject.begin(), dynamicObject.end(), id) != dynamicObject.end();
+	}
 }
 
 CollisionManager::CollisionManager()
@@ -233,6 +253,22 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 	}
 
 	obj->SetOnGround(false);
+}
+
+void CollisionManager::DynamicObjectToObjectCollisions(DynamicObject* obj1, Object* obj2)
+{
+}
+
+void CollisionManager::DynamicObjectToObjectResolution(DynamicObject* obj1, Object* obj2)
+{
+}
+
+void CollisionManager::DynamicObjectToDynamicObjectCollisions(DynamicObject* obj1, DynamicObject* obj2)
+{
+}
+
+void CollisionManager::DynamicObjectToDynamicObjectResolution(DynamicObject* obj1, DynamicObject* obj2)
+{
 }
 
 void CollisionManager::ResolveObjectToBoxTop(DynamicObject* obj, AABB* box)

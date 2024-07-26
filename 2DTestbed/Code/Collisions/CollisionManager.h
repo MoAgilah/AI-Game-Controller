@@ -45,6 +45,12 @@ private:
 	void DynamicObjectToTileCollisions(DynamicObject* obj);
 	void DynamicObjectToTileResolution(DynamicObject* obj, Tile* tile);
 
+	void DynamicObjectToObjectCollisions(DynamicObject* obj1, Object* obj2);
+	void DynamicObjectToObjectResolution(DynamicObject* obj1, Object* obj2);
+
+	void DynamicObjectToDynamicObjectCollisions(DynamicObject* obj1, DynamicObject* obj2);
+	void DynamicObjectToDynamicObjectResolution(DynamicObject* obj1, DynamicObject* obj2);
+
 	void ResolveObjectToBoxTop(DynamicObject* obj, AABB* box);
 	void ResolveObjectToBoxBottom(DynamicObject* obj, AABB* box);
 	void ResolveObjectToBoxHorizontally(DynamicObject* obj, AABB* box);
