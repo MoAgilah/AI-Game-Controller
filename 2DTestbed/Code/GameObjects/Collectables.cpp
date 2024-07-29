@@ -26,7 +26,7 @@ StaticCollectable::StaticCollectable(AnimatedSprite* sprite, const sf::Vector2f&
 }
 
 Coin::Coin(const sf::Vector2f& initPos)
-	: StaticCollectable(new AnimatedSprite(TexID::Coin, 1,4, FPS, false, 0.5f), sf::Vector2f(12, 16), initPos)
+	: StaticCollectable(new AnimatedSprite(TexID::Coin, 1, 4, FPS, false, 0.5f), sf::Vector2f(12, 16), initPos)
 {
 	GetAnimSpr()->SetFrames({ 4 });
 }
@@ -44,7 +44,7 @@ void Coin::Collect(Player* player)
 }
 
 YCoin::YCoin(const sf::Vector2f& initPos)
-	: StaticCollectable(new AnimatedSprite(TexID::YCoin, 1,6, FPS, false, 0.5f), sf::Vector2f(16,25), initPos)
+	: StaticCollectable(new AnimatedSprite(TexID::YCoin, 1, 6, FPS, false, 0.5f), sf::Vector2f(16, 25), initPos)
 {
 	GetAnimSpr()->SetFrames({ 6 });
 }
@@ -142,35 +142,34 @@ Goal::Goal(const sf::Vector2f& initPos)
 {
 	SetInitialDirection(true);
 	SetDirection(GetInitialDirection());
-	//SetAirTime(c_maxTravelTime);
-	SetOnGround(false);
+	SetAirTime(0);
+	SetOnGround(true);
 }
 
 void Goal::Update(float deltaTime)
 {
+	SetPrevPosition(GetPosition());
+
 	if (GetOnGround())
 	{
-		SetYVelocity(2.5);
+		IncAirTime(-deltaTime);
+		SetYVelocity(-2.5);
 	}
 	else
 	{
-		SetYVelocity(-2.5);
+		SetYVelocity(2.5);
 	}
 
 	if (GetYVelocity() != 0)
 	{
 		Move(0, GetYVelocity() * FPS * deltaTime);
+		GameManager::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
 	}
 
-	sf::Vector2f currentPos = GetPosition();
-	if (currentPos.y > 470)
+	if (GetAirTime() < 0)
 	{
+		SetAirTime(c_maxTravelTime);
 		SetOnGround(false);
-	}
-
-	if (currentPos.y < 150)
-	{
-		SetOnGround(true);
 	}
 }
 

@@ -241,8 +241,8 @@ void World::AddObjects()
 	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(288, 4);
 	m_objects.push_back(std::make_unique<YCoin>(tmp.GetPosition()));
 
-	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(302, 11);
-	m_objects.push_back(std::make_unique<Goal>(sf::Vector2f(tmp.GetPosition().x - 7.f, tmp.GetPosition().y)));
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(302, 3);
+	m_objects.push_back(std::make_unique<Goal>(sf::Vector2f(tmp.GetPosition().x - 7.f, tmp.GetPosition().y + 16)));
 }
 
 void World::AddForeGroundSprites()
