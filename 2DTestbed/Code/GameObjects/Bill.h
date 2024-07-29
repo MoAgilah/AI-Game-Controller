@@ -6,7 +6,13 @@
 struct Body
 {
 	sf::CircleShape front;
-	sf::RectangleShape back;
+	AABB back;
+
+	bool Intersects(AABB* box);
+
+private:
+
+	bool CircleToAABB(sf::CircleShape circle, AABB* box);
 };
 
 class Bill : public Enemy

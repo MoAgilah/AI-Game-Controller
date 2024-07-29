@@ -45,28 +45,23 @@ private:
 	void DynamicObjectToTileCollisions(DynamicObject* obj);
 	void DynamicObjectToTileResolution(DynamicObject* obj, Tile* tile);
 
-	void DynamicObjectToObjectCollisions(DynamicObject* obj1, Object* obj2);
-	void DynamicObjectToObjectResolution(DynamicObject* obj1, Object* obj2);
+	void PlayerToObjectCollisions(Player* ply, Object* obj);
+	void ObjectToObjectCollisions(Object* obj1, Object* obj2);
 
-	void DynamicObjectToDynamicObjectCollisions(DynamicObject* obj1, DynamicObject* obj2);
-	void DynamicObjectToDynamicObjectResolution(DynamicObject* obj1, DynamicObject* obj2);
+	void PlayerToQBoxResolutions(Player* ply, QBox* box);
+	void PlayerToSBoxResolutions(Player* ply, SBox* box);
+
+	void PlayerToEnemyResolutions(Player* ply, Enemy* enmy);
+
+	void DynamicObjectToBoxResolutions(Direction dirOfTravel, DynamicObject* obj, AABB* box, bool resolveUpDir = false);
+
+	void DynamicObjectToDynamicObject(DynamicObject* obj1, DynamicObject* obj2);
 
 	void ResolveObjectToBoxTop(DynamicObject* obj, AABB* box);
 	void ResolveObjectToBoxBottom(DynamicObject* obj, AABB* box);
 	void ResolveObjectToBoxHorizontally(DynamicObject* obj, AABB* box);
 
-	void ColObjectToColObject(Object* colObj1, Object* colObj2);
-
-	void PlayerToEnemy(Player* ply, Enemy* enmy);
-	void PlayerToObject(Player* ply, Object* obj);
-	void EnemyToEnemy(Enemy* enmy1, Enemy* enmy2);
-
-	int GetDirTravelling(DynamicObject* obj);
-	void QBoxHit(Player* ply, QBox* obj);
-	void QBoxHit(Mushroom* ply, QBox* obj);
-	void SBoxHit(Player* ply, SBox* obj);
-
-	bool CircleToRect(sf::CircleShape circle, Player* spr);
+	Direction GetDirTravelling(DynamicObject* obj);
 
 	Grid m_grid;
 	std::vector<std::shared_ptr<Tile>> m_tiles;

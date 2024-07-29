@@ -46,14 +46,14 @@ namespace
 			});
 	}
 
-	std::array<TexID, 7> staticObject =
+	std::array<TexID, 7> collectableObject =
 	{
-		TexID::Coin, TexID::YCoin, TexID::ChkPnt, TexID::QBox, TexID::SBox
+		TexID::Coin, TexID::YCoin, TexID::ChkPnt, TexID::Shroom, TexID::Goal
 	};
 
-	bool IsStaticObject(TexID id)
+	bool IsCollectableObject(TexID id)
 	{
-		return std::find(staticObject.begin(), staticObject.end(), id) != staticObject.end();
+		return std::find(collectableObject.begin(), collectableObject.end(), id) != collectableObject.end();
 	}
 
 	std::array<TexID, 9> dynamicObject =
@@ -64,6 +64,21 @@ namespace
 	bool IsDynamicObject(TexID id)
 	{
 		return std::find(dynamicObject.begin(), dynamicObject.end(), id) != dynamicObject.end();
+	}
+
+	std::array<TexID, 5> enemyObject =
+	{
+		TexID::Koopa, TexID::Bill, TexID::Rex, TexID::PPlant, TexID::Chuck
+	};
+
+	bool IsEnemyObject(TexID id)
+	{
+		return std::find(enemyObject.begin(), enemyObject.end(), id) != enemyObject.end();
+	}
+
+	bool IsBoxObject(TexID id)
+	{
+		return id == TexID::QBox || id == TexID::SBox;
 	}
 }
 
@@ -134,10 +149,13 @@ void CollisionManager::ProcessCollisions(Object* gobj)
 		if (!collidable->GetActive())
 			continue;
 
-		if (gobj->GetAABB()->Intersects(collidable->GetAABB()))
+		if (IsPlayerObject(gobj->GetID()))
 		{
-			ColObjectToColObject(gobj, collidable.get());
-			break;
+			PlayerToObjectCollisions((Player*)gobj, collidable.get());
+		}
+		else
+		{
+			ObjectToObjectCollisions(gobj, collidable.get());
 		}
 	}
 }
@@ -191,7 +209,7 @@ void CollisionManager::DynamicObjectToTileCollisions(DynamicObject* obj)
 
 void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* tile)
 {
-	int dir = GetDirTravelling(obj);
+	Direction dir = GetDirTravelling(obj);
 
 	float objBottom = obj->GetAABB()->GetPosition().y + obj->GetOrigin().y;
 	float tileTop = tile->GetPosition().y - tile->GetOrigin().y;
@@ -255,20 +273,173 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 	obj->SetOnGround(false);
 }
 
-void CollisionManager::DynamicObjectToObjectCollisions(DynamicObject* obj1, Object* obj2)
+void CollisionManager::PlayerToObjectCollisions(Player* ply, Object* obj)
 {
+	if (IsBoxObject(obj->GetID()))
+	{
+		if (obj->GetAABB()->Intersects(ply->GetAABB()))
+		{
+			switch (obj->GetID())
+			{
+			case TexID::QBox:
+				PlayerToQBoxResolutions(ply, (QBox*)obj);
+				break;
+			case TexID::SBox:
+				PlayerToSBoxResolutions(ply, (SBox*)obj);
+				break;
+			}
+		}
+	}
+	else if (IsCollectableObject(obj->GetID()))
+	{
+		if (obj->GetAABB()->Intersects(ply->GetAABB()))
+			((Collectable*)obj)->Collect(ply);
+	}
+	else if (IsEnemyObject(obj->GetID()))
+	{
+		Enemy* enemy = (Enemy*)obj;
+		if (!enemy->GetIsAlive())
+			return;
+
+		bool shouldResolve = false;
+		if (TexID::Bill == obj->GetID())
+		{
+			shouldResolve = ((Bill*)obj)->GetBody().Intersects(ply->GetAABB());
+		}
+		else
+		{
+			shouldResolve = obj->GetAABB()->Intersects(ply->GetAABB());
+		}
+
+		if (shouldResolve)
+			PlayerToEnemyResolutions(ply, (Enemy*)obj);
+	}
 }
 
-void CollisionManager::DynamicObjectToObjectResolution(DynamicObject* obj1, Object* obj2)
+void CollisionManager::ObjectToObjectCollisions(Object* obj1, Object* obj2)
 {
+	if (IsPlayerObject(obj2->GetID()))
+	{
+		PlayerToObjectCollisions((Player*)obj2, obj1);
+	}
+	else if (IsBoxObject(obj2->GetID()))
+	{
+		if (obj2->GetAABB()->Intersects(obj1->GetAABB()))
+		{
+			DynamicObject* dynObj = (DynamicObject*)obj1;
+			DynamicObjectToBoxResolutions((Direction)GetDirTravelling(dynObj), dynObj, obj2->GetAABB());
+		}
+	}
+	else
+	{
+		DynamicObjectToDynamicObject((DynamicObject*)obj1, (DynamicObject*)obj2);
+	}
 }
 
-void CollisionManager::DynamicObjectToDynamicObjectCollisions(DynamicObject* obj1, DynamicObject* obj2)
+void CollisionManager::PlayerToQBoxResolutions(Player* ply, QBox* box)
 {
+	auto dir = (Direction)GetDirTravelling(ply);
+	if (dir == Direction::UDIR)
+	{
+		if (box->GetCanHit())//if not yet been hit
+		{
+			box->SetJustHit(true);
+			GameManager::GetGameMgr()->GetLevel()->AddObject(sf::Vector2f(box->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * sY) - (box->GetOrigin().y * sY) + 4.f));
+			//ply->UpdateFitness(100);
+		}
+	}
+
+	DynamicObjectToBoxResolutions(dir, ply, box->GetAABB());
 }
 
-void CollisionManager::DynamicObjectToDynamicObjectResolution(DynamicObject* obj1, DynamicObject* obj2)
+void CollisionManager::PlayerToSBoxResolutions(Player* ply, SBox* box)
 {
+	Direction dir = GetDirTravelling(ply);
+	if (dir == Direction::UDIR)
+	{
+		if (!box->GetJustHit())
+			box->SetJustHit(true);
+	}
+	else if (dir == Direction::UDIR)
+	{
+		if (ply->GetIsSuper() && ply->GetCantSpinJump())
+		{
+			box->SetJustSmashed(true);
+			return;
+		}
+	}
+
+	DynamicObjectToBoxResolutions(dir, ply, box->GetAABB(), false);
+}
+
+void CollisionManager::PlayerToEnemyResolutions(Player* ply, Enemy* enmy)
+{
+	float pBot = ply->GetAABB()->GetPosition().y + ply->GetAABB()->GetOrigin().y;
+	float eTop = enmy->GetAABB()->GetPosition().y - enmy->GetAABB()->GetOrigin().y;
+
+	if (ply->GetIsAlive())
+		return;
+
+	if (pBot > eTop || enmy->GetID() == TexID::PPlant)
+	{
+		if (!ply->GetIfInvulnerable())
+		{
+			if (ply->GetIsSuper())
+			{
+				ply->JustBeenHit(true);
+				ply->SetIsSuper(false);
+				//ptmp->UpdateFitness(-100);
+			}
+			else
+			{
+				ply->SetIsAlive(false);
+			}
+		}
+	}
+	else
+	{
+		//set hover time
+		ply->JusyHitEnemy(0.1f);
+		enmy->DecrementLife();
+		//ptmp->UpdateFitness(-100);
+	}
+}
+
+void CollisionManager::DynamicObjectToBoxResolutions(Direction dirOfTravel, DynamicObject* obj, AABB* box, bool resolveUpDir)
+{
+	switch (dirOfTravel)
+	{
+	case UDIR:
+		if (resolveUpDir)
+			ResolveObjectToBoxBottom(obj, box);
+		break;
+	case DDIR:
+		ResolveObjectToBoxTop(obj, box);
+		break;
+	case LDIR:
+	case RDIR:
+		ResolveObjectToBoxHorizontally(obj, box);
+		break;
+	}
+}
+
+void CollisionManager::DynamicObjectToDynamicObject(DynamicObject* obj1, DynamicObject* obj2)
+{
+	float tFirst, tLast = 0;
+	if (obj1->GetAABB()->IntersectsMoving(obj2->GetAABB(), obj1->GetVelocity(), obj2->GetVelocity(), tFirst, tLast))
+	{
+		obj1->SetPosition(
+		std::lerp(obj1->GetPrevPostion().x, obj1->GetPosition().y, tFirst),
+		std::lerp(obj1->GetPrevPostion().x, obj1->GetPosition().y, tFirst));
+		obj1->GetAABB()->Update(obj1->GetPosition());
+		obj1->SetDirection(!obj1->GetDirection());
+
+		obj2->SetPosition(
+			std::lerp(obj2->GetPrevPostion().x, obj2->GetPosition().y, tFirst),
+			std::lerp(obj2->GetPrevPostion().x, obj2->GetPosition().y, tFirst));
+		obj2->GetAABB()->Update(obj2->GetPosition());
+		obj2->SetDirection(!obj2->GetDirection());
+	}
 }
 
 void CollisionManager::ResolveObjectToBoxTop(DynamicObject* obj, AABB* box)
@@ -290,228 +461,11 @@ void CollisionManager::ResolveObjectToBoxHorizontally(DynamicObject* obj, AABB* 
 		obj->SetDirection(!obj->GetDirection());
 }
 
-void CollisionManager::PlayerToEnemy(Player * ply, Enemy * enmy)
-{
-	float pBot = ply->GetAABB()->GetPosition().y + ply->GetAABB()->GetOrigin().y;
-	float eTop = enmy->GetAABB()->GetPosition().y - enmy->GetAABB()->GetOrigin().y;
-
-	bool col = false;
-	if (enmy->GetID() == TexID::Bill)
-	{
-		Bill* bill = (Bill*)enmy;
-
-		//check for collision with inner sphere
-		if (CircleToRect(bill->GetBody().front, ply))
-		{
-			col = true;
-		}
-		//check for collision with back rect
-		else if (ply->GetAABB()->GetRect().getGlobalBounds().intersects(bill->GetBody().back.getGlobalBounds()))
-		{
-			col = true;
-		}
-	}
-	else
-	{
-		col = true;
-	}
-
-	if (col)
-	{
-		if (enmy->GetIsAlive())
-		{
-			//if player is not above enemy and enemy is piranha plant
-			if (pBot > eTop || enmy->GetID() == TexID::PPlant)
-			{
-				//if not vulnerable
-				if (!ply->GetIfInvulnerable())
-				{
-					if (ply->GetIsAlive())
-					{
-						if (ply->GetIsSuper())
-						{
-							//ptmp->UpdateFitness(-100);
-							ply->JustBeenHit(true);
-							ply->SetIsSuper(false);
-						}
-						else
-						{
-							ply->SetIsAlive(false);
-						}
-					}
-				}
-			}
-			else
-			{
-				if (ply->GetIsAlive())
-				{
-					//set hover time
-					ply->JusyHitEnemy(0.1f);
-					enmy->DecrementLife();
-				}
-			}
-		}
-	}
-}
-
-void CollisionManager::PlayerToObject(Player * ply, Object * obj)
-{
-	sf::Vector2f pos;
-	switch (obj->GetID())
-	{
-	case TexID::Shroom://super mushroom
-		ply->SetIsSuper(true);
-		obj->SetActive(false);
-		((Mushroom*)obj)->SetCollected();
-		//ply->UpdateFitness(200);
-		break;
-	case TexID::Coin:
-		((Coin*)obj)->SetCollected();
-		ply->IncreaseCoins(((Coin*)obj)->Collect());
-		//ply->UpdateFitness(10);
-		obj->SetActive(false);
-		break;
-	case TexID::YCoin://yoshi coin
-		((YCoin*)obj)->SetCollected();
-		ply->IncreaseCoins(((YCoin*)obj)->Collect());
-		//ply->UpdateFitness(100);
-		obj->SetActive(false);
-		break;
-	case TexID::QBox://question mark box
-		QBoxHit(ply, (QBox*)obj);
-		break;
-	case TexID::SBox://spin box
-		SBoxHit(ply, (SBox*)obj);
-		break;
-	case TexID::ChkPnt://check point
-		((CheckPoint*)obj)->SetCollected();
-		ply->SetSpawnLoc(obj->GetPosition());
-		//ply->UpdateFitness(200);
-		ply->SetIsSuper(true);
-		obj->SetActive(false);
-		break;
-	case TexID::Goal://end goal
-		((Goal*)obj)->SetCollected();
-		//ply->UpdateFitness(200);
-		ply->GoalHit();
-		break;
-	default:
-		std::cout << "Unknown type!" << std::endl;
-		break;
-	}
-}
-
-void CollisionManager::EnemyToEnemy(Enemy * enmy1, Enemy* enmy2)
-{
-	bool enmy2Dir = enmy1->GetDirection();
-	enmy1->SetDirection(enmy2->GetDirection());
-	enmy2->SetDirection(enmy2Dir);
-
-	switch (GetDirTravelling(enmy1))
-	{
-	case RDIR:
-		if (enmy1->GetID() == TexID::Rex)
-		{
-			if (enmy2->GetID() == TexID::Rex)//regular
-			{
-				//resolve collision
-				enmy1->SetPosition(sf::Vector2f((enmy2->GetPosition().x - enmy2->GetOrigin().x * sX) - (enmy1->GetOrigin().x * sX) + 8, enmy1->GetPosition().y));
-			}
-			else//squished
-			{
-				//resolve collision
-				enmy1->SetPosition(sf::Vector2f((enmy2->GetPosition().x - enmy2->GetOrigin().x * sX) - (enmy1->GetOrigin().x * sX) + 7.f, enmy1->GetPosition().y));
-			}
-		}
-		else
-		{
-			//resolve collision
-			enmy1->SetPosition(sf::Vector2f((enmy2->GetPosition().x - enmy2->GetOrigin().x * sX) - (enmy1->GetOrigin().x * sX) + 7.5f, enmy1->GetPosition().y));
-		}
-		break;
-	case LDIR:
-		if (enmy1->GetID() == TexID::Rex)
-		{
-			if (enmy2->GetID() == TexID::Rex)//regular
-			{
-				//resolve collision
-				enmy1->SetPosition(sf::Vector2f((enmy2->GetPosition().x - enmy2->GetOrigin().x * sX) - (enmy1->GetOrigin().x * sX) - 8.f, enmy1->GetPosition().y));
-			}
-			else//suqished
-			{
-				//resolve collision
-				enmy1->SetPosition(sf::Vector2f((enmy2->GetPosition().x + enmy2->GetOrigin().x * sX) + (enmy1->GetOrigin().x * sX) - 7.f, enmy1->GetPosition().y));
-			}
-		}
-		else
-		{
-			//resolve collision
-			enmy1->SetPosition(sf::Vector2f((enmy2->GetPosition().x + enmy2->GetOrigin().x * sX) + (enmy1->GetOrigin().x * sX) - 7.5f, enmy1->GetPosition().y));
-		}
-		break;
-	};
-}
-
-void CollisionManager::ColObjectToColObject(Object * colObj1, Object * colObj2)
-{
-	int col1Typ = (int)colObj1->GetID();
-	int col2Typ = (int)colObj2->GetID();
-
-	int isPlayer = -1;
-
-	//if either is a player assign id num
-	if (IsPlayerObject(colObj1->GetID()))
-		isPlayer = 1;
-	else if (IsPlayerObject(colObj2->GetID()))
-		isPlayer = 2;
-
-	if (isPlayer == 1)//if player is obj 1
-	{
-		if (col1Typ >= EnmyBgn && col1Typ <= EnmyEnd)
-		{
-			PlayerToEnemy((Player*)colObj1, (Enemy*)colObj2);
-		}
-		else if (col2Typ >= ColBgn && col2Typ <= ObjEnd)
-		{
-			PlayerToObject((Player*)colObj1, colObj2);
-		}
-	}
-	else if (isPlayer == 2)//if player is obj 2
-	{
-		if (col1Typ >= EnmyBgn && col1Typ <= EnmyEnd)
-		{
-			PlayerToEnemy((Player*)colObj2, (Enemy*)colObj1);
-		}
-		else if (col1Typ >= ColBgn && col1Typ <= ObjEnd)
-		{
-			PlayerToObject((Player*)colObj2, colObj1);
-		}
-	}
-	else // if neither are the player
-	{
-		//if both are enemies
-		if ((col1Typ >= EnmyBgn && col1Typ <= EnmyEnd) && (col2Typ >= EnmyBgn && col2Typ <= EnmyEnd))
-		{
-			if (colObj1->GetActive() && colObj2->GetActive())
-			{
-				EnemyToEnemy((Enemy*)colObj1, (Enemy*)colObj2);
-			}
-		}
-		else if ((col1Typ == (int)TexID::Shroom) && (col2Typ >= ObjBgn && col2Typ <= ObjEnd))
-		{
-			if (colObj1->GetActive() && colObj2->GetActive())
-			{
-				QBoxHit((Mushroom*)colObj1, (QBox*)colObj2);
-			}
-		}
-	}
-}
-
-int CollisionManager::GetDirTravelling(DynamicObject* obj)
+Direction CollisionManager::GetDirTravelling(DynamicObject* obj)
 {
 	//direction travelling
 	sf::Vector2f dirV = obj->GetPosition() - obj->GetPrevPostion();
-	int dir = DDIR;
+	Direction dir = DDIR;
 
 	//if movement in x
 	if (dirV.x != 0)
@@ -528,94 +482,5 @@ int CollisionManager::GetDirTravelling(DynamicObject* obj)
 	}
 
 	return dir;
-}
-
-void CollisionManager::QBoxHit(Player * ply, QBox* box)
-{
-	switch (GetDirTravelling(ply))
-	{
-	case UDIR:
-		if (box->GetCanHit())//if not yet been hit
-		{
-			//ply->UpdateFitness(100);
-			//add to the level
-			GameManager::GetGameMgr()->GetLevel()->AddObject(sf::Vector2f(box->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * sY) - (box->GetOrigin().y * sY) + 4.f));
-
-			box->SetJustHit(true);
-		}
-		//resove collision
-		ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (box->GetPosition().y + box->GetOrigin().y * sY) + (ply->GetOrigin().y * sY) + 4.f));
-		ply->ForceFall();//make mario fall
-		break;
-	case DDIR:
-		//set to top of qbox
-		ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * sY) - (ply->GetOrigin().y * sY) + 4.f));
-		ply->SetOnGround(true);
-		break;
-	case RDIR:
-		//set to right of qbox
-		ply->SetPosition(sf::Vector2f((box->GetPosition().x - box->GetOrigin().x * sX) - (ply->GetOrigin().x * sX) + 7.5f, ply->GetPosition().y));
-		break;
-	case LDIR:
-		//set to left of qbox
-		ply->SetPosition(sf::Vector2f((box->GetPosition().x + box->GetOrigin().x * sX) + (ply->GetOrigin().x * sX) - 7.5f, ply->GetPosition().y));
-		break;
-	}
-}
-
-void CollisionManager::QBoxHit(Mushroom* shm, QBox* box)
-{
-	switch (GetDirTravelling(shm))
-	{
-	case DDIR:
-		//set to top of qbox
-		shm->SetPosition(sf::Vector2f(shm->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * sY) - (shm->GetOrigin().y * sY) + 4.f));
-		shm->SetOnGround(true);
-		break;
-	}
-}
-
-void CollisionManager::SBoxHit(Player * ply, SBox* box)
-{
-	if (box->GetCanHit())//if not yet been hit
-	{
-		switch (GetDirTravelling(ply))
-		{
-		case UDIR://if going up
-			if (!box->GetJustHit())
-				box->SetJustHit(true);
-			break;
-		case DDIR://if falling
-			//land on object
-			if (ply->GetIsSuper() && ply->GetCantSpinJump())
-			{
-				box->SetJustSmashed(true);
-			}
-			else
-			{
-				ply->SetPosition(sf::Vector2f(ply->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * sY) - (ply->GetOrigin().y * sY) + 4.f));
-				ply->SetOnGround(true);
-			}
-			break;
-		}
-	}
-}
-
-bool CollisionManager::CircleToRect(sf::CircleShape circle, Player* ply)
-{
-	//convert object into sphere
-	sf::Vector2f Obj1Size = sf::Vector2f(ply->GetAABB()->GetOrigin().x * 2, ply->GetAABB()->GetOrigin().y * 2);
-
-	Obj1Size.x *= sX;
-	Obj1Size.y *= sY;
-
-	float Radius1 = (Obj1Size.x + Obj1Size.y) * 0.25f;
-
-	float Radius2 = circle.getRadius();
-
-	//collision check
-	sf::Vector2f Distance = ply->GetAABB()->GetPosition() -  circle.getPosition();
-
-	return (Distance.x * Distance.x + Distance.y * Distance.y <= (Radius1 + Radius2) * (Radius1 + Radius2));
 }
 

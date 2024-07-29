@@ -1,5 +1,6 @@
 #include "Collectables.h"
 #include "../Game/GameManager.h"
+#include "../GameObjects/Player.h"
 #include "../Collisions/CollisionManager.h"
 
 int YCoin::s_collected = 1;
@@ -35,10 +36,11 @@ void Coin::Update(float deltaTime)
 	GetAnimSpr()->Update(deltaTime);
 }
 
-int Coin::Collect()
+void Coin::Collect(Player* player)
 {
-	SetActive(false);
-	return 1;
+	SetCollected();
+	player->IncreaseCoins(1);
+	//player->UpdateFitness(10);
 }
 
 YCoin::YCoin(const sf::Vector2f& initPos)
@@ -58,13 +60,13 @@ void YCoin::Reset()
 	s_collected = 1;
 }
 
-int YCoin::Collect()
+void YCoin::Collect(Player* player)
 {
 	if (s_collected < 8)
 		s_collected *= 2;
 
-	SetActive(false);
-	return s_collected * 1000;
+	SetCollected();
+	player->IncreaseCoins(s_collected * 1000);
 }
 
 CheckPoint::CheckPoint(const sf::Vector2f& initPos)
@@ -75,6 +77,13 @@ CheckPoint::CheckPoint(const sf::Vector2f& initPos)
 void CheckPoint::Update(float deltaTime)
 {
 	// nothing to update
+}
+
+void CheckPoint::Collect(Player* player)
+{
+	SetCollected();
+	player->SetIsSuper(true);
+	player->SetSpawnLoc(GetPosition());
 }
 
 DynamicCollectable::DynamicCollectable(TexID sprID, const sf::Vector2f& boxSize, const sf::Vector2f& initPos)
@@ -122,6 +131,12 @@ void Mushroom::Update(float deltaTime)
 	}
 }
 
+void Mushroom::Collect(Player* player)
+{
+	SetCollected();
+	player->SetIsSuper(true);
+}
+
 Goal::Goal(const sf::Vector2f& initPos)
 	: DynamicCollectable(TexID::Goal, sf::Vector2f(25, 8), initPos)
 {
@@ -154,4 +169,10 @@ void Goal::Update(float deltaTime)
 		SetAirTime(c_maxTravelTime);
 		SetOnGround(false);
 	}
+}
+
+void Goal::Collect(Player* player)
+{
+	SetCollected();
+	player->GoalHit();
 }
