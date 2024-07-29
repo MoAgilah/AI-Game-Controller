@@ -63,7 +63,7 @@ namespace
 
 	std::array<TexID, 9> dynamicObject =
 	{
-		TexID::Mario, TexID::Super, TexID::Koopa, TexID::Bill, TexID::Rex, TexID::PPlant, TexID::Chuck, TexID::Shroom, TexID::Goal
+		TexID::Mario, TexID::Super, TexID::Koopa, TexID::Bill, TexID::Rex, TexID::PPlant, TexID::Chuck, TexID::Shroom
 	};
 
 	bool IsDynamicObject(TexID id)

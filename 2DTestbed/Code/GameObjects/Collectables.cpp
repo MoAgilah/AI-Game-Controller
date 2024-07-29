@@ -142,7 +142,7 @@ Goal::Goal(const sf::Vector2f& initPos)
 {
 	SetInitialDirection(true);
 	SetDirection(GetInitialDirection());
-	SetAirTime(c_maxTravelTime);
+	//SetAirTime(c_maxTravelTime);
 	SetOnGround(false);
 }
 
@@ -150,24 +150,27 @@ void Goal::Update(float deltaTime)
 {
 	if (GetOnGround())
 	{
-		IncAirTime(-deltaTime);
-		SetYVelocity(-2.5);
+		SetYVelocity(2.5);
 	}
 	else
 	{
-		SetYVelocity(2.5);
+		SetYVelocity(-2.5);
 	}
 
 	if (GetYVelocity() != 0)
 	{
 		Move(0, GetYVelocity() * FPS * deltaTime);
-		GameManager::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
 	}
 
-	if (GetAirTime() < 0)
+	sf::Vector2f currentPos = GetPosition();
+	if (currentPos.y > 470)
 	{
-		SetAirTime(c_maxTravelTime);
 		SetOnGround(false);
+	}
+
+	if (currentPos.y < 150)
+	{
+		SetOnGround(true);
 	}
 }
 
