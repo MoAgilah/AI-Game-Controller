@@ -3,11 +3,14 @@
 
 class Player;
 
-class Collectable
+class StaticCollectable : public Object
 {
 public:
-	Collectable() = default;
-	~Collectable() = default;
+	StaticCollectable(TexID sprID, const sf::Vector2f& boxSize, const sf::Vector2f& initPos);
+	StaticCollectable(AnimatedSprite* sprite, const sf::Vector2f& boxSize, const sf::Vector2f& initPos);
+	~StaticCollectable() override = default;
+
+	bool GetActive() const final { return !GetCollected() && Object::GetActive(); }
 
 	void SetCollected() { m_collected = true; }
 	bool GetCollected() const { return m_collected; }
@@ -17,16 +20,6 @@ public:
 private:
 
 	bool m_collected = false;
-};
-
-class StaticCollectable : public Object, public Collectable
-{
-public:
-	StaticCollectable(TexID sprID, const sf::Vector2f& boxSize, const sf::Vector2f& initPos);
-	StaticCollectable(AnimatedSprite* sprite, const sf::Vector2f& boxSize, const sf::Vector2f& initPos);
-	~StaticCollectable() override = default;
-
-	bool GetActive() const final { return GetCollected() && Object::GetActive(); }
 };
 
 class Coin : public StaticCollectable
@@ -69,13 +62,22 @@ public:
 	void Collect(Player* player) final;
 };
 
-class DynamicCollectable : public DynamicObject, public Collectable
+class DynamicCollectable : public DynamicObject
 {
 public:
 	DynamicCollectable(TexID sprID, const sf::Vector2f& boxSize, const sf::Vector2f& initPos);
 	~DynamicCollectable() override = default;
 
-	bool GetActive() const final { return GetCollected() && Object::GetActive(); }
+	bool GetActive() const final { return !GetCollected() && Object::GetActive(); }
+
+	void SetCollected() { m_collected = true; }
+	bool GetCollected() const { return m_collected; }
+
+	virtual void Collect(Player* player) = 0;
+
+private:
+
+	bool m_collected = false;
 };
 
 class Mushroom : public DynamicCollectable

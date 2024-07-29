@@ -25,6 +25,7 @@ public:
 	void SetPosition(const sf::Vector2f& pos) { m_rect.setPosition(pos); }
 	const sf::Vector2f& GetPosition() const { return m_rect.getPosition(); }
 
+	void SetOrigin(const sf::Vector2f& origin) { m_rect.setOrigin(origin); }
 	const sf::Vector2f& GetOrigin() const { return m_rect.getOrigin(); }
 	const Point& GetExtents() const { return m_extents; }
 	const Point& GetOverlap() const { return m_overlap; }

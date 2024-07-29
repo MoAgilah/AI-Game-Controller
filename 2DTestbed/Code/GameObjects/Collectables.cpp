@@ -116,6 +116,12 @@ void Mushroom::Update(float deltaTime)
 		IncrementYVelocity(c_gravity);
 	}
 
+	if (GetYVelocity() != 0)
+	{
+		Move(0, GetYVelocity() * FPS * deltaTime);
+		GameManager::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
+	}
+
 	if (GetXVelocity() != 0)
 	{
 		Move(GetXVelocity() * FPS * deltaTime, 0);
@@ -123,12 +129,6 @@ void Mushroom::Update(float deltaTime)
 	}
 
 	CheckForHorizontalBounds(deltaTime);
-
-	if (GetYVelocity() != 0)
-	{
-		Move(0, GetYVelocity() * FPS * deltaTime);
-		GameManager::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
-	}
 }
 
 void Mushroom::Collect(Player* player)

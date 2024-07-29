@@ -46,7 +46,7 @@ namespace
 			});
 	}
 
-	std::array<TexID, 7> collectableObject =
+	std::array<TexID, 5> collectableObject =
 	{
 		TexID::Coin, TexID::YCoin, TexID::ChkPnt, TexID::Shroom, TexID::Goal
 	};
@@ -54,6 +54,11 @@ namespace
 	bool IsCollectableObject(TexID id)
 	{
 		return std::find(collectableObject.begin(), collectableObject.end(), id) != collectableObject.end();
+	}
+
+	bool IsDynamicCollectable(TexID id)
+	{
+		return id == TexID::Shroom || id == TexID::Goal;
 	}
 
 	std::array<TexID, 9> dynamicObject =
@@ -293,7 +298,16 @@ void CollisionManager::PlayerToObjectCollisions(Player* ply, Object* obj)
 	else if (IsCollectableObject(obj->GetID()))
 	{
 		if (obj->GetAABB()->Intersects(ply->GetAABB()))
-			((Collectable*)obj)->Collect(ply);
+		{
+			if (IsDynamicCollectable(obj->GetID()))
+			{
+				((DynamicCollectable*)obj)->Collect(ply);
+			}
+			else
+			{
+				((StaticCollectable*)obj)->Collect(ply);
+			}
+		}
 	}
 	else if (IsEnemyObject(obj->GetID()))
 	{
@@ -354,22 +368,25 @@ void CollisionManager::PlayerToQBoxResolutions(Player* ply, QBox* box)
 
 void CollisionManager::PlayerToSBoxResolutions(Player* ply, SBox* box)
 {
-	Direction dir = GetDirTravelling(ply);
-	if (dir == Direction::UDIR)
+	if (box->GetCanHit())//if not yet been hit
 	{
-		if (!box->GetJustHit())
-			box->SetJustHit(true);
-	}
-	else if (dir == Direction::UDIR)
-	{
-		if (ply->GetIsSuper() && ply->GetCantSpinJump())
+		Direction dir = GetDirTravelling(ply);
+		if (dir == Direction::UDIR)
 		{
-			box->SetJustSmashed(true);
-			return;
+			if (!box->GetJustHit())
+				box->SetJustHit(true);
 		}
-	}
+		else if (dir == Direction::DDIR)
+		{
+			if (ply->GetIsSuper() && ply->GetCantSpinJump())
+			{
+				box->SetJustSmashed(true);
+				return;
+			}
+		}
 
-	DynamicObjectToBoxResolutions(dir, ply, box->GetAABB(), false);
+		DynamicObjectToBoxResolutions(dir, ply, box->GetAABB(), false);
+	}
 }
 
 void CollisionManager::PlayerToEnemyResolutions(Player* ply, Enemy* enmy)
@@ -451,7 +468,8 @@ void CollisionManager::ResolveObjectToBoxTop(DynamicObject* obj, AABB* box)
 void CollisionManager::ResolveObjectToBoxBottom(DynamicObject* obj, AABB* box)
 {
 	obj->Move(0, box->GetOverlap().y);
-	obj->SetOnGround(false);
+	if (IsPlayerObject(obj->GetID()))
+		((Player*)obj)->SetAirbourne(false);
 }
 
 void CollisionManager::ResolveObjectToBoxHorizontally(DynamicObject* obj, AABB* box)

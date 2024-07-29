@@ -28,7 +28,7 @@ public:
 	void SetIsSuper(bool super);
 
 	bool GetGoalHit() const { return m_goalHit; }
-	void GoalHit() { m_goalHit = true; }
+	void GoalHit();
 
 	bool GetIsAlive() const { return m_alive; }
 	void SetIsAlive(bool val) { m_alive = val; }

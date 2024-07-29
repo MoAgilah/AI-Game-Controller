@@ -178,9 +178,10 @@ void Player::Reset()
 		Move(0, m_heightDiff);
 	}
 
-	DynamicObject::Reset();
-
-	m_spawnLoc = GetInitialPosition();
+	SetActive(false);
+	SetDirection(GetInitialDirection());
+	SetPosition(m_spawnLoc);
+	GetAABB()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
 
 	SetVelocity(sf::Vector2f(0.0f, 0.0f));
 	SetOnGround(false);
@@ -231,6 +232,12 @@ void Player::SetIsSuper(bool super)
 			Move(0, m_heightDiff);
 		}
 	}
+}
+
+void Player::GoalHit()
+{
+	m_goalHit = true;
+	SetSpawnLoc();
 }
 
 void Player::SetKeyState(int index, bool val)
