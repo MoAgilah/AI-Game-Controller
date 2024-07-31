@@ -11,6 +11,8 @@ Tile::Tile()
 Tile::Tile(int gX, int gY, const sf::Font& font)
 	: m_hasFont(true)
 {
+	SetID(gX, gY);
+
 	m_aabb.SetOutlineColour(sf::Color::Black);
 
 	m_text.setFont(font);

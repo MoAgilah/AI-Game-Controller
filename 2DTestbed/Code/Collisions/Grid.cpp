@@ -77,8 +77,14 @@ Tile* Grid::GetTile(int x, int y)
 	//create id
 	std::string id = std::format("{},{}", x, y);
 
+	auto it = std::find_if(m_grid.begin(), m_grid.end(), [id](auto n) { return n->GetID() == id; });
+	if (it != m_grid.end())
+	{
+		return it->get();
+	}
+
 	//extract tile if tile exists
-	return (*std::find_if(m_grid.begin(), m_grid.end(), [id](auto n) { return n->GetID() == id; })).get();
+	return nullptr;
 }
 
 void Grid::SetTileTypes()

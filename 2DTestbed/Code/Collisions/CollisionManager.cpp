@@ -193,7 +193,10 @@ void CollisionManager::DynamicObjectToTileCollisions(DynamicObject* obj)
 			continue;
 
 		if (tile->GetAABB()->Intersects(obj->GetAABB()))
+		{
+			tile->GetAABB()->SetHit(true);
 			collidedWith.push_back(tile);
+		}
 	}
 
 	if (collided = !collidedWith.empty())
