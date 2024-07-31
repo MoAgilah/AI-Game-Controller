@@ -17,13 +17,6 @@ Camera::Camera()
 	m_viewBox.Reset(sf::Vector2f(253,237));
 	m_viewBox.Update(m_camera.getCenter());
 	m_viewBox.SetFillColour(sf::Color(255, 0, 0, 128));
-
-	//initialise screen bounds
-	m_curScrBounds.left = m_camera.getCenter().x - scrX * 0.5f;
-	m_curScrBounds.width = scrX;
-
-	m_curScrBounds.top = m_camera.getCenter().y - scrY * 0.5f;
-	m_curScrBounds.height = scrY;
 }
 
 #include<format>
@@ -38,88 +31,12 @@ void Camera::Update()
 	//reset the m_camera position
 	m_camera.reset(sf::FloatRect(posX, 0, scrX, scrY));
 	m_viewBox.Update(m_camera.getCenter());
-
-	m_curScrBounds.left = m_camera.getCenter().x - scrX * 0.5f;
-	m_curScrBounds.width = scrX;
-
-	m_curScrBounds.top = m_camera.getCenter().y - scrY * 0.5f;
-	m_curScrBounds.height = scrY;
-}
-
-bool Camera::OnScreen(const Player* ply) const
-{
-	float screenBot = m_curScrBounds.top + m_curScrBounds.height;
-	float screenTop = m_curScrBounds.top;
-
-	float pos = ply->GetPosition().y;
-	float posLeft = ply->GetPosition().y + ply->GetOrigin().y * sY;
-	float posRight = ply->GetPosition().y - ply->GetOrigin().y * sY;
-
-	//if center is on screen
-	if (pos < screenBot && pos > screenTop)
-	{
-		return true;
-	}
-	else if (pos > screenBot)
-	{
-		//if center is not on screen check left hand side
-		if (posLeft < screenBot)
-			return true;
-	}
-	else if (pos < screenTop)
-	{
-		//if center is not on screen check right hand side
-		if (posRight > screenTop)
-			return true;
-	}
-
-	return false;
-}
-
-bool Camera::IsInView(const sf::Vector2f& position, const sf::Vector2f& origin) const
-{
-	float screenLeft = m_curScrBounds.left;
-	float screenRight = m_curScrBounds.left + m_curScrBounds.width;
-
-	float pos = position.x;
-	float posLeft = pos + origin.x * sX;
-	float posRight = pos - origin.x * sX;
-
-	//if center is on screen
-	if (pos > screenLeft && pos < screenRight)
-	{
-		return true;
-	}
-	else if (pos < screenLeft)
-	{
-		//if center is not on screen check left hand side
-		if (posLeft > screenLeft)
-			return true;
-	}
-	else if (pos > screenRight)
-	{
-		//if center is not on screen check right hand side
-		if (posRight < screenRight)
-			return true;
-	}
-
-	return false;
-}
-
-bool Camera::IsInView(const sf::Sprite* spr) const
-{
-	return IsInView(spr->getPosition(), spr->getOrigin());
-}
-
-bool Camera::IsinView(const sf::RectangleShape& rect) const
-{
-	return IsInView(rect.getPosition(), rect.getOrigin());
 }
 
 void Camera::Reset(sf::RenderWindow& window)
 {
-	Update();
 	window.setView(m_camera);
+	Update();
 }
 
 bool Camera::IsInView(AABB* box)

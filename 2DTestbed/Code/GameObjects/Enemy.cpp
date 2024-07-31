@@ -40,7 +40,7 @@ void Enemy::Update(float deltaTime)
 			m_tillReset -= deltaTime;
 			if (m_tillReset <= 0)
 			{
-				if (!GameManager::GetGameMgr()->GetCamera()->IsInView(GetInitialPosition(), GetOrigin()))
+				if (!GameManager::GetGameMgr()->GetCamera()->IsInView(GetAABB()))
 				{
 					Reset();
 				}

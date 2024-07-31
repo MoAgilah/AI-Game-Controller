@@ -48,10 +48,10 @@ void GameManager::Render(sf::RenderWindow & window)
 
 void GameManager::CheckInView()
 {
-	m_player->SetActive(m_camera->IsInView(m_player->GetAnimSpr()->GetSprite()));
+	m_player->SetActive(m_camera->IsInView(m_player->GetAABB()));
 
 	for (auto& tile : m_collisionManager->GetGrid())
-		tile->SetActive(m_camera->IsinView(tile->GetRect()));
+		tile->SetActive(m_camera->IsInView(tile->GetAABB()));
 
 	m_world->CheckIsInView();
 }

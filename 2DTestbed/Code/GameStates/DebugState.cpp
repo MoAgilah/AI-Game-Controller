@@ -42,8 +42,8 @@ void DebugState::Update(float deltaTime)
 	if (Automated)
 		CtrlMgr::GetCtrlMgr()->GetController()->Update();
 
-	m_gameMgr->GetLevel()->Update(deltaTime);
 	m_gameMgr->GetPlayer()->Update(deltaTime);
+	m_gameMgr->GetLevel()->Update(deltaTime);
 }
 
 void DebugState::Render(sf::RenderWindow& window)
@@ -58,5 +58,5 @@ void DebugState::Render(sf::RenderWindow& window)
 
 	GameManager::GetGameMgr()->GetCollisionMgr()->Render(window);
 
-	m_gameMgr->GetCamera()->RenderViewBox(window);
+	//m_gameMgr->GetCamera()->RenderViewBox(window);
 }

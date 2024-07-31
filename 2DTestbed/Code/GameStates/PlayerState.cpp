@@ -207,7 +207,7 @@ void DieingState::Update(float deltaTime)
 	else
 	{
 		player->Move(sf::Vector2f(0, -player->GetYVelocity() * FPS * deltaTime));
-		if (!GameManager::GetGameMgr()->GetCamera()->OnScreen(player))
+		if (!GameManager::GetGameMgr()->GetCamera()->IsInView(player->GetAABB()))
 		{
 			if (!Automated)
 				player->Reset();

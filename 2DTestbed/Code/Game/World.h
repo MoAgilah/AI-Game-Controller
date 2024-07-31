@@ -8,7 +8,7 @@
 #include "../GameObjects/Object.h"
 
 enum class Texts { Name, Time, Max };
-enum class Sprites { BackGround, Pipe1, Pipe2, Pipe3, Name, Time, Max};
+enum class Sprites { Pipe1, Pipe2, Pipe3, Name, Time, Max};
 
 class Camera;
 
@@ -40,6 +40,8 @@ private:
 
 	sf::Font m_font;
 	std::array<sf::Text, (int)Texts::Max> m_texts;
+	AABB m_foregroundBox;
+	Sprite m_backgroundSpr;
 	std::array<Sprite, (int)Sprites::Max> m_sprites;
 	std::vector<std::shared_ptr<Enemy>> m_enemies;
 	std::vector<std::shared_ptr<Object>> m_objects;

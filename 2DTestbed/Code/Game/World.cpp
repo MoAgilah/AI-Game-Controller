@@ -17,12 +17,14 @@
 
 World::World()
 {
-	m_sprites[(int)Sprites::BackGround].SetTexture(TexID::Background);
-	m_sprites[(int)Sprites::BackGround].SetScale(sf::Vector2f(sX, sY));
-	m_sprites[(int)Sprites::BackGround].SetOrigin(sf::Vector2f(0, 0));
-	m_sprites[(int)Sprites::BackGround].SetPosition(sf::Vector2f(0, -480));
+	m_backgroundSpr.SetTexture(TexID::Background);
+	m_backgroundSpr.SetScale(sf::Vector2f(sX, sY));
+	m_backgroundSpr.SetOrigin(sf::Vector2f(0, 0));
+	m_backgroundSpr.SetPosition(sf::Vector2f(0, -480));
 
 	AddGUI();
+
+	m_foregroundBox.Reset(sf::Vector2f(32, 47));
 }
 
 
@@ -49,7 +51,7 @@ void World::Update(float deltaTime)
 
 void World::Render(sf::RenderWindow& window)
 {
-	m_sprites[(int)Sprites::BackGround].Render(window);
+	m_backgroundSpr.Render(window);
 
 	for (const auto& enemy : m_enemies)
 	{
@@ -70,7 +72,9 @@ void World::Render(sf::RenderWindow& window)
 	auto camera = GameManager::GetGameMgr()->GetCamera();
 	for (auto i = (int)Sprites::Pipe1; i <= (int)Sprites::Pipe3; i++)
 	{
-		if (!camera->IsInView(m_sprites[i].GetSprite()))
+		m_foregroundBox.Update(m_sprites[i].GetPosition());
+
+		if (!camera->IsInView(&m_foregroundBox))
 			continue;
 
 		m_sprites[i].Render(window);
@@ -281,10 +285,9 @@ void World::AddGUI()
 
 void World::UpdateGUI()
 {
-	auto curScrBounds = GameManager::GetGameMgr()->GetCamera()->GetCurrentScreenBounds();
 	auto view = GameManager::GetGameMgr()->GetCamera()->GetView();
 
-	m_sprites[(int)Sprites::Name].SetPosition(sf::Vector2f(curScrBounds.left + 30, 20));
+	m_sprites[(int)Sprites::Name].SetPosition(sf::Vector2f((view.getCenter().x - scrX * 0.5f) + 30, 20));
 
 	m_texts[(int)Texts::Name].setPosition(m_sprites[(int)Sprites::Name].GetPosition() + sf::Vector2f((float)m_sprites[(int)Sprites::Name].GetTextureSize().x * 0.5f + 20, -10));
 
