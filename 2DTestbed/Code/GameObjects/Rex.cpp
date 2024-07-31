@@ -35,7 +35,7 @@ void Rex::DecrementLife()
 	{
 		GetAnimSpr()->ChangeAnim(RexAnims::TRANSITION);
 		GetAABB()->Reset(sf::Vector2f(14, 16));
-		GetAABB()->Move((GetDirection() ? -1 : 1) * 3, m_heightDiff);
+		GetAABB()->Move((GetDirection() ? -1.f : 1.f) * 3.f, m_heightDiff);
 		m_transitioning = true;
 		m_squished = true;
 	}
@@ -59,7 +59,7 @@ void Rex::Animate(float deltaTime)
 
 	SetPrevPosition(GetPosition());
 
-	SetXVelocity((GetDirection() ? 1 : -1) * 2);
+	SetXVelocity((GetDirection() ? 1.f : -1.f) * 2.f);
 
 	if (GetOnGround())
 	{

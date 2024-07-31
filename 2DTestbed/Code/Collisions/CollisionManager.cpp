@@ -89,12 +89,11 @@ namespace
 
 CollisionManager::CollisionManager()
 {
-	for (auto& gridTile : m_grid.GetGrid())
+	for (auto& tile : m_grid.GetGrid())
 	{
-		if (gridTile->GetType() == EMPTY)
+		if (tile->GetType() == EMPTY)
 			continue;
-		std::shared_ptr<Tile> tile;
-		tile.reset(gridTile);
+
 		m_tiles.push_back(tile);
 	}
 }
@@ -170,7 +169,7 @@ Tile CollisionManager::GetTile(int x, int y)
 	return *m_grid.GetTile(x, y);
 }
 
-std::vector<Tile*> CollisionManager::GetGrid()
+std::vector<std::shared_ptr<Tile>> CollisionManager::GetGrid()
 {
 	return m_grid.GetGrid();
 }

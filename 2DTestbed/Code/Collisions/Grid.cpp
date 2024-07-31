@@ -12,34 +12,17 @@ Grid::Grid()
 {
 	font.loadFromFile("Resources/Fonts/arial.ttf");
 
-	Tile tile(font);
 	//create grid for entire level
 	for (int y = 0; y < 15; y++)
 	{
 		for (int x = 0; x < 313; x++)
 		{
-			m_grid.push_back(new Tile(font));
-			m_grid.back()->SetID(x, y);
+			m_grid.push_back(std::make_shared<Tile>(x, y, font));
 		}
 	}
 
 	SetTilePosition();
 	SetTileTypes();
-}
-
-Grid::~Grid()
-{
-	if (m_grid.size() > 0)
-	{
-		for (size_t i = 0; i < m_grid.size(); i++)
-		{
-			delete m_grid[i];
-			m_grid[i] = nullptr;
-		}
-
-		m_grid.clear();
-	}
-
 }
 
 void Grid::SetTilePosition()
@@ -76,13 +59,13 @@ void Grid::SetTilePosition()
 
 void Grid::Render(sf::RenderWindow & window)
 {
-	for (int i = 0; i < m_grid.size(); i++)
+	for (auto& tile : m_grid)
 	{
-		if (m_grid[i]->GetActive())
+		if (tile->GetActive())
 		{
 #if _DEBUG
 	#ifdef DRender
-				m_grid[i]->Render(window);
+				tile->Render(window);
 	#endif //DRender
 #endif
 		}
@@ -95,7 +78,7 @@ Tile* Grid::GetTile(int x, int y)
 	std::string id = std::format("{},{}", x, y);
 
 	//extract tile if tile exists
-	return *std::find_if(m_grid.begin(), m_grid.end(), [id](Tile* n) { return n->GetID() == id;});
+	return (*std::find_if(m_grid.begin(), m_grid.end(), [id](auto n) { return n->GetID() == id; })).get();
 }
 
 void Grid::SetTileTypes()
@@ -117,10 +100,3 @@ void Grid::SetTileTypes()
 		m_grid[i]->SetType(types[i]);
 	}
 }
-
-std::vector<Tile*> Grid::GetGrid()
-{
-	return m_grid;
-}
-
-

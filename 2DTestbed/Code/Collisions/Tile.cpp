@@ -8,7 +8,7 @@ Tile::Tile()
 	m_aabb.SetOutlineColour(sf::Color::Black);
 }
 
-Tile::Tile(const sf::Font& font)
+Tile::Tile(int gX, int gY, const sf::Font& font)
 	: m_hasFont(true)
 {
 	m_aabb.SetOutlineColour(sf::Color::Black);

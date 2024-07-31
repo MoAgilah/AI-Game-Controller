@@ -80,7 +80,7 @@ void ANNView::Update()
 
 	//extract m_visible tiles
 	int num(0),cnt(0);
-	std::vector<Tile*> grid = GameManager::GetGameMgr()->GetCollisionMgr()->GetGrid();
+	std::vector<std::shared_ptr<Tile>> grid = GameManager::GetGameMgr()->GetCollisionMgr()->GetGrid();
 	for (int i = 0; i < grid.size(); i++)
 	{
 		if (cnt == 240) break;
@@ -91,7 +91,7 @@ void ANNView::Update()
 
 			if (grid[i]->GetColNum() <= num + 15)
 			{
-				m_vecView[cnt] = grid[i];
+				m_vecView[cnt] = grid[i].get();
 				cnt++;
 			}
 		}

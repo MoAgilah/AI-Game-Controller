@@ -14,7 +14,7 @@ class Tile
 {
 public:
 	Tile();
-	explicit Tile(const sf::Font& font);
+	Tile(int gX, int gY, const sf::Font& font);
 	~Tile() = default;
 
 	void SetID(int gX, int gY);

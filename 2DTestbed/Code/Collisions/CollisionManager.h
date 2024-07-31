@@ -37,7 +37,7 @@ public:
 	Object* GetLastAdded();
 
 	Tile GetTile(int x, int y);
-	std::vector<Tile*> GetGrid();
+	std::vector<std::shared_ptr<Tile>> GetGrid();
 	std::vector<std::shared_ptr<Object>> GetCollidables();
 
 private:

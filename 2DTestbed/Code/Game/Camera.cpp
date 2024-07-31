@@ -14,9 +14,9 @@ Camera::Camera()
 	m_camera.setViewport(sf::FloatRect(0, 0, 1.0f, 1.0f));
 	m_camera.setCenter(scrX * 0.5f, scrY * 0.5f);
 
-	m_viewBox.Reset(m_camera.getSize());
+	m_viewBox.Reset(sf::Vector2f(253,237));
 	m_viewBox.Update(m_camera.getCenter());
-	m_viewBox.SetFillColour(sf::Color(255.f, 0, 0, 128.f));
+	m_viewBox.SetFillColour(sf::Color(255, 0, 0, 128));
 
 	//initialise screen bounds
 	m_curScrBounds.left = m_camera.getCenter().x - scrX * 0.5f;
