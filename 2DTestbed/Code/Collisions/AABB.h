@@ -17,7 +17,6 @@ public:
 	bool Intersects(AABB* box);
 	bool IntersectsMoving(AABB* box, const Point& va, const Point& vb, float& tfirst, float& tlast);
 	bool IntersectsRay(const Point& point, const Point& direction, float& tmin, Point& intersection);
-	bool IntersectsSegment(const Point& point0, const Point& point1);
 
 	AABB* GetBox() { return this; }
 	const sf::RectangleShape& GetRect() { return m_rect; }
@@ -29,7 +28,6 @@ public:
 	const sf::Vector2f& GetOrigin() const { return m_rect.getOrigin(); }
 	const Point& GetExtents() const { return m_extents; }
 	const Point& GetOverlap() const { return m_overlap; }
-	const Point& GetPreviousOverlap() const { return m_previousOverlap; }
 
 	void SetFillColour(const sf::Color& col) { m_rect.setFillColor(col); }
 	void SetOutlineColour(const sf::Color& col) { m_rect.setOutlineColor(col); }
@@ -39,7 +37,9 @@ public:
 
 	bool GetHit() const { return m_hit; }
 	void SetHit(bool hit) { m_hit = hit; }
+
 private:
+
 	bool m_hit = false;
 	int m_boxNumber;
 	static int s_count;
@@ -48,6 +48,5 @@ private:
 	Point m_center;
 	Point m_extents;
 	Point m_overlap;
-	Point m_previousOverlap;
 	sf::RectangleShape m_rect;
 };

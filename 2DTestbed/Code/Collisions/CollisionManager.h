@@ -2,7 +2,6 @@
 
 #include <SFML/Graphics.hpp>
 
-
 #include "../Collisions/Tile.h"
 #include "../Collisions/AABB.h"
 #include "../Collisions/Grid.h"
@@ -12,15 +11,12 @@ enum Direction
 	LDIR, RDIR, UDIR, DDIR
 };
 
+class SBox;
+class QBox;
+class Enemy;
+class Player;
 class Object;
 class DynamicObject;
-class DynamicCollectable;
-class Player;
-class Mushroom;
-class Enemy;
-class QBox;
-class SBox;
-class Camera;
 
 class CollisionManager
 {

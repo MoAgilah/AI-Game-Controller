@@ -8,10 +8,13 @@ Tile::Tile()
 	m_aabb.SetOutlineColour(sf::Color::Black);
 }
 
-Tile::Tile(int gX, int gY, const sf::Font& font)
+Tile::Tile(int x, int y, const sf::Font& font)
 	: m_hasFont(true)
 {
-	SetID(gX, gY);
+	m_colNum = x;
+	m_rowNum = y;
+	//set id
+	m_id = std::format("{},{}", m_colNum, m_rowNum);
 
 	m_aabb.SetOutlineColour(sf::Color::Black);
 
@@ -19,19 +22,7 @@ Tile::Tile(int gX, int gY, const sf::Font& font)
 	m_text.setCharacterSize(12);
 	m_text.setOrigin(6, 6);
 	m_text.setStyle(sf::Text::Bold);
-}
-
-void Tile::SetID(int gX, int gY)
-{
-	//set id
-	m_id = std::format("{},{}", gX, gY);
-
-	//numerical id
-	m_colNum = gX;
-	m_rowNum = gY;
-
-	//set tile identifier text
-	m_text.setString(std::format("{}\n{}", gX, gY));
+	m_text.setString(std::format("{}\n{}", m_colNum, m_rowNum));
 }
 
 void Tile::SetPosition(sf::Vector2f pos)

@@ -57,8 +57,6 @@ void AABB::Render(sf::RenderWindow& window)
 
 bool AABB::Intersects(AABB* box)
 {
-	m_previousOverlap = m_overlap;
-
 	for (size_t i = 0; i < 2; i++)
 		if (std::abs(m_center[i] - box->m_center[i]) > m_extents[i] + box->m_extents[i]) return false;
 
@@ -141,11 +139,6 @@ bool AABB::IntersectsRay(const Point& point, const Point& direction, float& tmin
 	// Ray intersects both slabs. Return point (q) and intersection t value (tmin)
 	intersection = point + direction * tmin;
 	return true;
-}
-
-bool AABB::IntersectsSegment(const Point& point0, const Point& point1)
-{
-	return false;
 }
 
 void AABB::Move(float x, float y)

@@ -1,23 +1,19 @@
 #include "CollisionManager.h"
 
-#include "../Game/Camera.h"
-#include "../Game/GameManager.h"
-
-#include "../GameObjects/Object.h"
-#include "../GameObjects/Player.h"
-#include "../GameObjects/Enemy.h"
-#include "../GameObjects/Box.h"
-#include "../GameObjects/Collectables.h"
-
-#include "../GameObjects/Chuck.h"
-#include "../GameObjects/Rex.h"
-#include "../GameObjects/Bill.h"
+#include <algorithm>
 
 #include "../Controller/CtrlMgr.h"
 
+#include "../Game/Camera.h"
 #include "../Game/Constants.h"
+#include "../Game/GameManager.h"
 
-#include <algorithm>
+#include "../GameObjects/Bill.h"
+#include "../GameObjects/Box.h"
+#include "../GameObjects/Enemy.h"
+#include "../GameObjects/Object.h"
+#include "../GameObjects/Player.h"
+#include "../GameObjects/Collectables.h"
 
 namespace
 {

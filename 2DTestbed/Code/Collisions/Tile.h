@@ -9,7 +9,6 @@ enum Types
 	EMPTY, GRND, WALL, DIAGU, DIAGD, CRN, OWAY
 };
 
-class Camera;
 class Tile
 {
 public:
@@ -17,7 +16,6 @@ public:
 	Tile(int gX, int gY, const sf::Font& font);
 	~Tile() = default;
 
-	void SetID(int gX, int gY);
 	std::string_view GetID() const { return m_id; }
 
 	int GetRowNum() const { return m_rowNum; }
@@ -43,6 +41,7 @@ public:
 	void Render(sf::RenderWindow& window);
 
 private:
+
 	void CreateDesSlope();
 	void CreateAscSlope();
 
@@ -52,8 +51,8 @@ private:
 	int m_rowNum = -1;
 	int m_type = EMPTY;
 
-	std::string m_id;
 	AABB m_aabb;
 	sf::Text m_text;
+	std::string m_id;
 	std::vector<AABB> m_slope;
 };

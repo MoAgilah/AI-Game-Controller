@@ -16,9 +16,7 @@ Grid::Grid()
 	for (int y = 0; y < 15; y++)
 	{
 		for (int x = 0; x < 313; x++)
-		{
 			m_grid.push_back(std::make_shared<Tile>(x, y, font));
-		}
 	}
 
 	SetTilePosition();
@@ -79,9 +77,7 @@ Tile* Grid::GetTile(int x, int y)
 
 	auto it = std::find_if(m_grid.begin(), m_grid.end(), [id](auto n) { return n->GetID() == id; });
 	if (it != m_grid.end())
-	{
 		return it->get();
-	}
 
 	//extract tile if tile exists
 	return nullptr;
@@ -89,20 +85,19 @@ Tile* Grid::GetTile(int x, int y)
 
 void Grid::SetTileTypes()
 {
-	std::vector<int> types;
 	std::ifstream inFile;
+	std::vector<int> types;
+
 	//extract tile types from textfile
 	inFile.open("Resources/TileTypes.txt");
+
 	int type;
-	while (inFile >> type) {
+	while (inFile >> type)
 		types.push_back(type);
-	}
 
 	inFile.close();
 
 	//assign tile types
 	for (size_t i = 0; i < types.size(); i++)
-	{
 		m_grid[i]->SetType(types[i]);
-	}
 }

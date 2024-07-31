@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include <string>
 #include <vector>
 #include <memory>
@@ -8,7 +7,7 @@
 #include <SFML/Graphics.hpp>
 
 class Tile;
-class Camera;
+
 class Grid
 {
 public:
