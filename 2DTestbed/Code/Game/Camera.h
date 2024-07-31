@@ -1,5 +1,5 @@
 #pragma once
-
+#include "../Collisions/AABB.h"
 #include <SFML/Graphics.hpp>
 
 class Player;
@@ -21,8 +21,11 @@ public:
 	bool IsinView(const sf::RectangleShape& rect) const;
 	void Reset(sf::RenderWindow& window);
 
-private:
+	bool IsInView(AABB* box);
+	void RenderViewBox(sf::RenderWindow& window);
 
+private:
+	AABB m_viewBox;
 	sf::View m_camera;
 	sf::Vector2i m_screenDimensions;
 	sf::Rect<float> m_curScrBounds;

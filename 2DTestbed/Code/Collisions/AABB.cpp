@@ -7,6 +7,9 @@ int AABB::s_count = 0;
 AABB::AABB()
 {
 	m_boxNumber = s_count++;
+	m_rect.setFillColor(sf::Color::Transparent);
+	m_rect.setOutlineColor(sf::Color::Red);
+	m_rect.setOutlineThickness(1);
 	Reset(sf::Vector2f(16, 16));
 	Update(sf::Vector2f());
 }
@@ -14,6 +17,9 @@ AABB::AABB()
 AABB::AABB(const sf::Vector2f& size)
 {
 	m_boxNumber = s_count++;
+	m_rect.setFillColor(sf::Color::Transparent);
+	m_rect.setOutlineColor(sf::Color::Red);
+	m_rect.setOutlineThickness(1);
 	Reset(size);
 	Update(sf::Vector2f());
 }
@@ -21,9 +27,6 @@ AABB::AABB(const sf::Vector2f& size)
 void AABB::Reset(const sf::Vector2f& size)
 {
 	m_rect.setSize(size);
-	m_rect.setFillColor(sf::Color::Transparent);
-	m_rect.setOutlineColor(sf::Color::Red);
-	m_rect.setOutlineThickness(1);
 	m_rect.setScale(sX, sY);
 	m_rect.setOrigin(size * 0.5f);
 }
