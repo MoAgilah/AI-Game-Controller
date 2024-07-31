@@ -39,7 +39,7 @@ Controller::Controller()
 	m_iTicks = 0;
 	m_iGenerations = 0;
 
-	m_inputs.resize(240);
+	m_inputs.resize(255);
 }
 
 ANNView * Controller::GetAnnView()

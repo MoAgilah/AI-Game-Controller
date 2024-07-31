@@ -46,7 +46,7 @@ ANNView::ANNView()
 
 	//create the grid inputs
 	int cnt = 0;
-	for (int i = 0; i < 240; i++)
+	for (int i = 0; i < 255; i++)
 	{
 		m_vecView.push_back(new Tile());
 	}
@@ -79,85 +79,70 @@ void ANNView::Update()
 	m_text[2]->setPosition(m_view.getCenter() - sf::Vector2f(400, -330));
 
 	//extract m_visible tiles
-	int num(0),cnt(0);
-	std::vector<std::shared_ptr<Tile>> grid = GameManager::GetGameMgr()->GetCollisionMgr()->GetGrid();
-	for (int i = 0; i < grid.size(); i++)
+	int cnt = 0;
+	for (auto& tile : GameManager::GetGameMgr()->GetCollisionMgr()->GetGrid())
 	{
-		if (cnt == 240) break;
+		if (cnt == 255) break;
 
-		if (grid[i]->GetActive())
-		{
-			if (cnt == 0) num = grid[i]->GetColNum();
+		if (!tile->GetActive())
+			continue;
 
-			if (grid[i]->GetColNum() <= num + 15)
-			{
-				m_vecView[cnt] = grid[i].get();
-				cnt++;
-			}
-		}
+		m_vecView[cnt] = tile.get();
+
+		cnt++;
 	}
 
 	//colour m_visible tiles
-	sf::RectangleShape tmp;
-	std::vector<std::shared_ptr<Object>> gobj = GameManager::GetGameMgr()->GetCollisionMgr()->GetCollidables();
-	for (int i = 0; i < m_vecView.size(); i++)
+	for (auto& tile : m_vecView)
 	{
-		if (m_vecView[i]->GetType() == EMPTY)
+		if (tile->GetType() != EMPTY)
 		{
-			sf::RectangleShape tmp;
-			for (size_t j = 0; j < gobj.size(); j++)
+			tile->SetFillColour(sf::Color::White);
+			continue;
+		}
+
+		sf::RectangleShape tmp;
+		for (auto& gobj : GameManager::GetGameMgr()->GetCollisionMgr()->GetCollidables())
+		{
+			int type = (int)gobj->GetID();
+			if (type == (int)TexID::Bill)
 			{
-				int type = (int)gobj[j]->GetID();
-				if (type == (int)TexID::Bill)
-				{
-					tmp.setSize(sf::Vector2f(96, 108));
-					tmp.setOrigin(48, 54);
-				}
-				else
-				{
-					tmp.setSize(sf::Vector2f(16, 16));
-					tmp.setOrigin(8, 8);
-				}
+				tmp.setSize(sf::Vector2f(96, 108));
+				tmp.setOrigin(48, 54);
+			}
+			else
+			{
+				tmp.setSize(sf::Vector2f(16, 16));
+				tmp.setOrigin(8, 8);
+			}
 
-				if (gobj[j]->GetActive())
+			if (!gobj->GetActive())
+			{
+				tile->SetFillColour(sf::Color::Transparent);
+				continue;
+			}
+
+			tmp.setPosition(gobj->GetPosition());
+
+			if (tile->GetRect().getGlobalBounds().intersects(tmp.getGlobalBounds()))
+			{
+				if (type >= PlyBgn && type <= PlyEnd)
 				{
-					tmp.setPosition(gobj[j]->GetPosition());
-
-					if (m_vecView[i]->GetRect().getGlobalBounds().intersects(tmp.getGlobalBounds()))
-					{
-						if (type >= PlyBgn && type <= PlyEnd)
-						{
-							m_vecView[i]->SetFillColour(sf::Color::Red);
-						}
-						else if (type >= EnmyBgn && type <= EnmyEnd)
-						{
-							m_vecView[i]->SetFillColour(sf::Color::Black);
-						}
-						else if (type >= ColBgn && type <= ColEnd)
-						{
-							m_vecView[i]->SetFillColour(sf::Color::Yellow);
-						}
-						else if (type >= ObjBgn && type <= ObjEnd)
-						{
-							m_vecView[i]->SetFillColour(sf::Color::Green);
-						}
-
-						break;
-					}
-					else
-					{
-						m_vecView[i]->SetFillColour(sf::Color::Transparent);
-					}
+					tile->SetFillColour(sf::Color::Red);
 				}
-				else
+				else if (type >= EnmyBgn && type <= EnmyEnd)
 				{
-					m_vecView[i]->SetFillColour(sf::Color::Transparent);
+					tile->SetFillColour(sf::Color::Black);
+				}
+				else if (type >= ColBgn && type <= ColEnd)
+				{
+					tile->SetFillColour(sf::Color::Yellow);
+				}
+				else if (type >= ObjBgn && type <= ObjEnd)
+				{
+					tile->SetFillColour(sf::Color::Green);
 				}
 			}
-		}
-		else
-		{
-			m_vecView[i]->SetFillColour(sf::Color::White);
 		}
 	}
 }
@@ -167,22 +152,18 @@ void ANNView::Render(sf::RenderWindow & window)
 	window.setView(m_view);
 	window.draw(back);
 
-	for (int i = 0; i < m_vecView.size(); i++)
+	for (auto& tile : m_vecView)
 	{
-		window.draw(m_vecView[i]->GetRect());
+		window.draw(tile->GetRect());
 	}
 
-	for (int i = 0; i < m_text.size(); i++)
+	for (auto& text : m_text)
 	{
-		window.draw(*m_text[i]);
+		window.draw(*text);
 	}
 }
 
 std::vector<Tile*> ANNView::GetVecView()
 {
 	return m_vecView;
-}
-
-ANNView::~ANNView()
-{
 }

@@ -9,11 +9,15 @@ class ANNView
 {
 public:
 	ANNView();
-	~ANNView();
+	~ANNView() = default;
+
 	void Update();
 	void Render(sf::RenderWindow & window);
+
 	std::vector<Tile*> GetVecView();
+
 private:
+
 	sf::View m_view;
 	sf::RectangleShape back;
 	const unsigned int size = 200;
