@@ -41,6 +41,8 @@ void MainState::Update(float deltaTime)
 	if (Automated)
 		CtrlMgr::GetCtrlMgr()->GetController()->Update();
 
+	m_gameMgr->CheckInView();
+
 	m_gameMgr->GetLevel()->Update(deltaTime);
 	m_gameMgr->GetPlayer()->Update(deltaTime);
 }
@@ -48,8 +50,6 @@ void MainState::Update(float deltaTime)
 void MainState::Render(sf::RenderWindow& window)
 {
 	m_gameMgr->GetCamera()->Reset(window);
-
-	m_gameMgr->CheckInView();
 
 	m_gameMgr->GetLevel()->Render(window);
 	m_gameMgr->GetPlayer()->Render(window);

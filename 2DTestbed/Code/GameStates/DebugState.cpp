@@ -20,7 +20,7 @@ void DebugState::Initialise()
 
 	level->AddObjects();
 	//level->AddEnemies();
-	//level->AddForeGroundSprites();
+	level->AddForeGroundSprites();
 }
 
 void DebugState::Pause()
@@ -42,6 +42,8 @@ void DebugState::Update(float deltaTime)
 	if (Automated)
 		CtrlMgr::GetCtrlMgr()->GetController()->Update();
 
+	m_gameMgr->CheckInView();
+
 	m_gameMgr->GetPlayer()->Update(deltaTime);
 	m_gameMgr->GetLevel()->Update(deltaTime);
 }
@@ -50,13 +52,9 @@ void DebugState::Render(sf::RenderWindow& window)
 {
 	m_gameMgr->GetCamera()->Reset(window);
 
-	m_gameMgr->CheckInView();
-
 	m_gameMgr->GetLevel()->Render(window);
-
 	m_gameMgr->GetPlayer()->Render(window);
 
 	GameManager::GetGameMgr()->GetCollisionMgr()->Render(window);
-
-	//m_gameMgr->GetCamera()->RenderViewBox(window);
+	m_gameMgr->GetCamera()->RenderViewBox(window);
 }
