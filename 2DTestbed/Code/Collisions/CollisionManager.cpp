@@ -280,7 +280,7 @@ void CollisionManager::PlayerToObjectCollisions(Player* ply, Object* obj)
 {
 	if (IsBoxObject(obj->GetID()))
 	{
-		if (obj->GetAABB()->Intersects(ply->GetAABB()))
+		if (obj->Intersects(ply))
 		{
 			switch (obj->GetID())
 			{
@@ -295,7 +295,7 @@ void CollisionManager::PlayerToObjectCollisions(Player* ply, Object* obj)
 	}
 	else if (IsCollectableObject(obj->GetID()))
 	{
-		if (obj->GetAABB()->Intersects(ply->GetAABB()))
+		if (obj->Intersects(ply))
 		{
 			if (IsDynamicCollectable(obj->GetID()))
 			{
@@ -313,17 +313,7 @@ void CollisionManager::PlayerToObjectCollisions(Player* ply, Object* obj)
 		if (!enemy->GetIsAlive())
 			return;
 
-		bool shouldResolve = false;
-		if (TexID::Bill == obj->GetID())
-		{
-			shouldResolve = ((Bill*)obj)->GetBody().Intersects(ply->GetAABB());
-		}
-		else
-		{
-			shouldResolve = obj->GetAABB()->Intersects(ply->GetAABB());
-		}
-
-		if (shouldResolve)
+		if (obj->Intersects(ply))
 			PlayerToEnemyResolutions(ply, (Enemy*)obj);
 	}
 }
@@ -336,7 +326,7 @@ void CollisionManager::ObjectToObjectCollisions(Object* obj1, Object* obj2)
 	}
 	else if (IsBoxObject(obj2->GetID()))
 	{
-		if (obj2->GetAABB()->Intersects(obj1->GetAABB()))
+		if (obj2->Intersects(obj1))
 		{
 			DynamicObject* dynObj = (DynamicObject*)obj1;
 			DynamicObjectToBoxResolutions((Direction)GetDirTravelling(dynObj), dynObj, obj2->GetAABB());

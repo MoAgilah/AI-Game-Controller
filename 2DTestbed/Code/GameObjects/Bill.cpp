@@ -25,10 +25,14 @@ Bill::Bill(bool dir, const sf::Vector2f& initPos)
 
 void Bill::Render(sf::RenderWindow& window)
 {
-	window.draw(*GetSprite()->GetSprite());
-	//GetAABB()->Render(window);
+	GetSprite()->Render(window);
 	window.draw(m_colbody.front);
 	m_colbody.back.Render(window);
+}
+
+bool Bill::Intersects(Object* obj)
+{
+	return GetBody().Intersects(obj->GetAABB());
 }
 
 void Bill::UpdateBody()

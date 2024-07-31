@@ -22,6 +22,7 @@ public:
 	~Bill() final = default;
 
 	void Render(sf::RenderWindow& window) final;
+	bool Intersects(Object* obj) final;
 
 	AnimatedSprite* GetAnimSpr() = delete;
 	bool GetOnGround() const = delete;

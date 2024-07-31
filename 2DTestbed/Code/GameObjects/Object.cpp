@@ -30,6 +30,11 @@ void Object::Render(sf::RenderWindow& window)
 #endif
 }
 
+bool Object::Intersects(Object* obj)
+{
+	return GetAABB()->Intersects(obj->GetAABB());
+}
+
 void Object::Reset()
 {
 	m_active = false;

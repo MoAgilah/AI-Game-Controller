@@ -40,6 +40,8 @@ public:
 	virtual void Update(float deltaTime) = 0;
 	virtual void Render(sf::RenderWindow& window);
 
+	virtual bool Intersects(Object* obj);
+
 	virtual void Reset();
 
 	int GetObjectNum() const { return m_objectID; }
