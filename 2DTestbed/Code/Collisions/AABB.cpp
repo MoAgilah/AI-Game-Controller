@@ -152,3 +152,8 @@ void AABB::Move(const sf::Vector2f& pos)
 	m_rect.move(pos);
 	Update(GetPosition());
 }
+
+sf::FloatRect AABB::GetBoxBounds(const sf::Vector2f& position)
+{
+	return sf::FloatRect(position.x - GetExtents().x, position.y - GetExtents().y, GetExtents().x, GetExtents().y);
+}

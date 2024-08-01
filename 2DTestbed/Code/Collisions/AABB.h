@@ -38,6 +38,7 @@ public:
 	bool GetHit() const { return m_hit; }
 	void SetHit(bool hit) { m_hit = hit; }
 
+	sf::FloatRect GetBoxBounds(const sf::Vector2f& position);
 private:
 
 	bool m_hit = false;
