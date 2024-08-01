@@ -21,7 +21,7 @@ public:
 	int GetRowNum() const { return m_rowNum; }
 	int GetColNum() const { return m_colNum; }
 
-	void SetType(int type);
+	void SetType(int type) { m_type = type; };
 	int GetType() const { return m_type; }
 
 	bool GetActive() const { return m_visible; }
@@ -33,7 +33,6 @@ public:
 
 	AABB* GetAABB() { return &m_aabb; }
 	const sf::RectangleShape& GetRect() { return m_aabb.GetRect(); }
-	std::vector<AABB>& GetSlopeBBox() { return m_slope; }
 
 	void SetFillColour(sf::Color col) { m_aabb.SetFillColour(col); }
 	void SetOutlineColour(sf::Color col) { m_aabb.SetOutlineColour(col); }
@@ -41,9 +40,6 @@ public:
 	void Render(sf::RenderWindow& window);
 
 private:
-
-	void CreateDesSlope();
-	void CreateAscSlope();
 
 	bool m_visible = false;
 	bool m_hasFont = false;
@@ -54,5 +50,5 @@ private:
 	AABB m_aabb;
 	sf::Text m_text;
 	std::string m_id;
-	std::vector<AABB> m_slope;
+	sf::ConvexShape m_slope;
 };

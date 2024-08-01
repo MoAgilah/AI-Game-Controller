@@ -28,87 +28,34 @@ Tile::Tile(int x, int y, const sf::Font& font)
 void Tile::SetPosition(sf::Vector2f pos)
 {
 	m_aabb.Update(pos);
-	m_text.setPosition(m_aabb.GetPosition().x - 10.f, m_aabb.GetPosition().y - 7.5f);
-}
-
-void Tile::CreateDesSlope()
-{
-	//creates a set of small rects to act like a slope inside of the slope tiles
-	//this is because I was unsure how to do it the smooth tile method
-	AABB box = AABB(sf::Vector2f(1, 1));
-	box.SetOutlineColour(sf::Color::Black);
-	box.Update(GetPosition() + sf::Vector2f(0, 5));
-	m_slope.push_back(box);
-
-	//up from center
-	for (size_t i = 0; i < 8; i++)
+	if (m_type == DIAGU)
 	{
-		box.Update(sf::Vector2f(m_slope.back().GetPosition().x - (m_slope.back().GetOrigin().x * sX) * 2.f, m_slope.back().GetPosition().y - (m_slope.back().GetOrigin().y * sY) * 2.f));
-		m_slope.push_back(box);
-	}
-
-	box.Update(sf::Vector2f(m_slope[0].GetPosition().x + (m_slope[0].GetOrigin().x * sX) * 2.f, m_slope[0].GetPosition().y + (m_slope[0].GetOrigin().y * sY) * 2.f));
-	m_slope.push_back(box);
-
-	//down from center
-	for (size_t i = 0; i < 8; i++)
-	{
-		box.Update(sf::Vector2f(m_slope.back().GetPosition().x + (m_slope.back().GetOrigin().x * sX) * 2.f, m_slope.back().GetPosition().y + (m_slope.back().GetOrigin().y * sY) * 2.f));
-		m_slope.push_back(box);
-	}
-}
-
-void Tile::CreateAscSlope()
-{
-	//creates a set of small rects to act like a slope inside of the slope tiles
-	//this is because I was unsure how to do it the smooth tile method
-	AABB box = AABB(sf::Vector2f(1, 1));
-	box.SetOutlineColour(sf::Color::Black);
-	box.Update(GetPosition() + sf::Vector2f(0, 5));
-	m_slope.push_back(box);
-
-	//up from center
-	for (size_t i = 0; i < 8; i++)
-	{
-		box.Update(sf::Vector2f(m_slope.back().GetPosition().x + (m_slope.back().GetOrigin().x * sX) * 2.f, m_slope.back().GetPosition().y - (m_slope.back().GetOrigin().y * sY) * 2.f));
-		m_slope.push_back(box);
-	}
-
-	box.Update(sf::Vector2f(m_slope[0].GetPosition().x - (m_slope[0].GetOrigin().x * sX) * 2.f, m_slope[0].GetPosition().y + (m_slope[0].GetOrigin().y * sY) * 2.f));
-	m_slope.push_back(box);
-
-	//down from center
-	for (size_t i = 0; i < 6; i++)
-	{
-		box.Update(sf::Vector2f(m_slope.back().GetPosition().x - (m_slope.back().GetOrigin().x * sX) * 2.f, m_slope.back().GetPosition().y + (m_slope.back().GetOrigin().y * sY) * 2.f));
-		m_slope.push_back(box);
-	}
-}
-
-void Tile::Render(sf::RenderWindow& window)
-{
-	window.draw(m_aabb.GetBox()->GetRect());
-
-	if (m_hasFont)
-		window.draw(m_text);
-
-	for (int i = 0; i < m_slope.size(); i++)
-	{
-		window.draw(m_slope[i].GetRect());
-	}
-}
-
-void Tile::SetType(int type)
-{
-	m_type = type;
-
-	if (m_type == DIAGU )
-	{
-		CreateAscSlope();
+		m_slope.setPointCount(3);
+		m_slope.setPoint(0, m_aabb.GetPosition() + sf::Vector2f(-m_aabb.GetExtents().x, m_aabb.GetExtents().y));
+		m_slope.setPoint(1, m_aabb.GetPosition() + sf::Vector2f(m_aabb.GetExtents().x, -m_aabb.GetExtents().y));
+		m_slope.setPoint(2, m_aabb.GetPosition() + m_aabb.GetExtents());
+		m_slope.setFillColor(sf::Color::Yellow);
 	}
 
 	if (m_type == DIAGD)
 	{
-		CreateDesSlope();
+		m_slope.setPointCount(3);
+		m_slope.setPoint(0, m_aabb.GetPosition() - sf::Vector2f(m_aabb.GetExtents().x, m_aabb.GetExtents().y));
+		m_slope.setPoint(1, m_aabb.GetPosition() + m_aabb.GetExtents());
+		m_slope.setPoint(2, m_aabb.GetPosition() - sf::Vector2f(m_aabb.GetExtents().x, -m_aabb.GetExtents().y));
+		m_slope.setFillColor(sf::Color::Yellow);
 	}
+
+	m_text.setPosition(m_aabb.GetPosition().x - 10.f, m_aabb.GetPosition().y - 7.5f);
+}
+
+void Tile::Render(sf::RenderWindow& window)
+{
+	if (m_type == DIAGU || m_type == DIAGD)
+		window.draw(m_slope);
+
+	window.draw(m_aabb.GetBox()->GetRect());
+
+	if (m_hasFont)
+		window.draw(m_text);
 }

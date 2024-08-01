@@ -59,6 +59,8 @@ private:
 
 	Direction GetDirTravelling(DynamicObject* obj);
 
+	Direction GetFacingDirection(DynamicObject* obj);
+
 	Grid m_grid;
 	std::vector<std::shared_ptr<Tile>> m_tiles;
 	std::vector<std::shared_ptr<Object>> m_collidables;

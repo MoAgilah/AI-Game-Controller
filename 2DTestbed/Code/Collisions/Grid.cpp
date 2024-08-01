@@ -19,8 +19,8 @@ Grid::Grid()
 			m_grid.push_back(std::make_shared<Tile>(x, y, font));
 	}
 
-	SetTilePosition();
 	SetTileTypes();
+	SetTilePosition();
 }
 
 void Grid::SetTilePosition()

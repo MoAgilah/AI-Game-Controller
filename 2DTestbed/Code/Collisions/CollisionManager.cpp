@@ -188,6 +188,11 @@ void CollisionManager::DynamicObjectToTileCollisions(DynamicObject* obj)
 		if (!tile->GetActive())
 			continue;
 
+		if (tile->GetType() == DIAGU || tile->GetType() == DIAGD)
+		{
+			tile->GetAABB()->SetHit(true);
+		}
+
 		if (tile->GetAABB()->Intersects(obj->GetAABB()))
 		{
 			tile->GetAABB()->SetHit(true);
@@ -212,65 +217,27 @@ void CollisionManager::DynamicObjectToTileCollisions(DynamicObject* obj)
 
 void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* tile)
 {
-	Direction dir = GetDirTravelling(obj);
+	Direction dir = GetFacingDirection(obj);
 
-	float objBottom = obj->GetAABB()->GetPosition().y + obj->GetOrigin().y;
-	float tileTop = tile->GetPosition().y - tile->GetOrigin().y;
+	float objBottom = obj->GetAABB()->GetPosition().y + obj->GetAABB()->GetExtents().y;
+	float tileTop = tile->GetAABB()->GetPosition().y - tile->GetAABB()->GetExtents().y;
 
-	if (tile->GetType() != DIAGU && tile->GetType() != DIAGD)
+	switch (tile->GetType())
 	{
-		switch (dir)
-		{
-		case DDIR:
-		{
-			switch (tile->GetType())
-			{
-			case GRND:
-			case OWAY:
-			case CRN:
-			{
-				if (objBottom < tileTop)
-					ResolveObjectToBoxTop(obj, tile->GetAABB());
-				return;
-			}
-			default:
-				return;
-			}
-		}
-		case RDIR:
-		case LDIR:
-		{
-			bool shouldResolve = true;
-			switch (tile->GetType())
-			{
-			case CRN:
-				shouldResolve = objBottom > tileTop;
-				[[fallthrough]];
-			case WALL:
-			{
-				if (shouldResolve)
-					ResolveObjectToBoxHorizontally(obj, tile->GetAABB());
-				return;
-			}
-			default:
-				return;
-			}
-		}
-		}
-	}
-	else
-	{
-		for (auto& box : tile->GetSlopeBBox())
-		{
-			if (dir == DDIR)
-			{
-				if (box.Intersects(obj->GetAABB()))
-				{
-					ResolveObjectToBoxTop(obj, &box);
-					return;
-				}
-			}
-		}
+	case Types::OWAY:
+	case Types::GRND:
+		if (dir == DDIR)
+			if (objBottom >= tileTop)
+				ResolveObjectToBoxTop(obj, tile->GetAABB());
+		return;
+	case Types::CRN:
+		if (dir == DDIR || dir == UDIR)
+			if (objBottom > tileTop)
+				ResolveObjectToBoxHorizontally(obj, tile->GetAABB());
+		return;
+	case Types::WALL:
+		ResolveObjectToBoxHorizontally(obj, tile->GetAABB());
+		return;
 	}
 
 	obj->SetOnGround(false);
@@ -488,5 +455,31 @@ Direction CollisionManager::GetDirTravelling(DynamicObject* obj)
 	}
 
 	return dir;
+}
+
+Direction CollisionManager::GetFacingDirection(DynamicObject* obj)
+{
+	const sf::Vector2f& currentVel = obj->GetVelocity();
+
+	Direction currentDir;
+
+	if (currentVel.x != 0.f || currentVel.y != 0.f)
+	{
+		float vxa = std::abs(currentVel.x);
+		float vya = std::abs(currentVel.y);
+
+		if (vxa > vya)
+		{
+			currentDir = (currentVel.x < 0) ?
+				Direction::LDIR : Direction::RDIR;
+		}
+		else
+		{
+			currentDir = (currentVel.y < 0) ?
+				Direction::UDIR : Direction::DDIR;
+		}
+	}
+
+	return currentDir;
 }
 
