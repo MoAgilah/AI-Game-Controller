@@ -49,13 +49,14 @@ int main()
 		float frameTime = newTime - currentTime;
 		currentTime = newTime;
 
+		CtrlMgr::GetCtrlMgr()->GetController()->GetAnnView()->Update();
+
 		window.clear(sf::Color::White);
 		while (frameTime > 0.0)
 		{
 			float deltaTime = std::min(frameTime, dt);
 			//do update
 
-			CtrlMgr::GetCtrlMgr()->GetController()->GetAnnView()->Update();
 			CtrlMgr::GetCtrlMgr()->GetController()->GetGridInputs();
 
 			gameMgr.Update(deltaTime);
