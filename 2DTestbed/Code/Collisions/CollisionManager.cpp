@@ -192,7 +192,6 @@ void CollisionManager::DynamicObjectToTileCollisions(DynamicObject* obj)
 		{
 			tile->GetAABB()->SetHit(true);
 		}
-
 		if (tile->GetAABB()->Intersects(obj->GetAABB()))
 		{
 			tile->GetAABB()->SetHit(true);
@@ -238,6 +237,12 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 	case Types::WALL:
 		ResolveObjectToBoxHorizontally(obj, tile->GetAABB());
 		return;
+	case Types::DIAGU:
+	case Types::DIAGD:
+	{
+		return;
+	}
+
 	}
 
 	obj->SetOnGround(false);
@@ -461,7 +466,7 @@ Direction CollisionManager::GetFacingDirection(DynamicObject* obj)
 {
 	const sf::Vector2f& currentVel = obj->GetVelocity();
 
-	Direction currentDir;
+	Direction currentDir = DDIR;
 
 	if (currentVel.x != 0.f || currentVel.y != 0.f)
 	{
@@ -482,4 +487,3 @@ Direction CollisionManager::GetFacingDirection(DynamicObject* obj)
 
 	return currentDir;
 }
-

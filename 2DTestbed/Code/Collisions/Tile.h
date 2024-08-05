@@ -33,6 +33,7 @@ public:
 
 	AABB* GetAABB() { return &m_aabb; }
 	const sf::RectangleShape& GetRect() { return m_aabb.GetRect(); }
+	const sf::ConvexShape& GetTriangle() { return m_slope; }
 
 	void SetFillColour(sf::Color col) { m_aabb.SetFillColour(col); }
 	void SetOutlineColour(sf::Color col) { m_aabb.SetOutlineColour(col); }

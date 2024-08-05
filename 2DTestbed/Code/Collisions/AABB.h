@@ -16,7 +16,6 @@ public:
 
 	bool Intersects(AABB* box);
 	bool IntersectsMoving(AABB* box, const Point& va, const Point& vb, float& tfirst, float& tlast);
-	bool IntersectsRay(const Point& point, const Point& direction, float& tmin, Point& intersection);
 
 	AABB* GetBox() { return this; }
 	const sf::RectangleShape& GetRect() { return m_rect; }
@@ -38,7 +37,6 @@ public:
 	bool GetHit() const { return m_hit; }
 	void SetHit(bool hit) { m_hit = hit; }
 
-	sf::FloatRect GetBoxBounds(const sf::Vector2f& position);
 private:
 
 	bool m_hit = false;

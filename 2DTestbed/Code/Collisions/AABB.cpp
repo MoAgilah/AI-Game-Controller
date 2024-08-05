@@ -107,40 +107,6 @@ bool AABB::IntersectsMoving(AABB* box, const Point& va, const Point& vb, float& 
 	return true;
 }
 
-bool AABB::IntersectsRay(const Point& point, const Point& direction, float& tmin, Point& intersection)
-{
-	tmin = 0.0f;	// set to -FLT_MAX to get first hit on line
-	float tmax = std::numeric_limits<float>::max();	// set to max distance ray can travel (for segment)
-
-	// For both slabs
-	for (int i = 0; i < 2; i++)
-	{
-		if (std::abs(direction[i]) < std::numeric_limits<float>::epsilon())
-		{
-			// Ray is parallel to slab. No hit if origin not within slab
-			if (point[i]< m_min[i] || point[i] > m_min[i]) return false;
-		}
-		else
-		{
-			// Compute intersection t value of ray with near and far plane of slab
-			float ood = 1.0f / direction[i];
-			float t1 = (m_min[i] - point[i]) * ood;
-			float t2 = (m_max[i] - point[i]) * ood;
-			// Make t1 be intersection with near plane, t2 with far plane
-			if (t1 > t2) std::swap(t1, t2);
-			// Compute the intersection of slab intersection intervals
-			if (t1 > tmin) tmin = t1;
-			if (t2 > tmax) tmax = t2;
-			// Exit with no collision as soon as slab intersection becomes empty
-			if (tmin > tmax) return false;
-		}
-	}
-
-	// Ray intersects both slabs. Return point (q) and intersection t value (tmin)
-	intersection = point + direction * tmin;
-	return true;
-}
-
 void AABB::Move(float x, float y)
 {
 	m_rect.move(sf::Vector2f(x, y));
@@ -151,9 +117,4 @@ void AABB::Move(const sf::Vector2f& pos)
 {
 	m_rect.move(pos);
 	Update(GetPosition());
-}
-
-sf::FloatRect AABB::GetBoxBounds(const sf::Vector2f& position)
-{
-	return sf::FloatRect(position.x - GetExtents().x, position.y - GetExtents().y, GetExtents().x, GetExtents().y);
 }
