@@ -240,6 +240,32 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 	case Types::DIAGU:
 	case Types::DIAGD:
 	{
+		if (dir == RDIR || dir == LDIR)
+		{
+			Point objBot = obj->GetAABB()->GetPosition() + sf::Vector2f(-2, obj->GetAABB()->GetExtents().y-4);
+			sf::CircleShape circle(2);
+			circle.setPosition(objBot);
+
+			sf::ConvexShape tri = tile->GetTriangle();
+			if (LineToCircle(tri.getPoint(0), tri.getPoint(1), circle.getPosition(), circle.getRadius()))
+			{
+				std::cout << "collision found\n";
+				auto dist = tri.getPoint(1) - tri.getPoint(0);
+
+				auto ply = objBot.x - tri.getPoint(0).x;
+				auto percent = ply / dist.y;
+				auto colHeight = dist.y * percent + tri.getPoint(0).y;
+				if (obj->GetDirection())
+				{
+					obj->Move(sf::Vector2f(0, ((obj->GetAABB()->GetPosition().y - colHeight) / 16)));
+				}
+				else
+				{
+					obj->Move(sf::Vector2f(0, -((obj->GetAABB()->GetPosition().y - colHeight) / 16)));
+				}
+			}
+		}
+
 		return;
 	}
 
@@ -486,4 +512,32 @@ Direction CollisionManager::GetFacingDirection(DynamicObject* obj)
 	}
 
 	return currentDir;
+}
+
+bool CollisionManager::LineToCircle(const Point& start, const Point& end, const Point& center, float radius)
+{
+	if (start.PointToCircle(center, radius))
+		return true;
+
+	if (end.PointToCircle(center, radius))
+		return true;
+
+	// get length of the line
+	auto len = pnt::distance(start, end);
+
+	// get dot product of the line and circle
+	float dot = (((center.x - start.x) * (end.x - start.x)) + ((center.y - start.y) * (end.y - start.y))) / std::pow(len, 2);
+
+	// find the closest point on the line
+	Point closestPnt = start + (dot * (end - start));
+
+	// is this point actually on the line segment?
+	// if so keep going, but if not, return false
+	if (!closestPnt.PointToLineSegmentIntersects(start, end))
+		return false;
+
+	// get distance to closest point
+	float distance = pnt::distance(center, closestPnt);
+
+	return distance <= radius;
 }

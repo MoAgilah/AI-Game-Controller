@@ -12,6 +12,10 @@ DebugState::DebugState(GameManager* gameMgr)
 	: GameState("Debug")
 {
 	m_gameMgr.reset(gameMgr);
+	circle.setRadius(2);
+	//circle.setOrigin(1, 1);
+	circle.setOutlineColor(sf::Color::Red);
+	circle.setOutlineThickness(1);
 }
 
 void DebugState::Initialise()
@@ -46,6 +50,8 @@ void DebugState::Update(float deltaTime)
 
 	m_gameMgr->GetPlayer()->Update(deltaTime);
 	m_gameMgr->GetLevel()->Update(deltaTime);
+
+	circle.setPosition(m_gameMgr->GetPlayer()->GetPosition() + sf::Vector2f(-4, m_gameMgr->GetPlayer()->GetAABB()->GetExtents().y-4));
 }
 
 void DebugState::Render(sf::RenderWindow& window)
@@ -53,8 +59,11 @@ void DebugState::Render(sf::RenderWindow& window)
 	m_gameMgr->GetCamera()->Reset(window);
 
 	m_gameMgr->GetLevel()->Render(window);
-	m_gameMgr->GetPlayer()->Render(window);
+
 
 	GameManager::GetGameMgr()->GetCollisionMgr()->Render(window);
+	m_gameMgr->GetPlayer()->Render(window);
+
+	window.draw(circle);
 	/*m_gameMgr->GetCamera()->RenderViewBox(window);*/
 }

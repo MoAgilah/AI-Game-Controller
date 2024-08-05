@@ -23,5 +23,6 @@ public:
 	void Render(sf::RenderWindow& window) override;
 
 private:
+	sf::CircleShape circle;
 	std::shared_ptr<GameManager> m_gameMgr;
 };

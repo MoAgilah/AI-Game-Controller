@@ -61,6 +61,8 @@ private:
 
 	Direction GetFacingDirection(DynamicObject* obj);
 
+	bool LineToCircle(const Point& start, const Point& end, const Point& center, float radius);
+
 	Grid m_grid;
 	std::vector<std::shared_ptr<Tile>> m_tiles;
 	std::vector<std::shared_ptr<Object>> m_collidables;

@@ -1,6 +1,19 @@
 #include "Point.h"
 #include <stdexcept>
 
+namespace pnt
+{
+	float distance(const Point& p1, const Point& p2)
+	{
+		return std::sqrt(std::pow((p2.x - p1.x), 2) + std::pow((p2.y - p1.y), 2));
+	}
+
+	float length(const Point& p)
+	{
+		return std::sqrt(p.x * p.x + p.y * p.y);
+	}
+}
+
 Point::Point()
 	: x(0), y(0)
 {
@@ -14,6 +27,31 @@ Point::Point(float x, float y)
 Point::Point(const sf::Vector2f& vec)
 	: x(vec.x), y(vec.y)
 {
+}
+
+bool Point::PointToCircle(const Point& center, float radius) const
+{
+	// get distance between the point and circle's center
+	float d = pnt::distance(*this, center);
+	return d <= radius;
+}
+
+bool Point::PointToLineSegmentIntersects(const Point& start, const Point& end) const
+{
+	// get distance from the point to the two ends of the line
+	float d1 = pnt::distance(*this, start);
+	float d2 = pnt::distance(*this, end);
+
+	// get the length of the line
+	float lineLen = pnt::distance(start, end);
+
+	// since floats are so minutely accurate, add
+	// a little buffer zone that will give collision
+	float buffer = 0.1;    // higher # = less accurate
+
+	// if the two distances are equal to the line's
+	// length, the point is on the line!
+	return d1 + d2 >= lineLen - buffer && d1 + d2 <= lineLen + buffer;
 }
 
 float& Point::operator[](std::size_t index)
