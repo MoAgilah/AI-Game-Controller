@@ -51,7 +51,7 @@ void DebugState::Update(float deltaTime)
 	m_gameMgr->GetPlayer()->Update(deltaTime);
 	m_gameMgr->GetLevel()->Update(deltaTime);
 
-	circle.setPosition(m_gameMgr->GetPlayer()->GetPosition() + sf::Vector2f(-4, m_gameMgr->GetPlayer()->GetAABB()->GetExtents().y-4));
+	circle.setPosition(m_gameMgr->GetPlayer()->GetAABB()->GetPosition() + sf::Vector2f(-2, m_gameMgr->GetPlayer()->GetAABB()->GetExtents().y-4));
 }
 
 void DebugState::Render(sf::RenderWindow& window)

@@ -43,7 +43,7 @@ private:
 	int m_boxNumber;
 	static int s_count;
 	Point m_min;
-	
+
 	Point m_center;
 	Point m_extents;
 	Point m_overlap;

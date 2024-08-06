@@ -62,6 +62,7 @@ private:
 	Direction GetFacingDirection(DynamicObject* obj);
 
 	bool LineToCircle(const Point& start, const Point& end, const Point& center, float radius);
+	float GetYOffSet(float pDistX, float lDistY, float slopeY, float currY, float tileHeight);
 
 	Grid m_grid;
 	std::vector<std::shared_ptr<Tile>> m_tiles;

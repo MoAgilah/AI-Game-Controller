@@ -1,5 +1,5 @@
 #include "CollisionManager.h"
-
+#include <format>
 #include <algorithm>
 
 #include "../Controller/CtrlMgr.h"
@@ -81,6 +81,8 @@ namespace
 	{
 		return id == TexID::QBox || id == TexID::SBox;
 	}
+
+	float GetXDist(const Point& p1, const Point& p2) { return p2.x - p1.x; }
 }
 
 CollisionManager::CollisionManager()
@@ -214,6 +216,8 @@ void CollisionManager::DynamicObjectToTileCollisions(DynamicObject* obj)
 			obj->SetOnGround(false);
 }
 
+
+
 void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* tile)
 {
 	Direction dir = GetFacingDirection(obj);
@@ -238,35 +242,42 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 		ResolveObjectToBoxHorizontally(obj, tile->GetAABB());
 		return;
 	case Types::DIAGU:
-	case Types::DIAGD:
 	{
-		if (dir == RDIR || dir == LDIR)
+		if (dir == RDIR)
 		{
 			Point objBot = obj->GetAABB()->GetPosition() + sf::Vector2f(-2, obj->GetAABB()->GetExtents().y-4);
-			sf::CircleShape circle(2);
-			circle.setPosition(objBot);
-
-			sf::ConvexShape tri = tile->GetTriangle();
-			if (LineToCircle(tri.getPoint(0), tri.getPoint(1), circle.getPosition(), circle.getRadius()))
+			Slope slp = tile->GetSlope(0, 1);
+			if (LineToCircle(slp.bgn, slp.end, objBot, 2))
 			{
-				std::cout << "collision found\n";
-				auto dist = tri.getPoint(1) - tri.getPoint(0);
+				auto yOffset = GetYOffSet(GetXDist(slp.bgn, objBot),
+					slp.DistY(),
+					slp.bgn.y,
+					obj->GetAABB()->GetPosition().y,
+					tile->GetAABB()->GetRect().getSize().y);
 
-				auto ply = objBot.x - tri.getPoint(0).x;
-				auto percent = ply / dist.y;
-				auto colHeight = dist.y * percent + tri.getPoint(0).y;
-				if (obj->GetDirection())
-				{
-					obj->Move(sf::Vector2f(0, ((obj->GetAABB()->GetPosition().y - colHeight) / 16)));
-				}
-				else
-				{
-					obj->Move(sf::Vector2f(0, -((obj->GetAABB()->GetPosition().y - colHeight) / 16)));
-				}
+				obj->Move(sf::Vector2f(0, yOffset));
 			}
 		}
-
 		return;
+	case Types::DIAGD:
+	{
+		if (dir == LDIR)
+		{
+			Point objBot = obj->GetAABB()->GetPosition() + sf::Vector2f(-2, obj->GetAABB()->GetExtents().y - 4);
+			Slope slp = tile->GetSlope(1, 0);
+			if (LineToCircle(slp.bgn, slp.end, objBot, 2))
+			{
+				auto yOffset = GetYOffSet(GetXDist(objBot, slp.bgn),
+					slp.DistY(),
+					slp.bgn.y,
+					obj->GetAABB()->GetPosition().y,
+					tile->GetAABB()->GetRect().getSize().y);
+
+				obj->Move(sf::Vector2f(0, yOffset));
+			}
+		}
+		return;
+	}
 	}
 
 	}
@@ -541,3 +552,12 @@ bool CollisionManager::LineToCircle(const Point& start, const Point& end, const 
 
 	return distance <= radius;
 }
+
+float CollisionManager::GetYOffSet(float pDistX, float lDistY, float slopeY, float currY, float tileHeight)
+{
+	auto percent = pDistX / lDistY;
+	auto colHeight = lDistY * percent + slopeY;
+	return ((currY - colHeight) / 16);
+}
+
+
