@@ -16,6 +16,7 @@ struct Slope
 	{}
 
 	float DistY() const { return end.y - bgn.y; }
+	bool IsPointAboveLine(const Point& pnt);
 
 	Point bgn;
 	Point end;
@@ -46,6 +47,8 @@ public:
 	AABB* GetAABB() { return &m_aabb; }
 	const sf::RectangleShape& GetRect() { return m_aabb.GetRect(); }
 	Slope GetSlope(int bgn, int end) { return Slope(m_slope, bgn, end); }
+
+	float GetTileHeight() { return m_aabb.GetRect().getSize().y; }
 
 	void SetFillColour(sf::Color col) { m_aabb.SetFillColour(col); }
 	void SetOutlineColour(sf::Color col) { m_aabb.SetOutlineColour(col); }

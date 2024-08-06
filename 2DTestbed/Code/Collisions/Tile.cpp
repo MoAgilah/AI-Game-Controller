@@ -59,3 +59,9 @@ void Tile::Render(sf::RenderWindow& window)
 	if (m_hasFont)
 		window.draw(m_text);
 }
+
+bool Slope::IsPointAboveLine(const Point& pnt)
+{
+	float s = (pnt.x - bgn.x) * (end.y - bgn.y) - (pnt.y - bgn.y) * (end.x - bgn.x);
+	return s > 0;
+}

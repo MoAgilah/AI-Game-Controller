@@ -82,6 +82,17 @@ namespace
 		return id == TexID::QBox || id == TexID::SBox;
 	}
 
+	struct Circle
+	{
+		Circle(AABB* box)
+		{
+			center = box->GetPosition() + sf::Vector2f(-2, box->GetExtents().y - 4);
+		}
+
+		const float radius = 2;
+		Point center;
+	};
+
 	float GetXDist(const Point& p1, const Point& p2) { return p2.x - p1.x; }
 }
 
@@ -232,6 +243,8 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 		if (dir == DDIR)
 			if (objBottom >= tileTop)
 				ResolveObjectToBoxTop(obj, tile->GetAABB());
+		if (dir == LDIR || dir == RDIR)
+			ResolveObjectToBoxTop(obj, tile->GetAABB());
 		return;
 	case Types::CRN:
 		if (dir == DDIR || dir == UDIR)
@@ -243,37 +256,94 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 		return;
 	case Types::DIAGU:
 	{
+		if (dir == DDIR)
+		{
+			Circle circle(obj->GetAABB());
+			Slope slp = obj->GetDirection() ? tile->GetSlope(0, 1) : tile->GetSlope(1, 0);
+
+			if (slp.IsPointAboveLine(circle.center))
+			{
+				std::cout << "is above the line";
+			}
+		}
+
 		if (dir == RDIR)
 		{
-			Point objBot = obj->GetAABB()->GetPosition() + sf::Vector2f(-2, obj->GetAABB()->GetExtents().y-4);
+			Circle circle(obj->GetAABB());
 			Slope slp = tile->GetSlope(0, 1);
-			if (LineToCircle(slp.bgn, slp.end, objBot, 2))
+			if (LineToCircle(slp.bgn, slp.end, circle.center, circle.radius))
 			{
-				auto yOffset = GetYOffSet(GetXDist(slp.bgn, objBot),
+				auto yOffset = GetYOffSet(GetXDist(slp.bgn, circle.center),
 					slp.DistY(),
 					slp.bgn.y,
 					obj->GetAABB()->GetPosition().y,
-					tile->GetAABB()->GetRect().getSize().y);
+					tile->GetTileHeight());
 
 				obj->Move(sf::Vector2f(0, yOffset));
+			}
+		}
+
+		if (dir == LDIR)
+		{
+			Circle circle(obj->GetAABB());
+			Slope slp = tile->GetSlope(1, 0);
+
+			if (!slp.IsPointAboveLine(circle.center))
+			{
+				auto yOffset = GetYOffSet(GetXDist(circle.center, slp.bgn),
+					slp.DistY(),
+					slp.bgn.y,
+					obj->GetAABB()->GetPosition().y,
+					tile->GetTileHeight());
+
+				obj->Move(sf::Vector2f(0, -yOffset));
 			}
 		}
 		return;
 	case Types::DIAGD:
 	{
+		if (dir == DDIR)
+		{
+			Circle circle(obj->GetAABB());
+			Slope slp = obj->GetDirection() ? tile->GetSlope(1, 0) : tile->GetSlope(0, 1);
+
+			if (slp.IsPointAboveLine(circle.center))
+			{
+				std::cout << "is above the line";
+			}
+		}
+
 		if (dir == LDIR)
 		{
-			Point objBot = obj->GetAABB()->GetPosition() + sf::Vector2f(-2, obj->GetAABB()->GetExtents().y - 4);
+			Circle circle(obj->GetAABB());
 			Slope slp = tile->GetSlope(1, 0);
-			if (LineToCircle(slp.bgn, slp.end, objBot, 2))
+			if (LineToCircle(slp.bgn, slp.end, circle.center, circle.radius))
 			{
-				auto yOffset = GetYOffSet(GetXDist(objBot, slp.bgn),
+				auto yOffset = GetYOffSet(GetXDist(circle.center, slp.bgn),
 					slp.DistY(),
 					slp.bgn.y,
 					obj->GetAABB()->GetPosition().y,
-					tile->GetAABB()->GetRect().getSize().y);
+					tile->GetTileHeight());
 
 				obj->Move(sf::Vector2f(0, yOffset));
+				obj->SetOnGround(true);
+			}
+		}
+
+		if (dir == RDIR)
+		{
+			Circle circle(obj->GetAABB());
+			Slope slp = tile->GetSlope(0, 1);
+
+			if (slp.IsPointAboveLine(circle.center))
+			{
+				auto yOffset = GetYOffSet(GetXDist(slp.bgn, circle.center),
+					slp.DistY(),
+					slp.bgn.y,
+					obj->GetAABB()->GetPosition().y,
+					tile->GetTileHeight());
+
+				obj->Move(sf::Vector2f(0, -yOffset));
 			}
 		}
 		return;
