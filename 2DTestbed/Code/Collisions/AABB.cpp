@@ -1,4 +1,5 @@
 #include "AABB.h"
+#include "../Utilities/Utilities.h"
 #include "../Game/Constants.h"
 #include <limits>
 
@@ -105,6 +106,40 @@ bool AABB::IntersectsMoving(AABB* box, const Point& va, const Point& vb, float& 
 	}
 
 	return true;
+}
+
+Line AABB::GetSide(Side side)
+{
+	switch (side)
+	{
+	case Left:
+		return Line(m_min, Point(m_min.x, m_max.y));
+	case Right:
+		return Line(Point(m_max.x, m_min.y), m_max);
+	case Top:
+		return Line(m_min, Point(m_max.x, m_min.y));
+	case Bottom:
+		return Line(Point(m_min.x, m_max.y), m_max);
+	default:
+		throw std::out_of_range("Side enum value doesn't exist");
+	}
+}
+
+Point AABB::GetPoint(Side side)
+{
+	switch (side)
+	{
+	case Left:
+		return m_center - Point(m_rect.getSize().x, 0);
+	case Right:
+		return m_center + Point(m_rect.getSize().x, 0);
+	case Top:
+		return m_center - Point(0, m_rect.getSize().y);
+	case Bottom:
+		return m_center + Point(0, m_rect.getSize().y);
+	default:
+		throw std::out_of_range("Side enum value doesn't exist");
+	}
 }
 
 void AABB::Move(float x, float y)

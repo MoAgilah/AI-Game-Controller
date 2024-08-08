@@ -68,12 +68,12 @@ bool Line::IntersectsPoint(const Point& pnt) const
 	return d1 + d2 >= lineLen - buffer && d1 + d2 <= lineLen + buffer;
 }
 
-Circle::Circle(const Point& position, const Point& offset, float radius)
-	: center(position + offset), radius(radius)
+Circle::Circle(const Point& position, float radius)
+	: center(position), radius(radius)
 {}
 
 Circle::Circle(AABB* box, float radius)
-	: Circle(box->GetPosition(), Point(0, box->GetRect().getSize().y), radius)
+	: Circle(box->GetPoint(Side::Bottom), radius)
 {}
 
 bool Circle::IntersectsPoint(const Point& pnt) const

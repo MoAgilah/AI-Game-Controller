@@ -2,6 +2,13 @@
 #include "../Utilities/Point.h"
 #include <SFML/Graphics.hpp>
 
+enum Side
+{
+	Left, Right, Top, Bottom
+};
+
+struct Line;
+
 class AABB
 {
 public:
@@ -19,6 +26,8 @@ public:
 
 	AABB* GetBox() { return this; }
 	const sf::RectangleShape& GetRect() { return m_rect; }
+	Line GetSide(Side side);
+	Point GetPoint(Side side);
 
 	void SetPosition(const sf::Vector2f& pos) { m_rect.setPosition(pos); }
 	const sf::Vector2f& GetPosition() const { return m_rect.getPosition(); }
@@ -36,14 +45,17 @@ public:
 
 	bool GetHit() const { return m_hit; }
 	void SetHit(bool hit) { m_hit = hit; }
+
+
+	Point m_min;
 	Point m_max;
 private:
 
 	bool m_hit = false;
 	int m_boxNumber;
 	static int s_count;
-	Point m_min;
-
+	/*Point m_min;
+	Point m_max;*/
 	Point m_center;
 	Point m_extents;
 	Point m_overlap;

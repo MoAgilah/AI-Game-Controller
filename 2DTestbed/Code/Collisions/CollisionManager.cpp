@@ -229,6 +229,8 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 	float objBottom = obj->GetAABB()->GetPosition().y + obj->GetAABB()->GetExtents().y;
 	float tileTop = tile->GetAABB()->GetPosition().y - tile->GetAABB()->GetExtents().y;
 
+	auto y = obj->GetAABB()->GetPoint(Side::Bottom);
+
 	switch (tile->GetType())
 	{
 	case Types::OWAY:

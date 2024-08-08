@@ -24,7 +24,7 @@ float GetYDist(const Point& p1, const Point& p2);
 
 struct Circle
 {
-	Circle(const Point& position, const Point& offset, float radius);
+	Circle(const Point& position, float radius);
 	Circle(AABB* box, float radius);
 
 	bool IntersectsPoint(const Point& pnt) const;
