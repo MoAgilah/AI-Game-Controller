@@ -1,18 +1,15 @@
 #pragma once
+#include "../Utilities/Point.h"
 
 //Dcontrol shows debug for the controller
 #define DControl
 
 //DRender shows debug for the testbed
 //#define DRender
-
-//scale factor
-constexpr float sX = 2.34375f;
-constexpr float sY = 2.5f;
-
-//screen dimensions
-constexpr int scrX = 600;
-constexpr int scrY = 600;
+const Point screenDim(600, 600);
+const Point scale(2.34375f, 2.5f);
+const Point maxVelocity(4.5f, 4.5f);
+const Point scaledMaxVel(maxVelocity.x * scale.x, maxVelocity.y * scale.y);
 
 constexpr bool Automated = false;
 constexpr float LeftMost = 10.f;

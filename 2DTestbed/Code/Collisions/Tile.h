@@ -1,25 +1,13 @@
 #pragma once
 
 #include "../Collisions/AABB.h"
+#include "../Utilities/Utilities.h"
 #include <SFML/Graphics.hpp>
 #include <vector>
 
 enum Types
 {
 	EMPTY, GRND, WALL, DIAGU, DIAGD, CRN, OWAY
-};
-
-struct Slope
-{
-	Slope(const sf::ConvexShape& tri, int bgn, int end)
-		: bgn(tri.getPoint(bgn)), end(tri.getPoint(end))
-	{}
-
-	float DistY() const { return end.y - bgn.y; }
-	bool IsPointAboveLine(const Point& pnt);
-
-	Point bgn;
-	Point end;
 };
 
 class Tile
@@ -46,7 +34,7 @@ public:
 
 	AABB* GetAABB() { return &m_aabb; }
 	const sf::RectangleShape& GetRect() { return m_aabb.GetRect(); }
-	Slope GetSlope(int bgn, int end) { return Slope(m_slope, bgn, end); }
+	Line GetSlope(int bgn, int end) { return Line(m_slope, bgn, end); }
 
 	float GetTileHeight() { return m_aabb.GetRect().getSize().y; }
 

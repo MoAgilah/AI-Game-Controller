@@ -9,7 +9,7 @@
 
 struct SpawnData
 {
-	bool initialDir;
+	bool initialDir = true;
 	sf::Vector2f initialPos;
 };
 
@@ -100,13 +100,13 @@ public:
 
 	float GetXVelocity() const { return m_velocity.x; }
 	void SetXVelocity(float x) { m_velocity.x = x; }
-	void IncrementXVelocity(float x) { m_velocity.x += x; }
-	void DecrementXVelocity(float x) { m_velocity.x -= x; }
+	void IncrementXVelocity(float x);
+	void DecrementXVelocity(float x);
 
 	float GetYVelocity() const { return m_velocity.y; }
 	void SetYVelocity(float y) { m_velocity.y = y; }
-	void IncrementYVelocity(float y) { m_velocity.y += y; }
-	void DecrementYVelocity(float y) { m_velocity.y -= y; }
+	void IncrementYVelocity(float y);
+	void DecrementYVelocity(float y);
 
 	bool GetOnGround() const { return m_onGround; }
 	void SetOnGround(bool grnd) { m_onGround = grnd; }

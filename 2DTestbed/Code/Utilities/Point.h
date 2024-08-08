@@ -9,9 +9,6 @@ public:
 	Point(const sf::Vector2f& vec);
 	~Point() = default;
 
-	bool PointToCircle(const Point& center, float radius) const;
-	bool PointToLineSegmentIntersects(const Point& start, const Point& end) const;
-
 	float& operator[] (std::size_t index);
 	const float& operator[] (std::size_t index) const;
 	friend Point operator-(const Point& a, const Point& b);

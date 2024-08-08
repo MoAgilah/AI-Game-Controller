@@ -87,8 +87,8 @@ bool Body::CircleToAABB(sf::CircleShape circle, AABB* box)
 	//convert object into sphere
 	sf::Vector2f Obj1Size = sf::Vector2f(box->GetOrigin().x * 2, box->GetOrigin().y * 2);
 
-	Obj1Size.x *= sX;
-	Obj1Size.y *= sY;
+	Obj1Size.x *= scale.x;
+	Obj1Size.y *= scale.y;
 
 	float Radius1 = (Obj1Size.x + Obj1Size.y) * 0.25f;
 

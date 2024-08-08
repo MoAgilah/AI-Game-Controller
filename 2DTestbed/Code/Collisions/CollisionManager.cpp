@@ -2,6 +2,7 @@
 #include <format>
 #include <algorithm>
 
+#include "../Utilities/Utilities.h"
 #include "../Controller/CtrlMgr.h"
 
 #include "../Game/Camera.h"
@@ -82,18 +83,12 @@ namespace
 		return id == TexID::QBox || id == TexID::SBox;
 	}
 
-	struct Circle
+	float GetYOffSet(float pDistX, float lDistY, float slopeY, float currY, float tileHeight)
 	{
-		Circle(AABB* box)
-		{
-			center = box->GetPosition() + sf::Vector2f(-2, box->GetExtents().y - 4);
-		}
-
-		const float radius = 2;
-		Point center;
-	};
-
-	float GetXDist(const Point& p1, const Point& p2) { return p2.x - p1.x; }
+		auto percent = pDistX / lDistY;
+		auto colHeight = lDistY * percent + slopeY;
+		return ((currY - colHeight) / 16);
+	}
 }
 
 CollisionManager::CollisionManager()
@@ -227,8 +222,6 @@ void CollisionManager::DynamicObjectToTileCollisions(DynamicObject* obj)
 			obj->SetOnGround(false);
 }
 
-
-
 void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* tile)
 {
 	Direction dir = GetFacingDirection(obj);
@@ -258,24 +251,25 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 	{
 		if (dir == DDIR)
 		{
-			Circle circle(obj->GetAABB());
-			Slope slp = obj->GetDirection() ? tile->GetSlope(0, 1) : tile->GetSlope(1, 0);
-
-			if (slp.IsPointAboveLine(circle.center))
+			Line line = tile->GetSlope(0, 1);
+			Circle circle(obj->GetAABB(), 2);
+			if (line.IsPointAboveLine(circle.center))
 			{
-				std::cout << "is above the line";
+				Capsule capsule(line, 6);
+				if (capsule.IntersectsCircle(circle))
+					obj->SetOnGround(true);
 			}
 		}
 
 		if (dir == RDIR)
 		{
-			Circle circle(obj->GetAABB());
-			Slope slp = tile->GetSlope(0, 1);
-			if (LineToCircle(slp.bgn, slp.end, circle.center, circle.radius))
+			Line line = tile->GetSlope(0, 1);
+			Circle circle(obj->GetAABB(), 4);
+			if (circle.IntersectsLineSegment(line))
 			{
-				auto yOffset = GetYOffSet(GetXDist(slp.bgn, circle.center),
-					slp.DistY(),
-					slp.bgn.y,
+				auto yOffset = GetYOffSet(GetXDist(line.start, circle.center),
+					line.DistY(),
+					line.start.y,
 					obj->GetAABB()->GetPosition().y,
 					tile->GetTileHeight());
 
@@ -285,71 +279,68 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 
 		if (dir == LDIR)
 		{
-			Circle circle(obj->GetAABB());
-			Slope slp = tile->GetSlope(1, 0);
-
-			if (!slp.IsPointAboveLine(circle.center))
+			Line line = tile->GetSlope(1, 0);
+			Circle circle(obj->GetAABB(), 2);
+			if (!line.IsPointAboveLine(circle.center))
 			{
-				auto yOffset = GetYOffSet(GetXDist(circle.center, slp.bgn),
-					slp.DistY(),
-					slp.bgn.y,
+				auto yOffset = GetYOffSet(GetXDist(circle.center, line.start),
+					line.DistY(),
+					line.start.y,
 					obj->GetAABB()->GetPosition().y,
 					tile->GetTileHeight());
 
-				obj->Move(sf::Vector2f(0, -yOffset));
+				obj->Move(sf::Vector2f(0, -yOffset * 2));
 			}
 		}
 		return;
+	}
 	case Types::DIAGD:
 	{
 		if (dir == DDIR)
 		{
-			Circle circle(obj->GetAABB());
-			Slope slp = obj->GetDirection() ? tile->GetSlope(1, 0) : tile->GetSlope(0, 1);
-
-			if (slp.IsPointAboveLine(circle.center))
+			Line line = tile->GetSlope(0, 1);
+			Circle circle(obj->GetAABB(), 2);
+			if (line.IsPointAboveLine(circle.center))
 			{
-				std::cout << "is above the line";
+				Capsule capsule(line, 6);
+				if (capsule.IntersectsCircle(circle))
+					obj->SetOnGround(true);
 			}
 		}
 
 		if (dir == LDIR)
 		{
-			Circle circle(obj->GetAABB());
-			Slope slp = tile->GetSlope(1, 0);
-			if (LineToCircle(slp.bgn, slp.end, circle.center, circle.radius))
+			Line line = tile->GetSlope(1, 0);
+			Circle circle(obj->GetAABB(),4);
+			if (circle.IntersectsLineSegment(line))
 			{
-				auto yOffset = GetYOffSet(GetXDist(circle.center, slp.bgn),
-					slp.DistY(),
-					slp.bgn.y,
+				auto yOffset = GetYOffSet(GetXDist(circle.center, line.start),
+					line.DistY(),
+					line.start.y,
 					obj->GetAABB()->GetPosition().y,
 					tile->GetTileHeight());
 
 				obj->Move(sf::Vector2f(0, yOffset));
-				obj->SetOnGround(true);
 			}
 		}
 
 		if (dir == RDIR)
 		{
-			Circle circle(obj->GetAABB());
-			Slope slp = tile->GetSlope(0, 1);
-
-			if (slp.IsPointAboveLine(circle.center))
+			Line line = tile->GetSlope(0, 1);
+			Circle circle(obj->GetAABB(), 2);
+			if (line.IsPointAboveLine(circle.center))
 			{
-				auto yOffset = GetYOffSet(GetXDist(slp.bgn, circle.center),
-					slp.DistY(),
-					slp.bgn.y,
+				auto yOffset = GetYOffSet(GetXDist(line.start, circle.center),
+					line.DistY(),
+					line.start.y,
 					obj->GetAABB()->GetPosition().y,
 					tile->GetTileHeight());
 
-				obj->Move(sf::Vector2f(0, -yOffset));
+				obj->Move(sf::Vector2f(0, -yOffset*2));
 			}
 		}
 		return;
 	}
-	}
-
 	}
 
 	obj->SetOnGround(false);
@@ -425,7 +416,7 @@ void CollisionManager::PlayerToQBoxResolutions(Player* ply, QBox* box)
 		if (box->GetCanHit())//if not yet been hit
 		{
 			box->SetJustHit(true);
-			GameManager::GetGameMgr()->GetLevel()->AddObject(sf::Vector2f(box->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * sY) - (box->GetOrigin().y * sY) + 4.f));
+			GameManager::GetGameMgr()->GetLevel()->AddObject(sf::Vector2f(box->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * scale.y) - (box->GetOrigin().y * scale.y) + 4.f));
 			//ply->UpdateFitness(100);
 		}
 	}
@@ -594,40 +585,3 @@ Direction CollisionManager::GetFacingDirection(DynamicObject* obj)
 
 	return currentDir;
 }
-
-bool CollisionManager::LineToCircle(const Point& start, const Point& end, const Point& center, float radius)
-{
-	if (start.PointToCircle(center, radius))
-		return true;
-
-	if (end.PointToCircle(center, radius))
-		return true;
-
-	// get length of the line
-	auto len = pnt::distance(start, end);
-
-	// get dot product of the line and circle
-	float dot = (((center.x - start.x) * (end.x - start.x)) + ((center.y - start.y) * (end.y - start.y))) / std::pow(len, 2);
-
-	// find the closest point on the line
-	Point closestPnt = start + (dot * (end - start));
-
-	// is this point actually on the line segment?
-	// if so keep going, but if not, return false
-	if (!closestPnt.PointToLineSegmentIntersects(start, end))
-		return false;
-
-	// get distance to closest point
-	float distance = pnt::distance(center, closestPnt);
-
-	return distance <= radius;
-}
-
-float CollisionManager::GetYOffSet(float pDistX, float lDistY, float slopeY, float currY, float tileHeight)
-{
-	auto percent = pDistX / lDistY;
-	auto colHeight = lDistY * percent + slopeY;
-	return ((currY - colHeight) / 16);
-}
-
-

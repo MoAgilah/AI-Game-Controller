@@ -27,7 +27,7 @@ AABB::AABB(const sf::Vector2f& size)
 void AABB::Reset(const sf::Vector2f& size)
 {
 	m_rect.setSize(size);
-	m_rect.setScale(sX, sY);
+	m_rect.setScale(scale);
 	m_rect.setOrigin(size * 0.5f);
 }
 

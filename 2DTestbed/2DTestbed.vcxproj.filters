@@ -192,6 +192,9 @@
     <ClCompile Include="Code\Utilities\Point.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Utilities\Utilities.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Collisions\CollisionManager.h">
@@ -318,6 +321,9 @@
       <Filter>Header Files\Collisions</Filter>
     </ClInclude>
     <ClInclude Include="Code\Utilities\Point.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Utilities\Utilities.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
   </ItemGroup>

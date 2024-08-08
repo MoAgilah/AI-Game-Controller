@@ -12,8 +12,7 @@
 
 int main()
 {
-	sf::Vector2i screenDimensions(scrX, scrY);
-	sf::RenderWindow window(sf::VideoMode(screenDimensions.x, screenDimensions.y), "SFML works!");
+	sf::RenderWindow window(sf::VideoMode((int)screenDim.x, (int)screenDim.y), "SFML works!");
 	window.setFramerateLimit((unsigned int)FPS);
 	float t = 0.0f;
 	float dt = 1.f / FPS;
@@ -32,6 +31,7 @@ int main()
 	sf::Clock clock;
 	sf::Event event;
 	float currentTime = clock.getElapsedTime().asSeconds();
+	float accumalator = 0;
 	while (window.isOpen())
 	{
 
@@ -52,7 +52,10 @@ int main()
 		CtrlMgr::GetCtrlMgr()->GetController()->GetAnnView()->Update();
 
 		window.clear(sf::Color::White);
-		while (frameTime > 0.0)
+
+		accumalator += frameTime;
+
+		while (accumalator >= dt)
 		{
 			float deltaTime = std::min(frameTime, dt);
 			//do update
@@ -62,7 +65,7 @@ int main()
 			gameMgr.Update(deltaTime);
 
 			//end update
-			frameTime -= deltaTime;
+			accumalator -= deltaTime;
 			t += deltaTime;
 		}
 

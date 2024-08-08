@@ -196,6 +196,7 @@
     <ClCompile Include="Code\NEAT\genotype.cpp" />
     <ClCompile Include="Code\NEAT\phenotype.cpp" />
     <ClCompile Include="Code\Utilities\Point.cpp" />
+    <ClCompile Include="Code\Utilities\Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Collisions\AABB.h" />
@@ -240,6 +241,7 @@
     <ClInclude Include="Code\NEAT\resource.h" />
     <ClInclude Include="Code\NEAT\Utils.h" />
     <ClInclude Include="Code\Utilities\Point.h" />
+    <ClInclude Include="Code\Utilities\Utilities.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Resources\TileTypes.txt" />

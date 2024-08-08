@@ -49,12 +49,12 @@ void Object::SetDirection(bool dir)
 	if (m_direction)
 	{
 		// flip X
-		m_sprite->SetScale({ sX, sY });
+		m_sprite->SetScale(scale);
 	}
 	else
 	{
 		//unflip x
-		m_sprite->SetScale({ -sX, sY });
+		m_sprite->SetScale({ -scale.x, scale.y });
 	}
 }
 
@@ -66,6 +66,34 @@ DynamicObject::DynamicObject(TexID sprId, const sf::Vector2f& boxSize)
 DynamicObject::DynamicObject(AnimatedSprite* sprite, const sf::Vector2f& boxSize)
 	: Object(sprite, boxSize)
 {
+}
+
+void DynamicObject::IncrementXVelocity(float x)
+{
+	m_velocity.x += x;
+	if (m_velocity.x > scaledMaxVel.x)
+		m_velocity.x = scaledMaxVel.x;
+}
+
+void DynamicObject::DecrementXVelocity(float x)
+{
+	m_velocity.x -= x;
+	if (m_velocity.x < -scaledMaxVel.x)
+		m_velocity.x = -scaledMaxVel.x;
+}
+
+void DynamicObject::IncrementYVelocity(float y)
+{
+	m_velocity.y += y;
+	if (m_velocity.y > scaledMaxVel.y)
+		m_velocity.y = scaledMaxVel.y;
+}
+
+void DynamicObject::DecrementYVelocity(float y)
+{
+	m_velocity.y -= y;
+	if (m_velocity.y < -scaledMaxVel.y)
+		m_velocity.y = -scaledMaxVel.y;
 }
 
 void DynamicObject::Move(float x, float y)

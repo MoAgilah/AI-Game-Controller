@@ -18,7 +18,7 @@
 World::World()
 {
 	m_backgroundSpr.SetTexture(TexID::Background);
-	m_backgroundSpr.SetScale(sf::Vector2f(sX, sY));
+	m_backgroundSpr.SetScale(sf::Vector2f(scale));
 	m_backgroundSpr.SetOrigin(sf::Vector2f(0, 0));
 	m_backgroundSpr.SetPosition(sf::Vector2f(0, -480));
 
@@ -103,10 +103,10 @@ void World::CheckIsInView()
 {
 	auto camera = GameManager::GetGameMgr()->GetCamera();
 
-	for (auto enemy : m_enemies)
+	for (auto& enemy : m_enemies)
 		enemy->SetActive(camera->IsInView(enemy->GetAABB()));
 
-	for (auto object : m_objects)
+	for (auto& object : m_objects)
 		object->SetActive(camera->IsInView(object->GetAABB()));
 }
 
@@ -249,17 +249,17 @@ void World::AddForeGroundSprites()
 {
 	auto tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(113, 10);
 	m_sprites[(int)Sprites::Pipe1].SetTexture(TexID::Pipe1);
-	m_sprites[(int)Sprites::Pipe1].SetScale(sf::Vector2f(sX, sY));
+	m_sprites[(int)Sprites::Pipe1].SetScale(sf::Vector2f(scale));
 	m_sprites[(int)Sprites::Pipe1].SetPosition(tmp.GetPosition() + sf::Vector2f(18.5f, 0.f));
 
 	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(140, 9);
 	m_sprites[(int)Sprites::Pipe2].SetTexture(TexID::Pipe2);
-	m_sprites[(int)Sprites::Pipe2].SetScale(sf::Vector2f(sX, sY));
+	m_sprites[(int)Sprites::Pipe2].SetScale(sf::Vector2f(scale));
 	m_sprites[(int)Sprites::Pipe2].SetPosition(tmp.GetPosition() - sf::Vector2f(18.5f, 0.f));
 
 	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(284, 9);
 	m_sprites[(int)Sprites::Pipe3].SetTexture(TexID::Pipe3);
-	m_sprites[(int)Sprites::Pipe3].SetScale(sf::Vector2f(sX, sY));
+	m_sprites[(int)Sprites::Pipe3].SetScale(sf::Vector2f(scale));
 	m_sprites[(int)Sprites::Pipe3].SetPosition(tmp.GetPosition() + sf::Vector2f(18.5f, 0.f));
 }
 
@@ -287,7 +287,7 @@ void World::UpdateGUI()
 {
 	auto view = GameManager::GetGameMgr()->GetCamera()->GetView();
 
-	m_sprites[(int)Sprites::Name].SetPosition(sf::Vector2f((view.getCenter().x - scrX * 0.5f) + 30, 20));
+	m_sprites[(int)Sprites::Name].SetPosition(sf::Vector2f((view.getCenter().x - screenDim.x * 0.5f) + 30, 20));
 
 	m_texts[(int)Texts::Name].setPosition(m_sprites[(int)Sprites::Name].GetPosition() + sf::Vector2f((float)m_sprites[(int)Sprites::Name].GetTextureSize().x * 0.5f + 20, -10));
 

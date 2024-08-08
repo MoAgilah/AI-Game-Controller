@@ -30,7 +30,7 @@ void Sprite::SetFrameSize(const sf::Vector2u& size, int currentFrame, int curren
 
 	//set first frame to display
 	SetTextureRect(sf::IntRect(currentFrame * m_frameSize.x, currentAnim * m_frameSize.y, m_frameSize.x, m_frameSize.y));
-	SetScale(sf::Vector2f(sX, sY));
+	SetScale(sf::Vector2f(scale));
 	SetOrigin(sf::Vector2f((float)m_frameSize.x / 2.f, (float)m_frameSize.y / 2.f));
 }
 
