@@ -52,6 +52,10 @@ public:
 	void SetIsCrouched(bool crouched) { m_crouched = crouched; }
 
 	void ForceFall();
+	void ForceStop(bool stop)
+	{
+		m_forceStop = stop;
+	}
 
 	void JustBeenHit(bool hit);
 	void JusyHitEnemy(float val = 1);
@@ -68,6 +72,7 @@ private:
 	void ProcessInput();
 	virtual void Input();
 
+	bool m_forceStop = false;
 	bool m_super = false;
 	bool m_crouched = false;
 	bool m_justBeenHit = false;

@@ -226,25 +226,30 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 {
 	Direction dir = GetFacingDirection(obj);
 
-	float objBottom = obj->GetAABB()->GetPosition().y + obj->GetAABB()->GetExtents().y;
-	float tileTop = tile->GetAABB()->GetPosition().y - tile->GetAABB()->GetExtents().y;
-
-	auto y = obj->GetAABB()->GetPoint(Side::Bottom);
+	Point objBottomPoint = obj->GetAABB()->GetPoint(Side::Bottom);
+	Line tileTopEdge = tile->GetAABB()->GetSide(Side::Top);
 
 	switch (tile->GetType())
 	{
 	case Types::OWAY:
 	case Types::GRND:
 		if (dir == DDIR)
-			if (objBottom >= tileTop)
+		{
+			if (!tileTopEdge.IsPointAboveLine(objBottomPoint))
 				ResolveObjectToBoxTop(obj, tile->GetAABB());
+		}
 		if (dir == LDIR || dir == RDIR)
-			ResolveObjectToBoxTop(obj, tile->GetAABB());
+		{
+			if (tileTopEdge.IsPointAboveLine(objBottomPoint))
+				ResolveObjectToBoxTop(obj, tile->GetAABB());
+		}
 		return;
 	case Types::CRN:
 		if (dir == DDIR || dir == UDIR)
-			if (objBottom > tileTop)
+		{
+			if (!tileTopEdge.IsPointAboveLine(objBottomPoint))
 				ResolveObjectToBoxHorizontally(obj, tile->GetAABB());
+		}
 		return;
 	case Types::WALL:
 		ResolveObjectToBoxHorizontally(obj, tile->GetAABB());
@@ -344,8 +349,6 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 		return;
 	}
 	}
-
-	obj->SetOnGround(false);
 }
 
 void CollisionManager::PlayerToObjectCollisions(Player* ply, Object* obj)
@@ -488,14 +491,14 @@ void CollisionManager::DynamicObjectToBoxResolutions(Direction dirOfTravel, Dyna
 	{
 	case UDIR:
 		if (resolveUpDir)
-			ResolveObjectToBoxBottom(obj, box);
+				ResolveObjectToBoxBottom(obj, box);
 		break;
 	case DDIR:
-		ResolveObjectToBoxTop(obj, box);
+			ResolveObjectToBoxTop(obj, box);
 		break;
 	case LDIR:
 	case RDIR:
-		ResolveObjectToBoxHorizontally(obj, box);
+			ResolveObjectToBoxHorizontally(obj, box);
 		break;
 	}
 }
@@ -529,7 +532,7 @@ void CollisionManager::ResolveObjectToBoxBottom(DynamicObject* obj, AABB* box)
 {
 	obj->Move(0, box->GetOverlap().y);
 	if (IsPlayerObject(obj->GetID()))
-		((Player*)obj)->SetAirbourne(false);
+		((Player*)obj)->ForceFall();
 }
 
 void CollisionManager::ResolveObjectToBoxHorizontally(DynamicObject* obj, AABB* box)

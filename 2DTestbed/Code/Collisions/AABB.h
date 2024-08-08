@@ -46,16 +46,13 @@ public:
 	bool GetHit() const { return m_hit; }
 	void SetHit(bool hit) { m_hit = hit; }
 
-
-	Point m_min;
-	Point m_max;
 private:
 
 	bool m_hit = false;
 	int m_boxNumber;
 	static int s_count;
-	/*Point m_min;
-	Point m_max;*/
+	Point m_min;
+	Point m_max;
 	Point m_center;
 	Point m_extents;
 	Point m_overlap;
