@@ -509,14 +509,14 @@ void CollisionManager::DynamicObjectToDynamicObject(DynamicObject* obj1, Dynamic
 	if (obj1->GetAABB()->IntersectsMoving(obj2->GetAABB(), obj1->GetVelocity(), obj2->GetVelocity(), tFirst, tLast))
 	{
 		obj1->SetPosition(
-		std::lerp(obj1->GetPrevPostion().x, obj1->GetPosition().y, tFirst),
-		std::lerp(obj1->GetPrevPostion().x, obj1->GetPosition().y, tFirst));
+		std::lerp(obj1->GetPrevPosition().x, obj1->GetPosition().y, tFirst),
+		std::lerp(obj1->GetPrevPosition().x, obj1->GetPosition().y, tFirst));
 		obj1->GetAABB()->Update(obj1->GetPosition());
 		obj1->SetDirection(!obj1->GetDirection());
 
 		obj2->SetPosition(
-			std::lerp(obj2->GetPrevPostion().x, obj2->GetPosition().y, tFirst),
-			std::lerp(obj2->GetPrevPostion().x, obj2->GetPosition().y, tFirst));
+			std::lerp(obj2->GetPrevPosition().x, obj2->GetPosition().y, tFirst),
+			std::lerp(obj2->GetPrevPosition().x, obj2->GetPosition().y, tFirst));
 		obj2->GetAABB()->Update(obj2->GetPosition());
 		obj2->SetDirection(!obj2->GetDirection());
 	}
@@ -545,7 +545,7 @@ void CollisionManager::ResolveObjectToBoxHorizontally(DynamicObject* obj, AABB* 
 Direction CollisionManager::GetDirTravelling(DynamicObject* obj)
 {
 	//direction travelling
-	sf::Vector2f dirV = obj->GetPosition() - obj->GetPrevPostion();
+	sf::Vector2f dirV = obj->GetPosition() - obj->GetPrevPosition();
 	Direction dir = DDIR;
 
 	//if movement in x

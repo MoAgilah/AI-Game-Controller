@@ -103,7 +103,7 @@ Player * Controller::GetCurrentPlayer()
 bool Controller::Update()
 {
 	//if havent moved in 2000 ticks
-	if ((m_vecMarios[currPlayer]->GetPosition().x == m_vecMarios[currPlayer]->GetPrevPostion().x && m_iTicks++ > CParams::iNumTicks) ||
+	if ((m_vecMarios[currPlayer]->GetPosition().x == m_vecMarios[currPlayer]->GetPrevPosition().x && m_iTicks++ > CParams::iNumTicks) ||
 		//if been killed
 		m_vecMarios[currPlayer]->GetIsAlive() == false ||
 		//if level completed
@@ -120,7 +120,7 @@ bool Controller::Update()
 		}
 	}
 	//if have moved right before timing out
-	else if (m_vecMarios[currPlayer]->GetPosition().x != m_vecMarios[currPlayer]->GetPrevPostion().x && m_vecMarios[currPlayer]->GetPosition().x > 75.0f)
+	else if (m_vecMarios[currPlayer]->GetPosition().x != m_vecMarios[currPlayer]->GetPrevPosition().x && m_vecMarios[currPlayer]->GetPosition().x > 75.0f)
 	{
 		m_iTicks = 0;
 	}
