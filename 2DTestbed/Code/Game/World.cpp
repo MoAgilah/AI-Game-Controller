@@ -113,6 +113,7 @@ void World::CheckIsInView()
 void World::AddObject(const sf::Vector2f& pos)
 {
 	m_objects.push_back(std::make_shared<Mushroom>(pos));
+	m_objects.back()->SetDirection(true);
 }
 
 void World::AddEnemies()
