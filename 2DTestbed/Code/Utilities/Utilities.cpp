@@ -48,7 +48,7 @@ Line::Line(const sf::ConvexShape& tri, int bgn, int end)
 
 bool Line::IsPointAboveLine(const Point & pnt) const
 {
-	float s = (end.x - start.x) * (end.y - pnt.y) - (end.y - start.y) * (end.x - pnt.x);
+	float s = (end.x - start.x) * (pnt.y - start.y) - (end.y - start.y) * (pnt.x - start.x);
 	return s > 0;
 }
 

@@ -235,19 +235,19 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 	case Types::GRND:
 		if (dir == DDIR)
 		{
-			if (!tileTopEdge.IsPointAboveLine(objBottomPoint))
+			if (tileTopEdge.IsPointAboveLine(objBottomPoint))
 				ResolveObjectToBoxTop(obj, tile->GetAABB());
 		}
 		if (dir == LDIR || dir == RDIR)
 		{
-			if (tileTopEdge.IsPointAboveLine(objBottomPoint))
+			if (!tileTopEdge.IsPointAboveLine(objBottomPoint))
 				ResolveObjectToBoxTop(obj, tile->GetAABB());
 		}
 		return;
 	case Types::CRN:
 		if (dir == DDIR || dir == UDIR)
 		{
-			if (!tileTopEdge.IsPointAboveLine(objBottomPoint))
+			if (tileTopEdge.IsPointAboveLine(objBottomPoint))
 				ResolveObjectToBoxHorizontally(obj, tile->GetAABB());
 		}
 		return;
@@ -260,7 +260,7 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 		{
 			Line line = tile->GetSlope(0, 1);
 			Circle circle(obj->GetAABB(), 2);
-			if (line.IsPointAboveLine(circle.center))
+			if (!line.IsPointAboveLine(circle.center))
 			{
 				Capsule capsule(line, 6);
 				if (capsule.IntersectsCircle(circle))
@@ -288,7 +288,7 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 		{
 			Line line = tile->GetSlope(1, 0);
 			Circle circle(obj->GetAABB(), 2);
-			if (!line.IsPointAboveLine(circle.center))
+			if (line.IsPointAboveLine(circle.center))
 			{
 				auto yOffset = GetYOffSet(GetXDist(circle.center, line.start),
 					line.DistY(),
@@ -307,7 +307,7 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 		{
 			Line line = tile->GetSlope(0, 1);
 			Circle circle(obj->GetAABB(), 2);
-			if (line.IsPointAboveLine(circle.center))
+			if (!line.IsPointAboveLine(circle.center))
 			{
 				Capsule capsule(line, 6);
 				if (capsule.IntersectsCircle(circle))
@@ -335,7 +335,7 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 		{
 			Line line = tile->GetSlope(0, 1);
 			Circle circle(obj->GetAABB(), 2);
-			if (line.IsPointAboveLine(circle.center))
+			if (!line.IsPointAboveLine(circle.center))
 			{
 				auto yOffset = GetYOffSet(GetXDist(line.start, circle.center),
 					line.DistY(),
