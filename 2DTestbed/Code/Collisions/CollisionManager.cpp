@@ -404,7 +404,12 @@ void CollisionManager::ObjectToObjectCollisions(Object* obj1, Object* obj2)
 		if (obj2->Intersects(obj1))
 		{
 			DynamicObject* dynObj = (DynamicObject*)obj1;
-			DynamicObjectToBoxResolutions((Direction)GetDirTravelling(dynObj), dynObj, obj2->GetAABB());
+
+			Point delta = obj2->GetAABB()->GetPosition() - dynObj->GetPrevPosition();
+			delta = Point(std::abs(delta.x), std::abs(delta.y));
+			Point prevOverlap = (dynObj->GetAABB()->GetExtents() + obj2->GetAABB()->GetExtents()) - delta;
+
+			DynamicObjectToBoxResolutions((Direction)GetDirTravelling(dynObj), prevOverlap, dynObj, obj2->GetAABB());
 		}
 	}
 	else
@@ -415,40 +420,70 @@ void CollisionManager::ObjectToObjectCollisions(Object* obj1, Object* obj2)
 
 void CollisionManager::PlayerToQBoxResolutions(Player* ply, QBox* box)
 {
-	auto dir = (Direction)GetDirTravelling(ply);
+	// calculate the overlap
+	Point delta = box->GetAABB()->GetPosition() - ply->GetPrevPosition();
+	delta = Point(std::abs(delta.x), std::abs(delta.y));
+	Point prevOverlap = (ply->GetAABB()->GetExtents() + box->GetAABB()->GetExtents()) - delta;
+
+	auto dir = GetDirTravelling(ply);
+
 	if (dir == Direction::UDIR)
 	{
-		if (box->GetCanHit())//if not yet been hit
+		if (prevOverlap.x > 0)
 		{
-			box->SetJustHit(true);
-			GameManager::GetGameMgr()->GetLevel()->AddObject(sf::Vector2f(box->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * scale.y) - (box->GetOrigin().y * scale.y) + 4.f));
-			//ply->UpdateFitness(100);
+			if (prevOverlap.x > prevOverlap.y)
+			{
+				if (box->GetCanHit())//if not yet been hit
+				{
+					box->SetJustHit(true);
+					GameManager::GetGameMgr()->GetLevel()->AddObject(sf::Vector2f(box->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * scale.y) - (box->GetOrigin().y * scale.y) + 4.f));
+					//ply->UpdateFitness(100);
+				}
+			}
 		}
 	}
 
-	DynamicObjectToBoxResolutions(dir, ply, box->GetAABB());
+	DynamicObjectToBoxResolutions(dir, prevOverlap, ply, box->GetAABB());
 }
 
 void CollisionManager::PlayerToSBoxResolutions(Player* ply, SBox* box)
 {
+	// calculate the overlap
+	Point delta = box->GetAABB()->GetPosition() - ply->GetPrevPosition();
+	delta = Point(std::abs(delta.x), std::abs(delta.y));
+	Point prevOverlap = (ply->GetAABB()->GetExtents() + box->GetAABB()->GetExtents()) - delta;
+
+	auto dir = GetDirTravelling(ply);
+
 	if (box->GetCanHit())//if not yet been hit
 	{
-		Direction dir = GetDirTravelling(ply);
 		if (dir == Direction::UDIR)
 		{
-			if (!box->GetJustHit())
-				box->SetJustHit(true);
+			if (prevOverlap.x > 0)
+			{
+				if (prevOverlap.x > prevOverlap.y)
+				{
+					if (!box->GetJustHit())
+						box->SetJustHit(true);
+				}
+			}
 		}
 		else if (dir == Direction::DDIR)
 		{
-			if (ply->GetIsSuper() && ply->GetCantSpinJump())
+			if (prevOverlap.x > 0)
 			{
-				box->SetJustSmashed(true);
-				return;
+				if (prevOverlap.x < prevOverlap.y)
+				{
+					if (ply->GetIsSuper() && ply->GetCantSpinJump())
+					{
+						box->SetJustSmashed(true);
+						return;
+					}
+				}
 			}
 		}
 
-		DynamicObjectToBoxResolutions(dir, ply, box->GetAABB(), false);
+		DynamicObjectToBoxResolutions(dir, prevOverlap, ply, box->GetAABB(), false);
 	}
 }
 
@@ -485,21 +520,42 @@ void CollisionManager::PlayerToEnemyResolutions(Player* ply, Enemy* enmy)
 	}
 }
 
-void CollisionManager::DynamicObjectToBoxResolutions(Direction dirOfTravel, DynamicObject* obj, AABB* box, bool resolveUpDir)
+void CollisionManager::DynamicObjectToBoxResolutions(Direction dirOfTravel, const Point& prevOverlap, DynamicObject* obj, AABB* box, bool resolveUpDir)
 {
-	switch (dirOfTravel)
+	if (dirOfTravel == Direction::LDIR || dirOfTravel == Direction::RDIR)
 	{
-	case UDIR:
-		if (resolveUpDir)
-				ResolveObjectToBoxBottom(obj, box);
-		break;
-	case DDIR:
-			ResolveObjectToBoxTop(obj, box);
-		break;
-	case LDIR:
-	case RDIR:
+		if (prevOverlap.y > 0)
+		{
 			ResolveObjectToBoxHorizontally(obj, box);
-		break;
+			if (IsPlayerObject(obj->GetID()))
+				((Player*)obj)->ForceFall();
+			return;
+		}
+	}
+	else if (dirOfTravel == Direction::UDIR)
+	{
+		if (resolveUpDir)
+		{
+			if (prevOverlap.x > 0)
+			{
+				if (prevOverlap.x > prevOverlap.y)
+				{
+					ResolveObjectToBoxBottom(obj, box);
+					return;
+				}
+			}
+		}
+	}
+	else if (dirOfTravel == Direction::DDIR)
+	{
+		if (prevOverlap.x > 0)
+		{
+			if (prevOverlap.x > prevOverlap.y)
+			{
+				ResolveObjectToBoxTop(obj, box);
+				return;
+			}
+		}
 	}
 }
 

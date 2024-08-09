@@ -62,8 +62,9 @@ bool AABB::Intersects(AABB* box)
 		if (std::abs(m_center[i] - box->m_center[i]) > m_extents[i] + box->m_extents[i]) return false;
 
 	// calculate the overlap
-	sf::Vector2f delta = sf::Vector2f(std::abs(box->GetPosition().x - GetPosition().x), std::abs(box->GetPosition().y - GetPosition().y));
-	m_overlap = Point((GetExtents().x + box->GetExtents().x) - delta.x, (GetExtents().y + box->GetExtents().y) - delta.y);
+	Point delta = box->GetPosition() - GetPosition();
+	delta = Point(std::abs(delta.x), std::abs(delta.y));
+	m_overlap = (GetExtents() + box->GetExtents()) - delta;
 
 	// Overlapping on all axes means AABBs are intersecting
 	return true;

@@ -49,7 +49,7 @@ private:
 
 	void PlayerToEnemyResolutions(Player* ply, Enemy* enmy);
 
-	void DynamicObjectToBoxResolutions(Direction dirOfTravel, DynamicObject* obj, AABB* box, bool resolveUpDir = true);
+	void DynamicObjectToBoxResolutions(Direction dirOfTravel, const Point& prevOverlap, DynamicObject* obj, AABB* box, bool resolveUpDir = true);
 
 	void DynamicObjectToDynamicObject(DynamicObject* obj1, DynamicObject* obj2);
 
