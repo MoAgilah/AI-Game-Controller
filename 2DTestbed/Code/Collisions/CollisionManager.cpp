@@ -409,7 +409,7 @@ void CollisionManager::ObjectToObjectCollisions(Object* obj1, Object* obj2)
 			delta = Point(std::abs(delta.x), std::abs(delta.y));
 			Point prevOverlap = (dynObj->GetAABB()->GetExtents() + obj2->GetAABB()->GetExtents()) - delta;
 
-			DynamicObjectToBoxResolutions((Direction)GetDirTravelling(dynObj), prevOverlap, dynObj, obj2->GetAABB());
+			DynamicObjectToBoxResolutions(GetDirTravelling(dynObj), prevOverlap, dynObj, obj2->GetAABB());
 		}
 	}
 	else
@@ -489,13 +489,13 @@ void CollisionManager::PlayerToSBoxResolutions(Player* ply, SBox* box)
 
 void CollisionManager::PlayerToEnemyResolutions(Player* ply, Enemy* enmy)
 {
-	float pBot = ply->GetAABB()->GetPosition().y + ply->GetAABB()->GetOrigin().y;
-	float eTop = enmy->GetAABB()->GetPosition().y - enmy->GetAABB()->GetOrigin().y;
-
-	if (ply->GetIsAlive())
+	if (!ply->GetIsAlive())
 		return;
 
-	if (pBot > eTop || enmy->GetID() == TexID::PPlant)
+	Point pBot = ply->GetAABB()->GetPoint(Side::Bottom);
+	Point eTop = ply->GetAABB()->GetPoint(Side::Top);
+
+	if (pBot.y > eTop.y || enmy->GetID() == TexID::PPlant)
 	{
 		if (!ply->GetIfInvulnerable())
 		{

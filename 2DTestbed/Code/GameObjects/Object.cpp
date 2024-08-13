@@ -68,6 +68,12 @@ DynamicObject::DynamicObject(AnimatedSprite* sprite, const sf::Vector2f& boxSize
 {
 }
 
+void DynamicObject::Reset()
+{
+	Object::Reset();
+	m_onGround = false;
+}
+
 void DynamicObject::IncrementXVelocity(float x)
 {
 	m_velocity.x += x;

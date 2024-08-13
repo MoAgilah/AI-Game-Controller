@@ -15,6 +15,7 @@ Player::Player(const sf::Vector2f& pos)
 	SetDirection(GetInitialDirection());
 	SetInitialPosition(pos);
 	SetPosition(GetInitialPosition());
+	SetSpawnLoc();
 	GetAABB()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
 
 	GetAnimSpr()->SetFrames({ 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4 });
