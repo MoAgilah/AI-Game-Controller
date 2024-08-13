@@ -36,7 +36,7 @@ public:
 	const sf::RectangleShape& GetRect() { return m_aabb.GetRect(); }
 	Line GetSlope(int bgn, int end) { return Line(m_slope, bgn, end); }
 
-	float GetTileHeight() { return m_aabb.GetRect().getSize().y; }
+	float GetTileHeight() { return m_aabb.GetExtents().y * 2; }
 
 	void SetFillColour(sf::Color col) { m_aabb.SetFillColour(col); }
 	void SetOutlineColour(sf::Color col) { m_aabb.SetOutlineColour(col); }

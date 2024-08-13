@@ -30,25 +30,19 @@ void AABB::Reset(const sf::Vector2f& size)
 	m_rect.setSize(size);
 	m_rect.setScale(scale);
 	m_rect.setOrigin(size * 0.5f);
+	m_extents[0] = (m_rect.getSize().x * scale.x) / 2;
+	m_extents[1] = (m_rect.getSize().y * scale.y) / 2;
 }
 
 void AABB::Update(const sf::Vector2f& pos)
 {
 	SetPosition(pos);
 
-	auto floatRect = m_rect.getGlobalBounds();
-
-	m_min[0] = std::min(floatRect.left, static_cast<float>(floatRect.left + floatRect.width));
-	m_min[1] = std::min(floatRect.top, static_cast<float>(floatRect.top + floatRect.height));
-
-	m_max[0] = std::max(floatRect.left, static_cast<float>(floatRect.left + floatRect.width));
-	m_max[1] = std::max(floatRect.top, static_cast<float>(floatRect.top + floatRect.height));
-
 	m_center[0] = GetPosition().x;
 	m_center[1] = GetPosition().y;
 
-	m_extents[0] = floatRect.width / 2;
-	m_extents[1] = floatRect.height / 2;
+	m_min = m_center - m_extents;
+	m_max = m_center + m_extents;
 }
 
 void AABB::Render(sf::RenderWindow& window)
@@ -131,13 +125,13 @@ Point AABB::GetPoint(Side side)
 	switch (side)
 	{
 	case Left:
-		return m_center - Point(m_rect.getSize().x, 0);
+		return m_center - Point(m_extents.x, 0);
 	case Right:
-		return m_center + Point(m_rect.getSize().x, 0);
+		return m_center + Point(m_extents.x, 0);
 	case Top:
-		return m_center - Point(0, m_rect.getSize().y);
+		return m_center - Point(0, m_extents.y);
 	case Bottom:
-		return m_center + Point(0, m_rect.getSize().y);
+		return m_center + Point(0, m_extents.y);
 	default:
 		throw std::out_of_range("Side enum value doesn't exist");
 	}

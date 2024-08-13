@@ -235,19 +235,19 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 	case Types::GRND:
 		if (dir == DDIR)
 		{
-			if (tileTopEdge.IsPointAboveLine(objBottomPoint))
+			if (!tileTopEdge.IsPointAboveLine(objBottomPoint))
 				ResolveObjectToBoxTop(obj, tile->GetAABB());
 		}
 		if (dir == LDIR || dir == RDIR)
 		{
-			if (!tileTopEdge.IsPointAboveLine(objBottomPoint))
+			if (tileTopEdge.IsPointAboveLine(objBottomPoint))
 				ResolveObjectToBoxTop(obj, tile->GetAABB());
 		}
 		return;
 	case Types::CRN:
 		if (dir == DDIR || dir == UDIR)
 		{
-			if (tileTopEdge.IsPointAboveLine(objBottomPoint))
+			if (!tileTopEdge.IsPointAboveLine(objBottomPoint))
 				ResolveObjectToBoxHorizontally(obj, tile->GetAABB());
 		}
 		return;
@@ -259,8 +259,8 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 		if (dir == DDIR)
 		{
 			Line line = tile->GetSlope(0, 1);
-			Circle circle(obj->GetAABB(), 2);
-			if (!line.IsPointAboveLine(circle.center))
+			Circle circle(obj->GetAABB(), 4);
+			if (line.IsPointAboveLine(circle.center))
 			{
 				Capsule capsule(line, 6);
 				if (capsule.IntersectsCircle(circle))
@@ -287,8 +287,8 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 		if (dir == LDIR)
 		{
 			Line line = tile->GetSlope(1, 0);
-			Circle circle(obj->GetAABB(), 2);
-			if (line.IsPointAboveLine(circle.center))
+			Circle circle(obj->GetAABB(), 4);
+			if (!line.IsPointAboveLine(circle.center))
 			{
 				auto yOffset = GetYOffSet(GetXDist(circle.center, line.start),
 					line.DistY(),
@@ -296,7 +296,7 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 					obj->GetAABB()->GetPosition().y,
 					tile->GetTileHeight());
 
-				obj->Move(sf::Vector2f(0, -yOffset * 2));
+				obj->Move(sf::Vector2f(0, -yOffset));
 			}
 		}
 		return;
@@ -306,8 +306,8 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 		if (dir == DDIR)
 		{
 			Line line = tile->GetSlope(0, 1);
-			Circle circle(obj->GetAABB(), 2);
-			if (!line.IsPointAboveLine(circle.center))
+			Circle circle(obj->GetAABB(), 4);
+			if (line.IsPointAboveLine(circle.center))
 			{
 				Capsule capsule(line, 6);
 				if (capsule.IntersectsCircle(circle))
@@ -318,7 +318,7 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 		if (dir == LDIR)
 		{
 			Line line = tile->GetSlope(1, 0);
-			Circle circle(obj->GetAABB(),4);
+			Circle circle(obj->GetAABB(), 4);
 			if (circle.IntersectsLineSegment(line))
 			{
 				auto yOffset = GetYOffSet(GetXDist(circle.center, line.start),
@@ -334,8 +334,8 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 		if (dir == RDIR)
 		{
 			Line line = tile->GetSlope(0, 1);
-			Circle circle(obj->GetAABB(), 2);
-			if (!line.IsPointAboveLine(circle.center))
+			Circle circle(obj->GetAABB(), 4);
+			if (line.IsPointAboveLine(circle.center))
 			{
 				auto yOffset = GetYOffSet(GetXDist(line.start, circle.center),
 					line.DistY(),
