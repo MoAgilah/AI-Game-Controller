@@ -531,10 +531,20 @@ void CollisionManager::PlayerToEnemyResolutions(Player* ply, Enemy* enmy)
 	if (!ply->GetIsAlive())
 		return;
 
-	Point pBot = ply->GetAABB()->GetPoint(Side::Bottom);
-	Point eTop = ply->GetAABB()->GetPoint(Side::Top);
-
-	if (pBot.y > eTop.y || enmy->GetID() == TexID::PPlant)
+	Line line = enmy->GetAABB()->GetSide(Side::Top);
+	Circle circle(ply->GetAABB(), 4);
+	if (!line.IsPointAboveLine(circle.center) && enmy->GetID() != TexID::PPlant)
+	{
+		Capsule capsule(line, 6);
+		if (capsule.IntersectsCircle(circle))
+		{
+			//set hover time
+			ply->JusyHitEnemy(0.1f);
+			enmy->DecrementLife();
+			//ptmp->UpdateFitness(-100);aa
+		}
+	}
+	else
 	{
 		if (!ply->GetIfInvulnerable())
 		{
@@ -549,13 +559,6 @@ void CollisionManager::PlayerToEnemyResolutions(Player* ply, Enemy* enmy)
 				ply->SetIsAlive(false);
 			}
 		}
-	}
-	else
-	{
-		//set hover time
-		ply->JusyHitEnemy(0.1f);
-		enmy->DecrementLife();
-		//ptmp->UpdateFitness(-100);
 	}
 }
 
