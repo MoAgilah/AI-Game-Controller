@@ -12,7 +12,7 @@
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(screenDim.x, screenDim.y), "SFML works!");
+	sf::RenderWindow window(sf::VideoMode((int)screenDim.x, (int)screenDim.y), "SFML works!");
 	window.setFramerateLimit((unsigned int)FPS);
 	float t = 0.0f;
 	float dt = 1.f / FPS;

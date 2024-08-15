@@ -57,8 +57,6 @@ private:
 	void ResolveObjectToBoxBottom(DynamicObject* obj, AABB* box);
 	void ResolveObjectToBoxHorizontally(DynamicObject* obj, AABB* box);
 
-	Direction GetDirTravelling(DynamicObject* obj);
-
 	Direction GetFacingDirection(DynamicObject* obj);
 
 	Grid m_grid;
