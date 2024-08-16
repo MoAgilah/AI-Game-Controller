@@ -18,11 +18,6 @@
 
 namespace
 {
-	bool IsPlayerObject(TexID id)
-	{
-		return id == TexID::Mario || id == TexID::Super;
-	}
-
 	std::array<TexID, 7> canCollideWithTile =
 	{
 		TexID::Mario, TexID::Super, TexID::Koopa, TexID::Rex, TexID::Chuck, TexID::Shroom, TexID::Goal
@@ -43,16 +38,6 @@ namespace
 			});
 	}
 
-	std::array<TexID, 5> collectableObject =
-	{
-		TexID::Coin, TexID::YCoin, TexID::ChkPnt, TexID::Shroom, TexID::Goal
-	};
-
-	bool IsCollectableObject(TexID id)
-	{
-		return std::find(collectableObject.begin(), collectableObject.end(), id) != collectableObject.end();
-	}
-
 	bool IsDynamicCollectable(TexID id)
 	{
 		return id == TexID::Shroom || id == TexID::Goal;
@@ -66,21 +51,6 @@ namespace
 	bool IsDynamicObject(TexID id)
 	{
 		return std::find(dynamicObject.begin(), dynamicObject.end(), id) != dynamicObject.end();
-	}
-
-	std::array<TexID, 5> enemyObject =
-	{
-		TexID::Koopa, TexID::Bill, TexID::Rex, TexID::PPlant, TexID::Chuck
-	};
-
-	bool IsEnemyObject(TexID id)
-	{
-		return std::find(enemyObject.begin(), enemyObject.end(), id) != enemyObject.end();
-	}
-
-	bool IsBoxObject(TexID id)
-	{
-		return id == TexID::QBox || id == TexID::SBox;
 	}
 
 	float GetYOffSet(float pDistX, float lDistY, float slopeY, float currY, float tileHeight)

@@ -126,6 +126,36 @@ bool Capsule::IntersectsCircle(const Circle & circle) const
 	return dist2 <= r * r;
 }
 
+bool IsPlayerObject(TexID id)
+{
+	return id == TexID::Mario || id == TexID::Super;
+}
+
+bool IsBoxObject(TexID id)
+{
+	return id == TexID::QBox || id == TexID::SBox;
+}
+
+std::array<TexID, 5> enemyObject =
+{
+	TexID::Koopa, TexID::Bill, TexID::Rex, TexID::PPlant, TexID::Chuck
+};
+
+bool IsEnemyObject(TexID id)
+{
+	return std::find(enemyObject.begin(), enemyObject.end(), id) != enemyObject.end();
+}
+
+std::array<TexID, 5> collectableObject =
+{
+	TexID::Coin, TexID::YCoin, TexID::ChkPnt, TexID::Shroom, TexID::Goal
+};
+
+bool IsCollectableObject(TexID id)
+{
+	return std::find(collectableObject.begin(), collectableObject.end(), id) != collectableObject.end();
+}
+
 float GetXDist(const Point& p1, const Point& p2)
 {
 	return p2.x - p1.x;

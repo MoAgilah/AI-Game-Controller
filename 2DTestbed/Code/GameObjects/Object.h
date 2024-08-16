@@ -21,14 +21,6 @@ struct AnimationData
 	float animationSpeed;
 };
 
-enum GOTYPE
-{
-	PlyBgn = (int)TexID::Mario, PlyEnd = (int)TexID::Super,
-	EnmyBgn = (int)TexID::Koopa, EnmyEnd = (int)TexID::Chuck,
-	ColBgn = (int)TexID::Shroom, ColEnd = (int)TexID::SBox,
-	ObjBgn = (int)TexID::QBox, ObjEnd = (int)TexID::SBox
-};
-
 class Tile;
 class Object
 {

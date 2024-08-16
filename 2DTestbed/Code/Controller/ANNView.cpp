@@ -5,6 +5,7 @@
 #include "../Collisions/CollisionManager.h"
 #include "../Controller/CtrlMgr.h"
 #include "../Game/Constants.h"
+#include "../Utilities/Utilities.h"
 
 #include <format>
 
@@ -45,11 +46,8 @@ ANNView::ANNView()
 
 
 	//create the grid inputs
-	int cnt = 0;
 	for (int i = 0; i < 255; i++)
-	{
 		m_vecView.push_back(new Tile());
-	}
 }
 
 void ANNView::Update()
@@ -88,6 +86,7 @@ void ANNView::Update()
 			continue;
 
 		m_vecView[cnt] = tile.get();
+		m_vecView[cnt]->SetFillColour(sf::Color::Transparent);
 
 		cnt++;
 	}
@@ -104,8 +103,8 @@ void ANNView::Update()
 		sf::RectangleShape tmp;
 		for (auto& gobj : GameManager::GetGameMgr()->GetCollisionMgr()->GetCollidables())
 		{
-			int type = (int)gobj->GetID();
-			if (type == (int)TexID::Bill)
+			TexID type = gobj->GetID();
+			if (type == TexID::Bill)
 			{
 				tmp.setSize(sf::Vector2f(96, 108));
 				tmp.setOrigin(48, 54);
@@ -116,31 +115,29 @@ void ANNView::Update()
 				tmp.setOrigin(8, 8);
 			}
 
-			if (!gobj->GetActive())
+			if (gobj->GetActive())
 			{
-				tile->SetFillColour(sf::Color::Transparent);
-				continue;
-			}
 
-			tmp.setPosition(gobj->GetPosition());
+				tmp.setPosition(gobj->GetPosition());
 
-			if (tile->GetRect().getGlobalBounds().intersects(tmp.getGlobalBounds()))
-			{
-				if (type >= PlyBgn && type <= PlyEnd)
+				if (tile->GetRect().getGlobalBounds().intersects(tmp.getGlobalBounds()))
 				{
-					tile->SetFillColour(sf::Color::Red);
-				}
-				else if (type >= EnmyBgn && type <= EnmyEnd)
-				{
-					tile->SetFillColour(sf::Color::Black);
-				}
-				else if (type >= ColBgn && type <= ColEnd)
-				{
-					tile->SetFillColour(sf::Color::Yellow);
-				}
-				else if (type >= ObjBgn && type <= ObjEnd)
-				{
-					tile->SetFillColour(sf::Color::Green);
+					if (IsPlayerObject(type))
+					{
+						tile->SetFillColour(sf::Color::Red);
+					}
+					else if (IsEnemyObject(type))
+					{
+						tile->SetFillColour(sf::Color::Black);
+					}
+					else if (IsCollectableObject(type))
+					{
+						tile->SetFillColour(sf::Color::Yellow);
+					}
+					else if (IsBoxObject(type))
+					{
+						tile->SetFillColour(sf::Color::Green);
+					}
 				}
 			}
 		}
@@ -153,14 +150,10 @@ void ANNView::Render(sf::RenderWindow & window)
 	window.draw(back);
 
 	for (auto& tile : m_vecView)
-	{
 		window.draw(tile->GetRect());
-	}
 
 	for (auto& text : m_text)
-	{
 		window.draw(*text);
-	}
 }
 
 std::vector<Tile*> ANNView::GetVecView()

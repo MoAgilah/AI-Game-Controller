@@ -13,7 +13,6 @@ DebugState::DebugState(GameManager* gameMgr)
 {
 	m_gameMgr.reset(gameMgr);
 	circle.setRadius(2);
-	//circle.setOrigin(1, 1);
 	circle.setOutlineColor(sf::Color::Red);
 	circle.setOutlineThickness(1);
 }
@@ -23,7 +22,7 @@ void DebugState::Initialise()
 	auto level = m_gameMgr->GetLevel();
 
 	level->AddObjects();
-	level->AddEnemies();
+	//level->AddEnemies();
 	level->AddForeGroundSprites();
 }
 
