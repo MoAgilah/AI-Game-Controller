@@ -424,7 +424,7 @@ void CollisionManager::PlayerToObjectCollisions(Player* ply, Object* obj)
 	else if (IsEnemyObject(obj->GetID()))
 	{
 		Enemy* enemy = (Enemy*)obj;
-		if (!enemy->GetIsAlive())
+		if (!enemy->HasLifes())
 			return;
 
 		if (obj->Intersects(ply))
@@ -531,18 +531,14 @@ void CollisionManager::PlayerToEnemyResolutions(Player* ply, Enemy* enmy)
 	if (!ply->GetIsAlive())
 		return;
 
-	Line line = enmy->GetAABB()->GetSide(Side::Top);
 	Circle circle(ply->GetAABB(), 4);
-	if (!line.IsPointAboveLine(circle.center) && enmy->GetID() != TexID::PPlant)
+	Capsule capsule(enmy->GetAABB()->GetSide(Side::Top), 6);
+	if (capsule.IntersectsCircle(circle) && enmy->GetID() != TexID::PPlant)
 	{
-		Capsule capsule(line, 6);
-		if (capsule.IntersectsCircle(circle))
-		{
-			//set hover time
-			ply->JusyHitEnemy(0.1f);
-			enmy->DecrementLife();
-			//ptmp->UpdateFitness(-100);aa
-		}
+		//	set hover time
+		ply->JusyHitEnemy(0.1f);
+		enmy->DecrementLife();
+		//	ptmp->UpdateFitness(-100);
 	}
 	else
 	{
