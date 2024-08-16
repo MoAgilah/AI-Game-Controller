@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 #include <SFML/Graphics.hpp>
 
 class Tile;
@@ -14,15 +15,13 @@ public:
 	void Update();
 	void Render(sf::RenderWindow & window);
 
-	std::vector<Tile*> GetVecView();
+	std::vector<std::shared_ptr<Tile>> GetVecView() { return m_vecView; }
 
 private:
 
-	sf::View m_view;
-	sf::RectangleShape back;
 	const unsigned int size = 200;
-	std::vector<Tile*> m_vecView;
-
-	std::vector<sf::Text*> m_text;
-	sf::Font m_font;
+	sf::View m_view;
+	sf::RectangleShape m_background;
+	std::vector<std::unique_ptr<sf::Text>> m_text;
+	std::vector<std::shared_ptr<Tile>> m_vecView;
 };

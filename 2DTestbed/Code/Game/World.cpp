@@ -120,15 +120,15 @@ void World::AddEnemies()
 {
 	Tile tmp;
 	/*tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(13, 5);
-	m_enemies.push_back(std::make_shared<Koopa>(false, tmp.GetPosition()));
+	m_enemies.push_back(std::make_shared<Koopa>(false, tmp.GetPosition()));*/
 
 	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(32, 8);
-	m_enemies.push_back(std::make_shared<Bill>(false, tmp.GetPosition() - sf::Vector2f(0, -16)));*/
+	m_enemies.push_back(std::make_shared<Bill>(false, tmp.GetPosition() - sf::Vector2f(0, -16)));
 
-	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(35, 11);
+	/*tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(35, 11);
 	m_enemies.push_back(std::make_shared<Rex>(false, tmp.GetPosition()));
 
-	/*tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(47, 11);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(47, 11);
 	m_enemies.push_back(std::make_shared<Rex>(false, tmp.GetPosition()));
 
 	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(55, 6);
@@ -266,14 +266,12 @@ void World::AddForeGroundSprites()
 
 void World::AddGUI()
 {
-	m_font.loadFromFile("Resources/Fonts/arial.ttf");
-
 	m_sprites[(int)Sprites::Name].SetTexture(TexID::Name);
 	m_sprites[(int)Sprites::Time].SetTexture(TexID::Time);
 
 	for (int i = 0; i < (int)Texts::Max; i++)
 	{
-		m_texts[i].setFont(m_font);
+		m_texts[i].setFont(GameManager::GetGameMgr()->GetFontMgr()->GetStandardFont());
 		m_texts[i].setCharacterSize(15);
 		m_texts[i].setOutlineColor(sf::Color::Black);
 		m_texts[i].setOutlineThickness(1.f);

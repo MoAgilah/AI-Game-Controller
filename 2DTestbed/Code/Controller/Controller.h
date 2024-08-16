@@ -1,51 +1,42 @@
 #pragma once
 
+#include <memory>
 #include <SFML/Graphics.hpp>
+#include "../Controller/ANNView.h"
 #include "../NEAT/Cga.h"
 
-class ANNView;
-class Sensors;
 class Player;
 class AutomatedPlayer;
 class Controller
 {
 public:
 	Controller();
-	ANNView* GetAnnView();
+	~Controller() = default;
+
+	ANNView* GetAnnView() { return m_AnnView.get(); }
 	std::vector<double> GetGridInputs();
 
-	int GetCurrentPlayerNum();
-	int GetCurrentGeneration();
-	double BestFitness();
-	~Controller();
+	int GetCurrentPlayerNum() const { return m_currPlayer; }
+	int GetCurrentGeneration() const { return m_generations; }
+	double BestFitness() const { return m_bestFitness; }
 
 	Player* GetCurrentPlayer();
 	bool Update();
-	std::vector<double>  GetFitnessScores()const;//body needs to be written
+	std::vector<double>  GetFitnessScores() const;
+
 private:
+
 	void EndOfRunCalculation(AutomatedPlayer* ply);
-
-	int currPlayer;
-	int	iNumPlayers;
-	ANNView* m_AnnView;
-
 	double ColourToInput(sf::Color col);
-	std::vector<double> m_inputs;
-	//storage for the entire population of chromosomes
-	Cga*                 m_pPop;
-	//stores the average fitness per generation
-	std::vector<double> m_vecAvFitness;
-	//stores the best fitness per generation
-	std::vector<double> m_vecBestFitness;
-	//best fitness ever
-	double m_dBestFitness;
-	//cycles per generation
-	int m_iTicks;
-	//generation counter
-	int m_iGenerations;
-	//array of players
-	std::vector<AutomatedPlayer*> m_vecMarios;
 
-	//points container
-	std::vector<sf::Vector2f> points;
+	int m_ticks;
+	int m_currPlayer;
+	int	m_numPlayers;
+	int m_generations;
+	double m_bestFitness;
+
+	std::unique_ptr<Cga> m_pop;
+	std::vector<double> m_inputs;
+	std::unique_ptr<ANNView> m_AnnView;
+	std::vector<std::shared_ptr<AutomatedPlayer>> m_players;
 };

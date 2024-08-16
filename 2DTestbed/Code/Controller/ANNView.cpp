@@ -3,7 +3,7 @@
 #include "../Game/GameManager.h"
 #include "../GameObjects/Player.h"
 #include "../Collisions/CollisionManager.h"
-#include "../Controller/CtrlMgr.h"
+#include "../Controller/ControllerManager.h"
 #include "../Game/Constants.h"
 #include "../Utilities/Utilities.h"
 
@@ -11,43 +11,40 @@
 
 ANNView::ANNView()
 {
-	m_font.loadFromFile("Resources/Fonts/arial.ttf");
+	auto& font = GameManager::GetGameMgr()->GetFontMgr()->GetStandardFont();
 
-	m_text.push_back(new sf::Text());
-	m_text.back()->setFont(m_font);
+	m_text.push_back(std::make_unique<sf::Text>());
+	m_text.back()->setFont(font);
 	m_text.back()->setCharacterSize(60);
 	m_text.back()->setOutlineColor(sf::Color::Black);
 	m_text.back()->setOutlineThickness(1.f);
 	m_text.back()->setFillColor(sf::Color::Yellow);
 	m_text.back()->setString("Player: 0");
 
-	m_text.push_back(new sf::Text());
-	m_text.back()->setFont(m_font);
+	m_text.push_back(std::make_unique<sf::Text>());
+	m_text.back()->setFont(font);
 	m_text.back()->setCharacterSize(60);
 	m_text.back()->setOutlineColor(sf::Color::Black);
 	m_text.back()->setOutlineThickness(1.f);
 	m_text.back()->setFillColor(sf::Color::Yellow);
 	m_text.back()->setString("Generation: 0");
 
-	m_text.push_back(new sf::Text());
-	m_text.back()->setFont(m_font);
+	m_text.push_back(std::make_unique<sf::Text>());
+	m_text.back()->setFont(font);
 	m_text.back()->setCharacterSize(60);
 	m_text.back()->setOutlineColor(sf::Color::Black);
 	m_text.back()->setOutlineThickness(1.f);
 	m_text.back()->setFillColor(sf::Color::Yellow);
 	m_text.back()->setString("Highest fitness: 0");
 
-	//background of second screen
-	back.setSize(screenDim);
-	back.setOrigin(screenDim * 0.5f);
-	back.setScale(scale);
-	//black half transparency
-	back.setFillColor(sf::Color(0, 0, 0, 125));
-
+	m_background.setSize(screenDim);
+	m_background.setOrigin(screenDim * 0.5f);
+	m_background.setScale(scale);
+	m_background.setFillColor(sf::Color(0, 0, 0, 125));
 
 	//create the grid inputs
 	for (int i = 0; i < 255; i++)
-		m_vecView.push_back(new Tile());
+		m_vecView.push_back(std::make_shared<Tile>());
 }
 
 void ANNView::Update()
@@ -63,14 +60,14 @@ void ANNView::Update()
 	m_view.zoom(4.f);
 
 	//update bkg image with standard view center position
-	back.setPosition(camera->GetView().getCenter());
+	m_background.setPosition(camera->GetView().getCenter());
 
-	Controller* ctrl = CtrlMgr::GetCtrlMgr()->GetController();
+	Controller* ctrl = ControllerManager::GetCtrlMgr()->GetController();
 
 	m_text[0]->setString(std::format("Player: {} / {}", ctrl->GetCurrentPlayerNum(), CParams::iNumPlayers));
 	m_text[0]->setPosition(m_view.getCenter() - sf::Vector2f(400, -200));
 
-	m_text[1]->setString(std::format("Generation: {}" ,ctrl->GetCurrentGeneration()));
+	m_text[1]->setString(std::format("Generation: {}", ctrl->GetCurrentGeneration()));
 	m_text[1]->setPosition(m_view.getCenter() - sf::Vector2f(400, -260));
 
 	m_text[2]->setString(std::format("Highest fitness: {}", ctrl->BestFitness()));
@@ -85,7 +82,7 @@ void ANNView::Update()
 		if (!tile->GetActive())
 			continue;
 
-		m_vecView[cnt] = tile.get();
+		m_vecView[cnt] = tile;
 		m_vecView[cnt]->SetFillColour(sf::Color::Transparent);
 
 		cnt++;
@@ -117,7 +114,6 @@ void ANNView::Update()
 
 			if (gobj->GetActive())
 			{
-
 				tmp.setPosition(gobj->GetPosition());
 
 				if (tile->GetRect().getGlobalBounds().intersects(tmp.getGlobalBounds()))
@@ -147,16 +143,11 @@ void ANNView::Update()
 void ANNView::Render(sf::RenderWindow & window)
 {
 	window.setView(m_view);
-	window.draw(back);
+	window.draw(m_background);
 
 	for (auto& tile : m_vecView)
 		window.draw(tile->GetRect());
 
 	for (auto& text : m_text)
 		window.draw(*text);
-}
-
-std::vector<Tile*> ANNView::GetVecView()
-{
-	return m_vecView;
 }

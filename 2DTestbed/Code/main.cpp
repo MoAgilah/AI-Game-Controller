@@ -7,7 +7,7 @@
 #include "GameObjects/Player.h"
 #include "Game/Camera.h"
 #include "Controller/ANNView.h"
-#include "Controller/CtrlMgr.h"
+#include "Controller/ControllerManager.h"
 #include "NEAT/CParams.h"
 
 int main()
@@ -18,13 +18,14 @@ int main()
 	float dt = 1.f / FPS;
 
 	GameManager gameMgr;
+	gameMgr.Update(dt);
+	ControllerManager ctrlMgr;
 
 	//initialise begin
 	CParams g_params;
-	CtrlMgr::GetCtrlMgr()->GetController();
 
-	gameMgr.GetLogger()->AddDebugLog("Current Generation: " + std::to_string(CtrlMgr::GetCtrlMgr()->GetController()->GetCurrentGeneration()));
-	gameMgr.GetLogger()->AddExperimentLog("Current Generation: " + std::to_string(CtrlMgr::GetCtrlMgr()->GetController()->GetCurrentGeneration()));
+	gameMgr.GetLogger()->AddDebugLog("Current Generation: " + std::to_string(ctrlMgr.GetController()->GetCurrentGeneration()));
+	gameMgr.GetLogger()->AddExperimentLog("Current Generation: " + std::to_string(ctrlMgr.GetController()->GetCurrentGeneration()));
 	gameMgr.GetLogger()->AddExperimentLog(GameManager::GetGameMgr()->GetLogger()->GetTimeStamp());
 
 	//initialise end
@@ -48,7 +49,7 @@ int main()
 		float frameTime = newTime - currentTime;
 		currentTime = newTime;
 
-		CtrlMgr::GetCtrlMgr()->GetController()->GetAnnView()->Update();
+		ctrlMgr.GetController()->GetAnnView()->Update();
 
 		window.clear(sf::Color::White);
 		while (frameTime > 0.0)
@@ -56,7 +57,7 @@ int main()
 			float deltaTime = std::min(frameTime, dt);
 			//do update
 
-			CtrlMgr::GetCtrlMgr()->GetController()->GetGridInputs();
+			ctrlMgr.GetController()->GetGridInputs();
 
 			gameMgr.Update(deltaTime);
 
@@ -68,7 +69,7 @@ int main()
 		//do render
 		gameMgr.Render(window);
 #ifdef DControl
-		CtrlMgr::GetCtrlMgr()->GetController()->GetAnnView()->Render(window);
+		ctrlMgr.GetController()->GetAnnView()->Render(window);
 #endif // DControl
 
 		//end render

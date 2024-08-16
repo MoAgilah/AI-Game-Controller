@@ -114,7 +114,7 @@
     <ClCompile Include="Code\Controller\Controller.cpp">
       <Filter>Source Files\Controller</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Controller\CtrlMgr.cpp">
+    <ClCompile Include="Code\Controller\ControllerManager.cpp">
       <Filter>Source Files\Controller</Filter>
     </ClCompile>
     <ClCompile Include="Code\Game\Camera.cpp">
@@ -195,6 +195,9 @@
     <ClCompile Include="Code\Utilities\Utilities.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Game\FontManager.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Collisions\CollisionManager.h">
@@ -245,7 +248,7 @@
     <ClInclude Include="Code\Controller\Controller.h">
       <Filter>Header Files\Controller</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Controller\CtrlMgr.h">
+    <ClInclude Include="Code\Controller\ControllerManager.h">
       <Filter>Header Files\Controller</Filter>
     </ClInclude>
     <ClInclude Include="Code\Game\Camera.h">
@@ -325,6 +328,9 @@
     </ClInclude>
     <ClInclude Include="Code\Utilities\Utilities.h">
       <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Game\FontManager.h">
+      <Filter>Header Files\Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

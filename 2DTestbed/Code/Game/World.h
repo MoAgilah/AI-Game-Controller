@@ -38,7 +38,6 @@ private:
 	void AddGUI();
 	void UpdateGUI();
 
-	sf::Font m_font;
 	std::array<sf::Text, (int)Texts::Max> m_texts;
 	AABB m_foregroundBox;
 	Sprite m_backgroundSpr;

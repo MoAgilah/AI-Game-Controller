@@ -1,5 +1,5 @@
 #include "../Collisions/Grid.h"
-#include "../Game/Camera.h"
+#include "../Game/GameManager.h"
 #include "../Game/Constants.h"
 #include "../Collisions/Tile.h"
 #include <fstream>
@@ -10,7 +10,7 @@
 
 Grid::Grid()
 {
-	font.loadFromFile("Resources/Fonts/arial.ttf");
+	auto& font = GameManager::GetGameMgr()->GetFontMgr()->GetStandardFont();
 
 	//create grid for entire level
 	for (int y = 0; y < 15; y++)

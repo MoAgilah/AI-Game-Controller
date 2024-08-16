@@ -5,7 +5,7 @@
 #include "../GameObjects/Object.h"
 #include "../Collisions/CollisionManager.h"
 #include "../Collisions/Grid.h"
-#include "../Controller/CtrlMgr.h"
+#include "../Controller/ControllerManager.h"
 #include "../Game/Constants.h"
 #include "../GameStates/MainState.h"
 #include "../GameStates/DebugState.h"
@@ -15,12 +15,13 @@ std::shared_ptr<GameManager> GameManager::m_instance = nullptr;
 GameManager::GameManager()
 {
 	m_instance.reset(this);
+	m_fontManager = std::make_unique<FontManager>();
 	m_texureManager = std::make_unique<TextureManager>();
 	m_collisionManager = std::make_unique<CollisionManager>();
 	m_camera = std::make_unique<Camera>();
 
 	if (Automated)
-		m_player.reset(CtrlMgr::GetCtrlMgr()->GetController()->GetCurrentPlayer());
+		m_player.reset(ControllerManager::GetCtrlMgr()->GetController()->GetCurrentPlayer());
 	else
 		m_player = std::make_unique<Player>(m_collisionManager->GetTile(2, 11).GetPosition());
 

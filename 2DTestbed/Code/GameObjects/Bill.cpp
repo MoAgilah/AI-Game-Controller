@@ -59,7 +59,7 @@ void Bill::Animate(float deltaTime)
 	{
 		if (GetXVelocity() != 0)
 		{
-			Move(GetXVelocity() * FPS * deltaTime, 0);
+			//Move(GetXVelocity() * FPS * deltaTime, 0);
 			GameManager::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
 		}
 	}

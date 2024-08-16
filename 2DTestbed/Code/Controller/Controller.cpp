@@ -1,50 +1,45 @@
 #include "../Controller/Controller.h"
 #include "../GameObjects/Player.h"
-#include "../Controller/ANNView.h"
+
 #include "../Game/GameManager.h"
 #include "../Game/Constants.h"
 #include <format>
 
 Controller::Controller()
 {
-	m_AnnView = new ANNView();
+	m_AnnView = std::make_unique<ANNView>();
 
-	iNumPlayers = CParams::iNumPlayers;
-	currPlayer = 0;
-	m_dBestFitness = 0;
+	m_numPlayers = CParams::iNumPlayers;
+	m_currPlayer = 0;
+	m_bestFitness = 0;
 
 	if (Automated)
 	{
 		//let's create the players
-		for (int i = 0; i< iNumPlayers; ++i)
+		for (int i = 0; i< m_numPlayers; ++i)
 		{
-			m_vecMarios.push_back(new AutomatedPlayer(sf::Vector2f(75, 454)));
+			m_players.push_back(std::make_shared<AutomatedPlayer>(sf::Vector2f(75, 454)));
 		}
 
-		m_pPop = new Cga(CParams::iNumPlayers,
+		m_pop = std::make_unique<Cga>(CParams::iNumPlayers,
 			CParams::iNumInputs,
 			CParams::iNumOutputs,
 			10, 10);
 
 		//create the phenotypes
-		std::vector<CNeuralNet*> pBrains = m_pPop->CreatePhenotypes();
+		std::vector<CNeuralNet*> pBrains = m_pop->CreatePhenotypes();
 
 		//assign the phenotypes
-		for (int i = 0; i< iNumPlayers; i++)
+		for (int i = 0; i< m_numPlayers; i++)
 		{
-			m_vecMarios[i]->InsertNewBrain(pBrains[i]);
+			m_players[i]->InsertNewBrain(pBrains[i]);
 		}
 	}
 
-	m_iTicks = 0;
-	m_iGenerations = 0;
+	m_ticks = 0;
+	m_generations = 0;
 
 	m_inputs.resize(255);
-}
-
-ANNView * Controller::GetAnnView()
-{
-	return m_AnnView;
 }
 
 double Controller::ColourToInput(sf::Color col)
@@ -61,7 +56,7 @@ double Controller::ColourToInput(sf::Color col)
 
 std::vector<double> Controller::GetGridInputs()
 {
-	std::vector<Tile*> tiles = m_AnnView->GetVecView();
+	std::vector<std::shared_ptr<Tile>> tiles = m_AnnView->GetVecView();
 
 	for (int i = 0; i < tiles.size(); i++)
 	{
@@ -71,63 +66,39 @@ std::vector<double> Controller::GetGridInputs()
 	return m_inputs;
 }
 
-int Controller::GetCurrentPlayerNum()
+Player* Controller::GetCurrentPlayer()
 {
-	return currPlayer;
-}
-
-int Controller::GetCurrentGeneration()
-{
-	return m_iGenerations;
-}
-
-double Controller::BestFitness()
-{
-	return m_dBestFitness;
-}
-
-Controller::~Controller()
-{
-	if (m_AnnView)
-	{
-		delete m_AnnView;
-		m_AnnView = nullptr;
-	}
-}
-
-Player * Controller::GetCurrentPlayer()
-{
-	return m_vecMarios[currPlayer];
+	return m_players[m_currPlayer].get();
 }
 
 bool Controller::Update()
 {
 	//if havent moved in 2000 ticks
-	if ((m_vecMarios[currPlayer]->GetPosition().x == m_vecMarios[currPlayer]->GetPrevPosition().x && m_iTicks++ > CParams::iNumTicks) ||
+	if ((m_players[m_currPlayer]->GetPosition().x == m_players[m_currPlayer]->GetPrevPosition().x && m_ticks++ > CParams::iNumTicks) ||
 		//if been killed
-		m_vecMarios[currPlayer]->GetIsAlive() == false ||
+		m_players[m_currPlayer]->GetIsAlive() == false ||
 		//if level completed
-		m_vecMarios[currPlayer]->GetGoalHit() == true)
+		m_players[m_currPlayer]->GetGoalHit() == true)
 	{
-		currPlayer++;
+		m_currPlayer++;
 
-		m_iTicks = 0;
+		m_ticks = 0;
 
-		if (currPlayer < m_vecMarios.size())
+		if (m_currPlayer < m_players.size())
 		{
-			GameManager::GetGameMgr()->ChangePlayer(m_vecMarios[currPlayer]);
+			GameManager::GetGameMgr()->ChangePlayer(m_players[m_currPlayer].get());
 			GameManager::GetGameMgr()->GetPlayer()->Reset();
 		}
 	}
 	//if have moved right before timing out
-	else if (m_vecMarios[currPlayer]->GetPosition().x != m_vecMarios[currPlayer]->GetPrevPosition().x && m_vecMarios[currPlayer]->GetPosition().x > 75.0f)
+	else if (m_players[m_currPlayer]->GetPosition().x != m_players[m_currPlayer]->GetPrevPosition().x && m_players[m_currPlayer]->GetPosition().x > 75.0f)
 	{
-		m_iTicks = 0;
+		m_ticks = 0;
 	}
 
-	if (currPlayer < m_vecMarios.size())
+	if (m_currPlayer < m_players.size())
 	{
-		if (!m_vecMarios[currPlayer]->UpdateANN())
+		if (!m_players[m_currPlayer]->UpdateANN())
 		{
 			//error in processing the neural net
 			std::cout << "Wrong amount of NN inputs!" << std::endl;
@@ -137,50 +108,50 @@ bool Controller::Update()
 	}
 
 	//We have completed another generation so now we need to run the GA
-	if (currPlayer == m_vecMarios.size())
+	if (m_currPlayer == m_players.size())
 	{
 		//first add up each players fitness scores. (remember for this task
 		//there are many different sorts of penalties the players may incur
 		//and each one has a coefficient)
-		for (int swp = 0; swp< m_vecMarios.size(); ++swp)
+		for (int swp = 0; swp< m_players.size(); ++swp)
 		{
 			GameManager::GetGameMgr()->GetLogger()->AddExperimentLog("Player: " + std::to_string(swp),false);
-			EndOfRunCalculation(m_vecMarios[swp]);
+			EndOfRunCalculation(m_players[swp].get());
 		}
 
 		//increment the generation counter
-		++m_iGenerations;
+		++m_generations;
 
 		//reset cycles
-		m_iTicks = 0;
+		m_ticks = 0;
 
 		//perform an epoch and grab the new brains
-		std::vector<CNeuralNet*> pBrains = m_pPop->Epoch(GetFitnessScores());
+		std::vector<CNeuralNet*> pBrains = m_pop->Epoch(GetFitnessScores());
 
 		//insert the new  brains back into the players and reset their
 		//state
-		for (int i = 0; i< iNumPlayers; ++i)
+		for (int i = 0; i< m_numPlayers; ++i)
 		{
-			GameManager::GetGameMgr()->GetLogger()->AddExperimentLog("Player " + std::to_string(i) + " Fitness: " + std::to_string(m_vecMarios[i]->Fitness()));
+			GameManager::GetGameMgr()->GetLogger()->AddExperimentLog("Player " + std::to_string(i) + " Fitness: " + std::to_string(m_players[i]->Fitness()));
 
-			m_vecMarios[i]->InsertNewBrain(pBrains[i]);
-			m_vecMarios[i]->Reset();
+			m_players[i]->InsertNewBrain(pBrains[i]);
+			m_players[i]->Reset();
 		}
 
-		currPlayer = 0;
-		GameManager::GetGameMgr()->ChangePlayer(m_vecMarios[currPlayer]);
+		m_currPlayer = 0;
+		GameManager::GetGameMgr()->ChangePlayer(m_players[m_currPlayer].get());
 		GameManager::GetGameMgr()->GetPlayer()->Reset();
 
-		m_dBestFitness = m_pPop->BestEverFitness();
+		m_bestFitness = m_pop->BestEverFitness();
 
-		GameManager::GetGameMgr()->GetLogger()->AddExperimentLog("Best Fitness: " + std::to_string(m_dBestFitness));
+		GameManager::GetGameMgr()->GetLogger()->AddExperimentLog("Best Fitness: " + std::to_string(m_bestFitness));
 
 		GameManager::GetGameMgr()->GetLogger()->AddExperimentLog("");
-		GameManager::GetGameMgr()->GetLogger()->AddExperimentLog("Current Generation: " + std::to_string(m_iGenerations));
+		GameManager::GetGameMgr()->GetLogger()->AddExperimentLog("Current Generation: " + std::to_string(m_generations));
 		GameManager::GetGameMgr()->GetLogger()->AddExperimentLog(GameManager::GetGameMgr()->GetLogger()->GetTimeStamp());
 
 		GameManager::GetGameMgr()->GetLogger()->AddDebugLog("");
-		GameManager::GetGameMgr()->GetLogger()->AddDebugLog("Current Generation: " + std::to_string(m_iGenerations));
+		GameManager::GetGameMgr()->GetLogger()->AddDebugLog("Current Generation: " + std::to_string(m_generations));
 	}
 
 	return true;
@@ -190,9 +161,9 @@ std::vector<double> Controller::GetFitnessScores() const
 {
 	std::vector<double> scores;
 
-	for (int i = 0; i< m_vecMarios.size(); ++i)
+	for (int i = 0; i< m_players.size(); ++i)
 	{
-		scores.push_back(m_vecMarios[i]->Fitness());
+		scores.push_back(m_players[i]->Fitness());
 	}
 
 	return scores;

@@ -3,7 +3,7 @@
 #include "../Game/Camera.h"
 #include "../Game/Timer.h"
 #include "../Game/GameManager.h"
-#include "../Controller/CtrlMgr.h"
+#include "../Controller/ControllerManager.h"
 #include <format>
 #include <iostream>
 #include "../GameStates/PlayerState.h"
@@ -395,7 +395,7 @@ bool AutomatedPlayer::UpdateANN()
 {
 	std::vector<double> inputs;
 
-	inputs = CtrlMgr::GetCtrlMgr()->GetController()->GetGridInputs();
+	inputs = ControllerManager::GetCtrlMgr()->GetController()->GetGridInputs();
 
 	outputs = m_itsBrain->Update(inputs, CNeuralNet::active);
 
@@ -407,7 +407,7 @@ bool AutomatedPlayer::UpdateANN()
 
 void AutomatedPlayer::Input()
 {
-	GameManager::GetGameMgr()->GetLogger()->AddDebugLog(std::format("Player {}", CtrlMgr::GetCtrlMgr()->GetController()->GetCurrentPlayerNum()), false);
+	GameManager::GetGameMgr()->GetLogger()->AddDebugLog(std::format("Player {}", ControllerManager::GetCtrlMgr()->GetController()->GetCurrentPlayerNum()), false);
 
 	for (int i = 0; i < outputs.size(); ++i)
 	{

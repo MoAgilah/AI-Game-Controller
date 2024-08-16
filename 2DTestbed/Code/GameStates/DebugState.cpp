@@ -5,7 +5,7 @@
 #include "../GameObjects/Object.h"
 #include "../Collisions/CollisionManager.h"
 #include "../Collisions/Grid.h"
-#include "../Controller/CtrlMgr.h"
+#include "../Controller/ControllerManager.h"
 #include "../Game/Constants.h"
 
 DebugState::DebugState(GameManager* gameMgr)
@@ -22,7 +22,7 @@ void DebugState::Initialise()
 	auto level = m_gameMgr->GetLevel();
 
 	level->AddObjects();
-	//level->AddEnemies();
+	level->AddEnemies();
 	level->AddForeGroundSprites();
 }
 
@@ -43,7 +43,7 @@ void DebugState::Update(float deltaTime)
 	Timer::Get()->UpdateTime(deltaTime);
 
 	if (Automated)
-		CtrlMgr::GetCtrlMgr()->GetController()->Update();
+		ControllerManager::GetCtrlMgr()->GetController()->Update();
 
 	m_gameMgr->CheckInView();
 

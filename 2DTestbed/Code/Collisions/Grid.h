@@ -24,6 +24,5 @@ private:
 	void SetTileTypes();
 	void SetTilePosition();
 
-	sf::Font font;
 	std::vector<std::shared_ptr<Tile>> m_grid;
 };

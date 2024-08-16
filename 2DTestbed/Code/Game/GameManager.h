@@ -8,6 +8,7 @@
 #include "World.h"
 #include "Logger.h"
 #include "Timer.h"
+#include "FontManager.h"
 #include "TextureManager.h"
 
 #include "../Collisions/CollisionManager.h"
@@ -26,7 +27,8 @@ public:
 	Player* GetPlayer() { return m_player.get(); }
 	World* GetLevel() { return m_world.get(); }
 	Logger* GetLogger() { return m_logger.get(); }
-	TextureManager* GetTexturMgr() { return m_texureManager.get(); }
+	FontManager* GetFontMgr() { return m_fontManager.get(); }
+	TextureManager* GetTextureMgr() { return m_texureManager.get(); }
 	CollisionManager* GetCollisionMgr() { return m_collisionManager.get(); }
 
 	void ChangePlayer(Player* ply);
@@ -38,7 +40,8 @@ public:
 
 private:
 
-	static std::shared_ptr<GameManager>		m_instance;
+	static std::shared_ptr<GameManager>	m_instance;
+	std::unique_ptr<FontManager>		m_fontManager;
 	std::unique_ptr<TextureManager>		m_texureManager;
 	std::unique_ptr<Camera>				m_camera;
 	std::unique_ptr<Player>				m_player;
