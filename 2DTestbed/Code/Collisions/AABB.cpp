@@ -74,7 +74,7 @@ bool AABB::IntersectsMoving(AABB* box, const Point& va, const Point& vb, float& 
 	}
 
 	// Use relative velocity; effectively treating ’a’ as stationary
-	Point v = va - vb;
+	Point v = vb - va;
 
 	// Initialize times of first and last contact
 	tfirst = 0.0f;

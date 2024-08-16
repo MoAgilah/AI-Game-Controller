@@ -600,17 +600,23 @@ void CollisionManager::DynamicObjectToDynamicObject(DynamicObject* obj1, Dynamic
 	float tFirst, tLast = 0;
 	if (obj1->GetAABB()->IntersectsMoving(obj2->GetAABB(), obj1->GetVelocity(), obj2->GetVelocity(), tFirst, tLast))
 	{
-		obj1->SetPosition(
-		std::lerp(obj1->GetPrevPosition().x, obj1->GetPosition().y, tFirst),
-		std::lerp(obj1->GetPrevPosition().x, obj1->GetPosition().y, tFirst));
-		obj1->GetAABB()->Update(obj1->GetPosition());
-		obj1->SetDirection(!obj1->GetDirection());
+		Point move = Point(std::lerp(obj1->GetPrevPosition().x, obj1->GetPosition().y, tFirst),
+			std::lerp(obj1->GetPrevPosition().y, obj1->GetPosition().y, tFirst));
 
-		obj2->SetPosition(
-			std::lerp(obj2->GetPrevPosition().x, obj2->GetPosition().y, tFirst),
-			std::lerp(obj2->GetPrevPosition().x, obj2->GetPosition().y, tFirst));
-		obj2->GetAABB()->Update(obj2->GetPosition());
+		Point amt = obj1->GetPosition() - move;
+
+		obj1->Move(amt * (obj1->GetDirection() ? 1.f : -1.f));
+		obj1->SetDirection(!obj1->GetDirection());
+		obj1->SetVelocity(obj1->GetVelocity().x * -1, obj1->GetVelocity().x * -1);
+
+		move = Point(std::lerp(obj2->GetPrevPosition().x, obj2->GetPosition().y, tFirst),
+			std::lerp(obj2->GetPrevPosition().y, obj2->GetPosition().y, tFirst));
+
+		amt = obj2->GetPosition() - move;
+
+		obj2->Move(amt * (obj2->GetDirection() ? 1.f : -1.f));
 		obj2->SetDirection(!obj2->GetDirection());
+		obj2->SetVelocity(obj2->GetVelocity().x * -1, obj2->GetVelocity().x * -1);
 	}
 }
 
