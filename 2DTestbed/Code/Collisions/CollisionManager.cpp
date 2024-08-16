@@ -239,7 +239,7 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 			Circle circle(obj->GetAABB(), 4);
 			if (capsule.IntersectsCircle(circle))
 			{
-				if (!tileTopEdge.IsPointAboveLine(objBottomPoint))
+				if (tileTopEdge.IsPointAboveLine(objBottomPoint))
 					ResolveObjectToBoxTop(obj, tile->GetAABB());
 			}
 			else
@@ -252,7 +252,7 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 	case Types::GRND:
 		if (dir == DDIR || dir == LDIR || dir == RDIR)
 		{
-			if (!tileTopEdge.IsPointAboveLine(objBottomPoint))
+			if (tileTopEdge.IsPointAboveLine(objBottomPoint))
 				ResolveObjectToBoxTop(obj, tile->GetAABB());
 		}
 		return;
@@ -268,7 +268,7 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 			{
 				if (prevOverlap.x > prevOverlap.y)
 				{
-					if (!tileTopEdge.IsPointAboveLine(objBottomPoint))
+					if (tileTopEdge.IsPointAboveLine(objBottomPoint))
 					{
 						ResolveObjectToBoxTop(obj, tile->GetAABB());
 					}
@@ -284,7 +284,7 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 		{
 			if (dir == LDIR || dir == RDIR)
 			{
-				if (!tileTopEdge.IsPointAboveLine(objBottomPoint))
+				if (tileTopEdge.IsPointAboveLine(objBottomPoint))
 					ResolveObjectToBoxTop(obj, tile->GetAABB());
 			}
 		}
@@ -311,7 +311,7 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 		{
 			Line line = tile->GetSlope(0, 1);
 			Circle circle(obj->GetAABB(), 4);
-			if (circle.IntersectsLineSegment(line))
+			if (!circle.IntersectsLineSegment(line))
 			{
 				auto yOffset = GetYOffSet(GetXDist(line.start, circle.center),
 					line.DistY(),
@@ -358,7 +358,7 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 		{
 			Line line = tile->GetSlope(1, 0);
 			Circle circle(obj->GetAABB(), 4);
-			if (circle.IntersectsLineSegment(line))
+			if (!circle.IntersectsLineSegment(line))
 			{
 				auto yOffset = GetYOffSet(GetXDist(circle.center, line.start),
 					line.DistY(),
