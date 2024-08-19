@@ -43,12 +43,8 @@ public:
 	void Move(float x, float y);
 	void Move(const sf::Vector2f& pos);
 
-	bool GetHit() const { return m_hit; }
-	void SetHit(bool hit) { m_hit = hit; }
-
 private:
 
-	bool m_hit = false;
 	int m_boxNumber;
 	static int s_count;
 	Point m_min;

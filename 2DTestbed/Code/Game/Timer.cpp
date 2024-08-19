@@ -1,39 +1,29 @@
 #include "Timer.h"
 
-Timer* Timer::self = nullptr;
+Timer* Timer::m_self = nullptr;
 
 Timer::~Timer()
 {
-	if (self)
+	if (m_self)
 	{
-		delete self;
-		self = nullptr;
+		delete m_self;
+		m_self = nullptr;
 	}
 }
 
  Timer* Timer::Get()
 {
-	if (self == nullptr)
+	if (m_self == nullptr)
 	{
-		self = new Timer();
+		m_self = new Timer();
 	}
 
-	return self;
-}
-
-float Timer::CurrentTime()
-{
-	return m_time;
+	return m_self;
 }
 
 void Timer::UpdateTime(float deltaTime)
 {
 	m_time -= deltaTime;
-}
-
-bool Timer::CheckEnd()
-{
-	return m_time <= 0.0f;
 }
 
 void Timer::ResetTime()
@@ -43,10 +33,9 @@ void Timer::ResetTime()
 
 void Timer::Stop()
 {
-	stopped = true;
+	m_stopped = true;
 }
 
 Timer::Timer()
-{
-	m_time = 300.0f;
-}
+	: m_time(300.f), m_stopped(false)
+{}

@@ -18,7 +18,7 @@ public:
 	Player* GetCurrentPlayer();
 
 	const std::vector<double>& GetGridInputs();
-	const std::vector<double>& GetFitnessScores() const;
+	std::vector<double> GetFitnessScores() const;
 
 	ANNView* GetAnnView() { return m_AnnView.get(); }
 	int GetCurrentPlayerNum() const { return m_currPlayer; }

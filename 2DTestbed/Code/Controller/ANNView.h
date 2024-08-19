@@ -18,7 +18,7 @@ public:
 
 private:
 
-	const unsigned int size = 200;
+	const float size = 200.f;
 	sf::View m_view;
 	sf::RectangleShape m_background;
 	std::array<std::unique_ptr<sf::Text>, 3> m_text;

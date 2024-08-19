@@ -109,7 +109,7 @@ const std::vector<double>& Controller::GetGridInputs()
 	return m_inputs;
 }
 
-const std::vector<double>& Controller::GetFitnessScores() const
+std::vector<double> Controller::GetFitnessScores() const
 {
 	std::vector<double> scores;
 

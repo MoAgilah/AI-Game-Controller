@@ -7,17 +7,17 @@ public:
 
 	static Timer* Get();
 
-	float CurrentTime();
+	float CurrentTime() const { return m_time; }
 
 	void UpdateTime(float deltaTime);
 
-	bool CheckEnd();
+	bool CheckEnd() const { return m_time <= 0.0f; }
 	void ResetTime();
 	void Stop();
 private:
 	Timer();
 
-	static Timer* self;
+	static Timer* m_self;
 	float m_time;
-	bool stopped;
+	bool m_stopped;
 };

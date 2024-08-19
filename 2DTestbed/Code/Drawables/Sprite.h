@@ -69,7 +69,9 @@ public:
 	bool PlayedOnce() const { return m_animCycles > 0; }
 
 	void SetShouldLoop(bool loop) { m_loop = loop; }
+
 private:
+
 	bool m_loop = true;
 	int m_animCycles = 0;
 	float m_currentTime = 0;
@@ -80,7 +82,6 @@ private:
 
 	Range m_frame;
 	Range m_animation;
-
 
 	std::vector<int> m_numFrames;
 };
