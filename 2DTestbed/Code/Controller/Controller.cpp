@@ -101,7 +101,7 @@ Player* Controller::GetCurrentPlayer()
 
 const std::vector<double>& Controller::GetGridInputs()
 {
-	std::vector<std::shared_ptr<Tile>> tiles = m_AnnView->GetVecView();
+	const std::array<std::shared_ptr<Tile>, 255>& tiles = m_AnnView->GetVecView();
 
 	for (int i = 0; i < tiles.size(); i++)
 		m_inputs[i] = ColourToInput(tiles[i]->GetRect().getFillColor());

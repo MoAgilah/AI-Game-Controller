@@ -10,58 +10,39 @@
 
 ANNView::ANNView()
 {
+	for (int i = 0; i < 255; i++)
+		m_vecView[i] = std::make_shared<Tile>();
+
 	auto& font = GameManager::GetGameMgr()->GetFontMgr()->GetStandardFont();
 
-	m_text.push_back(std::make_unique<sf::Text>());
-	m_text.back()->setFont(font);
-	m_text.back()->setCharacterSize(60);
-	m_text.back()->setOutlineColor(sf::Color::Black);
-	m_text.back()->setOutlineThickness(1.f);
-	m_text.back()->setFillColor(sf::Color::Yellow);
-	m_text.back()->setString("Player: 0");
+	for (size_t i = 0; i < 3; i++)
+	{
+		m_text[i] = std::make_unique<sf::Text>();
+		m_text[i]->setFont(font);
+		m_text[i]->setCharacterSize(60);
+		m_text[i]->setOutlineColor(sf::Color::Black);
+		m_text[i]->setOutlineThickness(1.f);
+		m_text[i]->setFillColor(sf::Color::Yellow);
+	}
 
-	m_text.push_back(std::make_unique<sf::Text>());
-	m_text.back()->setFont(font);
-	m_text.back()->setCharacterSize(60);
-	m_text.back()->setOutlineColor(sf::Color::Black);
-	m_text.back()->setOutlineThickness(1.f);
-	m_text.back()->setFillColor(sf::Color::Yellow);
-	m_text.back()->setString("Generation: 0");
-
-	m_text.push_back(std::make_unique<sf::Text>());
-	m_text.back()->setFont(font);
-	m_text.back()->setCharacterSize(60);
-	m_text.back()->setOutlineColor(sf::Color::Black);
-	m_text.back()->setOutlineThickness(1.f);
-	m_text.back()->setFillColor(sf::Color::Yellow);
-	m_text.back()->setString("Highest fitness: 0");
+	m_text[0]->setString("Player: 0");
+	m_text[1]->setString("Generation: 0");
+	m_text[2]->setString("Highest fitness: 0");
 
 	m_background.setSize(screenDim);
 	m_background.setOrigin(screenDim * 0.5f);
 	m_background.setScale(scale);
 	m_background.setFillColor(sf::Color(0, 0, 0, 125));
-
-	//create the grid inputs
-	for (int i = 0; i < 255; i++)
-		m_vecView.push_back(std::make_shared<Tile>());
 }
 
 void ANNView::Update()
 {
 	const Camera* camera = GameManager::GetGameMgr()->GetCamera();
-
-	//get main view
 	sf::View standard = camera->GetView();
 
 	//reset mini view with standard view
-	m_view.reset(sf::FloatRect(standard.getCenter().x - 100, standard.getCenter().y,
-		size, (screenDim.y * size) / screenDim.x));
-
-	m_view.setViewport(sf::FloatRect(1.f - m_view.getSize().x / screenDim.x - 0.6f,
-		1.f - m_view.getSize().y / screenDim.y - 0.6f,
-		m_view.getSize().x / screenDim.x,
-		m_view.getSize().y / screenDim.y));
-
+	m_view.reset(sf::FloatRect(standard.getCenter().x - 100, standard.getCenter().y, size, size));
+	m_view.setViewport(sf::FloatRect(0.025f, 0.07f, 0.33f, 0.33f));
 	m_view.zoom(4.f);
 
 	//update bkg image with standard view center position
@@ -76,7 +57,7 @@ void ANNView::Update()
 	m_text[1]->setPosition(m_view.getCenter() - sf::Vector2f(400, -260));
 
 	m_text[2]->setString(std::format("Highest fitness: {}", ctrl->BestFitness()));
-	m_text[2]->setPosition(m_view.getCenter() - sf::Vector2f(400, -330));
+	m_text[2]->setPosition(m_view.getCenter() - sf::Vector2f(400, -320));
 
 	//extract m_visible tiles
 	int cnt = 0;
