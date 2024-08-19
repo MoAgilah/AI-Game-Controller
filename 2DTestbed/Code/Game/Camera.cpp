@@ -1,9 +1,7 @@
 #include "../Game/Camera.h"
-#include "../Collisions/Tile.h"
 #include "../Game/Timer.h"
 #include "../Game/GameManager.h"
 #include "../GameObjects/Player.h"
-#include <assert.h>
 #include "../Game/Constants.h"
 
 Camera::Camera()
@@ -19,7 +17,7 @@ Camera::Camera()
 	m_viewBox.SetFillColour(sf::Color(255, 0, 0, 128));
 }
 
-#include<format>
+
 void Camera::Update()
 {
 	//scroll the screen view with the player

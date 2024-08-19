@@ -1,12 +1,11 @@
 #include "../Controller/ANNView.h"
-#include "../Game/Camera.h"
 #include "../Game/GameManager.h"
+#include "../Game/Camera.h"
 #include "../GameObjects/Player.h"
 #include "../Collisions/CollisionManager.h"
 #include "../Controller/ControllerManager.h"
 #include "../Game/Constants.h"
 #include "../Utilities/Utilities.h"
-
 #include <format>
 
 ANNView::ANNView()
@@ -55,8 +54,14 @@ void ANNView::Update()
 	sf::View standard = camera->GetView();
 
 	//reset mini view with standard view
-	m_view.reset(sf::FloatRect(standard.getCenter().x-100, standard.getCenter().y, static_cast<float>(size), static_cast<float>(screenDim.y * size / screenDim.x)));
-	m_view.setViewport(sf::FloatRect(1.f - static_cast<float>(m_view.getSize().x) / screenDim.x - 0.6f, 1.f - static_cast<float>(m_view.getSize().y) / screenDim.y - 0.6f, static_cast<float>(m_view.getSize().x) / screenDim.x, static_cast<float>(m_view.getSize().y) / screenDim.y));
+	m_view.reset(sf::FloatRect(standard.getCenter().x - 100, standard.getCenter().y,
+		size, (screenDim.y * size) / screenDim.x));
+
+	m_view.setViewport(sf::FloatRect(1.f - m_view.getSize().x / screenDim.x - 0.6f,
+		1.f - m_view.getSize().y / screenDim.y - 0.6f,
+		m_view.getSize().x / screenDim.x,
+		m_view.getSize().y / screenDim.y));
+
 	m_view.zoom(4.f);
 
 	//update bkg image with standard view center position
@@ -97,7 +102,7 @@ void ANNView::Update()
 			continue;
 		}
 
-		sf::RectangleShape tmp;
+		sf::RectangleShape tmp(sf::Vector2f(16, 16));
 		for (auto& gobj : GameManager::GetGameMgr()->GetCollisionMgr()->GetCollidables())
 		{
 			TexID type = gobj->GetID();
@@ -105,11 +110,6 @@ void ANNView::Update()
 			{
 				tmp.setSize(sf::Vector2f(96, 108));
 				tmp.setOrigin(48, 54);
-			}
-			else
-			{
-				tmp.setSize(sf::Vector2f(16, 16));
-				tmp.setOrigin(8, 8);
 			}
 
 			if (gobj->GetActive())

@@ -13,27 +13,27 @@ public:
 	Controller();
 	~Controller() = default;
 
-	ANNView* GetAnnView() { return m_AnnView.get(); }
-	std::vector<double> GetGridInputs();
+	bool Update();
 
+	Player* GetCurrentPlayer();
+
+	const std::vector<double>& GetGridInputs();
+	const std::vector<double>& GetFitnessScores() const;
+
+	ANNView* GetAnnView() { return m_AnnView.get(); }
 	int GetCurrentPlayerNum() const { return m_currPlayer; }
 	int GetCurrentGeneration() const { return m_generations; }
 	double BestFitness() const { return m_bestFitness; }
 
-	Player* GetCurrentPlayer();
-	bool Update();
-	std::vector<double>  GetFitnessScores() const;
-
 private:
 
-	void EndOfRunCalculation(AutomatedPlayer* ply);
 	double ColourToInput(sf::Color col);
+	void EndOfRunCalculation(AutomatedPlayer* ply);
 
-	int m_ticks;
-	int m_currPlayer;
-	int	m_numPlayers;
-	int m_generations;
-	double m_bestFitness;
+	int m_ticks = 0;
+	int m_currPlayer = 0;
+	int m_generations = 0;
+	double m_bestFitness = 0;
 
 	std::unique_ptr<Cga> m_pop;
 	std::vector<double> m_inputs;
