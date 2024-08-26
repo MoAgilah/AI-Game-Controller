@@ -61,6 +61,7 @@ public:
 	void Update(float dt);
 
 	void ChangeAnim(int animNum);
+	int GetCurrentAnim() const { return m_animation.m_current; }
 
 	void SetFrames(const std::vector<int>& numFrames);
 	void SetFrameData(int rows, int columns, const std::vector<int>& numFrames);
