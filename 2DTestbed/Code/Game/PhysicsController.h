@@ -33,7 +33,9 @@ public:
 
 	void Update(const Point& currVelocity);
 
-	void SetOnGround();
+	void SetWalking();
+	void SetRunning();
+	void SetSprinting();
 	void SetOnSlope();
 	void SetAerial();
 	void SetFalling();

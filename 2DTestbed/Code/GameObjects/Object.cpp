@@ -61,11 +61,13 @@ void Object::SetDirection(bool dir)
 DynamicObject::DynamicObject(TexID sprId, const sf::Vector2f& boxSize)
 	: Object(sprId, boxSize)
 {
+	m_physicsCtrl = std::make_shared<PhysicsController>();
 }
 
 DynamicObject::DynamicObject(AnimatedSprite* sprite, const sf::Vector2f& boxSize)
 	: Object(sprite, boxSize)
 {
+	m_physicsCtrl = std::make_shared<PhysicsController>();
 }
 
 void DynamicObject::Reset()
@@ -77,29 +79,33 @@ void DynamicObject::Reset()
 void DynamicObject::IncrementXVelocity(float x)
 {
 	m_velocity.x += x;
-	if (m_velocity.x > scaledMaxVel.x)
-		m_velocity.x = scaledMaxVel.x;
+	auto physicsCtrl = GetPhysicsController();
+	if (m_velocity.x > physicsCtrl->GetMaxXVelocity())
+		m_velocity.x = physicsCtrl->GetMaxXVelocity();
 }
 
 void DynamicObject::DecrementXVelocity(float x)
 {
 	m_velocity.x -= x;
-	if (m_velocity.x < -scaledMaxVel.x)
-		m_velocity.x = -scaledMaxVel.x;
+	auto physicsCtrl = GetPhysicsController();
+	if (m_velocity.x < -physicsCtrl->GetMaxXVelocity())
+		m_velocity.x = -physicsCtrl->GetMaxXVelocity();
 }
 
 void DynamicObject::IncrementYVelocity(float y)
 {
 	m_velocity.y += y;
-	if (m_velocity.y > scaledMaxVel.y)
-		m_velocity.y = scaledMaxVel.y;
+	auto physicsCtrl = GetPhysicsController();
+	if (m_velocity.y > physicsCtrl->GetMaxYVelocity())
+		m_velocity.y = physicsCtrl->GetMaxYVelocity();
 }
 
 void DynamicObject::DecrementYVelocity(float y)
 {
 	m_velocity.y -= y;
-	if (m_velocity.y < -scaledMaxVel.y)
-		m_velocity.y = -scaledMaxVel.y;
+	auto physicsCtrl = GetPhysicsController();
+	if (m_velocity.y < -physicsCtrl->GetMaxYVelocity())
+		m_velocity.y = -physicsCtrl->GetMaxYVelocity();
 }
 
 void DynamicObject::Move(float x, float y)

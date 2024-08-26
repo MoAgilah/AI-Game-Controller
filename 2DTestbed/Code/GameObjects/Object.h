@@ -3,9 +3,11 @@
 #include <memory>
 #include <string>
 #include <SFML/Graphics.hpp>
-#include "../Drawables/Sprite.h"
+
 #include "../Collisions/AABB.h"
+#include "../Drawables/Sprite.h"
 #include "../Game/Constants.h"
+#include "../Game/PhysicsController.h"
 
 struct SpawnData
 {
@@ -109,9 +111,13 @@ public:
 	void Move(const sf::Vector2f& pos);
 
 	void CheckForHorizontalBounds(float deltaTime);
+
+	PhysicsController* GetPhysicsController() { return m_physicsCtrl.get(); }
+
 private:
 
 	bool m_onGround = false;
 	sf::Vector2f m_velocity;
 	sf::Vector2f m_previousPos;
+	std::shared_ptr<PhysicsController> m_physicsCtrl;
 };

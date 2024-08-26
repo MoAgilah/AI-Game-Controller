@@ -6,12 +6,12 @@
 PhysicsController::PhysicsController()
 	: m_currX(XVelocity::walking), m_currY(YVelocity::jumping), m_currType(PhysicsType::ground)
 {
+	m_groundVelocities.push_back({ 0, 3.f * scale.x });
 	m_groundVelocities.push_back({ 0, 1.5f * scale.x });
-	m_groundVelocities.push_back({ m_groundVelocities[XVelocity::walking].max, 2.5f * scale.x });
-	m_groundVelocities.push_back({ m_groundVelocities[XVelocity::running].max, 3.5f * scale.x });
+	m_groundVelocities.push_back({ m_groundVelocities[XVelocity::running].max, 3.f * scale.x });
 
 	m_slopedVelocities.push_back({ 0, 0.8125f * scale.x });
-	m_slopedVelocities.push_back({ m_slopedVelocities[XVelocity::walking].max, 1.375f * scale.x });
+	m_slopedVelocities.push_back({ 0, 0.8125f * scale.x });
 	m_slopedVelocities.push_back({ m_slopedVelocities[XVelocity::running].max, 1.9375f * scale.x });
 
 	m_aerialVelocities = { 3.4375f * scale.y, 3.6875f * scale.y, 3.9375f * scale.y, 4.3125f * scale.y };
@@ -24,7 +24,29 @@ PhysicsController::PhysicsController()
 
 void PhysicsController::Update(const Point& currVelocity)
 {
-	if (currVelocity.x >= m_maxVelocity.first.max)
+	if (m_currX != XVelocity::walking)
+	{
+		if (currVelocity.x > 0)
+		{
+			if (currVelocity.x >= m_maxVelocity.first.max)
+			{
+				SetSprinting();
+			}
+		}
+		else if (currVelocity.x < 0)
+		{
+			if (currVelocity.x <= -m_maxVelocity.first.max)
+			{
+				SetSprinting();
+			}
+		}
+		else
+		{
+			SetWalking();
+		}
+	}
+
+	/*if (currVelocity.x >= m_maxVelocity.first.max)
 	{
 		switch (m_currType)
 		{
@@ -57,13 +79,30 @@ void PhysicsController::Update(const Point& currVelocity)
 			}
 			break;
 		}
-	}
+	}*/
 }
 
-void PhysicsController::SetOnGround()
+void PhysicsController::SetWalking()
 {
 	m_currType = PhysicsType::ground;
 	m_currAccelerations.x = m_groundAcceleration;
+	m_currX = XVelocity::walking;
+	m_maxVelocity.first = m_groundVelocities[m_currX];
+}
+
+void PhysicsController::SetRunning()
+{
+	m_currType = PhysicsType::ground;
+	m_currAccelerations.x = m_groundAcceleration;
+	m_currX = XVelocity::running;
+	m_maxVelocity.first = m_groundVelocities[m_currX];
+}
+
+void PhysicsController::SetSprinting()
+{
+	m_currType = PhysicsType::ground;
+	m_currAccelerations.x = m_groundAcceleration;
+	m_currX = XVelocity::sprinting;
 	m_maxVelocity.first = m_groundVelocities[m_currX];
 }
 

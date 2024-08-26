@@ -6,10 +6,9 @@
 
 //DRender shows debug for the testbed
 //#define DRender
+
 const Point screenDim(600, 600);
 const Point scale(2.34375f, 2.5f);
-const Point maxVelocity(4.5f, 4.5f);
-const Point scaledMaxVel(maxVelocity.x * scale.x, maxVelocity.y * scale.y);
 
 constexpr bool Automated = false;
 constexpr float LeftMost = 10.f;
