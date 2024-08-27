@@ -47,47 +47,67 @@ void GroundedState::ProcessInputs()
 	if (keyStates[Keys::LEFT_KEY])
 	{
 		if (player->GetDirection())
-			player->SetDirection(false);
-
-		switch (player->GetPhysicsController()->GetXVelocityType())
 		{
-		case XVelocity::walking:
-			animSpr->UpdateAnimSpeed(0.5f);
-			animSpr->ChangeAnim(MarioAnims::MOVING);
-			break;
-		case XVelocity::running:
-			animSpr->UpdateAnimSpeed(0.75f);
-			animSpr->ChangeAnim(MarioAnims::MOVING);
-			break;
-		case XVelocity::sprinting:
-			animSpr->UpdateAnimSpeed(0.5f);
-			animSpr->ChangeAnim(MarioAnims::RUNNING);
-			break;
+			player->SetDirection(false);
+			player->SetXVelocity(player->GetXVelocity() / 2);
+			player->DecrementXVelocity(0.03125);
+			animSpr->ChangeAnim(MarioAnims::SKID);
+			m_turningAround = true;
+			m_turnTime = 0.2f;
 		}
-		player->DecrementXVelocity(physicCtrl->GetXAcceleration());
+
+		if (!m_turningAround)
+		{
+			switch (player->GetPhysicsController()->GetXVelocityType())
+			{
+			case XVelocity::walking:
+				animSpr->UpdateAnimSpeed(0.5f);
+				animSpr->ChangeAnim(MarioAnims::MOVING);
+				break;
+			case XVelocity::running:
+				animSpr->UpdateAnimSpeed(0.75f);
+				animSpr->ChangeAnim(MarioAnims::MOVING);
+				break;
+			case XVelocity::sprinting:
+				animSpr->UpdateAnimSpeed(0.5f);
+				animSpr->ChangeAnim(MarioAnims::RUNNING);
+				break;
+			}
+			player->DecrementXVelocity(physicCtrl->GetXAcceleration());
+		}
 	}
 
 	if (keyStates[Keys::RIGHT_KEY])
 	{
 		if (!player->GetDirection())
-			player->SetDirection(true);
-
-		switch (player->GetPhysicsController()->GetXVelocityType())
 		{
-		case XVelocity::walking:
-			animSpr->UpdateAnimSpeed(0.5f);
-			animSpr->ChangeAnim(MarioAnims::MOVING);
-			break;
-		case XVelocity::running:
-			animSpr->UpdateAnimSpeed(0.75f);
-			animSpr->ChangeAnim(MarioAnims::MOVING);
-			break;
-		case XVelocity::sprinting:
-			animSpr->UpdateAnimSpeed(0.5f);
-			animSpr->ChangeAnim(MarioAnims::RUNNING);
-			break;
+			player->SetDirection(true);
+			player->SetXVelocity(player->GetXVelocity() / 2);
+			player->IncrementXVelocity(0.03125);
+			animSpr->ChangeAnim(MarioAnims::SKID);
+			m_turningAround = true;
+			m_turnTime = 0.2f;
 		}
-		player->IncrementXVelocity(physicCtrl->GetXAcceleration());
+
+		if (!m_turningAround)
+		{
+			switch (player->GetPhysicsController()->GetXVelocityType())
+			{
+			case XVelocity::walking:
+				animSpr->UpdateAnimSpeed(0.5f);
+				animSpr->ChangeAnim(MarioAnims::MOVING);
+				break;
+			case XVelocity::running:
+				animSpr->UpdateAnimSpeed(0.75f);
+				animSpr->ChangeAnim(MarioAnims::MOVING);
+				break;
+			case XVelocity::sprinting:
+				animSpr->UpdateAnimSpeed(0.5f);
+				animSpr->ChangeAnim(MarioAnims::RUNNING);
+				break;
+			}
+			player->IncrementXVelocity(physicCtrl->GetXAcceleration());
+		}
 	}
 
 	if (keyStates[Keys::UP_KEY])
@@ -152,6 +172,12 @@ void GroundedState::ProcessInputs()
 
 void GroundedState::Update(float deltaTime)
 {
+	if (m_turningAround)
+	{
+		m_turnTime -= deltaTime;
+		if (m_turnTime < 0)
+			m_turningAround = false;
+	}
 }
 
 void AirborneState::Initialise()

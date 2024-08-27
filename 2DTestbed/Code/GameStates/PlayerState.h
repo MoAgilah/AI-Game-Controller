@@ -35,6 +35,11 @@ public:
 	void Resume() override;
 	void ProcessInputs() override;
 	void Update(float deltaTime) override;
+
+private:
+
+	float m_turnTime = 0;
+	bool m_turningAround = false;
 };
 
 class AirborneState : public PlayerState
