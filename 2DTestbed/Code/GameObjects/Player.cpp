@@ -60,11 +60,62 @@ void Player::Update(float deltaTime)
 			{
 				if (GetPhysicsController()->GetPhysicsType() != PhysicsType::slope)
 					GetPhysicsController()->SetOnSlope();
+
+				if (!GetXVelocity())
+				{
+					if (GetShouldSlideLeft())
+					{
+						if (!GetSlideLeft())
+						{
+							SetDirection(false);
+							SetSlideLeft(true);
+						}
+					}
+
+					if (GetShouldSlideRight())
+					{
+						if (!GetSlideRight())
+						{
+							SetDirection(true);
+							SetSlideRight(true);
+						}
+					}
+				}
+
+				if (GetSlideLeft() || GetSlideRight())
+				{
+					if ((m_keyStates[Keys::LEFT_KEY] || m_keyStates[Keys::RIGHT_KEY]))
+					{
+						SetSlideLeft(false);
+						SetSlideRight(false);
+						SetShouldSlideLeft(false);
+						SetShouldSlideRight(false);
+					}
+					else
+					{
+						GetAnimSpr()->ChangeAnim(MarioAnims::SLIDE);
+
+						if (GetSlideLeft())
+						{
+							DecrementXVelocity(GetPhysicsController()->GetXAcceleration());
+						}
+
+						if (GetSlideRight())
+						{
+							IncrementXVelocity(GetPhysicsController()->GetXAcceleration());
+						}
+					}
+				}
 			}
 			else
 			{
 				if (GetPhysicsController()->GetPhysicsType() != PhysicsType::ground)
 					GetPhysicsController()->SetWalking();
+
+				SetSlideLeft(false);
+				SetSlideRight(false);
+				SetShouldSlideLeft(false);
+				SetShouldSlideRight(false);
 			}
 
 			SetYVelocity(0);
@@ -120,7 +171,7 @@ void Player::Update(float deltaTime)
 			}
 		}
 
-		if ((m_keyStates[Keys::LEFT_KEY] == false && m_keyStates[Keys::RIGHT_KEY] == false))
+		if ((!m_keyStates[Keys::LEFT_KEY] && !m_keyStates[Keys::RIGHT_KEY]) && (!GetSlideLeft() && !GetSlideRight()))
 			SetXVelocity(0.0f);
 
 		if (!m_keyStates[Keys::JUMP_KEY] && !m_keyStates[Keys::SJUMP_KEY])

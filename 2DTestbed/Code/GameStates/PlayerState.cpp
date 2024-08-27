@@ -2,6 +2,8 @@
 #include "../Game/GameManager.h"
 #include "../Game/TextureManager.h"
 #include "../Collisions/AABB.h"
+#include <iostream>
+#include <format>
 
 void GroundedState::Initialise()
 {
@@ -49,11 +51,14 @@ void GroundedState::ProcessInputs()
 		if (player->GetDirection())
 		{
 			player->SetDirection(false);
-			player->SetXVelocity(player->GetXVelocity() / 2);
-			player->DecrementXVelocity(0.03125);
-			animSpr->ChangeAnim(MarioAnims::SKID);
-			m_turningAround = true;
-			m_turnTime = 0.2f;
+			if (player->GetXVelocity() > physicCtrl->GetXAcceleration())
+			{
+				player->SetXVelocity(player->GetXVelocity() / 2);
+				player->DecrementXVelocity(0.03125);
+				animSpr->ChangeAnim(MarioAnims::SKID);
+				m_turningAround = true;
+				m_turnTime = 0.2f;
+			}
 		}
 
 		if (!m_turningAround)
@@ -82,11 +87,14 @@ void GroundedState::ProcessInputs()
 		if (!player->GetDirection())
 		{
 			player->SetDirection(true);
-			player->SetXVelocity(player->GetXVelocity() / 2);
-			player->IncrementXVelocity(0.03125);
-			animSpr->ChangeAnim(MarioAnims::SKID);
-			m_turningAround = true;
-			m_turnTime = 0.2f;
+			if (player->GetXVelocity() < -physicCtrl->GetXAcceleration())
+			{
+				player->SetXVelocity(player->GetXVelocity() / 2);
+				player->IncrementXVelocity(0.03125);
+				animSpr->ChangeAnim(MarioAnims::SKID);
+				m_turningAround = true;
+				m_turnTime = 0.2f;
+			}
 		}
 
 		if (!m_turningAround)

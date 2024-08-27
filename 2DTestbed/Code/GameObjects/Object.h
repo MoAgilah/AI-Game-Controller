@@ -110,6 +110,18 @@ public:
 	bool GetOnSlope() const { return m_onSlope; }
 	void SetOnSlope(bool slp) { m_onSlope = slp; }
 
+	bool GetShouldSlideLeft() const { return m_shouldSlideLeft; }
+	void SetShouldSlideLeft(bool left) { m_shouldSlideLeft = left; }
+
+	bool GetSlideLeft() const { return m_slideLeft; }
+	void SetSlideLeft(bool left) { m_slideLeft = left; }
+
+	bool GetShouldSlideRight() const { return m_shouldSlideRight; }
+	void SetShouldSlideRight(bool right) { m_shouldSlideRight = right; }
+
+	bool GetSlideRight() const { return m_slideRight; }
+	void SetSlideRight(bool right) { m_slideRight = right; }
+
 	void Move(float x, float y);
 	void Move(const sf::Vector2f& pos);
 
@@ -120,6 +132,10 @@ public:
 private:
 
 	bool m_onSlope = false;
+	bool m_shouldSlideLeft = false;
+	bool m_slideLeft = false;
+	bool m_shouldSlideRight = false;
+	bool m_slideRight = false;
 	bool m_onGround = false;
 	sf::Vector2f m_velocity;
 	sf::Vector2f m_previousPos;
