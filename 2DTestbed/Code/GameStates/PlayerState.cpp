@@ -16,7 +16,23 @@ void GroundedState::Resume()
 	if (player->GetXVelocity() == 0)
 		animSpr->ChangeAnim(MarioAnims::IDLE);
 	else
-		animSpr->ChangeAnim(MarioAnims::MOVING);
+	{
+		switch (player->GetPhysicsController()->GetXVelocityType())
+		{
+		case XVelocity::walking:
+			animSpr->UpdateAnimSpeed(0.5f);
+			animSpr->ChangeAnim(MarioAnims::MOVING);
+			break;
+		case XVelocity::running:
+			animSpr->UpdateAnimSpeed(0.75f);
+			animSpr->ChangeAnim(MarioAnims::MOVING);
+			break;
+		case XVelocity::sprinting:
+			animSpr->UpdateAnimSpeed(0.5f);
+			animSpr->ChangeAnim(MarioAnims::RUNNING);
+			break;
+		}
+	}
 
 	PlayerState::Resume();
 }
@@ -33,7 +49,21 @@ void GroundedState::ProcessInputs()
 		if (player->GetDirection())
 			player->SetDirection(false);
 
-		animSpr->ChangeAnim(MarioAnims::MOVING);
+		switch (player->GetPhysicsController()->GetXVelocityType())
+		{
+		case XVelocity::walking:
+			animSpr->UpdateAnimSpeed(0.5f);
+			animSpr->ChangeAnim(MarioAnims::MOVING);
+			break;
+		case XVelocity::running:
+			animSpr->UpdateAnimSpeed(0.75f);
+			animSpr->ChangeAnim(MarioAnims::MOVING);
+			break;
+		case XVelocity::sprinting:
+			animSpr->UpdateAnimSpeed(0.5f);
+			animSpr->ChangeAnim(MarioAnims::RUNNING);
+			break;
+		}
 		player->DecrementXVelocity(physicCtrl->GetXAcceleration());
 	}
 
@@ -42,7 +72,21 @@ void GroundedState::ProcessInputs()
 		if (!player->GetDirection())
 			player->SetDirection(true);
 
-		animSpr->ChangeAnim(MarioAnims::MOVING);
+		switch (player->GetPhysicsController()->GetXVelocityType())
+		{
+		case XVelocity::walking:
+			animSpr->UpdateAnimSpeed(0.5f);
+			animSpr->ChangeAnim(MarioAnims::MOVING);
+			break;
+		case XVelocity::running:
+			animSpr->UpdateAnimSpeed(0.75f);
+			animSpr->ChangeAnim(MarioAnims::MOVING);
+			break;
+		case XVelocity::sprinting:
+			animSpr->UpdateAnimSpeed(0.5f);
+			animSpr->ChangeAnim(MarioAnims::RUNNING);
+			break;
+		}
 		player->IncrementXVelocity(physicCtrl->GetXAcceleration());
 	}
 
@@ -50,15 +94,33 @@ void GroundedState::ProcessInputs()
 		animSpr->ChangeAnim(MarioAnims::LOOKUP);
 
 	if (keyStates[Keys::RUN_KEY])
-		physicCtrl->SetRunning();
+	{
+		if (physicCtrl->GetXVelocityType() == XVelocity::walking)
+			physicCtrl->SetRunning();
+	}
 	else
-		physicCtrl->SetWalking();
+	{
+		if (physicCtrl->GetXVelocityType() != XVelocity::walking)
+			physicCtrl->SetWalking();
+	}
 
 	if (keyStates[Keys::JUMP_KEY])
 	{
 		if (!player->GetCantJump())
 		{
-			animSpr->ChangeAnim(MarioAnims::JUMP);
+			animSpr->UpdateAnimSpeed(0.5f);
+			switch (player->GetPhysicsController()->GetXVelocityType())
+			{
+			case XVelocity::walking:
+				animSpr->ChangeAnim(MarioAnims::JUMP);
+				break;
+			case XVelocity::running:
+				animSpr->ChangeAnim(MarioAnims::JUMP);
+				break;
+			case XVelocity::sprinting:
+				animSpr->ChangeAnim(MarioAnims::RUNJUMP);
+				break;
+			}
 			player->SetAirbourne(true);
 			player->SetOnGround(false);
 			player->DecrementYVelocity(physicCtrl->GetYAcceleration());
@@ -74,6 +136,7 @@ void GroundedState::ProcessInputs()
 	{
 		if (!player->GetCantSpinJump())
 		{
+			animSpr->UpdateAnimSpeed(0.5f);
 			animSpr->ChangeAnim(MarioAnims::SPINJUMP);
 			player->SetAirbourne(true);
 			player->SetOnGround(false);

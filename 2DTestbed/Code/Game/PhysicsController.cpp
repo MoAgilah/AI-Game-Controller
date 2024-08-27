@@ -1,6 +1,7 @@
 #include "PhysicsController.h"
 #include "Constants.h"
 #include<iostream>
+#include<format>
 
 
 PhysicsController::PhysicsController()
@@ -19,7 +20,7 @@ PhysicsController::PhysicsController()
 
 	m_groundAcceleration = 0.0546875f;
 	m_slopedAccelerations = { 0.125f, 0.1875f, 0.25f };
-	m_aerialAccelerations = { 0.0546875f, 0.325f };
+	m_aerialAccelerations = { 0.046875f, 0.325f };
 
 	m_currAccelerations.x = m_groundAcceleration;
 	m_currAccelerations.y = m_aerialAccelerations[m_currY];

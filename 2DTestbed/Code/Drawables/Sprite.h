@@ -71,6 +71,8 @@ public:
 
 	void SetShouldLoop(bool loop) { m_loop = loop; }
 
+	void UpdateAnimSpeed(float animSpd) { m_animSpeed = animSpd; }
+
 private:
 
 	bool m_loop = true;

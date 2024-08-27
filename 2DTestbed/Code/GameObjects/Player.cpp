@@ -78,10 +78,10 @@ void Player::Update(float deltaTime)
 					m_stateMgr.PushState(new AirborneState(this));
 
 				m_airtime += deltaTime;
-				std::cout << std::format("air time is {}\n", m_airtime);
-				DecrementYVelocity(GetPhysicsController()->GetYAcceleration());
 				if (m_airtime >= c_maxAirTime)
 					SetAirbourne(false);
+				else
+					DecrementYVelocity(GetPhysicsController()->GetYAcceleration());
 			}
 			else
 			{
