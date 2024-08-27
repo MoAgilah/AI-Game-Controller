@@ -248,7 +248,10 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 			{
 				Capsule capsule(line, 6);
 				if (capsule.IntersectsCircle(circle))
+				{
 					obj->SetOnGround(true);
+					obj->SetOnSlope(true);
+				}
 			}
 		}
 
@@ -265,6 +268,7 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 					tile->GetTileHeight());
 
 				obj->Move(sf::Vector2f(0, yOffset));
+				obj->SetOnSlope(true);
 			}
 		}
 
@@ -281,6 +285,7 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 					tile->GetTileHeight());
 
 				obj->Move(sf::Vector2f(0, -yOffset));
+				obj->SetOnSlope(true);
 			}
 		}
 		return;
@@ -295,7 +300,10 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 			{
 				Capsule capsule(line, 6);
 				if (capsule.IntersectsCircle(circle))
+				{
 					obj->SetOnGround(true);
+					obj->SetOnSlope(true);
+				}
 			}
 		}
 
@@ -312,6 +320,7 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 					tile->GetTileHeight());
 
 				obj->Move(sf::Vector2f(0, yOffset));
+				obj->SetOnSlope(true);
 			}
 		}
 
@@ -328,6 +337,7 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 					tile->GetTileHeight());
 
 				obj->Move(sf::Vector2f(0, -yOffset));
+				obj->SetOnSlope(true);
 			}
 		}
 		return;
@@ -565,6 +575,7 @@ void CollisionManager::ResolveObjectToBoxTop(DynamicObject* obj, AABB* box)
 {
 	obj->Move(0, -box->GetOverlap().y);
 	obj->SetOnGround(true);
+	obj->SetOnSlope(false);
 }
 
 void CollisionManager::ResolveObjectToBoxBottom(DynamicObject* obj, AABB* box)

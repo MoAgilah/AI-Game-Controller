@@ -31,7 +31,7 @@ public:
 	PhysicsController();
 	~PhysicsController() = default;
 
-	void Update(const Point& currVelocity);
+	void Update(bool direction, const Point& currVelocity);
 
 	void SetWalking();
 	void SetRunning();
@@ -40,6 +40,7 @@ public:
 	void SetAerial();
 	void SetFalling();
 
+	PhysicsType GetPhysicsType() const { return (PhysicsType)m_currType; }
 	XVelocity GetXVelocityType() const { return (XVelocity)m_currX; }
 
 	float GetXAcceleration() const { return m_currAccelerations.x; }

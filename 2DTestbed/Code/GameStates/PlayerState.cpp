@@ -24,16 +24,17 @@ void GroundedState::Resume()
 void GroundedState::ProcessInputs()
 {
 	Player* player = GetPlayer();
-	auto& keyStates = player->GetKeyStates();
-	auto animSpr = GetPlayer()->GetAnimSpr();
+	AnimatedSprite* animSpr = player->GetAnimSpr();
+	PhysicsController* physicCtrl = player->GetPhysicsController();
 
+	auto& keyStates = player->GetKeyStates();
 	if (keyStates[Keys::LEFT_KEY])
 	{
 		if (player->GetDirection())
 			player->SetDirection(false);
 
 		animSpr->ChangeAnim(MarioAnims::MOVING);
-		player->SetXVelocity(-c_moveSpeed);
+		player->DecrementXVelocity(physicCtrl->GetXAcceleration());
 	}
 
 	if (keyStates[Keys::RIGHT_KEY])
@@ -42,11 +43,16 @@ void GroundedState::ProcessInputs()
 			player->SetDirection(true);
 
 		animSpr->ChangeAnim(MarioAnims::MOVING);
-		player->SetXVelocity(c_moveSpeed);
+		player->IncrementXVelocity(physicCtrl->GetXAcceleration());
 	}
 
 	if (keyStates[Keys::UP_KEY])
 		animSpr->ChangeAnim(MarioAnims::LOOKUP);
+
+	if (keyStates[Keys::RUN_KEY])
+		physicCtrl->SetRunning();
+	else
+		physicCtrl->SetWalking();
 
 	if (keyStates[Keys::JUMP_KEY])
 	{
@@ -55,8 +61,12 @@ void GroundedState::ProcessInputs()
 			animSpr->ChangeAnim(MarioAnims::JUMP);
 			player->SetAirbourne(true);
 			player->SetOnGround(false);
-			player->DecrementYVelocity(c_jumpSpeed);
+			player->DecrementYVelocity(physicCtrl->GetYAcceleration());
 			player->SetCantJump(true);
+			if (physicCtrl->GetPhysicsType() != PhysicsType::rise)
+			{
+				physicCtrl->SetAerial();
+			}
 		}
 	}
 
@@ -67,8 +77,12 @@ void GroundedState::ProcessInputs()
 			animSpr->ChangeAnim(MarioAnims::SPINJUMP);
 			player->SetAirbourne(true);
 			player->SetOnGround(false);
-			player->DecrementYVelocity(c_jumpSpeed);
+			player->DecrementYVelocity(physicCtrl->GetYAcceleration());
 			player->SetCantSpinJump(true);
+			if (physicCtrl->GetPhysicsType() != PhysicsType::rise)
+			{
+				physicCtrl->SetAerial();
+			}
 		}
 	}
 }
@@ -84,6 +98,7 @@ void AirborneState::Initialise()
 void AirborneState::ProcessInputs()
 {
 	Player* player = GetPlayer();
+	PhysicsController* physicCtrl = player->GetPhysicsController();
 	auto& keyStates = player->GetKeyStates();
 
 	if (keyStates[Keys::LEFT_KEY])
@@ -91,7 +106,7 @@ void AirborneState::ProcessInputs()
 		if (player->GetDirection())
 			player->SetDirection(false);
 
-		player->SetXVelocity(-c_moveSpeed);
+		player->DecrementXVelocity(physicCtrl->GetXAcceleration());
 	}
 
 	if (keyStates[Keys::RIGHT_KEY])
@@ -99,10 +114,14 @@ void AirborneState::ProcessInputs()
 		 if (!player->GetDirection())
 			player->SetDirection(true);
 
-		player->SetXVelocity(c_moveSpeed);
+		 player->IncrementXVelocity(physicCtrl->GetXAcceleration());
 	}
 
-	if (!keyStates[Keys::JUMP_KEY])
+	if (keyStates[Keys::JUMP_KEY])
+	{
+		player->DecrementYVelocity(physicCtrl->GetYAcceleration());
+	}
+	else
 	{
 		if (player->GetAirbourne() && player->GetCantJump())
 		{
@@ -112,7 +131,11 @@ void AirborneState::ProcessInputs()
 		}
 	}
 
-	if (!keyStates[Keys::SJUMP_KEY])
+	if (keyStates[Keys::SJUMP_KEY])
+	{
+		player->DecrementYVelocity(physicCtrl->GetYAcceleration());
+	}
+	else
 	{
 		if (player->GetAirbourne() && player->GetCantSpinJump())
 		{
@@ -148,6 +171,7 @@ void CrouchingState::Resume()
 void CrouchingState::ProcessInputs()
 {
 	Player* player = GetPlayer();
+	PhysicsController* physicCtrl = player->GetPhysicsController();
 	auto& keyStates = player->GetKeyStates();
 
 	if (keyStates[Keys::JUMP_KEY])
@@ -156,7 +180,7 @@ void CrouchingState::ProcessInputs()
 		{
 			player->SetAirbourne(true);
 			player->SetOnGround(false);
-			player->DecrementYVelocity(c_jumpSpeed);
+			player->DecrementYVelocity(physicCtrl->GetYAcceleration());
 			player->SetCantJump(true);
 		}
 	}
@@ -168,7 +192,7 @@ void CrouchingState::ProcessInputs()
 			GetPlayer()->GetAnimSpr()->ChangeAnim(MarioAnims::SPINJUMP);
 			player->SetAirbourne(true);
 			player->SetOnGround(false);
-			player->DecrementYVelocity(c_jumpSpeed);
+			player->DecrementYVelocity(physicCtrl->GetYAcceleration());
 			player->SetCantSpinJump(true);
 		}
 	}

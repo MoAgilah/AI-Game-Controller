@@ -105,7 +105,10 @@ public:
 	void DecrementYVelocity(float y);
 
 	bool GetOnGround() const { return m_onGround; }
-	void SetOnGround(bool grnd) { m_onGround = grnd; }
+	void SetOnGround(bool grnd);
+
+	bool GetOnSlope() const { return m_onSlope; }
+	void SetOnSlope(bool slp) { m_onSlope = slp; }
 
 	void Move(float x, float y);
 	void Move(const sf::Vector2f& pos);
@@ -116,6 +119,7 @@ public:
 
 private:
 
+	bool m_onSlope = false;
 	bool m_onGround = false;
 	sf::Vector2f m_velocity;
 	sf::Vector2f m_previousPos;

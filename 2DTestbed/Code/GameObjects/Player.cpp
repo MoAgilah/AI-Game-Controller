@@ -37,6 +37,7 @@ void Player::Update(float deltaTime)
 	auto animSpr = GetAnimSpr();
 
 	animSpr->Update(deltaTime);
+	GetPhysicsController()->Update(GetDirection(), GetVelocity());
 
 	if (GetIsAlive())
 	{
@@ -56,6 +57,23 @@ void Player::Update(float deltaTime)
 					m_stateMgr.ChangeState(new GroundedState(this));
 			}
 
+			if (GetOnSlope())
+			{
+				if (GetPhysicsController()->GetPhysicsType() != PhysicsType::slope)
+				{
+					GetPhysicsController()->SetOnSlope();
+				}
+			}
+			else
+			{
+				if (GetPhysicsController()->GetPhysicsType() != PhysicsType::ground)
+				{
+					GetPhysicsController()->SetWalking();
+				}
+			}
+
+			GetPhysicsController()->GetXVelocityType();
+
 			SetYVelocity(0);
 			m_airtime = 0;
 		}
@@ -73,6 +91,10 @@ void Player::Update(float deltaTime)
 			else
 			{
 				IncrementYVelocity(c_gravity);
+				if (GetPhysicsController()->GetPhysicsType() != PhysicsType::drop)
+				{
+					GetPhysicsController()->SetFalling();
+				}
 			}
 		}
 
@@ -349,6 +371,16 @@ void Player::Input()
 			m_keyStates[Keys::JUMP_KEY] = false;
 	}
 
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+	{
+		m_keyStates[Keys::RUN_KEY] = true;
+	}
+	else
+	{
+		if (m_keyStates[Keys::RUN_KEY])
+			m_keyStates[Keys::RUN_KEY] = false;
+	}
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
 		m_keyStates[Keys::SJUMP_KEY] = true;
@@ -428,6 +460,9 @@ void AutomatedPlayer::Input()
 			break;
 		case Keys::DOWN_KEY:
 			move = "down";
+			break;
+		case Keys::RUN_KEY:
+			move = "run";
 			break;
 		case Keys::JUMP_KEY:
 			move = "jump";

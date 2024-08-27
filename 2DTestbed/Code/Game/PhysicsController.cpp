@@ -1,12 +1,12 @@
 #include "PhysicsController.h"
 #include "Constants.h"
-
+#include<iostream>
 
 
 PhysicsController::PhysicsController()
 	: m_currX(XVelocity::walking), m_currY(YVelocity::jumping), m_currType(PhysicsType::ground)
 {
-	m_groundVelocities.push_back({ 0, 3.f * scale.x });
+	m_groundVelocities.push_back({ 0, 2.f * scale.x });
 	m_groundVelocities.push_back({ 0, 1.5f * scale.x });
 	m_groundVelocities.push_back({ m_groundVelocities[XVelocity::running].max, 3.f * scale.x });
 
@@ -20,66 +20,38 @@ PhysicsController::PhysicsController()
 	m_groundAcceleration = 0.0546875f;
 	m_slopedAccelerations = { 0.125f, 0.1875f, 0.25f };
 	m_aerialAccelerations = { 0.0625f, 0.325f };
+
+	m_currAccelerations.x = m_groundAcceleration;
+	m_currAccelerations.y = m_aerialAccelerations[m_currY];
 }
 
-void PhysicsController::Update(const Point& currVelocity)
+void PhysicsController::Update(bool direction, const Point& currVelocity)
 {
-	if (m_currX != XVelocity::walking)
+	if ((m_currType < PhysicsType::rise) && (m_currX > XVelocity::walking))
 	{
-		if (currVelocity.x > 0)
+		if (direction)
 		{
-			if (currVelocity.x >= m_maxVelocity.first.max)
+			if ((currVelocity.x >= m_maxVelocity.first.max) && (m_currX < XVelocity::sprinting))
 			{
-				SetSprinting();
+				m_maxVelocity.first = m_groundVelocities[++m_currX];
 			}
-		}
-		else if (currVelocity.x < 0)
-		{
-			if (currVelocity.x <= -m_maxVelocity.first.max)
+			else if ((currVelocity.x <= m_maxVelocity.first.min) && (m_currX > XVelocity::walking))
 			{
-				SetSprinting();
+				m_maxVelocity.first = m_groundVelocities[--m_currX];
 			}
 		}
 		else
 		{
-			SetWalking();
-		}
-	}
-
-	/*if (currVelocity.x >= m_maxVelocity.first.max)
-	{
-		switch (m_currType)
-		{
-		case ground:
-			if (m_currX < XVelocity::sprinting)
-				m_maxVelocity.first = m_groundVelocities[++m_currX];
-			break;
-		case slope:
-			if (m_currX < XVelocity::sprinting)
+			if ((currVelocity.x <= -m_maxVelocity.first.max) && (m_currX < XVelocity::sprinting))
 			{
 				m_maxVelocity.first = m_groundVelocities[++m_currX];
-				m_currAccelerations.x = m_slopedAccelerations[m_currX];
 			}
-			break;
-		}
-	}
-	else if (currVelocity.x <= m_maxVelocity.first.min || currVelocity.x <= -m_maxVelocity.first.min)
-	{
-		switch (m_currType)
-		{
-		case ground:
-			if (m_currX > XVelocity::walking)
-				m_maxVelocity.first = m_groundVelocities[--m_currX];
-			break;
-		case slope:
-			if (m_currX > XVelocity::walking)
+			else if ((currVelocity.x >= -m_maxVelocity.first.min) && (m_currX > XVelocity::walking))
 			{
 				m_maxVelocity.first = m_groundVelocities[--m_currX];
-				m_currAccelerations.x = m_slopedAccelerations[m_currX];
 			}
-			break;
 		}
-	}*/
+	}
 }
 
 void PhysicsController::SetWalking()
@@ -127,4 +99,5 @@ void PhysicsController::SetFalling()
 	m_maxVelocity.second = m_aerialVelocities[m_currType];
 	m_currY = YVelocity::falling;
 	m_currAccelerations.y = m_aerialAccelerations[m_currY];
+	SetWalking();
 }
