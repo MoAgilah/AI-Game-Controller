@@ -4,9 +4,8 @@
 #include <string>
 #include "../Game/Constants.h"
 #include "../GameObjects/Object.h"
-#include "../NEAT/phenotype.h"
-
 #include "../GameStates/GameStateMgr.h"
+#include "../NEAT/phenotype.h"
 
 enum MarioAnims { IDLE, LOOKUP, JUMP, FALL, RUNJUMP, SKID, SLIDE, VICTORY, CROUCH, GROW, DIE, MOVING, RUNNING, SPINJUMP };
 
@@ -52,10 +51,7 @@ public:
 	void SetIsCrouched(bool crouched) { m_crouched = crouched; }
 
 	void ForceFall();
-	void ForceStop(bool stop)
-	{
-		m_forceStop = stop;
-	}
+	void ForceStop(bool stop) { m_forceStop = stop;}
 
 	void JustBeenHit(bool hit);
 	void JusyHitEnemy(float val = 1);
@@ -82,22 +78,16 @@ private:
 	bool m_cantSpinJump = false;
 	bool m_goalHit = false;
 	bool m_airbourne = false;
-
-	std::array<bool, Keys::MAXKEYS> m_keyStates;
-	std::array<sf::Vector2f, MarioBoxes::NUMBOXES> m_boxSizes{sf::Vector2f(9,16),sf::Vector2f(9,25),sf::Vector2f(14,14) };
-
 	int m_coinTotal = 0;
-
-	sf::Vector2f m_sizeDiff;
 	float m_heightDiff = 11.25;
 	float m_noGravTime = 0;
 	float m_InvulTime = 0;
 	float m_airtime = 0;
-
 	sf::Vector2f m_spawnLoc;
-
 	sf::Shader m_fragShader;
 	GameStateMgr m_stateMgr;
+	std::array<bool, Keys::MAXKEYS> m_keyStates;
+	std::array<sf::Vector2f, MarioBoxes::NUMBOXES> m_boxSizes{ sf::Vector2f(9,16), sf::Vector2f(9,25), sf::Vector2f(14,11) };
 };
 
 class AutomatedPlayer : public Player

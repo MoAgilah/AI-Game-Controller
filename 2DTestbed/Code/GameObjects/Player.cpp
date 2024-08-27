@@ -17,7 +17,6 @@ Player::Player(const sf::Vector2f& pos)
 	SetPosition(GetInitialPosition());
 	SetSpawnLoc();
 	GetAABB()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
-
 	GetAnimSpr()->SetFrames({ 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4 });
 
 	m_keyStates.fill(false);
@@ -35,8 +34,8 @@ void Player::Update(float deltaTime)
 	m_stateMgr.Update(deltaTime);
 
 	auto animSpr = GetAnimSpr();
-
 	animSpr->Update(deltaTime);
+
 	GetPhysicsController()->Update(GetDirection(), GetVelocity());
 
 	if (GetIsAlive())
@@ -60,19 +59,13 @@ void Player::Update(float deltaTime)
 			if (GetOnSlope())
 			{
 				if (GetPhysicsController()->GetPhysicsType() != PhysicsType::slope)
-				{
 					GetPhysicsController()->SetOnSlope();
-				}
 			}
 			else
 			{
 				if (GetPhysicsController()->GetPhysicsType() != PhysicsType::ground)
-				{
 					GetPhysicsController()->SetWalking();
-				}
 			}
-
-			GetPhysicsController()->GetXVelocityType();
 
 			SetYVelocity(0);
 			m_airtime = 0;
@@ -85,6 +78,8 @@ void Player::Update(float deltaTime)
 					m_stateMgr.PushState(new AirborneState(this));
 
 				m_airtime += deltaTime;
+				std::cout << std::format("air time is {}\n", m_airtime);
+				DecrementYVelocity(GetPhysicsController()->GetYAcceleration());
 				if (m_airtime >= c_maxAirTime)
 					SetAirbourne(false);
 			}
@@ -158,10 +153,8 @@ void Player::Update(float deltaTime)
 		{
 			SetSpawnLoc();
 
-			if (Automated == false)
-			{
+			if (!Automated)
 				Reset();
-			}
 		}
 
 		if (GetAABB()->GetPosition().y > 600 - GetAABB()->GetOrigin().y)
@@ -195,9 +188,7 @@ void Player::Reset()
 		//change spr and bbox
 		GetSprite()->SetTexture(TexID::Mario);
 		GetSprite()->SetFrameSize(sf::Vector2u(GetSprite()->GetTextureSize().x / 4, GetSprite()->GetTextureSize().y / 14));
-		GetAABB()->Reset(sf::Vector2f(9, 16));
-
-		//adjust position
+		GetAABB()->Reset(m_boxSizes[MarioBoxes::REGULAR]);
 		Move(0, m_heightDiff);
 	}
 
@@ -241,7 +232,7 @@ void Player::SetIsSuper(bool super)
 			//change spr and bbox
 			GetSprite()->SetTexture(TexID::Super);
 			GetSprite()->SetFrameSize(sf::Vector2u(GetSprite()->GetTextureSize().x / 4, GetSprite()->GetTextureSize().y / 14));
-			GetAABB()->Reset(sf::Vector2f(9, 25));
+			GetAABB()->Reset(m_boxSizes[MarioBoxes::SUPER]);
 			Move(0, -m_heightDiff);
 		}
 	}
@@ -251,7 +242,7 @@ void Player::SetIsSuper(bool super)
 		{
 			GetSprite()->SetTexture(TexID::Mario);
 			GetSprite()->SetFrameSize(sf::Vector2u(GetSprite()->GetTextureSize().x / 4, GetSprite()->GetTextureSize().y / 14));
-			GetAABB()->Reset(sf::Vector2f(9, 16));
+			GetAABB()->Reset(m_boxSizes[MarioBoxes::REGULAR]);
 			Move(0, m_heightDiff);
 		}
 	}
@@ -313,7 +304,15 @@ void Player::ProcessInput()
 	{
 		if (!GetIsCrouched())
 		{
-			GetAABB()->Reset(sf::Vector2f(14,14));
+			GetAABB()->Reset(m_boxSizes[MarioBoxes::CROUCHED]);
+			if (m_super)
+			{
+				GetAABB()->Update(GetAABB()->GetPosition() + sf::Vector2f(0, 15));
+			}
+			else
+			{
+				GetAABB()->Update(GetAABB()->GetPosition() + sf::Vector2f(0, 5));
+			}
 
 			SetIsCrouched(true);
 		}
@@ -327,11 +326,13 @@ void Player::ProcessInput()
 
 			if (m_super)
 			{
-				GetAABB()->Reset(sf::Vector2f(9, 25));
+				GetAABB()->Reset(m_boxSizes[MarioBoxes::SUPER]);
+				GetAABB()->Update(GetAABB()->GetPosition() - sf::Vector2f(0, 15));
 			}
 			else
 			{
-				GetAABB()->Reset(sf::Vector2f(9, 16));
+				GetAABB()->Reset(m_boxSizes[MarioBoxes::REGULAR]);
+				GetAABB()->Update(GetAABB()->GetPosition() - sf::Vector2f(0, 5));
 			}
 
 			SetPosition(GetPosition());

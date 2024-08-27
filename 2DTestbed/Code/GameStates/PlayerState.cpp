@@ -117,25 +117,17 @@ void AirborneState::ProcessInputs()
 		 player->IncrementXVelocity(physicCtrl->GetXAcceleration());
 	}
 
-	if (keyStates[Keys::JUMP_KEY])
-	{
-		player->DecrementYVelocity(physicCtrl->GetYAcceleration());
-	}
-	else
+	if (!keyStates[Keys::JUMP_KEY])
 	{
 		if (player->GetAirbourne() && player->GetCantJump())
 		{
-			if (!player->GetIsCrouched())
+			if (player->GetAirbourne())
 				GetPlayer()->GetAnimSpr()->ChangeAnim(FALL);
 			player->SetAirTime(c_maxAirTime);
 		}
 	}
 
-	if (keyStates[Keys::SJUMP_KEY])
-	{
-		player->DecrementYVelocity(physicCtrl->GetYAcceleration());
-	}
-	else
+	if (!keyStates[Keys::SJUMP_KEY])
 	{
 		if (player->GetAirbourne() && player->GetCantSpinJump())
 		{
