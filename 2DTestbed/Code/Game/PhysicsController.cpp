@@ -11,9 +11,9 @@ PhysicsController::PhysicsController()
 	m_groundVelocities.push_back({ 0, 1.5f * scale.x });
 	m_groundVelocities.push_back({ m_groundVelocities[XVelocity::running].max, 3.f * scale.x });
 
-	m_slopedVelocities.push_back({ 0, 0.8125f * scale.x });
-	m_slopedVelocities.push_back({ 0, 0.8125f * scale.x });
-	m_slopedVelocities.push_back({ m_slopedVelocities[XVelocity::running].max, 1.9375f * scale.x });
+	m_slopedVelocities.push_back({ 0, 1.25f * scale.x });
+	m_slopedVelocities.push_back({ 0, 1.f * scale.x });
+	m_slopedVelocities.push_back({ m_slopedVelocities[XVelocity::running].max, 2.f * scale.x });
 
 	m_aerialVelocities = { 3.4375f * scale.y, 3.6875f * scale.y, 3.9375f * scale.y, 4.3125f * scale.y };
 	m_maxVelocity = { m_groundVelocities[m_currX], m_aerialVelocities[m_currY] };
@@ -28,7 +28,7 @@ PhysicsController::PhysicsController()
 
 void PhysicsController::Update(bool direction, const Point& currVelocity)
 {
-	if ((m_currType < PhysicsType::rise) && (m_currX > XVelocity::walking))
+	if ((m_currType < PhysicsType::slope) && (m_currX > XVelocity::walking))
 	{
 		if (direction)
 		{
