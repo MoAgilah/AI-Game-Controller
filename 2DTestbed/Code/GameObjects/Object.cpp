@@ -110,15 +110,6 @@ void DynamicObject::DecrementYVelocity(float y)
 		m_velocity.y = -physicsCtrl->GetMaxYVelocity();
 }
 
-void DynamicObject::SetOnGround(bool grnd)
-{
-	m_onGround = grnd;
-	if (!m_onGround)
-	{
-		GetPhysicsController()->SetFalling();
-	}
-}
-
 void DynamicObject::Move(float x, float y)
 {
 	GetSprite()->Move(x, y);

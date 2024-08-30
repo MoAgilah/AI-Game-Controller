@@ -105,7 +105,7 @@ public:
 	void DecrementYVelocity(float y);
 
 	bool GetOnGround() const { return m_onGround; }
-	void SetOnGround(bool grnd);
+	void SetOnGround(bool grnd) { m_onGround = grnd; }
 
 	bool GetOnSlope() const { return m_onSlope; }
 	void SetOnSlope(bool slp) { m_onSlope = slp; }

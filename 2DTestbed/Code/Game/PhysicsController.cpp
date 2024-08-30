@@ -20,7 +20,7 @@ PhysicsController::PhysicsController()
 
 	m_groundAcceleration = 0.0546875f;
 	m_slopedAccelerations = { 0.125f, 0.1875f, 0.25f };
-	m_aerialAccelerations = { 0.036875f, 0.325f };
+	m_aerialAccelerations = { 0.0625f, 0.03125f };
 
 	m_currAccelerations.x = m_groundAcceleration;
 	m_currAccelerations.y = m_aerialAccelerations[m_currY];
@@ -28,7 +28,7 @@ PhysicsController::PhysicsController()
 
 void PhysicsController::Update(bool direction, const Point& currVelocity)
 {
-	if ((m_currType < PhysicsType::slope) && (m_currX > XVelocity::walking))
+	if ((m_currType < PhysicsType::rise) && (m_currX > XVelocity::walking))
 	{
 		if (direction)
 		{
@@ -53,6 +53,36 @@ void PhysicsController::Update(bool direction, const Point& currVelocity)
 			}
 		}
 	}
+
+	if (m_currType == PhysicsType::rise)
+	{
+		if (direction)
+		{
+			if ((currVelocity.y >= m_maxVelocity.first.max) && (m_currX < XVelocity::sprinting))
+			{
+				++m_currX;
+				m_currAccelerations.y = m_aerialAccelerations[YVelocity::falling];
+			}
+			else if ((currVelocity.y <= m_maxVelocity.first.min) && (m_currX > XVelocity::walking))
+			{
+				if (--m_currX == XVelocity::walking)
+					m_currAccelerations.y = m_aerialAccelerations[YVelocity::jumping];
+			}
+		}
+		else
+		{
+			if ((currVelocity.y <= -m_maxVelocity.first.max) && (m_currX < XVelocity::sprinting))
+			{
+				++m_currX;
+				m_currAccelerations.y = m_aerialAccelerations[YVelocity::falling];
+			}
+			else if ((currVelocity.y >= -m_maxVelocity.first.min) && (m_currX > XVelocity::walking))
+			{
+				if (--m_currX == XVelocity::walking)
+					m_currAccelerations.y = m_aerialAccelerations[YVelocity::jumping];
+			}
+		}
+	}
 }
 
 void PhysicsController::SetWalking()
@@ -61,6 +91,8 @@ void PhysicsController::SetWalking()
 	m_currAccelerations.x = m_groundAcceleration;
 	m_currX = XVelocity::walking;
 	m_maxVelocity.first = m_groundVelocities[m_currX];
+	m_currY = YVelocity::jumping;
+	m_currAccelerations.y = m_aerialAccelerations[m_currY];
 }
 
 void PhysicsController::SetRunning()
@@ -69,6 +101,8 @@ void PhysicsController::SetRunning()
 	m_currAccelerations.x = m_groundAcceleration;
 	m_currX = XVelocity::running;
 	m_maxVelocity.first = m_groundVelocities[m_currX];
+	m_currY = YVelocity::jumping;
+	m_currAccelerations.y = m_aerialAccelerations[m_currY];
 }
 
 void PhysicsController::SetSprinting()
@@ -100,5 +134,4 @@ void PhysicsController::SetFalling()
 	m_maxVelocity.second = m_aerialVelocities[m_currType];
 	m_currY = YVelocity::falling;
 	m_currAccelerations.y = m_aerialAccelerations[m_currY];
-	SetWalking();
 }
