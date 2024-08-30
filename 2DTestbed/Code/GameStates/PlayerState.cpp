@@ -218,8 +218,6 @@ void AirborneState::ProcessInputs()
 	{
 		if (player->GetAirbourne() && player->GetCantJump())
 		{
-			if (player->GetAirbourne())
-				GetPlayer()->GetAnimSpr()->ChangeAnim(FALL);
 			player->SetAirTime(c_maxAirTime);
 		}
 	}

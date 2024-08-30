@@ -139,6 +139,8 @@ void Player::Update(float deltaTime)
 				IncrementYVelocity(c_gravity);
 				if (GetPhysicsController()->GetPhysicsType() != PhysicsType::drop)
 				{
+					if (GetAnimSpr()->GetCurrentAnim() != MarioAnims::SPINJUMP)
+						GetAnimSpr()->ChangeAnim(FALL);
 					GetPhysicsController()->SetFalling();
 				}
 			}
