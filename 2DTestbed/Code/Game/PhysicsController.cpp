@@ -15,7 +15,7 @@ PhysicsController::PhysicsController()
 	m_slopedVelocities.push_back({ 0, 1.f * scale.x });
 	m_slopedVelocities.push_back({ m_slopedVelocities[XVelocity::running].max, 2.f * scale.x });
 
-	m_aerialVelocities = { 2.f * scale.y, 3.6875f * scale.y, 3.9375f * scale.y, 4.3125f * scale.y };
+	m_aerialVelocities = { 2.f * scale.y, 3.5f * scale.y, 4.f * scale.y, 4.5f * scale.y };
 	m_maxVelocity = { m_groundVelocities[m_currX], m_aerialVelocities[m_currY] };
 
 	m_groundAcceleration = 0.0546875f;
