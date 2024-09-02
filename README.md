@@ -7,6 +7,13 @@ With the hope it can be an alternative or a replace for the industry standard me
 ## Project Description
 ![mario](https://github.com/user-attachments/assets/b68389c4-f835-4ce8-8cce-f93f4319b76b)
 
+During my time at university, I employed SFML to build a replica of Super Mario World: Yoshi island 1, that can be played manually for debugging purposes. When utilising the artificial controller it utilises a genetic algorithm to control the level automatically. I have incorporating more prevalent contemporary C++ techniques into the implementation. An occasion to demonstrate my development as a programmer during my tenure in the industry.
+
+I aim to continue to implement the following:
+- [ ] refactor the code.
+- [ ] optimise the collision code.
+- [ ] seperate the 2d test bed for other uses.
+
 ## Project Controls
 | Key    | Response |
 | -------- | ------- |
