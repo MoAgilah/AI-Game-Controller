@@ -7,4 +7,13 @@ With the hope it can be an alternative or a replace for the industry standard me
 ![mario](https://github.com/user-attachments/assets/b68389c4-f835-4ce8-8cce-f93f4319b76b)
 
 ## Project Controls
+| Key    | Response |
+| -------- | ------- |
+| Numpad4 | go left |
+| Numpad6 | go right |
+| Numpad8 | look up |
+| Numpad2 | crouch / slide (if on slope) |
+| A | jump |
+| D | spin jump |
+| S | held to enable run |
 
