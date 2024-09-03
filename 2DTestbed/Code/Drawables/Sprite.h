@@ -1,11 +1,10 @@
 #pragma once
 
+#include <span>
+#include <string>
+#include <vector>
 #include <SFML/Graphics.hpp>
 #include "../Game/TextureManager.h"
-#include <string>
-
-#include <vector>
-#include <span>
 
 class Sprite
 {
