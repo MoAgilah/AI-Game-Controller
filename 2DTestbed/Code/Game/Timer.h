@@ -10,6 +10,8 @@ public:
 
 	float GetCurrentTime() const { return m_time; }
 	bool CheckEnd() const { return m_time <= 0.0f; }
+	void ForceEnd() { m_time = m_maxTime; }
+	void SetTime(float time) { m_time = time; }
 
 	void Pause() { m_stopped = true; }
 	void Resume() { m_stopped = false; }
