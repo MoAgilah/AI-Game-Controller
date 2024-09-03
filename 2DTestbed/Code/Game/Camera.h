@@ -1,6 +1,7 @@
 #pragma once
-#include "../Collisions/AABB.h"
+
 #include <SFML/Graphics.hpp>
+#include "../Collisions/AABB.h"
 
 class Player;
 

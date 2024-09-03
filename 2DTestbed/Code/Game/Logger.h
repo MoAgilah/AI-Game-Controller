@@ -9,13 +9,15 @@ class Logger
 {
 public:
 	Logger();
+	~Logger();
+
 	void AddDebugLog(std::string msg, bool newLine = true);
 	void AddExperimentLog(std::string msg, bool newLine = true);
 	std::string GetTimeStamp();
-	~Logger();
-private:
-	std::string tDate;
 
+private:
+
+	std::string tDate;
 	std::ofstream debugfile;
 	std::ofstream experifile;
 };

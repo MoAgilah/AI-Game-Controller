@@ -1,12 +1,12 @@
 #include "../Game/GameManager.h"
 #include "../Game/Camera.h"
+#include "../Game/Constants.h"
 #include "../GameObjects/Player.h"
 #include "../GameObjects/Enemy.h"
 #include "../GameObjects/Object.h"
 #include "../Collisions/CollisionManager.h"
 #include "../Collisions/Grid.h"
 #include "../Controller/ControllerManager.h"
-#include "../Game/Constants.h"
 #include "../GameStates/MainState.h"
 #include "../GameStates/DebugState.h"
 

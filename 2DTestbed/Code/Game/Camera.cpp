@@ -7,7 +7,7 @@
 Camera::Camera()
 {
 
-	//initialise m_camera view
+	// initialise m_camera view
 	m_camera.reset(sf::FloatRect(0, 0, screenDim.x, screenDim.y));
 	m_camera.setViewport(sf::FloatRect(0, 0, 1.0f, 1.0f));
 	m_camera.setCenter(screenDim * 0.5f);

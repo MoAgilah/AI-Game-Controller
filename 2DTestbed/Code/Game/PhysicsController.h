@@ -48,6 +48,7 @@ public:
 
 	float GetMaxXVelocity() const { return m_maxVelocity.first.max; }
 	float GetMaxYVelocity() const { return m_maxVelocity.second; }
+
 private:
 
 	int m_currX;

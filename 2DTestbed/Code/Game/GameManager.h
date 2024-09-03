@@ -3,14 +3,12 @@
 #include <array>
 #include <memory>
 #include <SFML/Graphics.hpp>
-
 #include "Camera.h"
-#include "World.h"
-#include "Logger.h"
-#include "Timer.h"
 #include "FontManager.h"
 #include "TextureManager.h"
-
+#include "Logger.h"
+#include "Timer.h"
+#include "World.h"
 #include "../Collisions/CollisionManager.h"
 #include "../GameStates/GameStateMgr.h"
 

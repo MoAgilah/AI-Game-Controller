@@ -14,6 +14,12 @@ Logger::Logger()
 	experifile << path << std::endl << GetTimeStamp() << std::endl;
 }
 
+Logger::~Logger()
+{
+	debugfile.close();
+	experifile.close();
+}
+
 void Logger::AddDebugLog(std::string msg, bool newLine)
 {
 	if (newLine)
@@ -51,11 +57,3 @@ std::string Logger::GetTimeStamp()
 
 	return tDate;
 }
-
-Logger::~Logger()
-{
-	debugfile.close();
-	experifile.close();
-}
-
-

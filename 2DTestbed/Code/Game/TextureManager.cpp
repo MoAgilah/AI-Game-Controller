@@ -1,5 +1,4 @@
 #include "TextureManager.h"
-
 #include <iostream>
 #include <format>
 #include <stdexcept>
