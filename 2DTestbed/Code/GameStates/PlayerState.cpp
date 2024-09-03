@@ -217,7 +217,7 @@ void AirborneState::ProcessInputs()
 	{
 		if (player->GetAirbourne() && player->GetCantJump())
 		{
-			player->SetAirTime(c_maxAirTime);
+			player->GetAirTimer()->ResetTime();
 		}
 	}
 
@@ -225,7 +225,7 @@ void AirborneState::ProcessInputs()
 	{
 		if (player->GetAirbourne() && player->GetCantSpinJump())
 		{
-			player->SetAirTime(c_maxAirTime);
+			player->GetAirTimer()->ResetTime();
 		}
 	}
 }
@@ -292,7 +292,7 @@ void DieingState::Initialise()
 {
 	Player* player = GetPlayer();
 	GetPlayer()->GetAnimSpr()->ChangeAnim(MarioAnims::DIE);
-	player->SetAirTime(0.66f);
+	player->GetAirTimer()->SetTime(0.66f);
 	player->SetAirbourne(true);
 	player->DecrementYVelocity(c_jumpSpeed);
 }
@@ -308,8 +308,8 @@ void DieingState::Update(float deltaTime)
 
 	if (player->GetAirbourne())
 	{
-		player->IncAirTime(deltaTime);
-		if (player->GetAirTime() >= c_maxAirTime)
+		player->GetAirTimer()->Update(deltaTime);
+		if (player->GetAirTimer()->CheckEnd())
 			player->SetAirbourne(false);
 
 		player->Move(sf::Vector2f(0, player->GetYVelocity() * FPS * deltaTime));

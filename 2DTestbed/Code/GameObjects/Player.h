@@ -4,6 +4,7 @@
 #include <string>
 #include "../NEAT/phenotype.h"
 #include "../Game/Constants.h"
+#include "../Game/Timer.h"
 #include "../GameObjects/Object.h"
 #include "../GameStates/GameStateMgr.h"
 
@@ -27,7 +28,7 @@ public:
 	void SetIsSuper(bool super);
 
 	bool GetGoalHit() const { return m_goalHit; }
-	void GoalHit();
+	void SetGoalHit() { m_goalHit = true; }
 
 	bool GetIsAlive() const { return m_alive; }
 	void SetIsAlive(bool val) { m_alive = val; }
@@ -36,8 +37,6 @@ public:
 
 	const std::array<bool, Keys::MAXKEYS>& GetKeyStates() const { return m_keyStates; }
 	void SetKeyState(int index, bool val);
-
-	bool GetIfInvulnerable() const { return m_justBeenHit; }
 
 	void SetSpawnLoc(sf::Vector2f loc = sf::Vector2f(0, 0));
 
@@ -51,28 +50,22 @@ public:
 	void SetIsCrouched(bool crouched) { m_crouched = crouched; }
 
 	void ForceFall();
-	void ForceStop(bool stop) { m_forceStop = stop;}
 
-	void JustBeenHit(bool hit);
-	void JusyHitEnemy(float val = 1);
+	bool GetIfInvulnerable() const { return !m_invulTimer.CheckEnd(); }
+	void SetInvulnerability();
 
 	bool GetAirbourne() const { return m_airbourne; }
 	void SetAirbourne(bool air) { m_airbourne = air; }
 
-	float GetAirTime() const { return m_airtime; }
-	void SetAirTime(float val) { m_airtime = val; }
-	void IncAirTime(float val) { m_airtime += val; }
+	Timer* GetAirTimer() { return &m_airTimer; }
 
 private:
 
 	void ProcessInput();
 	virtual void Input();
 
-	bool m_forceStop = false;
 	bool m_super = false;
 	bool m_crouched = false;
-	bool m_justBeenHit = false;
-	bool m_justHitEnemy = false;
 	bool m_alive = true;
 	bool m_cantjump = false;
 	bool m_cantSpinJump = false;
@@ -80,9 +73,8 @@ private:
 	bool m_airbourne = false;
 	int m_coinTotal = 0;
 	float m_heightDiff = 11.25;
-	float m_noGravTime = 0;
-	float m_InvulTime = 0;
-	float m_airtime = 0;
+	Timer m_airTimer;
+	Timer m_invulTimer;
 	sf::Vector2f m_spawnLoc;
 	sf::Shader m_fragShader;
 	GameStateMgr m_stateMgr;
@@ -101,7 +93,9 @@ public:
 
 	void InsertNewBrain(CNeuralNet* brain) { m_itsBrain = brain; }
 	bool UpdateANN();
+
 private:
+
 	void Input() final;
 
 	static bool s_playerInserted;

@@ -6,7 +6,7 @@
 #include "../GameStates/PlayerState.h"
 
 Player::Player(const sf::Vector2f& pos)
-	: DynamicObject(new AnimatedSprite(TexID::Mario, 14, 4, FPS, false, 0.5f), sf::Vector2f(9,16))
+	: DynamicObject(new AnimatedSprite(TexID::Mario, 14, 4, FPS, false, 0.5f), sf::Vector2f(9,16)), m_airTimer(c_maxAirTime), m_invulTimer(1)
 {
 	SetInitialDirection(true);
 	SetDirection(GetInitialDirection());
@@ -19,6 +19,7 @@ Player::Player(const sf::Vector2f& pos)
 	m_keyStates.fill(false);
 	m_fragShader.loadFromFile("Resources/Shaders/FlashShader.frag", sf::Shader::Fragment);
 	m_fragShader.setUniform("flashColor", sf::Glsl::Vec4(1, 1, 1, 1));
+	m_invulTimer.SetTime(0);
 }
 
 void Player::Update(float deltaTime)
@@ -58,20 +59,10 @@ void Player::Update(float deltaTime)
 				if (!GetXVelocity())
 				{
 					if (GetShouldSlideLeft())
-					{
-						if (!GetSlideLeft())
-						{
-							SetSlideLeft(true);
-						}
-					}
+						SetSlideLeft(true);
 
 					if (GetShouldSlideRight())
-					{
-						if (!GetSlideRight())
-						{
-							SetSlideRight(true);
-						}
-					}
+						SetSlideRight(true);
 				}
 
 				if (GetSlideLeft() || GetSlideRight())
@@ -85,17 +76,11 @@ void Player::Update(float deltaTime)
 					}
 					else
 					{
-						GetAnimSpr()->ChangeAnim(MarioAnims::SLIDE);
-
 						if (GetSlideLeft())
-						{
 							DecrementXVelocity(GetPhysicsController()->GetXAcceleration());
-						}
 
 						if (GetSlideRight())
-						{
 							IncrementXVelocity(GetPhysicsController()->GetXAcceleration());
-						}
 					}
 				}
 			}
@@ -111,7 +96,6 @@ void Player::Update(float deltaTime)
 			}
 
 			SetYVelocity(0);
-			m_airtime = 0;
 		}
 		else
 		{
@@ -120,11 +104,16 @@ void Player::Update(float deltaTime)
 				if (m_stateMgr.GetStateName() != "Airborne")
 					m_stateMgr.PushState(new AirborneState(this));
 
-				m_airtime += deltaTime;
-				if (m_airtime >= c_maxAirTime)
+				m_airTimer.Update(deltaTime);
+				if (m_airTimer.CheckEnd())
+				{
 					SetAirbourne(false);
+					m_airTimer.ResetTime();
+				}
 				else
+				{
 					DecrementYVelocity(GetPhysicsController()->GetYAcceleration());
+				}
 			}
 			else
 			{
@@ -135,33 +124,6 @@ void Player::Update(float deltaTime)
 						GetAnimSpr()->ChangeAnim(FALL);
 					GetPhysicsController()->SetFalling();
 				}
-			}
-		}
-
-		//set vulnerability time
-		if (m_justBeenHit)
-		{
-			m_InvulTime -= deltaTime;
-
-			if (m_InvulTime <= 0)
-			{
-				m_InvulTime = 0;
-				m_justBeenHit = false;
-			}
-		}
-
-		if (m_justHitEnemy)
-		{
-			//if not hovering
-			if (m_noGravTime <= 0)
-			{
-				if (m_justHitEnemy)
-					m_justHitEnemy = false;
-			}
-			else //if hovering
-			{
-				SetYVelocity(0);
-				m_noGravTime -= deltaTime;
 			}
 		}
 
@@ -194,7 +156,7 @@ void Player::Update(float deltaTime)
 			GameManager::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
 		}
 
-		if (GetPosition().x > RightMost)
+		if (GetPosition().x > RightMost || GetGoalHit())
 		{
 			SetSpawnLoc();
 
@@ -207,14 +169,18 @@ void Player::Update(float deltaTime)
 
 		if (GameManager::GetGameMgr()->GetTimer()->CheckEnd())
 			SetIsAlive(false);
+
+		if (GetIfInvulnerable())
+		{
+			m_invulTimer.Update(deltaTime);
+			m_fragShader.setUniform("time", m_invulTimer.GetTickCount());
+		}
 	}
 	else
 	{
 		if (m_stateMgr.GetStateName() != "Dieing")
 			m_stateMgr.ChangeState(new DieingState(this));
 	}
-
-	m_fragShader.setUniform("time", m_InvulTime);
 }
 
 void Player::Render(sf::RenderWindow& window)
@@ -247,7 +213,6 @@ void Player::Reset()
 
 	m_super = false;
 	m_crouched = false;
-	m_justBeenHit = false;
 	m_alive = true;
 	m_cantjump = false;
 	m_cantSpinJump = false;
@@ -257,9 +222,8 @@ void Player::Reset()
 	m_keyStates.fill(false);
 
 	m_heightDiff = 0;
-	m_noGravTime = 0;
-	m_InvulTime = 0;
-	m_airtime = 0;
+	m_invulTimer.SetTime(0);
+	m_airTimer.ResetTime();
 
 	m_stateMgr.ClearStates();
 	GameManager::GetGameMgr()->GetTimer()->ResetTime();
@@ -293,12 +257,6 @@ void Player::SetIsSuper(bool super)
 	}
 }
 
-void Player::GoalHit()
-{
-	m_goalHit = true;
-	SetSpawnLoc();
-}
-
 void Player::SetKeyState(int index, bool val)
 {
 	if (index < m_keyStates.size())
@@ -324,16 +282,9 @@ void Player::ForceFall()
 	SetAirbourne(false);
 }
 
-void Player::JustBeenHit(bool hit)
+void Player::SetInvulnerability()
 {
-	m_justBeenHit = hit;
-	m_InvulTime = 1.f;
-}
-
-void Player::JusyHitEnemy(float val)
-{
-	m_justHitEnemy = true;
-	m_noGravTime = val;
+	m_invulTimer.ResetTime();
 }
 
 void Player::ProcessInput()
@@ -347,40 +298,55 @@ void Player::ProcessInput()
 
 	if (m_keyStates[Keys::DOWN_KEY])
 	{
-		if (!GetIsCrouched())
+		if (GetOnSlope())
 		{
-			GetAABB()->Reset(m_boxSizes[MarioBoxes::CROUCHED]);
-			if (m_super)
+			GetAnimSpr()->ChangeAnim(MarioAnims::SLIDE);
+		}
+		else
+		{
+			if (!GetIsCrouched())
 			{
-				GetAABB()->Update(GetAABB()->GetPosition() + sf::Vector2f(0, 15));
-			}
-			else
-			{
-				GetAABB()->Update(GetAABB()->GetPosition() + sf::Vector2f(0, 5));
-			}
+				GetAABB()->Reset(m_boxSizes[MarioBoxes::CROUCHED]);
+				if (m_super)
+				{
+					GetAABB()->Update(GetAABB()->GetPosition() + sf::Vector2f(0, 15));
+				}
+				else
+				{
+					GetAABB()->Update(GetAABB()->GetPosition() + sf::Vector2f(0, 5));
+				}
 
-			SetIsCrouched(true);
+				SetIsCrouched(true);
+			}
 		}
 	}
 	else
 	{
-		//if was crouched
-		if (GetIsCrouched())
+		if (GetOnSlope())
 		{
-			SetIsCrouched(false);
-
-			if (m_super)
+			if (GetAnimSpr()->GetCurrentAnim() == MarioAnims::SLIDE)
+				GetAnimSpr()->ChangeAnim(MarioAnims::IDLE);
+		}
+		else
+		{
+			//if was crouched
+			if (GetIsCrouched())
 			{
-				GetAABB()->Reset(m_boxSizes[MarioBoxes::SUPER]);
-				GetAABB()->Update(GetAABB()->GetPosition() - sf::Vector2f(0, 15));
-			}
-			else
-			{
-				GetAABB()->Reset(m_boxSizes[MarioBoxes::REGULAR]);
-				GetAABB()->Update(GetAABB()->GetPosition() - sf::Vector2f(0, 5));
-			}
+				SetIsCrouched(false);
 
-			SetPosition(GetPosition());
+				if (m_super)
+				{
+					GetAABB()->Reset(m_boxSizes[MarioBoxes::SUPER]);
+					GetAABB()->Update(GetAABB()->GetPosition() - sf::Vector2f(0, 15));
+				}
+				else
+				{
+					GetAABB()->Reset(m_boxSizes[MarioBoxes::REGULAR]);
+					GetAABB()->Update(GetAABB()->GetPosition() - sf::Vector2f(0, 5));
+				}
+
+				SetPosition(GetPosition());
+			}
 		}
 	}
 }

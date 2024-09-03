@@ -531,8 +531,6 @@ void CollisionManager::PlayerToEnemyResolutions(Player* ply, Enemy* enmy)
 	Capsule capsule(enmy->GetAABB()->GetSide(Side::Top), 6);
 	if (capsule.IntersectsCircle(circle) && enmy->GetID() != TexID::PPlant)
 	{
-		//	set hover time
-		ply->JusyHitEnemy(0.1f);
 		enmy->DecrementLife();
 		//	ptmp->UpdateFitness(-100);
 	}
@@ -542,7 +540,7 @@ void CollisionManager::PlayerToEnemyResolutions(Player* ply, Enemy* enmy)
 		{
 			if (ply->GetIsSuper())
 			{
-				ply->JustBeenHit(true);
+				ply->SetInvulnerability();
 				ply->SetIsSuper(false);
 				//ptmp->UpdateFitness(-100);
 			}
