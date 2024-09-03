@@ -236,14 +236,10 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 				{
 					obj->SetOnGround(true);
 					obj->SetOnSlope(true);
-
 					if (!obj->GetShouldSlideLeft())
 					{
 						obj->SetShouldSlideLeft(true);
-						if (obj->GetShouldSlideRight())
-						{
-							obj->SetShouldSlideRight(false);
-						}
+						obj->SetShouldSlideRight(false);
 					}
 				}
 			}
@@ -263,14 +259,10 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 
 				obj->Move(sf::Vector2f(0, yOffset));
 				obj->SetOnSlope(true);
-
 				if (!obj->GetShouldSlideLeft())
 				{
 					obj->SetShouldSlideLeft(true);
-					if (obj->GetShouldSlideRight())
-					{
-						obj->SetShouldSlideRight(false);
-					}
+					obj->SetShouldSlideRight(false);
 				}
 			}
 		}
@@ -289,14 +281,10 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 
 				obj->Move(sf::Vector2f(0, -yOffset));
 				obj->SetOnSlope(true);
-
 				if (!obj->GetShouldSlideLeft())
 				{
 					obj->SetShouldSlideLeft(true);
-					if (obj->GetShouldSlideRight())
-					{
-						obj->SetShouldSlideRight(false);
-					}
+					obj->SetShouldSlideRight(false);
 				}
 			}
 		}
@@ -315,14 +303,10 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 				{
 					obj->SetOnGround(true);
 					obj->SetOnSlope(true);
-
 					if (!obj->GetShouldSlideRight())
 					{
 						obj->SetShouldSlideRight(true);
-						if (obj->GetShouldSlideLeft())
-						{
-							obj->SetShouldSlideLeft(false);
-						}
+						obj->SetShouldSlideLeft(false);
 					}
 				}
 			}
@@ -342,14 +326,10 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 
 				obj->Move(sf::Vector2f(0, yOffset));
 				obj->SetOnSlope(true);
-
 				if (!obj->GetShouldSlideRight())
 				{
 					obj->SetShouldSlideRight(true);
-					if (obj->GetShouldSlideLeft())
-					{
-						obj->SetShouldSlideLeft(false);
-					}
+					obj->SetShouldSlideLeft(false);
 				}
 			}
 		}
@@ -368,14 +348,10 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 
 				obj->Move(sf::Vector2f(0, -yOffset));
 				obj->SetOnSlope(true);
-
 				if (!obj->GetShouldSlideRight())
 				{
 					obj->SetShouldSlideRight(true);
-					if (obj->GetShouldSlideLeft())
-					{
-						obj->SetShouldSlideLeft(false);
-					}
+					obj->SetShouldSlideLeft(false);
 				}
 			}
 		}
