@@ -1,12 +1,12 @@
 #include "../Controller/ANNView.h"
-#include "../Game/GameManager.h"
+#include <format>
+#include "../Controller/ControllerManager.h"
 #include "../Game/Camera.h"
+#include "../Game/Constants.h"
+#include "../Game/GameManager.h"
 #include "../GameObjects/Player.h"
 #include "../Collisions/CollisionManager.h"
-#include "../Controller/ControllerManager.h"
-#include "../Game/Constants.h"
 #include "../Utilities/Utilities.h"
-#include <format>
 
 ANNView::ANNView()
 {
@@ -74,7 +74,7 @@ void ANNView::Update()
 		cnt++;
 	}
 
-	//colour m_visible tiles
+	// colour m_visible tiles
 	for (auto& tile : m_vecView)
 	{
 		if (tile->GetType() != EMPTY)

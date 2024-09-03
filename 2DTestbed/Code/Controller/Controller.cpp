@@ -1,10 +1,9 @@
 #include "../Controller/Controller.h"
-#include "../GameObjects/Player.h"
-#include "../Game/GameManager.h"
-#include "../Collisions/CollisionManager.h"
-#include "../Game/GameManager.h"
-#include "../Game/Constants.h"
 #include <format>
+#include "../Collisions/CollisionManager.h"
+#include "../Game/Constants.h"
+#include "../Game/GameManager.h"
+#include "../GameObjects/Player.h"
 
 Controller::Controller()
 {

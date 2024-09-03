@@ -2,8 +2,8 @@
 
 #include <memory>
 #include <SFML/Graphics.hpp>
-#include "../Controller/ANNView.h"
 #include "../NEAT/Cga.h"
+#include "../Controller/ANNView.h"
 
 class Player;
 class AutomatedPlayer;
