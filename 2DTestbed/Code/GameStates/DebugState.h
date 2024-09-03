@@ -1,13 +1,11 @@
 #pragma once
 
-#pragma once
-
+#include <SFML/Graphics.hpp>
 #include "GameState.h"
 #include "../Game/GameManager.h"
 #include "../GameObjects/Box.h"
 #include "../GameObjects/Collectables.h"
 #include "../GameObjects/Chuck.h"
-#include <SFML/Graphics.hpp>
 
 class DebugState : public GameState
 {

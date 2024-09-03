@@ -1,14 +1,13 @@
 #include <iostream>
-
 #include <SFML/Graphics.hpp>
-#include "Game/Constants.h"
-
-#include "Game/GameManager.h"
-#include "GameObjects/Player.h"
-#include "Game/Camera.h"
+#include "NEAT/CParams.h"
 #include "Controller/ANNView.h"
 #include "Controller/ControllerManager.h"
-#include "NEAT/CParams.h"
+#include "Game/Constants.h"
+#include "Game/GameManager.h"
+#include "Game/Camera.h"
+#include "GameObjects/Player.h"
+
 
 int main()
 {

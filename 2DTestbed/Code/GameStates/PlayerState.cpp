@@ -1,9 +1,9 @@
 #include "PlayerState.h"
+#include <format>
+#include <iostream>
+#include "../Collisions/AABB.h"
 #include "../Game/GameManager.h"
 #include "../Game/TextureManager.h"
-#include "../Collisions/AABB.h"
-#include <iostream>
-#include <format>
 
 void GroundedState::Initialise()
 {

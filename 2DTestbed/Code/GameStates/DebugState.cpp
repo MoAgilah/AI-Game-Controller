@@ -1,12 +1,12 @@
 #include "DebugState.h"
-#include "../Game/Camera.h"
-#include "../GameObjects/Player.h"
-#include "../GameObjects/Enemy.h"
-#include "../GameObjects/Object.h"
 #include "../Collisions/CollisionManager.h"
 #include "../Collisions/Grid.h"
 #include "../Controller/ControllerManager.h"
+#include "../Game/Camera.h"
 #include "../Game/Constants.h"
+#include "../GameObjects/Player.h"
+#include "../GameObjects/Enemy.h"
+#include "../GameObjects/Object.h"
 
 DebugState::DebugState(GameManager* gameMgr)
 	: GameState("Debug")

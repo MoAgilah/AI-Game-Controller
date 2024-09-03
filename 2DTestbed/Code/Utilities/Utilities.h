@@ -1,9 +1,8 @@
 #pragma once
 
 #include <array>
-
-#include "Point.h"
 #include <SFML/Graphics.hpp>
+#include "Point.h"
 #include "../Collisions/AABB.h"
 #include "../Game/TextureManager.h"
 
