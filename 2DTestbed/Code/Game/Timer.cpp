@@ -8,7 +8,8 @@ Timer::Timer(float maxTime)
 
 void Timer::Update(float deltaTime)
 {
-	m_time -= deltaTime;
+	if (!m_stopped)
+		m_time -= deltaTime;
 }
 
 void Timer::ResetTime()

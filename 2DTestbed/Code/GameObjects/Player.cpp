@@ -23,9 +23,6 @@ Player::Player(const sf::Vector2f& pos)
 
 void Player::Update(float deltaTime)
 {
-	if (!GetActive())
-		return;
-
 	ProcessInput();
 
 	m_stateMgr.Update(deltaTime);
@@ -206,10 +203,10 @@ void Player::Update(float deltaTime)
 		}
 
 		if (GetAABB()->GetPosition().y > 600 - GetAABB()->GetOrigin().y)
-		{
-			if (GetIsAlive())
-				SetIsAlive(false);
-		}
+			SetIsAlive(false);
+
+		if (GameManager::GetGameMgr()->GetTimer()->CheckEnd())
+			SetIsAlive(false);
 	}
 	else
 	{

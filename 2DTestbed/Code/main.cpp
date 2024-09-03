@@ -5,9 +5,7 @@
 #include "Controller/ControllerManager.h"
 #include "Game/Constants.h"
 #include "Game/GameManager.h"
-#include "Game/Camera.h"
 #include "GameObjects/Player.h"
-
 
 int main()
 {
