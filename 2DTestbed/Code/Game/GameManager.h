@@ -25,6 +25,7 @@ public:
 	Player* GetPlayer() { return m_player.get(); }
 	World* GetLevel() { return m_world.get(); }
 	Logger* GetLogger() { return m_logger.get(); }
+	Timer* GetTimer() { return m_timer.get(); }
 	FontManager* GetFontMgr() { return m_fontManager.get(); }
 	TextureManager* GetTextureMgr() { return m_texureManager.get(); }
 	CollisionManager* GetCollisionMgr() { return m_collisionManager.get(); }
@@ -46,5 +47,6 @@ private:
 	std::unique_ptr<World>				m_world;
 	std::unique_ptr<CollisionManager>	m_collisionManager;
 	std::unique_ptr<Logger>				m_logger;
+	std::unique_ptr<Timer>				m_timer;
 	GameStateMgr m_stateMgr;
 };

@@ -19,6 +19,7 @@ GameManager::GameManager()
 	m_texureManager = std::make_unique<TextureManager>();
 	m_collisionManager = std::make_unique<CollisionManager>();
 	m_camera = std::make_unique<Camera>();
+	m_timer = std::make_unique<Timer>(300.f);
 
 	if (Automated)
 		m_player.reset(ControllerManager::GetCtrlMgr()->GetController()->GetCurrentPlayer());

@@ -1,5 +1,4 @@
 #include "Logger.h"
-#include "Timer.h"
 
 const std::string pID("_GridInputs");
 

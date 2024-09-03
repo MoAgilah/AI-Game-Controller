@@ -3,23 +3,21 @@
 class Timer
 {
 public:
-	~Timer();
+	Timer(float maxTime);
+	~Timer() = default;
 
-	static Timer* Get();
+	void Update(float deltaTime);
 
-	float CurrentTime() const { return m_time; }
-
-	void UpdateTime(float deltaTime);
-
+	float GetCurrentTime() const { return m_time; }
 	bool CheckEnd() const { return m_time <= 0.0f; }
+
+	void Pause() { m_stopped = true; }
+	void Resume() { m_stopped = false; }
 	void ResetTime();
-	void Stop();
 
 private:
 
-	Timer();
-
-	static Timer* m_self;
-	float m_time;
-	bool m_stopped;
+	bool m_stopped = false;
+	float m_time = 0;
+	float m_maxTime;
 };

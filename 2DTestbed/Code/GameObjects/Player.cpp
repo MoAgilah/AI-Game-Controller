@@ -4,7 +4,6 @@
 #include "../Collisions/CollisionManager.h"
 #include "../Controller/ControllerManager.h"
 #include "../Game/Camera.h"
-#include "../Game/Timer.h"
 #include "../Game/GameManager.h"
 #include "../GameStates/PlayerState.h"
 
@@ -268,7 +267,7 @@ void Player::Reset()
 	m_airtime = 0;
 
 	m_stateMgr.ClearStates();
-	Timer::Get()->ResetTime();
+	GameManager::GetGameMgr()->GetTimer()->ResetTime();
 	GameManager::GetGameMgr()->GetLevel()->ResetLevel();
 }
 

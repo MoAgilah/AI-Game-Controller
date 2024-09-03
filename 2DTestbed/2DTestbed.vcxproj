@@ -185,9 +185,9 @@
     <ClCompile Include="Code\Game\FontManager.cpp" />
     <ClCompile Include="Code\Game\GameManager.cpp" />
     <ClCompile Include="Code\Game\Logger.cpp" />
+    <ClCompile Include="Code\Game\Timer.cpp" />
     <ClCompile Include="Code\Game\PhysicsController.cpp" />
     <ClCompile Include="Code\Game\TextureManager.cpp" />
-    <ClCompile Include="Code\Game\Timer.cpp" />
     <ClCompile Include="Code\Game\World.cpp" />
     <ClCompile Include="Code\main.cpp" />
     <ClCompile Include="Code\NEAT\Cga.cpp" />
@@ -229,9 +229,9 @@
     <ClInclude Include="Code\Game\FontManager.h" />
     <ClInclude Include="Code\Game\GameManager.h" />
     <ClInclude Include="Code\Game\Logger.h" />
+    <ClInclude Include="Code\Game\Timer.h" />
     <ClInclude Include="Code\Game\PhysicsController.h" />
     <ClInclude Include="Code\Game\TextureManager.h" />
-    <ClInclude Include="Code\Game\Timer.h" />
     <ClInclude Include="Code\Game\World.h" />
     <ClInclude Include="Code\NEAT\Cga.h" />
     <ClInclude Include="Code\NEAT\CInnovation.h" />

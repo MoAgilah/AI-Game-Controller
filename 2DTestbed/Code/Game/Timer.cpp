@@ -1,41 +1,17 @@
 #include "Timer.h"
 
-Timer* Timer::m_self = nullptr;
-
-Timer::~Timer()
+Timer::Timer(float maxTime)
+	: m_maxTime(maxTime)
 {
-	if (m_self)
-	{
-		delete m_self;
-		m_self = nullptr;
-	}
+	ResetTime();
 }
 
- Timer* Timer::Get()
-{
-	if (m_self == nullptr)
-	{
-		m_self = new Timer();
-	}
-
-	return m_self;
-}
-
-void Timer::UpdateTime(float deltaTime)
+void Timer::Update(float deltaTime)
 {
 	m_time -= deltaTime;
 }
 
 void Timer::ResetTime()
 {
-	m_time = 300.0f;
+	m_time = m_maxTime;
 }
-
-void Timer::Stop()
-{
-	m_stopped = true;
-}
-
-Timer::Timer()
-	: m_time(300.f), m_stopped(false)
-{}

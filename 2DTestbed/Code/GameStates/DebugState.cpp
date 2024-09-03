@@ -3,6 +3,7 @@
 #include "../Collisions/Grid.h"
 #include "../Controller/ControllerManager.h"
 #include "../Game/Camera.h"
+#include "../Game/Timer.h"
 #include "../Game/Constants.h"
 #include "../GameObjects/Player.h"
 #include "../GameObjects/Enemy.h"
@@ -37,7 +38,7 @@ void DebugState::ProcessInputs()
 
 void DebugState::Update(float deltaTime)
 {
-	Timer::Get()->UpdateTime(deltaTime);
+	GameManager::GetGameMgr()->GetTimer()->Update(deltaTime);
 
 	if (Automated)
 		ControllerManager::GetCtrlMgr()->GetController()->Update();

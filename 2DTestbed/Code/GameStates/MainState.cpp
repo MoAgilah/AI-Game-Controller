@@ -36,7 +36,7 @@ void MainState::ProcessInputs()
 
 void MainState::Update(float deltaTime)
 {
-	Timer::Get()->UpdateTime(deltaTime);
+	GameManager::GetGameMgr()->GetTimer()->Update(deltaTime);
 
 	if (Automated)
 		ControllerManager::GetCtrlMgr()->GetController()->Update();
