@@ -1,6 +1,4 @@
 #include "Rex.h"
-#include "../Collisions/CollisionManager.h"
-#include "../Game/Camera.h"
 #include "../Game/GameManager.h"
 #include "../Game/Constants.h"
 

@@ -1,5 +1,4 @@
 #include "Koopa.h"
-#include "../Collisions/CollisionManager.h"
 #include "../Game/GameManager.h"
 #include "../Game/Constants.h"
 

@@ -1,13 +1,8 @@
 #include "DebugState.h"
-#include "../Collisions/CollisionManager.h"
 #include "../Collisions/Grid.h"
 #include "../Controller/ControllerManager.h"
-#include "../Game/Camera.h"
-#include "../Game/Timer.h"
 #include "../Game/Constants.h"
 #include "../GameObjects/Player.h"
-#include "../GameObjects/Enemy.h"
-#include "../GameObjects/Object.h"
 
 DebugState::DebugState(GameManager* gameMgr)
 	: GameState("Debug")
@@ -54,7 +49,6 @@ void DebugState::Render(sf::RenderWindow& window)
 	m_gameMgr->GetCamera()->Reset(window);
 
 	m_gameMgr->GetLevel()->Render(window);
-
 
 	GameManager::GetGameMgr()->GetCollisionMgr()->Render(window);
 	m_gameMgr->GetPlayer()->Render(window);

@@ -1,5 +1,4 @@
 #include "Bill.h"
-#include "../Collisions/CollisionManager.h"
 #include "../Game/GameManager.h"
 
 Bill::Bill(bool dir, const sf::Vector2f& initPos)

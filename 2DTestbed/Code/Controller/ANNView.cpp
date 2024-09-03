@@ -1,11 +1,9 @@
 #include "../Controller/ANNView.h"
 #include <format>
 #include "../Controller/ControllerManager.h"
-#include "../Game/Camera.h"
 #include "../Game/Constants.h"
 #include "../Game/GameManager.h"
 #include "../GameObjects/Player.h"
-#include "../Collisions/CollisionManager.h"
 #include "../Utilities/Utilities.h"
 
 ANNView::ANNView()

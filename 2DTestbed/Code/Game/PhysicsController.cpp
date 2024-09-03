@@ -1,8 +1,7 @@
 #include "PhysicsController.h"
-#include "Constants.h"
-#include<iostream>
 #include<format>
-
+#include<iostream>
+#include "Constants.h"
 
 PhysicsController::PhysicsController()
 	: m_currX(XVelocity::walking), m_currY(YVelocity::jumping), m_currType(PhysicsType::ground)

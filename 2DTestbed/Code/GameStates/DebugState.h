@@ -3,9 +3,6 @@
 #include <SFML/Graphics.hpp>
 #include "GameState.h"
 #include "../Game/GameManager.h"
-#include "../GameObjects/Box.h"
-#include "../GameObjects/Collectables.h"
-#include "../GameObjects/Chuck.h"
 
 class DebugState : public GameState
 {

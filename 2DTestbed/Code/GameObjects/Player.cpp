@@ -1,9 +1,7 @@
 #include "Player.h"
 #include <format>
 #include <iostream>
-#include "../Collisions/CollisionManager.h"
 #include "../Controller/ControllerManager.h"
-#include "../Game/Camera.h"
 #include "../Game/GameManager.h"
 #include "../GameStates/PlayerState.h"
 

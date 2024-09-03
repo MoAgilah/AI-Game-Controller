@@ -1,6 +1,5 @@
 #include "Box.h"
 #include "../Game/GameManager.h"
-#include "../Game/Camera.h"
 
 Box::Box(AnimatedSprite* sprite, const sf::Vector2f& initPos)
 	: Object(sprite, sf::Vector2f(16,16))

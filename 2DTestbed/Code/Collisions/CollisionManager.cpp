@@ -2,7 +2,6 @@
 #include <format>
 #include <algorithm>
 #include "../Controller/ControllerManager.h"
-#include "../Game/Camera.h"
 #include "../Game/Constants.h"
 #include "../Game/GameManager.h"
 #include "../GameObjects/Bill.h"

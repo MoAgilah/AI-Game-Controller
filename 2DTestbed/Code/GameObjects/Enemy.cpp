@@ -1,6 +1,5 @@
 #include "Enemy.h"
 #include "../Game/GameManager.h"
-#include "../Game/Camera.h"
 
 Enemy::Enemy(TexID sprId, const sf::Vector2f& boxSize, int maxLives)
 	: DynamicObject(sprId, boxSize), m_numLives(maxLives), m_maxLives(m_numLives)
