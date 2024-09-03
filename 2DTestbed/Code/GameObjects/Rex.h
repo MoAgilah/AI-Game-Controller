@@ -1,4 +1,5 @@
 #pragma once
+
 #include "../GameObjects/Enemy.h"
 
 enum RexAnims { WALKTALL, TRANSITION, WALKSHORT, FLATTEN };

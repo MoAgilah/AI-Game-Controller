@@ -1,4 +1,5 @@
 #pragma once
+
 #include "../GameObjects/Enemy.h"
 
 enum ChuckAnims { BOUNCE, LEAP, CLAP, HIT, WHIPLASH };

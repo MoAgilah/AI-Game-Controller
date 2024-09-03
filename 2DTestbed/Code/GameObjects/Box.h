@@ -1,7 +1,8 @@
 #pragma once
-#include "Object.h"
+
 #include <memory>
 #include <vector>
+#include "Object.h"
 
 class Box : public Object
 {

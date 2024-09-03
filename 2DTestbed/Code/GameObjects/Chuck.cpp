@@ -1,6 +1,6 @@
 #include "Chuck.h"
-#include "../Game/GameManager.h"
 #include "../Collisions/CollisionManager.h"
+#include "../Game/GameManager.h"
 #include "../Game/Constants.h"
 
 Chuck::Chuck(bool dir, const sf::Vector2f& initPos)

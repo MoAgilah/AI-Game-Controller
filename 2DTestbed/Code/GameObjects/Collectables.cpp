@@ -1,7 +1,7 @@
 #include "Collectables.h"
+#include "../Collisions/CollisionManager.h"
 #include "../Game/GameManager.h"
 #include "../GameObjects/Player.h"
-#include "../Collisions/CollisionManager.h"
 
 int YCoin::s_collected = 1;
 

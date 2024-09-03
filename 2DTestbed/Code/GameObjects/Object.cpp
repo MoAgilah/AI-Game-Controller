@@ -1,8 +1,8 @@
 #include "Object.h"
-#include "../Game/GameManager.h"
-#include "../Collisions/CollisionManager.h"
-#include <iostream>
 #include <format>
+#include <iostream>
+#include "../Collisions/CollisionManager.h"
+#include "../Game/GameManager.h"
 
 int Object::s_objectNum = 0;
 

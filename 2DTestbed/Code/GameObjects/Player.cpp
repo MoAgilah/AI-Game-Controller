@@ -1,11 +1,11 @@
 #include "Player.h"
+#include <format>
+#include <iostream>
 #include "../Collisions/CollisionManager.h"
+#include "../Controller/ControllerManager.h"
 #include "../Game/Camera.h"
 #include "../Game/Timer.h"
 #include "../Game/GameManager.h"
-#include "../Controller/ControllerManager.h"
-#include <format>
-#include <iostream>
 #include "../GameStates/PlayerState.h"
 
 Player::Player(const sf::Vector2f& pos)

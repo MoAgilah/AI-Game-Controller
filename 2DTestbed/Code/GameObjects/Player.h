@@ -2,10 +2,10 @@
 
 #include <array>
 #include <string>
+#include "../NEAT/phenotype.h"
 #include "../Game/Constants.h"
 #include "../GameObjects/Object.h"
 #include "../GameStates/GameStateMgr.h"
-#include "../NEAT/phenotype.h"
 
 enum MarioAnims { IDLE, LOOKUP, JUMP, FALL, RUNJUMP, SKID, SLIDE, VICTORY, CROUCH, GROW, DIE, MOVING, RUNNING, SPINJUMP };
 

@@ -1,6 +1,6 @@
 #include "Koopa.h"
-#include "../Game/GameManager.h"
 #include "../Collisions/CollisionManager.h"
+#include "../Game/GameManager.h"
 #include "../Game/Constants.h"
 
 Koopa::Koopa(bool dir, const sf::Vector2f& initPos)

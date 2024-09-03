@@ -1,6 +1,6 @@
 #include "PPlant.h"
-#include "../Game/GameManager.h"
 #include "../Collisions/CollisionManager.h"
+#include "../Game/GameManager.h"
 #include "../Game/Constants.h"
 
 PPlant::PPlant(const sf::Vector2f& initPos)

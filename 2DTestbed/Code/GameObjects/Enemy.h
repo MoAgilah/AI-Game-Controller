@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../GameObjects/Object.h"
 #include <SFML/Graphics.hpp>
+#include "../GameObjects/Object.h"
 
 class Enemy : public DynamicObject
 {
