@@ -23,7 +23,7 @@ GameManager::GameManager()
 	if (Automated)
 		m_player.reset(ControllerManager::GetCtrlMgr()->GetController()->GetCurrentPlayer());
 	else
-		m_player = std::make_unique<Player>(m_collisionManager->GetTile(2, 11).GetPosition());
+		m_player = std::make_unique<Player>(m_collisionManager->GetTile(2, 11)->GetPosition());
 
 	m_world = std::make_unique<World>();
 	m_logger = std::make_unique<Logger>();

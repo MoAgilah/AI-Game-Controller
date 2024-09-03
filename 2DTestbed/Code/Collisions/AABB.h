@@ -1,6 +1,7 @@
 #pragma once
-#include "../Utilities/Point.h"
+
 #include <SFML/Graphics.hpp>
+#include "../Utilities/Point.h"
 
 enum Side
 {
@@ -19,7 +20,7 @@ public:
 	void Reset(const sf::Vector2f& size);
 
 	void Update(const sf::Vector2f& pos);
-	void Render(sf::RenderWindow& window);
+	void Render(sf::RenderWindow& window) { window.draw(m_rect); }
 
 	bool Intersects(AABB* box);
 	bool IntersectsMoving(AABB* box, const Point& va, const Point& vb, float& tfirst, float& tlast);

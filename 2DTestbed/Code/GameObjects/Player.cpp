@@ -67,7 +67,6 @@ void Player::Update(float deltaTime)
 					{
 						if (!GetSlideLeft())
 						{
-							SetDirection(false);
 							SetSlideLeft(true);
 						}
 					}
@@ -76,7 +75,6 @@ void Player::Update(float deltaTime)
 					{
 						if (!GetSlideRight())
 						{
-							SetDirection(true);
 							SetSlideRight(true);
 						}
 					}

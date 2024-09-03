@@ -1,10 +1,9 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-
-#include "../Collisions/Tile.h"
 #include "../Collisions/AABB.h"
 #include "../Collisions/Grid.h"
+#include "../Collisions/Tile.h"
 
 enum Direction
 {
@@ -32,7 +31,7 @@ public:
 	void ReplacePlayer(Player* currPlayer);
 	Object* GetLastAdded();
 
-	Tile GetTile(int x, int y);
+	Tile* GetTile(int x, int y);
 	std::vector<std::shared_ptr<Tile>> GetGrid();
 	std::vector<std::shared_ptr<Object>> GetCollidables();
 

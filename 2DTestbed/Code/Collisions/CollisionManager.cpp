@@ -1,20 +1,17 @@
 #include "CollisionManager.h"
 #include <format>
 #include <algorithm>
-
-#include "../Utilities/Utilities.h"
 #include "../Controller/ControllerManager.h"
-
 #include "../Game/Camera.h"
 #include "../Game/Constants.h"
 #include "../Game/GameManager.h"
-
 #include "../GameObjects/Bill.h"
 #include "../GameObjects/Box.h"
 #include "../GameObjects/Enemy.h"
 #include "../GameObjects/Object.h"
 #include "../GameObjects/Player.h"
 #include "../GameObjects/Collectables.h"
+#include "../Utilities/Utilities.h"
 
 namespace
 {
@@ -34,6 +31,7 @@ namespace
 			{
 				if (a->GetColNum() == b->GetColNum())
 					return a->GetRowNum() < b->GetRowNum();
+
 				return a->GetColNum() > b->GetColNum();
 			});
 	}
@@ -106,26 +104,19 @@ void CollisionManager::ProcessCollisions(Object* gobj)
 
 	for (auto& collidable : m_collidables)
 	{
-		if (gobj->GetObjectNum() == collidable->GetObjectNum())
-			continue;
-
 		if (!collidable->GetActive())
 			continue;
 
-		if (IsPlayerObject(gobj->GetID()))
-		{
-			PlayerToObjectCollisions((Player*)gobj, collidable.get());
-		}
-		else
-		{
-			ObjectToObjectCollisions(gobj, collidable.get());
-		}
+		if (gobj->GetObjectNum() == collidable->GetObjectNum())
+			continue;
+
+		ObjectToObjectCollisions(gobj, collidable.get());
 	}
 }
 
-Tile CollisionManager::GetTile(int x, int y)
+Tile* CollisionManager::GetTile(int x, int y)
 {
-	return *m_grid.GetTile(x, y);
+	return m_grid.GetTile(x, y);
 }
 
 std::vector<std::shared_ptr<Tile>> CollisionManager::GetGrid()
@@ -170,9 +161,8 @@ void CollisionManager::DynamicObjectToTileCollisions(DynamicObject* obj)
 void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* tile)
 {
 	Direction dir = GetFacingDirection(obj);
-
-	Point objBottomPoint = obj->GetAABB()->GetPoint(Side::Bottom);
 	Line tileTopEdge = tile->GetAABB()->GetSide(Side::Top);
+	Point objBottomPoint = obj->GetAABB()->GetPoint(Side::Bottom);
 
 	switch (tile->GetType())
 	{
@@ -186,10 +176,6 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 			{
 				if (tileTopEdge.IsPointAboveLine(objBottomPoint))
 					ResolveObjectToBoxTop(obj, tile->GetAABB());
-			}
-			else
-			{
-				obj->SetOnGround(false);
 			}
 		}
 		return;
@@ -443,7 +429,11 @@ void CollisionManager::PlayerToObjectCollisions(Player* ply, Object* obj)
 
 void CollisionManager::ObjectToObjectCollisions(Object* obj1, Object* obj2)
 {
-	if (IsPlayerObject(obj2->GetID()))
+	if (IsPlayerObject(obj1->GetID()))
+	{
+		PlayerToObjectCollisions((Player*)obj1, obj2);
+	}
+	else if (IsPlayerObject(obj2->GetID()))
 	{
 		PlayerToObjectCollisions((Player*)obj2, obj1);
 	}
@@ -468,12 +458,11 @@ void CollisionManager::ObjectToObjectCollisions(Object* obj1, Object* obj2)
 
 void CollisionManager::PlayerToQBoxResolutions(Player* ply, QBox* box)
 {
+	Direction dir = GetFacingDirection(ply);
 	// calculate the overlap
 	Point delta = box->GetAABB()->GetPosition() - ply->GetPrevPosition();
 	delta = Point(std::abs(delta.x), std::abs(delta.y));
 	Point prevOverlap = (ply->GetAABB()->GetExtents() + box->GetAABB()->GetExtents()) - delta;
-
-	auto dir = GetFacingDirection(ply);
 
 	if (dir == Direction::UDIR)
 	{
@@ -496,12 +485,11 @@ void CollisionManager::PlayerToQBoxResolutions(Player* ply, QBox* box)
 
 void CollisionManager::PlayerToSBoxResolutions(Player* ply, SBox* box)
 {
+	Direction dir = GetFacingDirection(ply);
 	// calculate the overlap
 	Point delta = box->GetAABB()->GetPosition() - ply->GetPrevPosition();
 	delta = Point(std::abs(delta.x), std::abs(delta.y));
 	Point prevOverlap = (ply->GetAABB()->GetExtents() + box->GetAABB()->GetExtents()) - delta;
-
-	auto dir = GetFacingDirection(ply);
 
 	if (box->GetCanHit())//if not yet been hit
 	{

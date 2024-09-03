@@ -12,7 +12,7 @@ Controller::Controller()
 
 	if (Automated)
 	{
-		Point startPos = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(2, 11).GetPosition();
+		Point startPos = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(2, 11)->GetPosition();
 		for (int i = 0; i< CParams::iNumPlayers; ++i)
 			m_players.push_back(std::make_shared<AutomatedPlayer>(startPos));
 

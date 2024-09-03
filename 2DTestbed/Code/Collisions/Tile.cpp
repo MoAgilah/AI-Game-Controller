@@ -1,7 +1,7 @@
 #include "../Collisions/Tile.h"
+#include <format>
 #include "../Game/Camera.h"
 #include "../Game/Constants.h"
-#include <format>
 
 Tile::Tile()
 {
@@ -13,7 +13,7 @@ Tile::Tile(int x, int y, const sf::Font& font)
 {
 	m_colNum = x;
 	m_rowNum = y;
-	//set id
+
 	m_id = std::format("{},{}", m_colNum, m_rowNum);
 
 	m_aabb.SetOutlineColour(sf::Color::Black);

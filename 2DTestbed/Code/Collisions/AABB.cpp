@@ -1,7 +1,7 @@
 #include "AABB.h"
-#include "../Utilities/Utilities.h"
-#include "../Game/Constants.h"
 #include <limits>
+#include "../Game/Constants.h"
+#include "../Utilities/Utilities.h"
 
 int AABB::s_count = 0;
 
@@ -45,11 +45,6 @@ void AABB::Update(const sf::Vector2f& pos)
 	m_max = m_center + m_extents;
 }
 
-void AABB::Render(sf::RenderWindow& window)
-{
-	window.draw(m_rect);
-}
-
 bool AABB::Intersects(AABB* box)
 {
 	for (size_t i = 0; i < 2; i++)
@@ -84,14 +79,14 @@ bool AABB::IntersectsMoving(AABB* box, const Point& va, const Point& vb, float& 
 	{
 		if (v[i] < 0.0f)
 		{
-			if (box->m_max[i] < m_min[i]) return false; // Nonintersecting and moving apart
+			if (box->m_max[i] < m_min[i]) return false; // Non intersecting and moving apart
 			if (m_max[i] < box->m_min[i]) tfirst = std::max((m_max[i] - box->m_min[i]) / v[i], tfirst);
 			if (box->m_max[i] > m_min[i]) tlast = std::min((m_min[i] - box->m_max[i]) / v[i], tlast);
 		}
 
 		if (v[i] > 0.0f)
 		{
-			if (box->m_min[i] > m_max[i]) return false; // Nonintersecting and moving apart
+			if (box->m_min[i] > m_max[i]) return false; // Non intersecting and moving apart
 			if (box->m_max[i] < m_min[i]) tfirst = std::max((m_min[i] - box->m_max[i]) / v[i], tfirst);
 			if (m_max[i] > box->m_min[i]) tlast = std::min((m_max[i] - box->m_min[i]) / v[i], tlast);
 		}

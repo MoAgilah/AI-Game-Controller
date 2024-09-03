@@ -1,12 +1,11 @@
-#include "../Collisions/Grid.h"
 #include "../Game/GameManager.h"
 #include "../Game/Constants.h"
+#include "../Collisions/Grid.h"
 #include "../Collisions/Tile.h"
+#include <format>
 #include <fstream>
 #include <sstream>
 #include <algorithm>
-#include <format>
-
 
 Grid::Grid()
 {
@@ -88,7 +87,7 @@ void Grid::SetTileTypes()
 	std::ifstream inFile;
 	std::vector<int> types;
 
-	//extract tile types from textfile
+	//extract tile types from text file
 	inFile.open("Resources/TileTypes.txt");
 
 	int type;
