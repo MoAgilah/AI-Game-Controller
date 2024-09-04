@@ -94,6 +94,21 @@ Object* CollisionManager::GetLastAdded()
 void CollisionManager::Render(sf::RenderWindow& window)
 {
 	m_grid.Render(window);
+
+	for (auto& tile : m_tiles)
+	{
+		if (!tile->GetActive())
+			continue;
+
+		if (!tile->GetAABB()->hit)
+			continue;
+
+		tile->GetAABB()->SetFillColour(sf::Color::Transparent);
+		tile->GetAABB()->SetOutlineColour(sf::Color::Red);
+		tile->Render(window);
+		tile->GetAABB()->SetFillColour(sf::Color::White);
+		tile->GetAABB()->SetOutlineColour(sf::Color::Black);
+	}
 }
 
 void CollisionManager::ProcessCollisions(Object* gobj)
@@ -130,6 +145,9 @@ std::vector<std::shared_ptr<Object>> CollisionManager::GetCollidables()
 
 void CollisionManager::DynamicObjectToTileCollisions(DynamicObject* obj)
 {
+	for (auto tile : m_tiles)
+		tile->GetAABB()->hit = false;
+
 	bool collided = false;
 	std::vector<std::shared_ptr<Tile>> collidedWith;
 
@@ -139,7 +157,10 @@ void CollisionManager::DynamicObjectToTileCollisions(DynamicObject* obj)
 			continue;
 
 		if (tile->GetAABB()->Intersects(obj->GetAABB()))
+		{
+			tile->GetAABB()->hit = true;
 			collidedWith.push_back(tile);
+		}
 	}
 
 	if (collided = !collidedWith.empty())

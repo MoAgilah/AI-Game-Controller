@@ -44,6 +44,7 @@ public:
 	void Move(float x, float y);
 	void Move(const sf::Vector2f& pos);
 
+	bool hit = false;
 private:
 
 	int m_boxNumber;
