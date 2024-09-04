@@ -217,7 +217,7 @@ void AirborneState::ProcessInputs()
 	{
 		if (player->GetAirbourne() && player->GetCantJump())
 		{
-			player->GetAirTimer()->ResetTime();
+			player->GetAirTimer()->SetTime(0);
 		}
 	}
 
@@ -225,7 +225,7 @@ void AirborneState::ProcessInputs()
 	{
 		if (player->GetAirbourne() && player->GetCantSpinJump())
 		{
-			player->GetAirTimer()->ResetTime();
+			player->GetAirTimer()->SetTime(0);
 		}
 	}
 }

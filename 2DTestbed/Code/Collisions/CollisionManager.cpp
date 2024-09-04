@@ -174,8 +174,10 @@ void CollisionManager::DynamicObjectToTileCollisions(DynamicObject* obj)
 	}
 
 	if (!collided)
+	{
 		if (obj->GetID() != TexID::Goal)
 			obj->SetOnGround(false);
+	}
 }
 
 void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* tile)
