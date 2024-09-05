@@ -73,7 +73,7 @@ Circle::Circle(const Point& position, float radius)
 {}
 
 Circle::Circle(AABB* box, float radius)
-	: Circle(box->GetPoint(Side::Bottom), radius)
+	: Circle(box->GetPoint(Side::Bottom) - Point(radius,radius), radius)
 {}
 
 bool Circle::IntersectsPoint(const Point& pnt) const

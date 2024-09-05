@@ -176,7 +176,10 @@ void CollisionManager::DynamicObjectToTileCollisions(DynamicObject* obj)
 	if (!collided)
 	{
 		if (obj->GetID() != TexID::Goal)
+		{
 			obj->SetOnGround(false);
+			obj->SetOnSlope(false);
+		}
 	}
 }
 
@@ -254,7 +257,7 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 			Circle circle(obj->GetAABB(), 4);
 			if (line.IsPointAboveLine(circle.center))
 			{
-				Capsule capsule(line, 6);
+				Capsule capsule(line, 4);
 				if (capsule.IntersectsCircle(circle))
 				{
 					obj->SetOnGround(true);
@@ -272,7 +275,8 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 		{
 			Line line = tile->GetSlope(0, 1);
 			Circle circle(obj->GetAABB(), 4);
-			if (!circle.IntersectsLineSegment(line))
+			Capsule capsule(line, 4);
+			if (capsule.IntersectsCircle(circle))
 			{
 				auto yOffset = GetYOffSet(GetXDist(line.start, circle.center),
 					line.DistY(),
@@ -321,7 +325,7 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 			Circle circle(obj->GetAABB(), 4);
 			if (line.IsPointAboveLine(circle.center))
 			{
-				Capsule capsule(line, 6);
+				Capsule capsule(line, 4);
 				if (capsule.IntersectsCircle(circle))
 				{
 					obj->SetOnGround(true);
@@ -339,7 +343,8 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 		{
 			Line line = tile->GetSlope(1, 0);
 			Circle circle(obj->GetAABB(), 4);
-			if (!circle.IntersectsLineSegment(line))
+			Capsule capsule(line, 4);
+			if (capsule.IntersectsCircle(circle))
 			{
 				auto yOffset = GetYOffSet(GetXDist(circle.center, line.start),
 					line.DistY(),
