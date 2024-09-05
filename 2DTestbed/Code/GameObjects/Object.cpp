@@ -74,6 +74,7 @@ DynamicObject::DynamicObject(AnimatedSprite* sprite, const sf::Vector2f& boxSize
 void DynamicObject::Reset()
 {
 	Object::Reset();
+	SetVelocity(sf::Vector2f(0.0f, 0.0f));
 	m_onGround = false;
 }
 
@@ -107,6 +108,41 @@ void DynamicObject::DecrementYVelocity(float y)
 	auto physicsCtrl = GetPhysicsController();
 	if (m_velocity.y < -physicsCtrl->GetMaxYVelocity())
 		m_velocity.y = -physicsCtrl->GetMaxYVelocity();
+}
+
+void DynamicObject::SetOnSlope(bool slp)
+{
+	m_onSlope = slp;
+	if (m_onSlope)
+		m_onGround = true;
+}
+
+void DynamicObject::SetShouldSlideLeft(bool left)
+{
+	m_shouldSlideLeft = left;
+	if (m_shouldSlideLeft)
+		m_shouldSlideRight = false;
+}
+
+void DynamicObject::SetSlideLeft(bool left)
+{
+	m_slideLeft = left;
+	if (m_slideLeft)
+		m_slideRight = false;
+}
+
+void DynamicObject::SetShouldSlideRight(bool right)
+{
+	m_shouldSlideRight = right;
+	if (m_shouldSlideRight)
+		m_shouldSlideLeft = false;
+}
+
+void DynamicObject::SetSlideRight(bool right)
+{
+	m_slideRight = right;
+	if (m_slideRight)
+		m_slideLeft = false;
 }
 
 void DynamicObject::Move(float x, float y)

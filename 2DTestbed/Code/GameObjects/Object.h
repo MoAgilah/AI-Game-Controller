@@ -108,19 +108,19 @@ public:
 	void SetOnGround(bool grnd) { m_onGround = grnd; }
 
 	bool GetOnSlope() const { return m_onSlope; }
-	void SetOnSlope(bool slp) { m_onSlope = slp; }
+	void SetOnSlope(bool slp);
 
 	bool GetShouldSlideLeft() const { return m_shouldSlideLeft; }
-	void SetShouldSlideLeft(bool left) { m_shouldSlideLeft = left; }
+	void SetShouldSlideLeft(bool left);
 
 	bool GetSlideLeft() const { return m_slideLeft; }
-	void SetSlideLeft(bool left) { m_slideLeft = left; }
+	void SetSlideLeft(bool left);
 
 	bool GetShouldSlideRight() const { return m_shouldSlideRight; }
-	void SetShouldSlideRight(bool right) { m_shouldSlideRight = right; }
+	void SetShouldSlideRight(bool right);
 
 	bool GetSlideRight() const { return m_slideRight; }
-	void SetSlideRight(bool right) { m_slideRight = right; }
+	void SetSlideRight(bool right);
 
 	void Move(float x, float y);
 	void Move(const sf::Vector2f& pos);

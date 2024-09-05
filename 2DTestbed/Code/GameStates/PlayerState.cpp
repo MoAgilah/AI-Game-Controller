@@ -15,7 +15,9 @@ void GroundedState::Resume()
 	auto animSpr = GetPlayer()->GetAnimSpr();
 
 	if (player->GetXVelocity() == 0)
+	{
 		animSpr->ChangeAnim(MarioAnims::IDLE);
+	}
 	else
 	{
 		switch (player->GetPhysicsController()->GetXVelocityType())
@@ -133,7 +135,7 @@ void GroundedState::ProcessInputs()
 
 	if (keyStates[Keys::JUMP_KEY])
 	{
-		if (!player->GetCantJump())
+		if (player->GetOnGround() && !player->GetCantJump())
 		{
 			animSpr->UpdateAnimSpeed(0.5f);
 			switch (player->GetPhysicsController()->GetXVelocityType())
@@ -148,32 +150,33 @@ void GroundedState::ProcessInputs()
 				animSpr->ChangeAnim(MarioAnims::RUNJUMP);
 				break;
 			}
+
 			player->SetAirbourne(true);
-			player->SetOnGround(false);
-			player->DecrementYVelocity(physicCtrl->GetYAcceleration());
 			player->SetCantJump(true);
 			if (physicCtrl->GetPhysicsType() != PhysicsType::rise)
-			{
 				physicCtrl->SetAerial();
-			}
 		}
+	}
+	else
+	{
+		player->SetCantJump(false);
 	}
 
 	if (keyStates[Keys::SJUMP_KEY])
 	{
-		if (!player->GetCantSpinJump())
+		if (player->GetOnGround() && !player->GetCantSpinJump())
 		{
 			animSpr->UpdateAnimSpeed(0.5f);
 			animSpr->ChangeAnim(MarioAnims::SPINJUMP);
 			player->SetAirbourne(true);
-			player->SetOnGround(false);
-			player->DecrementYVelocity(physicCtrl->GetYAcceleration());
 			player->SetCantSpinJump(true);
 			if (physicCtrl->GetPhysicsType() != PhysicsType::rise)
-			{
 				physicCtrl->SetAerial();
-			}
 		}
+	}
+	else
+	{
+		player->SetCantSpinJump(false);
 	}
 }
 
@@ -265,10 +268,12 @@ void CrouchingState::ProcessInputs()
 		if (!player->GetCantJump())
 		{
 			player->SetAirbourne(true);
-			player->SetOnGround(false);
-			player->DecrementYVelocity(physicCtrl->GetYAcceleration());
 			player->SetCantJump(true);
 		}
+	}
+	else
+	{
+		player->SetCantJump(false);
 	}
 
 	if (keyStates[Keys::SJUMP_KEY])
@@ -277,10 +282,12 @@ void CrouchingState::ProcessInputs()
 		{
 			GetPlayer()->GetAnimSpr()->ChangeAnim(MarioAnims::SPINJUMP);
 			player->SetAirbourne(true);
-			player->SetOnGround(false);
-			player->DecrementYVelocity(physicCtrl->GetYAcceleration());
 			player->SetCantSpinJump(true);
 		}
+	}
+	else
+	{
+		player->SetCantSpinJump(false);
 	}
 }
 
@@ -292,9 +299,7 @@ void DieingState::Initialise()
 {
 	Player* player = GetPlayer();
 	GetPlayer()->GetAnimSpr()->ChangeAnim(MarioAnims::DIE);
-	player->GetAirTimer()->SetTime(0.66f);
 	player->SetAirbourne(true);
-	player->DecrementYVelocity(c_jumpSpeed);
 }
 
 void DieingState::ProcessInputs()
@@ -312,11 +317,13 @@ void DieingState::Update(float deltaTime)
 		if (player->GetAirTimer()->CheckEnd())
 			player->SetAirbourne(false);
 
+		player->DecrementYVelocity(0.625f);
 		player->Move(sf::Vector2f(0, player->GetYVelocity() * FPS * deltaTime));
 	}
 	else
 	{
-		player->Move(sf::Vector2f(0, -player->GetYVelocity() * FPS * deltaTime));
+		player->IncrementYVelocity(0.3125f);
+		player->Move(sf::Vector2f(0, player->GetYVelocity() * FPS * deltaTime));
 		if (!GameManager::GetGameMgr()->GetCamera()->IsInView(player->GetAABB()))
 		{
 			if (!Automated)

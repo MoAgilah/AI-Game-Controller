@@ -260,13 +260,9 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 				Capsule capsule(line, 4);
 				if (capsule.IntersectsCircle(circle))
 				{
-					obj->SetOnGround(true);
 					obj->SetOnSlope(true);
 					if (!obj->GetShouldSlideLeft())
-					{
 						obj->SetShouldSlideLeft(true);
-						obj->SetShouldSlideRight(false);
-					}
 				}
 			}
 		}
@@ -287,10 +283,7 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 				obj->Move(sf::Vector2f(0, yOffset));
 				obj->SetOnSlope(true);
 				if (!obj->GetShouldSlideLeft())
-				{
 					obj->SetShouldSlideLeft(true);
-					obj->SetShouldSlideRight(false);
-				}
 			}
 		}
 
@@ -310,10 +303,7 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 				obj->Move(sf::Vector2f(0, -yOffset));
 				obj->SetOnSlope(true);
 				if (!obj->GetShouldSlideLeft())
-				{
 					obj->SetShouldSlideLeft(true);
-					obj->SetShouldSlideRight(false);
-				}
 			}
 		}
 		return;
@@ -329,13 +319,9 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 				Capsule capsule(line, 4);
 				if (capsule.IntersectsCircle(circle))
 				{
-					obj->SetOnGround(true);
 					obj->SetOnSlope(true);
 					if (!obj->GetShouldSlideRight())
-					{
 						obj->SetShouldSlideRight(true);
-						obj->SetShouldSlideLeft(false);
-					}
 				}
 			}
 		}
@@ -356,10 +342,7 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 				obj->Move(sf::Vector2f(0, yOffset));
 				obj->SetOnSlope(true);
 				if (!obj->GetShouldSlideRight())
-				{
 					obj->SetShouldSlideRight(true);
-					obj->SetShouldSlideLeft(false);
-				}
 			}
 		}
 
@@ -379,10 +362,7 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 				obj->Move(sf::Vector2f(0, -yOffset));
 				obj->SetOnSlope(true);
 				if (!obj->GetShouldSlideRight())
-				{
 					obj->SetShouldSlideRight(true);
-					obj->SetShouldSlideLeft(false);
-				}
 			}
 		}
 		return;

@@ -10,7 +10,7 @@
 
 enum MarioAnims { IDLE, LOOKUP, JUMP, FALL, RUNJUMP, SKID, SLIDE, VICTORY, CROUCH, GROW, DIE, MOVING, RUNNING, SPINJUMP };
 
-enum MarioBoxes { REGULAR, SUPER, CROUCHED, NUMBOXES};
+enum MarioBoxes { REGULAR, SUPER, CROUCHED, NUMBOXES };
 
 enum Keys { LEFT_KEY, RIGHT_KEY, UP_KEY, DOWN_KEY, RUN_KEY, JUMP_KEY, SJUMP_KEY, MAXKEYS };
 
@@ -28,10 +28,10 @@ public:
 	void SetIsSuper(bool super);
 
 	bool GetGoalHit() const { return m_goalHit; }
-	void SetGoalHit() { m_goalHit = true; }
+	void SetGoalHit(bool goal) { m_goalHit = goal; }
 
 	bool GetIsAlive() const { return m_alive; }
-	void SetIsAlive(bool val) { m_alive = val; }
+	void SetIsAlive(bool val, float airtime = 0.1f);
 
 	void IncreaseCoins(int num) { m_coinTotal = +num; }
 
@@ -47,7 +47,7 @@ public:
 	void SetCantSpinJump(bool val) { m_cantSpinJump = val; }
 
 	bool GetIsCrouched() const { return m_crouched; }
-	void SetIsCrouched(bool crouched) { m_crouched = crouched; }
+	void SetIsCrouched(bool crouched);
 
 	void ForceFall();
 
@@ -55,7 +55,7 @@ public:
 	void SetInvulnerability();
 
 	bool GetAirbourne() const { return m_airbourne; }
-	void SetAirbourne(bool air) { m_airbourne = air; }
+	void SetAirbourne(bool air);
 
 	Timer* GetAirTimer() { return &m_airTimer; }
 

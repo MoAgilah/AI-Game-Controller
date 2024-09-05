@@ -41,6 +41,11 @@ bool Camera::IsInView(AABB* box)
 	return box->Intersects(&m_viewBox);
 }
 
+bool Camera::CheckVerticalBounds(AABB* box)
+{
+	return box->GetPosition().y > (m_camera.getCenter().y + (screenDim.y * 0.5f)) - (box->GetExtents().y * 2);
+}
+
 void Camera::RenderViewBox(sf::RenderWindow& window)
 {
 	m_viewBox.Render(window);

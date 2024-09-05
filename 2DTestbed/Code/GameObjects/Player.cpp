@@ -24,14 +24,15 @@ Player::Player(const sf::Vector2f& pos)
 
 void Player::Update(float deltaTime)
 {
+	AnimatedSprite* animSpr = GetAnimSpr();
+	PhysicsController* physCtrl = GetPhysicsController();
+	GameManager* gameMgr = GameManager::GetGameMgr();
+
 	ProcessInput();
 
 	m_stateMgr.Update(deltaTime);
-
-	auto animSpr = GetAnimSpr();
 	animSpr->Update(deltaTime);
-
-	GetPhysicsController()->Update(GetDirection(), GetVelocity());
+	physCtrl->Update(GetDirection(), GetVelocity());
 
 	if (GetIsAlive())
 	{
@@ -53,8 +54,8 @@ void Player::Update(float deltaTime)
 
 			if (GetOnSlope())
 			{
-				if (GetPhysicsController()->GetPhysicsType() != PhysicsType::slope)
-					GetPhysicsController()->SetOnSlope();
+				if (physCtrl->GetPhysicsType() != PhysicsType::slope)
+					physCtrl->SetOnSlope();
 
 				if (!GetXVelocity())
 				{
@@ -67,12 +68,10 @@ void Player::Update(float deltaTime)
 
 				if (GetSlideLeft() || GetSlideRight())
 				{
-					if ((m_keyStates[Keys::LEFT_KEY] || m_keyStates[Keys::RIGHT_KEY]))
+					if (m_keyStates[Keys::LEFT_KEY] || m_keyStates[Keys::RIGHT_KEY])
 					{
 						SetSlideLeft(false);
 						SetSlideRight(false);
-						SetShouldSlideLeft(false);
-						SetShouldSlideRight(false);
 					}
 					else
 					{
@@ -86,8 +85,8 @@ void Player::Update(float deltaTime)
 			}
 			else
 			{
-				if (GetPhysicsController()->GetPhysicsType() != PhysicsType::ground)
-					GetPhysicsController()->SetWalking();
+				if (physCtrl->GetPhysicsType() != PhysicsType::ground)
+					physCtrl->SetWalking();
 
 				SetSlideLeft(false);
 				SetSlideRight(false);
@@ -96,6 +95,12 @@ void Player::Update(float deltaTime)
 			}
 
 			SetYVelocity(0);
+
+			if (!GetXVelocity() && !GetYVelocity())
+			{
+				if (!m_keyStates[Keys::DOWN_KEY] && !m_keyStates[Keys::UP_KEY])
+					animSpr->ChangeAnim(MarioAnims::IDLE);
+			}
 		}
 		else
 		{
@@ -112,7 +117,7 @@ void Player::Update(float deltaTime)
 				}
 				else
 				{
-					DecrementYVelocity(GetPhysicsController()->GetYAcceleration());
+					DecrementYVelocity(physCtrl->GetYAcceleration());
 				}
 			}
 			else
@@ -120,11 +125,15 @@ void Player::Update(float deltaTime)
 				IncrementYVelocity(c_gravity);
 				if (!GetOnSlope())
 				{
-					if (GetPhysicsController()->GetPhysicsType() != PhysicsType::drop)
+					if (physCtrl->GetPhysicsType() != PhysicsType::drop)
 					{
-						if (GetAnimSpr()->GetCurrentAnim() != MarioAnims::SPINJUMP)
-							GetAnimSpr()->ChangeAnim(FALL);
-						GetPhysicsController()->SetFalling();
+						if (!GetIsCrouched())
+						{
+							if (animSpr->GetCurrentAnim() != MarioAnims::SPINJUMP)
+								animSpr->ChangeAnim(FALL);
+						}
+
+						physCtrl->SetFalling();
 					}
 				}
 			}
@@ -133,33 +142,18 @@ void Player::Update(float deltaTime)
 		if ((!m_keyStates[Keys::LEFT_KEY] && !m_keyStates[Keys::RIGHT_KEY]) && (!GetSlideLeft() && !GetSlideRight()))
 			SetXVelocity(0.0f);
 
-		if (!m_keyStates[Keys::JUMP_KEY] && !m_keyStates[Keys::SJUMP_KEY])
-			m_cantjump = m_cantSpinJump = false;
-
-		if (GetVelocity() == sf::Vector2f())
-		{
-			if (!m_keyStates[Keys::DOWN_KEY] && !m_keyStates[Keys::UP_KEY])
-				animSpr->ChangeAnim(MarioAnims::IDLE);
-		}
-
 		//decomposition of movement
 		if (GetXVelocity() != 0)
 		{
 			SetPrevPosition(GetPosition());
 			Move(sf::Vector2f(GetXVelocity() * FPS * deltaTime, 0));
-			GameManager::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
+			gameMgr->GetCollisionMgr()->ProcessCollisions(this);
 		}
 
 		CheckForHorizontalBounds(deltaTime);
+		SetGoalHit(GetPosition().x > RightMost);
 
-		if (GetYVelocity() != 0)
-		{
-			SetPrevPosition(GetPosition());
-			Move(sf::Vector2f(0, GetYVelocity() * FPS * deltaTime));
-			GameManager::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
-		}
-
-		if (GetPosition().x > RightMost || GetGoalHit())
+		if (GetGoalHit())
 		{
 			SetSpawnLoc();
 
@@ -167,10 +161,20 @@ void Player::Update(float deltaTime)
 				Reset();
 		}
 
-		if (GetAABB()->GetPosition().y > 600 - GetAABB()->GetOrigin().y)
-			SetIsAlive(false);
+		if (GetYVelocity() != 0)
+		{
+			SetPrevPosition(GetPosition());
+			Move(sf::Vector2f(0, GetYVelocity() * FPS * deltaTime));
+			gameMgr->GetCollisionMgr()->ProcessCollisions(this);
+		}
 
-		if (GameManager::GetGameMgr()->GetTimer()->CheckEnd())
+
+		if (gameMgr->GetCamera()->CheckVerticalBounds(GetAABB()))
+		{
+			SetIsAlive(false, 0.4f);
+		}
+
+		if (gameMgr->GetTimer()->CheckEnd())
 			SetIsAlive(false);
 
 		if (GetIfInvulnerable())
@@ -196,38 +200,20 @@ void Player::Render(sf::RenderWindow& window)
 
 void Player::Reset()
 {
+	SetInitialPosition(m_spawnLoc);
+	DynamicObject::Reset();
+	SetIsSuper(false);
 	GetAnimSpr()->ChangeAnim(MarioAnims::IDLE);
-	if (GetSprite()->GetTexID() != TexID::Mario)
-	{
-		//change spr and bbox
-		GetSprite()->SetTexture(TexID::Mario);
-		GetSprite()->SetFrameSize(sf::Vector2u(GetSprite()->GetTextureSize().x / 4, GetSprite()->GetTextureSize().y / 14));
-		GetAABB()->Reset(m_boxSizes[MarioBoxes::REGULAR]);
-		Move(0, m_heightDiff);
-	}
 
-	SetActive(false);
-	SetDirection(GetInitialDirection());
-	SetPosition(m_spawnLoc);
-	GetAABB()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
-
-	SetVelocity(sf::Vector2f(0.0f, 0.0f));
-	SetOnGround(false);
-
-	m_super = false;
 	m_crouched = false;
 	m_alive = true;
 	m_cantjump = false;
 	m_cantSpinJump = false;
-	m_cantSpinJump = false;
 	m_goalHit = false;
 
-	m_keyStates.fill(false);
-
-	m_heightDiff = 0;
 	m_invulTimer.SetTime(0);
 	m_airTimer.ResetTime();
-
+	m_keyStates.fill(false);
 	m_stateMgr.ClearStates();
 	GameManager::GetGameMgr()->GetTimer()->ResetTime();
 	GameManager::GetGameMgr()->GetLevel()->ResetLevel();
@@ -238,10 +224,8 @@ void Player::SetIsSuper(bool super)
 	m_super = super;
 	if (m_super)
 	{
-		//if current spr and bbox is not super
 		if (GetSprite()->GetTexID() != TexID::Super)
 		{
-			//change spr and bbox
 			GetSprite()->SetTexture(TexID::Super);
 			GetSprite()->SetFrameSize(sf::Vector2u(GetSprite()->GetTextureSize().x / 4, GetSprite()->GetTextureSize().y / 14));
 			GetAABB()->Reset(m_boxSizes[MarioBoxes::SUPER]);
@@ -257,6 +241,15 @@ void Player::SetIsSuper(bool super)
 			GetAABB()->Reset(m_boxSizes[MarioBoxes::REGULAR]);
 			Move(0, m_heightDiff);
 		}
+	}
+}
+
+void Player::SetIsAlive(bool val, float airtime)
+{
+	m_alive = val;
+	if (!m_alive)
+	{
+		m_airTimer.SetTime(airtime);
 	}
 }
 
@@ -278,6 +271,36 @@ void Player::SetSpawnLoc(sf::Vector2f loc)
 	}
 }
 
+void Player::SetIsCrouched(bool crouched)
+{
+	m_crouched = crouched;
+	if (m_crouched)
+	{
+		GetAABB()->Reset(m_boxSizes[MarioBoxes::CROUCHED]);
+		if (m_super)
+		{
+			GetAABB()->Update(GetAABB()->GetPosition() + sf::Vector2f(0, 15));
+		}
+		else
+		{
+			GetAABB()->Update(GetAABB()->GetPosition() + sf::Vector2f(0, 5));
+		}
+	}
+	else
+	{
+		if (m_super)
+		{
+			GetAABB()->Reset(m_boxSizes[MarioBoxes::SUPER]);
+			GetAABB()->Update(GetAABB()->GetPosition() - sf::Vector2f(0, 15));
+		}
+		else
+		{
+			GetAABB()->Reset(m_boxSizes[MarioBoxes::REGULAR]);
+			GetAABB()->Update(GetAABB()->GetPosition() - sf::Vector2f(0, 5));
+		}
+	}
+}
+
 void Player::ForceFall()
 {
 	SetCantJump(true);
@@ -288,6 +311,13 @@ void Player::ForceFall()
 void Player::SetInvulnerability()
 {
 	m_invulTimer.ResetTime();
+}
+
+void Player::SetAirbourne(bool air)
+{
+	m_airbourne = air;
+	if (m_airbourne)
+		SetOnGround(false);
 }
 
 void Player::ProcessInput()
@@ -303,24 +333,13 @@ void Player::ProcessInput()
 	{
 		if (GetOnSlope())
 		{
-			GetAnimSpr()->ChangeAnim(MarioAnims::SLIDE);
+			if (GetAnimSpr()->GetCurrentAnim() != MarioAnims::SLIDE)
+				GetAnimSpr()->ChangeAnim(MarioAnims::SLIDE);
 		}
 		else
 		{
 			if (!GetIsCrouched())
-			{
-				GetAABB()->Reset(m_boxSizes[MarioBoxes::CROUCHED]);
-				if (m_super)
-				{
-					GetAABB()->Update(GetAABB()->GetPosition() + sf::Vector2f(0, 15));
-				}
-				else
-				{
-					GetAABB()->Update(GetAABB()->GetPosition() + sf::Vector2f(0, 5));
-				}
-
 				SetIsCrouched(true);
-			}
 		}
 	}
 	else
@@ -332,24 +351,8 @@ void Player::ProcessInput()
 		}
 		else
 		{
-			//if was crouched
 			if (GetIsCrouched())
-			{
 				SetIsCrouched(false);
-
-				if (m_super)
-				{
-					GetAABB()->Reset(m_boxSizes[MarioBoxes::SUPER]);
-					GetAABB()->Update(GetAABB()->GetPosition() - sf::Vector2f(0, 15));
-				}
-				else
-				{
-					GetAABB()->Reset(m_boxSizes[MarioBoxes::REGULAR]);
-					GetAABB()->Update(GetAABB()->GetPosition() - sf::Vector2f(0, 5));
-				}
-
-				SetPosition(GetPosition());
-			}
 		}
 	}
 }

@@ -175,5 +175,5 @@ void Goal::Update(float deltaTime)
 void Goal::Collect(Player* player)
 {
 	SetCollected();
-	player->SetGoalHit();
+	player->SetGoalHit(true);
 }

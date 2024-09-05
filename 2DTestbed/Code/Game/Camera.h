@@ -16,6 +16,7 @@ public:
 	sf::View GetView() const { return m_camera; }
 
 	bool IsInView(AABB* box);
+	bool CheckVerticalBounds(AABB* box);
 	void Reset(sf::RenderWindow& window);
 	void RenderViewBox(sf::RenderWindow& window);
 
