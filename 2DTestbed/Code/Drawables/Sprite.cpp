@@ -107,4 +107,9 @@ void AnimatedSprite::SetFrameData(int rows, int columns, const std::vector<int>&
 	m_animation.m_max = m_numFrames[m_animation.m_current];
 }
 
+void AnimatedSprite::UpdateAnimSpeed(float animSpd)
+{
+	if (m_animSpeed != animSpd)
+		m_animSpeed = animSpd;
+}
 

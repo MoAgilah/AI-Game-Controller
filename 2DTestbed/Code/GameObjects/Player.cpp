@@ -170,9 +170,7 @@ void Player::Update(float deltaTime)
 
 
 		if (gameMgr->GetCamera()->CheckVerticalBounds(GetAABB()))
-		{
 			SetIsAlive(false, 0.4f);
-		}
 
 		if (gameMgr->GetTimer()->CheckEnd())
 			SetIsAlive(false);
@@ -317,7 +315,11 @@ void Player::SetAirbourne(bool air)
 {
 	m_airbourne = air;
 	if (m_airbourne)
+	{
 		SetOnGround(false);
+		m_cantjump = true;
+		m_cantSpinJump = true;
+	}
 }
 
 void Player::ProcessInput()

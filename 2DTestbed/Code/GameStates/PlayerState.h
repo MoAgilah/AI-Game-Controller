@@ -11,6 +11,8 @@ public:
 		: GameState(name)
 	{
 		m_player.reset(ply);
+		m_animSpr.reset(m_player->GetAnimSpr());
+		m_physCtrl.reset(m_player->GetPhysicsController());
 	}
 
 	~PlayerState() override = default;
@@ -20,8 +22,11 @@ public:
 
 	Player* GetPlayer() { return m_player.get(); }
 
-private:
+protected:
+
 	std::shared_ptr<Player> m_player;
+	std::shared_ptr<AnimatedSprite> m_animSpr;
+	std::shared_ptr<PhysicsController> m_physCtrl;
 };
 
 class GroundedState : public PlayerState
@@ -37,6 +42,9 @@ public:
 	void Update(float deltaTime) override;
 
 private:
+
+	void UpdateGroundAnimation();
+	void Slide(bool dir);
 
 	float m_turnTime = 0;
 	bool m_turningAround = false;
