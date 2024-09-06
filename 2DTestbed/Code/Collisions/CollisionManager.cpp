@@ -243,7 +243,20 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 			if (dir == LDIR || dir == RDIR)
 			{
 				if (tileTopEdge.IsPointAboveLine(objBottomPoint))
+				{
 					ResolveObjectToBoxTop(obj, tile->GetAABB());
+					if (!IsPlayerObject(obj->GetID()))
+					{
+						Point cnt = tile->GetType() == LCRN ?
+							obj->GetAABB()->GetPoint(Side::Right) :
+							obj->GetAABB()->GetPoint(Side::Left);
+
+						Circle circle(cnt, 4);
+						Capsule capsule(tile->GetEdge(), 4);
+						if (capsule.IntersectsCircle(circle))
+							obj->SetDirection(!obj->GetDirection());
+					}
+				}
 			}
 		}
 	}

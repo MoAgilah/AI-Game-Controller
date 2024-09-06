@@ -35,6 +35,7 @@ public:
 	AABB* GetAABB() { return &m_aabb; }
 	const sf::RectangleShape& GetRect() { return m_aabb.GetRect(); }
 	Line GetSlope(int bgn, int end) { return Line(m_slope, bgn, end); }
+	Line GetEdge() const { return m_edge; }
 
 	float GetTileHeight() { return m_aabb.GetExtents().y * 2; }
 
