@@ -33,11 +33,17 @@ void PPlant::Animate(float deltaTime)
 
 	if (GetDirection())
 	{
-		SetYVelocity(c_jumpSpeed * 0.5f);
+		if (GetPhysicsController()->GetPhysicsType() != PhysicsType::drop)
+			GetPhysicsController()->SetFalling();
+
+		IncrementYVelocity(GetPhysicsController()->GetYAcceleration());
 	}
 	else
 	{
-		SetYVelocity(-c_jumpSpeed);
+		if (GetPhysicsController()->GetPhysicsType() != PhysicsType::rise)
+			GetPhysicsController()->SetAerial();
+
+		DecrementYVelocity(GetPhysicsController()->GetYAcceleration());
 	}
 
 	if (GetYVelocity() != 0)

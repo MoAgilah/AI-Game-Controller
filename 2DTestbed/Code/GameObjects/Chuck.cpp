@@ -48,7 +48,10 @@ void Chuck::Animate(float deltaTime)
 	{
 		if (GetAirbourne())
 		{
-			SetYVelocity(c_jumpSpeed);
+			if (GetPhysicsController()->GetPhysicsType() != PhysicsType::drop)
+				GetPhysicsController()->SetFalling();
+
+			IncrementYVelocity(GetPhysicsController()->GetYAcceleration());
 		}
 		else
 		{
@@ -69,7 +72,10 @@ void Chuck::Animate(float deltaTime)
 			m_waitTimer.Update(deltaTime);
 			if (m_waitTimer.CheckEnd())
 			{
-				SetYVelocity(-c_jumpSpeed);
+				if (GetPhysicsController()->GetPhysicsType() != PhysicsType::rise)
+					GetPhysicsController()->SetAerial();
+
+				DecrementYVelocity(GetPhysicsController()->GetYAcceleration());
 				GetAirTimer()->Update(deltaTime);
 				animSpr->ChangeAnim(ChuckAnims::LEAP);
 			}
@@ -80,7 +86,10 @@ void Chuck::Animate(float deltaTime)
 		}
 		else
 		{
-			SetYVelocity(c_jumpSpeed);
+			if (GetPhysicsController()->GetPhysicsType() != PhysicsType::drop)
+				GetPhysicsController()->SetFalling();
+
+			IncrementYVelocity(GetPhysicsController()->GetYAcceleration());
 		}
 
 		sf::Vector2f currentPos = GetPosition();
