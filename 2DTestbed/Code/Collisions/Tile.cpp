@@ -45,6 +45,18 @@ void Tile::SetPosition(sf::Vector2f pos)
 		m_slope.setFillColor(sf::Color::Yellow);
 	}
 
+	if (m_type == LCRN)
+	{
+		m_edge.start;
+		m_edge.end;
+	}
+
+	if (m_type == RCRN)
+	{
+		m_edge.start;
+		m_edge.end;
+	}
+
 	m_text.setPosition(m_aabb.GetPosition().x - 10.f, m_aabb.GetPosition().y - 7.5f);
 }
 

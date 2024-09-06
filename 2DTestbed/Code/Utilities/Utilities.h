@@ -13,6 +13,7 @@ bool IsCollectableObject(TexID id);
 
 struct Line
 {
+	Line() = default;
 	Line(const Point& start, const Point& end);
 	Line(const sf::ConvexShape& tri, int bgn, int end);
 

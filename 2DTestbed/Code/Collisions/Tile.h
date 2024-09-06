@@ -7,7 +7,7 @@
 
 enum Types
 {
-	EMPTY, GRND, WALL, DIAGU, DIAGD, CRN, OWAY
+	EMPTY, GRND, WALL, DIAGU, DIAGD, LCRN, RCRN, OWAY
 };
 
 class Tile
@@ -54,5 +54,6 @@ private:
 	AABB m_aabb;
 	sf::Text m_text;
 	std::string m_id;
+	Line m_edge;
 	sf::ConvexShape m_slope;
 };

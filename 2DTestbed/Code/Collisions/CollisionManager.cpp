@@ -212,7 +212,9 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 				ResolveObjectToBoxTop(obj, tile->GetAABB());
 		}
 		return;
-	case Types::CRN:
+	case Types::LCRN:
+		[[fallthrough]];
+	case Types::RCRN:
 	{
 		Point delta = tile->GetAABB()->GetPosition() - obj->GetPrevPosition();
 		delta = Point(std::abs(delta.x), std::abs(delta.y));
