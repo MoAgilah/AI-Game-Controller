@@ -103,9 +103,13 @@ Mushroom::Mushroom(const sf::Vector2f& initPos)
 
 void Mushroom::Update(float deltaTime)
 {
+	CollisionManager* colMgr = GameManager::GetGameMgr()->GetCollisionMgr();
+	PhysicsController* physCtrl = GetPhysicsController();
+
 	SetPrevPosition(GetPosition());
 
-	SetXVelocity((GetDirection() ? 1.f : -1.f) * 2);
+	if (GetDirection() != m_prevDirection)
+		SetXVelocity((GetDirection() ? 1 : -1) * c_moveSpeed * 0.67);
 
 	m_prevDirection = GetDirection();
 
@@ -115,19 +119,22 @@ void Mushroom::Update(float deltaTime)
 	}
 	else
 	{
+		if (physCtrl->GetPhysicsType() != PhysicsType::drop)
+			physCtrl->SetFalling();
+
 		IncrementYVelocity(c_gravity);
 	}
 
 	if (GetYVelocity() != 0)
 	{
 		Move(0, GetYVelocity() * FPS * deltaTime);
-		GameManager::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
+		colMgr->ProcessCollisions(this);
 	}
 
 	if (GetXVelocity() != 0)
 	{
 		Move(GetXVelocity() * FPS * deltaTime, 0);
-		GameManager::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
+		colMgr->ProcessCollisions(this);
 	}
 
 	CheckForHorizontalBounds(deltaTime);

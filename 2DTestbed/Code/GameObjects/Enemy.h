@@ -33,6 +33,8 @@ public:
 
 	void CheckForHorizontalBounds(float deltaTime) final;
 
+	bool GetPrevDirection() const { return m_prevDirection; }
+
 private:
 
 	virtual void Animate(float deltaTime) = 0;

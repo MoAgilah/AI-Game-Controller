@@ -43,7 +43,10 @@ void Rex::DecrementLife()
 
 void Rex::Animate(float deltaTime)
 {
-	auto animSpr = GetAnimSpr();
+	AnimatedSprite* animSpr = GetAnimSpr();
+	PhysicsController* physCtrl = GetPhysicsController();
+	CollisionManager* colMgr = GameManager::GetGameMgr()->GetCollisionMgr();
+
 	animSpr->Update(deltaTime);
 
 	if (m_transitioning)
@@ -57,7 +60,8 @@ void Rex::Animate(float deltaTime)
 
 	SetPrevPosition(GetPosition());
 
-	SetXVelocity((GetDirection() ? 1.f : -1.f) * 2.f);
+	if (GetDirection() != GetPrevDirection())
+		SetXVelocity((GetDirection() ? 1 : -1) * c_moveSpeed * 0.67);
 
 	if (GetOnGround())
 	{
@@ -65,6 +69,9 @@ void Rex::Animate(float deltaTime)
 	}
 	else
 	{
+		if (physCtrl->GetPhysicsType() != PhysicsType::drop)
+			physCtrl->SetFalling();
+
 		IncrementYVelocity(c_gravity);
 	}
 
@@ -73,7 +80,7 @@ void Rex::Animate(float deltaTime)
 		if (GetXVelocity() != 0)
 		{
 			Move(GetXVelocity() * FPS * deltaTime, 0);
-			GameManager::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
+			colMgr->ProcessCollisions(this);
 		}
 
 		CheckForHorizontalBounds(deltaTime);
@@ -81,7 +88,7 @@ void Rex::Animate(float deltaTime)
 		if (GetYVelocity() != 0)
 		{
 			Move(0, GetYVelocity() * FPS * deltaTime);
-			GameManager::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
+			colMgr->ProcessCollisions(this);
 		}
 	}
 }

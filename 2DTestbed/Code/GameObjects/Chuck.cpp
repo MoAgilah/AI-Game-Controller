@@ -41,17 +41,19 @@ void Chuck::DecrementLife()
 
 void Chuck::Animate(float deltaTime)
 {
-	auto animSpr = GetAnimSpr();
+	AnimatedSprite* animSpr = GetAnimSpr();
+	PhysicsController* physCtrl = GetPhysicsController();
+
 	animSpr->Update(deltaTime);
 
 	if (m_tookHit)
 	{
 		if (GetAirbourne())
 		{
-			if (GetPhysicsController()->GetPhysicsType() != PhysicsType::drop)
-				GetPhysicsController()->SetFalling();
+			if (physCtrl->GetPhysicsType() != PhysicsType::drop)
+				physCtrl->SetFalling();
 
-			IncrementYVelocity(GetPhysicsController()->GetYAcceleration());
+			IncrementYVelocity(physCtrl->GetYAcceleration());
 		}
 		else
 		{
@@ -72,10 +74,10 @@ void Chuck::Animate(float deltaTime)
 			m_waitTimer.Update(deltaTime);
 			if (m_waitTimer.CheckEnd())
 			{
-				if (GetPhysicsController()->GetPhysicsType() != PhysicsType::rise)
-					GetPhysicsController()->SetAerial();
+				if (physCtrl->GetPhysicsType() != PhysicsType::rise)
+					physCtrl->SetAerial();
 
-				DecrementYVelocity(GetPhysicsController()->GetYAcceleration());
+				DecrementYVelocity(physCtrl->GetYAcceleration());
 				GetAirTimer()->Update(deltaTime);
 				animSpr->ChangeAnim(ChuckAnims::LEAP);
 			}
@@ -86,10 +88,10 @@ void Chuck::Animate(float deltaTime)
 		}
 		else
 		{
-			if (GetPhysicsController()->GetPhysicsType() != PhysicsType::drop)
-				GetPhysicsController()->SetFalling();
+			if (physCtrl->GetPhysicsType() != PhysicsType::drop)
+				physCtrl->SetFalling();
 
-			IncrementYVelocity(GetPhysicsController()->GetYAcceleration());
+			IncrementYVelocity(physCtrl->GetYAcceleration());
 		}
 
 		sf::Vector2f currentPos = GetPosition();

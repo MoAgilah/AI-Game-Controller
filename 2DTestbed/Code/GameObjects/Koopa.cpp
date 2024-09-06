@@ -10,7 +10,7 @@ Koopa::Koopa(bool dir, const sf::Vector2f& initPos)
 	SetInitialPosition(initPos);
 	SetPosition(GetInitialPosition());
 	GetAABB()->Update(sf::Vector2f(GetPosition().x, GetPosition().y));
-	auto animSpr = GetAnimSpr();
+	AnimatedSprite* animSpr = GetAnimSpr();
 	animSpr->SetFrames({ 2, 3, 1 });
 	animSpr->ChangeAnim(KoopaAnims::WALK);
 }
@@ -29,18 +29,15 @@ void Koopa::Die()
 
 void Koopa::Animate(float deltaTime)
 {
+	PhysicsController* physCtrl = GetPhysicsController();
+	CollisionManager* colMgr = GameManager::GetGameMgr()->GetCollisionMgr();
+
 	GetAnimSpr()->Update(deltaTime);
 
 	SetPrevPosition(GetPosition());
 
-	if (GetDirection())
-	{
-		SetXVelocity(2);
-	}
-	else
-	{
-		SetXVelocity(-2);
-	}
+	if (GetDirection() != GetPrevDirection())
+		SetXVelocity((GetDirection() ? 1 : -1) * c_moveSpeed * 0.67);
 
 	if (GetOnGround())
 	{
@@ -48,6 +45,9 @@ void Koopa::Animate(float deltaTime)
 	}
 	else
 	{
+		if (physCtrl->GetPhysicsType() != PhysicsType::drop)
+			physCtrl->SetFalling();
+
 		IncrementYVelocity(c_gravity);
 	}
 
@@ -56,7 +56,7 @@ void Koopa::Animate(float deltaTime)
 		if (GetXVelocity() != 0)
 		{
 			Move(GetXVelocity() * FPS * deltaTime, 0);
-			GameManager::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
+			colMgr->ProcessCollisions(this);
 		}
 
 		CheckForHorizontalBounds(deltaTime);
@@ -64,7 +64,7 @@ void Koopa::Animate(float deltaTime)
 		if (GetYVelocity() != 0)
 		{
 			Move(0, GetYVelocity() * FPS * deltaTime);
-			GameManager::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
+			colMgr->ProcessCollisions(this);
 		}
 	}
 }

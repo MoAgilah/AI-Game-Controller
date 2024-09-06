@@ -26,24 +26,26 @@ void PPlant::Die()
 
 void PPlant::Animate(float deltaTime)
 {
-	auto animSpr = GetAnimSpr();
+	AnimatedSprite* animSpr = GetAnimSpr();
+	PhysicsController* physCtrl = GetPhysicsController();
+
 	animSpr->Update(deltaTime);
 
 	SetPrevPosition(GetPosition());
 
 	if (GetDirection())
 	{
-		if (GetPhysicsController()->GetPhysicsType() != PhysicsType::drop)
-			GetPhysicsController()->SetFalling();
+		if (physCtrl->GetPhysicsType() != PhysicsType::drop)
+			physCtrl->SetFalling();
 
-		IncrementYVelocity(GetPhysicsController()->GetYAcceleration());
+		IncrementYVelocity(physCtrl->GetYAcceleration());
 	}
 	else
 	{
-		if (GetPhysicsController()->GetPhysicsType() != PhysicsType::rise)
-			GetPhysicsController()->SetAerial();
+		if (physCtrl->GetPhysicsType() != PhysicsType::rise)
+			physCtrl->SetAerial();
 
-		DecrementYVelocity(GetPhysicsController()->GetYAcceleration());
+		DecrementYVelocity(physCtrl->GetYAcceleration());
 	}
 
 	if (GetYVelocity() != 0)

@@ -52,7 +52,8 @@ void Bill::Animate(float deltaTime)
 {
 	SetPrevPosition(GetPosition());
 
-	SetXVelocity((GetDirection() ? 1 : -1) * c_moveSpeed);
+	if (GetDirection() != GetPrevDirection())
+		SetXVelocity((GetDirection() ? 1 : -1) * c_moveSpeed);
 
 	if (GetIsAlive())
 	{
@@ -64,7 +65,13 @@ void Bill::Animate(float deltaTime)
 	}
 	else
 	{
-		SetVelocity(0, c_jumpSpeed);
+		PhysicsController* physCtrl = GetPhysicsController();
+
+		if (physCtrl->GetPhysicsType() != PhysicsType::drop)
+			physCtrl->SetFalling();
+
+		IncrementYVelocity(physCtrl->GetYAcceleration());
+
 		Move(0, GetYVelocity() * FPS * deltaTime);
 	}
 
