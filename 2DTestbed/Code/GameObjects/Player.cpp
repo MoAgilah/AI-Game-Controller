@@ -76,10 +76,10 @@ void Player::Update(float deltaTime)
 					else
 					{
 						if (GetSlideLeft())
-							DecrementXVelocity(GetPhysicsController()->GetXAcceleration());
+							DecrementXVelocity(physCtrl->GetXAcceleration());
 
 						if (GetSlideRight())
-							IncrementXVelocity(GetPhysicsController()->GetXAcceleration());
+							IncrementXVelocity(physCtrl->GetXAcceleration());
 					}
 				}
 			}
@@ -327,6 +327,8 @@ void Player::ProcessInput()
 	if (!GetIsAlive())
 		return;
 
+	AnimatedSprite* animSpr = GetAnimSpr();
+
 	Input();
 
 	m_stateMgr.ProcessInputs();
@@ -335,8 +337,8 @@ void Player::ProcessInput()
 	{
 		if (GetOnSlope())
 		{
-			if (GetAnimSpr()->GetCurrentAnim() != MarioAnims::SLIDE)
-				GetAnimSpr()->ChangeAnim(MarioAnims::SLIDE);
+			if (animSpr->GetCurrentAnim() != MarioAnims::SLIDE)
+				animSpr->ChangeAnim(MarioAnims::SLIDE);
 		}
 		else
 		{
@@ -348,8 +350,8 @@ void Player::ProcessInput()
 	{
 		if (GetOnSlope())
 		{
-			if (GetAnimSpr()->GetCurrentAnim() == MarioAnims::SLIDE)
-				GetAnimSpr()->ChangeAnim(MarioAnims::IDLE);
+			if (animSpr->GetCurrentAnim() == MarioAnims::SLIDE)
+				animSpr->ChangeAnim(MarioAnims::IDLE);
 		}
 		else
 		{

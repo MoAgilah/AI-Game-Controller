@@ -29,10 +29,11 @@ void Koopa::Die()
 
 void Koopa::Animate(float deltaTime)
 {
+	AnimatedSprite* animSpr = GetAnimSpr();
 	PhysicsController* physCtrl = GetPhysicsController();
 	CollisionManager* colMgr = GameManager::GetGameMgr()->GetCollisionMgr();
 
-	GetAnimSpr()->Update(deltaTime);
+	animSpr->Update(deltaTime);
 
 	SetPrevPosition(GetPosition());
 
@@ -41,6 +42,40 @@ void Koopa::Animate(float deltaTime)
 
 	if (GetOnGround())
 	{
+		if (GetOnSlope())
+		{
+			if (animSpr->GetCurrentAnim() != KoopaAnims::SLIDE)
+				animSpr->ChangeAnim(KoopaAnims::SLIDE);
+
+			if (!GetXVelocity())
+			{
+				if (GetShouldSlideLeft())
+					SetSlideLeft(true);
+
+				if (GetShouldSlideRight())
+					SetSlideRight(true);
+			}
+
+			if (GetSlideLeft() || GetSlideRight())
+			{
+				if (GetSlideLeft())
+					DecrementXVelocity(physCtrl->GetXAcceleration());
+
+				if (GetSlideRight())
+					IncrementXVelocity(physCtrl->GetXAcceleration());
+			}
+		}
+		else
+		{
+			if (animSpr->GetCurrentAnim() == KoopaAnims::SLIDE)
+				animSpr->ChangeAnim(KoopaAnims::WALK);
+
+			SetSlideLeft(false);
+			SetSlideRight(false);
+			SetShouldSlideLeft(false);
+			SetShouldSlideRight(false);
+		}
+
 		SetYVelocity(0);
 	}
 	else
