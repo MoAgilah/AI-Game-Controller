@@ -533,6 +533,10 @@ void CollisionManager::PlayerToEnemyResolutions(Player* ply, Enemy* enmy)
 	if (capsule.IntersectsCircle(circle) && enmy->GetID() != TexID::PPlant)
 	{
 		enmy->DecrementLife();
+		ply->SetYVelocity(-(ply->GetYVelocity()/2));
+		/*
+			should bounce off enemies head.
+		*/
 		//	ptmp->UpdateFitness(-100);
 	}
 	else
