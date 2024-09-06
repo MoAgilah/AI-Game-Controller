@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include "../Game/Timer.h"
 #include "../GameObjects/Object.h"
 
 class Enemy : public DynamicObject
@@ -27,7 +28,7 @@ public:
 	bool GetInvulnerabe() const { return m_invulnerable; }
 	void SetInvulnerability(bool val) { m_invulnerable = val; }
 
-	Timer* GetAirTimer() { return&m_airTimer; }
+	Timer* GetAirTimer() { return &m_airTimer; }
 	void SetAirTime(float time);
 	void SetTimeLeftActive(float time);
 

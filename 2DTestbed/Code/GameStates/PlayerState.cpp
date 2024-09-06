@@ -149,7 +149,7 @@ void GroundedState::UpdateGroundAnimation()
 void GroundedState::Slide(bool dir)
 {
 	m_player->SetXVelocity(m_player->GetXVelocity() / 2);
-	m_player->DecrementXVelocity(dir ? -1 : 1 * 0.3125);
+	m_player->DecrementXVelocity((dir ? -1.f : 1.f) * 0.3125f);
 	m_animSpr->ChangeAnim(MarioAnims::SKID);
 	m_turningAround = true;
 	m_turnTime = 0.2f;

@@ -38,7 +38,7 @@ void Koopa::Animate(float deltaTime)
 	SetPrevPosition(GetPosition());
 
 	if (GetDirection() != GetPrevDirection())
-		SetXVelocity((GetDirection() ? 1 : -1) * c_moveSpeed * 0.67);
+		SetXVelocity((GetDirection() ? 1.f : -1.f) * c_moveSpeed * 0.67f);
 
 	if (GetOnGround())
 	{

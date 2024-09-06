@@ -109,7 +109,7 @@ void Mushroom::Update(float deltaTime)
 	SetPrevPosition(GetPosition());
 
 	if (GetDirection() != m_prevDirection)
-		SetXVelocity((GetDirection() ? 1 : -1) * c_moveSpeed * 0.67);
+		SetXVelocity((GetDirection() ? 1.f : -1.f) * c_moveSpeed * 0.67f);
 
 	m_prevDirection = GetDirection();
 
