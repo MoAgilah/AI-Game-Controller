@@ -52,4 +52,7 @@ void DebugState::Render(sf::RenderWindow& window)
 
 	GameManager::GetGameMgr()->GetCollisionMgr()->Render(window);
 	m_gameMgr->GetPlayer()->Render(window);
+
+	sf::Vertex point(m_gameMgr->GetPlayer()->GetAABB()->GetMax(), sf::Color::Black);
+	window.draw(&point, 1, sf::Points);
 }

@@ -35,6 +35,10 @@ public:
 
 	void SetOrigin(const sf::Vector2f& origin) { m_rect.setOrigin(origin); }
 	const sf::Vector2f& GetOrigin() const { return m_rect.getOrigin(); }
+
+	const Point& GetMin() const { return m_min; }
+	const Point& GetMax() const { return m_max; }
+
 	const Point& GetExtents() const { return m_extents; }
 	const Point& GetOverlap() const { return m_overlap; }
 
