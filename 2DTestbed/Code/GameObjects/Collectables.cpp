@@ -98,6 +98,7 @@ DynamicCollectable::DynamicCollectable(TexID sprID, const sf::Vector2f& boxSize,
 Mushroom::Mushroom(const sf::Vector2f& initPos)
 	: DynamicCollectable(TexID::Shroom, sf::Vector2f(13, 10), initPos)
 {
+	m_prevDirection = GetDirection();
 }
 
 void Mushroom::Update(float deltaTime)
@@ -105,6 +106,8 @@ void Mushroom::Update(float deltaTime)
 	SetPrevPosition(GetPosition());
 
 	SetXVelocity((GetDirection() ? 1.f : -1.f) * 2);
+
+	m_prevDirection = GetDirection();
 
 	if (GetOnGround())
 	{
@@ -134,6 +137,16 @@ void Mushroom::Collect(Player* player)
 {
 	SetCollected();
 	player->SetIsSuper(true);
+}
+
+void Mushroom::CheckForHorizontalBounds(float deltaTime)
+{
+	if (GetPosition().x < GetAABB()->GetExtents().x)
+	{
+		Move(-GetXVelocity() * FPS * deltaTime, 0);
+		m_prevDirection = GetDirection();
+		SetDirection(!m_prevDirection);
+	}
 }
 
 Goal::Goal(const sf::Vector2f& initPos)

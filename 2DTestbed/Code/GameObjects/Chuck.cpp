@@ -3,7 +3,7 @@
 #include "../Game/Constants.h"
 
 Chuck::Chuck(bool dir, const sf::Vector2f& initPos)
-	: Enemy(TexID::Chuck, sf::Vector2f(24, 25), AnimationData{5, 7, false, 0.5f}, 2)
+	: Enemy(TexID::Chuck, sf::Vector2f(24, 25), AnimationData{5, 7, false, 0.5f}, 2), m_waitTimer(0)
 {
 	SetInitialDirection(dir);
 	SetDirection(GetInitialDirection());
@@ -11,6 +11,7 @@ Chuck::Chuck(bool dir, const sf::Vector2f& initPos)
 	SetPosition(GetInitialPosition());
 	GetAABB()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
 	GetAnimSpr()->SetFrames({ 3, 1, 1, 7, 3 });
+
 }
 
 void Chuck::Reset()
@@ -43,8 +44,6 @@ void Chuck::Animate(float deltaTime)
 	auto animSpr = GetAnimSpr();
 	animSpr->Update(deltaTime);
 
-	m_waitTime += deltaTime;
-
 	if (m_tookHit)
 	{
 		if (GetAirbourne())
@@ -61,18 +60,17 @@ void Chuck::Animate(float deltaTime)
 		}
 
 		if (GetOnGround())
-		{
 			SetAirbourne(false);
-		}
 	}
 	else
 	{
 		if (GetAirbourne())
 		{
-			if (m_waitTime > 0.5f)
+			m_waitTimer.Update(deltaTime);
+			if (m_waitTimer.CheckEnd())
 			{
 				SetYVelocity(-c_jumpSpeed);
-				IncAirTime(deltaTime);
+				GetAirTimer()->Update(deltaTime);
 				animSpr->ChangeAnim(ChuckAnims::LEAP);
 			}
 			else
@@ -87,7 +85,7 @@ void Chuck::Animate(float deltaTime)
 
 		sf::Vector2f currentPos = GetPosition();
 
-		if (GetAirTime() >= c_maxAirTime * 0.75f)
+		if (GetAirTimer()->CheckEnd())
 		{
 			animSpr->ChangeAnim(ChuckAnims::CLAP);
 			SetAirbourne(false);
@@ -98,8 +96,8 @@ void Chuck::Animate(float deltaTime)
 			if (!GetAirbourne())
 			{
 				animSpr->ChangeAnim(ChuckAnims::BOUNCE);
-				m_waitTime = 0;
-				SetAirTime(0);
+				m_waitTimer.SetTime(0.5f);
+				SetAirTime(0.75f);
 				SetAirbourne(true);
 			}
 		}

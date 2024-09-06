@@ -125,7 +125,7 @@ public:
 	void Move(float x, float y);
 	void Move(const sf::Vector2f& pos);
 
-	void CheckForHorizontalBounds(float deltaTime);
+	virtual void CheckForHorizontalBounds(float deltaTime);
 
 	PhysicsController* GetPhysicsController() { return m_physicsCtrl.get(); }
 

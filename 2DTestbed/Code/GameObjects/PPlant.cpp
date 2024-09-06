@@ -21,7 +21,7 @@ void PPlant::Reset()
 
 void PPlant::Die()
 {
-	// no way to destroy currently, requires fireplant mario
+	// no way to destroy currently, requires fire plant mario
 }
 
 void PPlant::Animate(float deltaTime)
@@ -49,7 +49,7 @@ void PPlant::Animate(float deltaTime)
 	if (GetAirbourne())
 	{
 		SetDirection(false);
-		IncAirTime(deltaTime);
+		GetAirTimer()->Update(deltaTime);
 	}
 	else
 	{
@@ -57,13 +57,11 @@ void PPlant::Animate(float deltaTime)
 	}
 
 	if (GetPosition().y > GetInitialPosition().y)
-	{
 		SetAirbourne(true);
-	}
 
-	if (GetAirTime() >= c_maxAirTime)
+	if (GetAirTimer()->CheckEnd())
 	{
 		SetAirbourne(false);
-		SetAirTime(0);
+		SetAirTime(c_maxAirTime);
 	}
 }

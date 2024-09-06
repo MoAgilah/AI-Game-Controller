@@ -19,10 +19,6 @@ public:
 	bool GetAirbourne() const { return m_airbourne; }
 	void SetAirbourne(bool air) { m_airbourne = air; }
 
-	float GetAirTime() const { return m_airtime; }
-	void SetAirTime(float val) { m_airtime = val; }
-	void IncAirTime(float val) { m_airtime += val; }
-
 	bool GetIsAlive() const { return m_isAlive; }
 	bool HasLifes() const { return m_numLives > 0; }
 	virtual void DecrementLife();
@@ -31,18 +27,24 @@ public:
 	bool GetInvulnerabe() const { return m_invulnerable; }
 	void SetInvulnerability(bool val) { m_invulnerable = val; }
 
-	void SetTimeLeftActive(float time) { m_timeLeftActive = time; }
+	Timer* GetAirTimer() { return&m_airTimer; }
+	void SetAirTime(float time);
+	void SetTimeLeftActive(float time);
+
+	void CheckForHorizontalBounds(float deltaTime) final;
 
 private:
+
 	virtual void Animate(float deltaTime) = 0;
 
 	bool m_isAlive = true;
+	bool m_prevDirection;
+	bool m_airbourne = false;
 	bool m_invulnerable = false;
 	bool m_resetAllowed = false;
-	bool m_airbourne = false;
 	int m_numLives = 1;
 	int m_maxLives;
-	float m_airtime = 0;
-	float m_tillReset = 0;
-	float m_timeLeftActive = 0;
+	Timer m_airTimer;
+	Timer m_resetTimer;
+	Timer m_activationTimer;
 };
