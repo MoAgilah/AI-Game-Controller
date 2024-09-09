@@ -26,12 +26,13 @@ public:
 	World* GetLevel() { return m_world.get(); }
 
 
-	FontManager* GetFontMgr() { return m_fontManager.get(); }
-	TextureManager* GetTextureMgr() { return m_texureManager.get(); }
+
 	CollisionManager* GetCollisionMgr() { return m_collisionManager.get(); }
 
 	Timer& GetTimer() { return m_timer; }
 	Logger& GetLogger() { return m_logger; }
+	FontManager& GetFontMgr() { return m_fontManager; }
+	TextureManager& GetTextureMgr() { return m_texureManager; }
 
 	void ChangePlayer(Player* ply);
 
@@ -43,8 +44,6 @@ public:
 private:
 
 	static std::shared_ptr<GameManager>	m_instance;
-	std::unique_ptr<FontManager>		m_fontManager;
-	std::unique_ptr<TextureManager>		m_texureManager;
 	std::unique_ptr<Camera>				m_camera;
 	std::unique_ptr<Player>				m_player;
 	std::unique_ptr<World>				m_world;
@@ -52,5 +51,7 @@ private:
 
 	Timer			m_timer;
 	Logger			m_logger;
-	GameStateMgr m_stateMgr;
+	FontManager		m_fontManager;
+	TextureManager	m_texureManager;
+	GameStateMgr	m_stateManager;
 };

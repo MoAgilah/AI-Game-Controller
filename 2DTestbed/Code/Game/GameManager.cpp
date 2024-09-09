@@ -14,8 +14,6 @@ GameManager::GameManager()
 	: m_timer(300.f)
 {
 	m_instance.reset(this);
-	m_fontManager = std::make_unique<FontManager>();
-	m_texureManager = std::make_unique<TextureManager>();
 	m_collisionManager = std::make_unique<CollisionManager>();
 	m_camera = std::make_unique<Camera>();
 
@@ -27,7 +25,7 @@ GameManager::GameManager()
 
 	m_world = std::make_unique<World>();
 
-	m_stateMgr.ChangeState(new DebugState(this));
+	m_stateManager.ChangeState(new DebugState(this));
 }
 
 void GameManager::ChangePlayer(Player * ply)
@@ -38,12 +36,12 @@ void GameManager::ChangePlayer(Player * ply)
 
 void GameManager::Update(float deltaTime)
 {
-	m_stateMgr.Update(deltaTime);
+	m_stateManager.Update(deltaTime);
 }
 
 void GameManager::Render(sf::RenderWindow & window)
 {
-	m_stateMgr.Render(window);
+	m_stateManager.Render(window);
 }
 
 void GameManager::CheckInView()

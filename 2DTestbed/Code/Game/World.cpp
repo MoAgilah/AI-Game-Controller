@@ -267,7 +267,7 @@ void World::AddGUI()
 
 	for (int i = 0; i < (int)Texts::Max; i++)
 	{
-		m_texts[i].setFont(GameManager::GetGameMgr()->GetFontMgr()->GetStandardFont());
+		m_texts[i].setFont(GameManager::GetGameMgr()->GetFontMgr().GetStandardFont());
 		m_texts[i].setCharacterSize(15);
 		m_texts[i].setOutlineColor(sf::Color::Black);
 		m_texts[i].setOutlineThickness(1.f);

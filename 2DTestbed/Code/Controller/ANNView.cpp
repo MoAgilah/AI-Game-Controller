@@ -11,7 +11,7 @@ ANNView::ANNView()
 	for (int i = 0; i < 255; i++)
 		m_vecView[i] = std::make_shared<Tile>();
 
-	auto& font = GameManager::GetGameMgr()->GetFontMgr()->GetStandardFont();
+	auto& font = GameManager::GetGameMgr()->GetFontMgr().GetStandardFont();
 
 	for (size_t i = 0; i < 3; i++)
 	{

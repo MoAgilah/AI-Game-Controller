@@ -14,7 +14,7 @@ void Sprite::SetTexture(TexID id)
 	m_texID = id;
 	try
 	{
-		m_sprite.setTexture(GameManager::GetGameMgr()->GetTextureMgr()->GetTexture(m_texID), true);
+		m_sprite.setTexture(GameManager::GetGameMgr()->GetTextureMgr().GetTexture(m_texID), true);
 	}
 	catch (const std::invalid_argument& e)
 	{
