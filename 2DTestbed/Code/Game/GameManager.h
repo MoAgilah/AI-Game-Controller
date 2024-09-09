@@ -24,11 +24,14 @@ public:
 	Camera* GetCamera() { return m_camera.get(); }
 	Player* GetPlayer() { return m_player.get(); }
 	World* GetLevel() { return m_world.get(); }
-	Logger* GetLogger() { return m_logger.get(); }
-	Timer* GetTimer() { return m_timer.get(); }
+
+
 	FontManager* GetFontMgr() { return m_fontManager.get(); }
 	TextureManager* GetTextureMgr() { return m_texureManager.get(); }
 	CollisionManager* GetCollisionMgr() { return m_collisionManager.get(); }
+
+	Timer& GetTimer() { return m_timer; }
+	Logger& GetLogger() { return m_logger; }
 
 	void ChangePlayer(Player* ply);
 
@@ -46,7 +49,8 @@ private:
 	std::unique_ptr<Player>				m_player;
 	std::unique_ptr<World>				m_world;
 	std::unique_ptr<CollisionManager>	m_collisionManager;
-	std::unique_ptr<Logger>				m_logger;
-	std::unique_ptr<Timer>				m_timer;
+
+	Timer			m_timer;
+	Logger			m_logger;
 	GameStateMgr m_stateMgr;
 };

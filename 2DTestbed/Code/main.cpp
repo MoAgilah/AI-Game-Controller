@@ -21,9 +21,9 @@ int main()
 	//initialise begin
 	CParams g_params;
 
-	gameMgr.GetLogger()->AddDebugLog("Current Generation: " + std::to_string(ctrlMgr.GetController()->GetCurrentGeneration()));
-	gameMgr.GetLogger()->AddExperimentLog("Current Generation: " + std::to_string(ctrlMgr.GetController()->GetCurrentGeneration()));
-	gameMgr.GetLogger()->AddExperimentLog(GameManager::GetGameMgr()->GetLogger()->GetTimeStamp());
+	gameMgr.GetLogger().AddDebugLog("Current Generation: " + std::to_string(ctrlMgr.GetController()->GetCurrentGeneration()));
+	gameMgr.GetLogger().AddExperimentLog("Current Generation: " + std::to_string(ctrlMgr.GetController()->GetCurrentGeneration()));
+	gameMgr.GetLogger().AddExperimentLog(GameManager::GetGameMgr()->GetLogger().GetTimeStamp());
 
 	//initialise end
 	sf::Clock clock;

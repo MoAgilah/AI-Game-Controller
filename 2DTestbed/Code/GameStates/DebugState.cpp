@@ -33,7 +33,7 @@ void DebugState::ProcessInputs()
 
 void DebugState::Update(float deltaTime)
 {
-	GameManager::GetGameMgr()->GetTimer()->Update(deltaTime);
+	GameManager::GetGameMgr()->GetTimer().Update(deltaTime);
 
 	if (Automated)
 		ControllerManager::GetCtrlMgr()->GetController()->Update();

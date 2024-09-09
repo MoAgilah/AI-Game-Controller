@@ -11,13 +11,14 @@
 std::shared_ptr<GameManager> GameManager::m_instance = nullptr;
 
 GameManager::GameManager()
+	: m_timer(300.f)
 {
 	m_instance.reset(this);
 	m_fontManager = std::make_unique<FontManager>();
 	m_texureManager = std::make_unique<TextureManager>();
 	m_collisionManager = std::make_unique<CollisionManager>();
 	m_camera = std::make_unique<Camera>();
-	m_timer = std::make_unique<Timer>(300.f);
+
 
 	if (Automated)
 		m_player.reset(ControllerManager::GetCtrlMgr()->GetController()->GetCurrentPlayer());
@@ -25,7 +26,6 @@ GameManager::GameManager()
 		m_player = std::make_unique<Player>(m_collisionManager->GetTile(2, 11)->GetPosition());
 
 	m_world = std::make_unique<World>();
-	m_logger = std::make_unique<Logger>();
 
 	m_stateMgr.ChangeState(new DebugState(this));
 }

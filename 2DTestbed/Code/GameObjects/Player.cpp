@@ -172,7 +172,7 @@ void Player::Update(float deltaTime)
 		if (gameMgr->GetCamera()->CheckVerticalBounds(GetAABB()))
 			SetIsAlive(false, 0.4f);
 
-		if (gameMgr->GetTimer()->CheckEnd())
+		if (gameMgr->GetTimer().CheckEnd())
 			SetIsAlive(false);
 
 		if (GetIfInvulnerable())
@@ -213,7 +213,7 @@ void Player::Reset()
 	m_airTimer.ResetTime();
 	m_keyStates.fill(false);
 	m_stateMgr.ClearStates();
-	GameManager::GetGameMgr()->GetTimer()->ResetTime();
+	GameManager::GetGameMgr()->GetTimer().ResetTime();
 	GameManager::GetGameMgr()->GetLevel()->ResetLevel();
 }
 
@@ -467,7 +467,7 @@ bool AutomatedPlayer::UpdateANN()
 
 void AutomatedPlayer::Input()
 {
-	GameManager::GetGameMgr()->GetLogger()->AddDebugLog(std::format("Player {}", ControllerManager::GetCtrlMgr()->GetController()->GetCurrentPlayerNum()), false);
+	GameManager::GetGameMgr()->GetLogger().AddDebugLog(std::format("Player {}", ControllerManager::GetCtrlMgr()->GetController()->GetCurrentPlayerNum()), false);
 
 	for (int i = 0; i < outputs.size(); ++i)
 	{
@@ -507,11 +507,11 @@ void AutomatedPlayer::Input()
 		else if (oval >= 0.9) output = true;
 		else output = false;
 
-		GameManager::GetGameMgr()->GetLogger()->AddDebugLog(std::format("{} = {} = {}", move, oval, output), false);
-		GameManager::GetGameMgr()->GetLogger()->AddDebugLog("\t", false);
+		GameManager::GetGameMgr()->GetLogger().AddDebugLog(std::format("{} = {} = {}", move, oval, output), false);
+		GameManager::GetGameMgr()->GetLogger().AddDebugLog("\t", false);
 		//store output
 		SetKeyState(i, output);
 	}
 
-	GameManager::GetGameMgr()->GetLogger()->AddDebugLog("");
+	GameManager::GetGameMgr()->GetLogger().AddDebugLog("");
 }

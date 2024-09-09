@@ -56,7 +56,7 @@ bool Controller::Update()
 		//and each one has a coefficient)
 		for (int swp = 0; swp < m_players.size(); ++swp)
 		{
-			GameManager::GetGameMgr()->GetLogger()->AddExperimentLog(std::format("Player: {}", swp), false);
+			GameManager::GetGameMgr()->GetLogger().AddExperimentLog(std::format("Player: {}", swp), false);
 			EndOfRunCalculation(m_players[swp].get());
 		}
 
@@ -73,7 +73,7 @@ bool Controller::Update()
 		//state
 		for (int i = 0; i < CParams::iNumPlayers; ++i)
 		{
-			GameManager::GetGameMgr()->GetLogger()->AddExperimentLog(std::format("Player: {} Fitness:{}", i, m_players[i]->Fitness()));
+			GameManager::GetGameMgr()->GetLogger().AddExperimentLog(std::format("Player: {} Fitness:{}", i, m_players[i]->Fitness()));
 			m_players[i]->InsertNewBrain(pBrains[i]);
 			m_players[i]->Reset();
 		}
@@ -84,9 +84,9 @@ bool Controller::Update()
 
 		m_bestFitness = m_pop->BestEverFitness();
 
-		GameManager::GetGameMgr()->GetLogger()->AddExperimentLog(std::format("Best Fitness : {}", m_bestFitness));
-		GameManager::GetGameMgr()->GetLogger()->AddExperimentLog(std::format("Current Generation: {}", m_generations));
-		GameManager::GetGameMgr()->GetLogger()->AddExperimentLog(GameManager::GetGameMgr()->GetLogger()->GetTimeStamp());
+		GameManager::GetGameMgr()->GetLogger().AddExperimentLog(std::format("Best Fitness : {}", m_bestFitness));
+		GameManager::GetGameMgr()->GetLogger().AddExperimentLog(std::format("Current Generation: {}", m_generations));
+		GameManager::GetGameMgr()->GetLogger().AddExperimentLog(GameManager::GetGameMgr()->GetLogger().GetTimeStamp());
 	}
 
 	return true;
@@ -132,6 +132,6 @@ double Controller::ColourToInput(sf::Color col)
 void Controller::EndOfRunCalculation(AutomatedPlayer* ply)
 {
 	float percent = ((ply->GetPosition().x - ply->GetInitialPosition().x) / RightMost) * 100;;
-	GameManager::GetGameMgr()->GetLogger()->AddExperimentLog(std::format("Player moved by {}%!", percent));
+	GameManager::GetGameMgr()->GetLogger().AddExperimentLog(std::format("Player moved by {}%!", percent));
 	ply->UpdateFitness(percent);
 }
