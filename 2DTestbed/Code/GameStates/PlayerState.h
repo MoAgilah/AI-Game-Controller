@@ -34,7 +34,7 @@ class GroundedState : public PlayerState
 {
 public:
 	explicit GroundedState(Player* ply)
-		: PlayerState("Grounded", ply) {}
+		: PlayerState("Grounded", ply), m_turnTimer(0) {}
 	~GroundedState() override = default;
 
 	void Initialise() override;
