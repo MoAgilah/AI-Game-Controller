@@ -44,8 +44,8 @@ void Koopa::Animate(float deltaTime)
 	{
 		if (GetOnSlope())
 		{
-			if (animSpr->GetCurrentAnim() != KoopaAnims::SLIDE)
-				animSpr->ChangeAnim(KoopaAnims::SLIDE);
+			if (animSpr->GetCurrentAnim() != KoopaAnims::NOSEDIVE)
+				animSpr->ChangeAnim(KoopaAnims::NOSEDIVE);
 
 			if (!GetXVelocity())
 			{
@@ -67,7 +67,7 @@ void Koopa::Animate(float deltaTime)
 		}
 		else
 		{
-			if (animSpr->GetCurrentAnim() == KoopaAnims::SLIDE)
+			if (animSpr->GetCurrentAnim() == KoopaAnims::NOSEDIVE)
 				animSpr->ChangeAnim(KoopaAnims::WALK);
 
 			SetSlideLeft(false);

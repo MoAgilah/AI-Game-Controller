@@ -275,7 +275,7 @@ void World::AddGUI()
 	}
 
 	m_texts[(int)Texts::Name].setString("x 00");
-	m_texts[(int)Texts::Time].setString(std::to_string((int)GameManager::GetGameMgr()->GetTimer().GetCurrentTime()));
+	m_texts[(int)Texts::Time].setString(std::to_string((int)GameManager::GetGameMgr()->GetTimer().GetTime()));
 }
 
 void World::UpdateGUI()
@@ -290,5 +290,5 @@ void World::UpdateGUI()
 
 	m_texts[(int)Texts::Time].setPosition(m_sprites[(int)Sprites::Time].GetPosition() + sf::Vector2f((float)m_sprites[(int)Sprites::Time].GetTextureSize().x * 0.5f + 20, -10));
 
-	m_texts[(int)Texts::Time].setString(std::to_string((int)GameManager::GetGameMgr()->GetTimer().GetCurrentTime()));
+	m_texts[(int)Texts::Time].setString(std::to_string((int)GameManager::GetGameMgr()->GetTimer().GetTime()));
 }

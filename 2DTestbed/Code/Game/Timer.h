@@ -8,7 +8,7 @@ public:
 
 	void Update(float deltaTime);
 
-	float GetCurrentTime() const { return m_time; }
+	float GetTime() const { return m_time; }
 	bool CheckEnd() const { return m_time <= 0.0f; }
 	void ForceEnd() { m_time = m_maxTime; }
 	void SetTime(float time) { m_time = time; }

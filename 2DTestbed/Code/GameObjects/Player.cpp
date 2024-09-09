@@ -178,7 +178,7 @@ void Player::Update(float deltaTime)
 		if (GetIfInvulnerable())
 		{
 			m_invulTimer.Update(deltaTime);
-			m_fragShader.setUniform("time", m_invulTimer.GetTickCount());
+			m_fragShader.setUniform("time", m_invulTimer.GetTime());
 		}
 	}
 	else

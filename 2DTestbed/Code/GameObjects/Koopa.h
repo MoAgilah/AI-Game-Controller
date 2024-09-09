@@ -2,7 +2,7 @@
 
 #include "../GameObjects/Enemy.h"
 
-enum KoopaAnims { SLIDE, WALK, COMPRESS };
+enum KoopaAnims { NOSEDIVE, WALK, COMPRESS };
 
 class Koopa : public Enemy
 {

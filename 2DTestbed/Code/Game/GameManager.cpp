@@ -1,10 +1,6 @@
 #include "../Game/GameManager.h"
-#include "../Game/Constants.h"
-#include "../GameObjects/Player.h"
-#include "../GameObjects/Enemy.h"
-#include "../GameObjects/Object.h"
-#include "../Collisions/Grid.h"
 #include "../Controller/ControllerManager.h"
+#include "../Game/Constants.h"
 #include "../GameStates/MainState.h"
 #include "../GameStates/DebugState.h"
 
@@ -15,7 +11,6 @@ GameManager::GameManager()
 {
 	m_instance = this;
 	m_collisionManager = std::make_unique<CollisionManager>();
-
 
 	if (Automated)
 		m_player.reset(ControllerManager::GetCtrlMgr()->GetController()->GetCurrentPlayer());
@@ -33,6 +28,26 @@ GameManager::~GameManager()
 		m_instance = nullptr;
 }
 
+void GameManager::CheckInView()
+{
+	m_player->SetActive(m_camera.IsInView(m_player->GetAABB()));
+
+	for (auto& tile : m_collisionManager->GetGrid())
+		tile->SetActive(m_camera.IsInView(tile->GetAABB()));
+
+	m_world->CheckIsInView();
+}
+
+void GameManager::Update(float deltaTime)
+{
+	m_stateManager.Update(deltaTime);
+}
+
+void GameManager::Render(sf::RenderWindow& window)
+{
+	m_stateManager.Render(window);
+}
+
 void GameManager::ChangePlayer(Player * ply)
 {
 	m_player.reset(ply);
@@ -42,24 +57,4 @@ void GameManager::ChangePlayer(Player * ply)
 void GameManager::ChangeWorld(World* world)
 {
 	m_world.reset(world);
-}
-
-void GameManager::Update(float deltaTime)
-{
-	m_stateManager.Update(deltaTime);
-}
-
-void GameManager::Render(sf::RenderWindow & window)
-{
-	m_stateManager.Render(window);
-}
-
-void GameManager::CheckInView()
-{
-	m_player->SetActive(m_camera.IsInView(m_player->GetAABB()));
-
-	for (auto& tile : m_collisionManager->GetGrid())
-		tile->SetActive(m_camera.IsInView(tile->GetAABB()));
-
-	m_world->CheckIsInView();
 }
