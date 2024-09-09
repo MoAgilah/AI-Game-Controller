@@ -21,7 +21,10 @@ public:
 
 	static GameManager* GetGameMgr() { return m_instance; }
 
-	Camera* GetCamera() { return m_camera.get(); }
+	void Update(float deltaTime);
+	void Render(sf::RenderWindow& window);
+
+	void ChangePlayer(Player* ply);
 	Player* GetPlayer() { return m_player.get(); }
 	World* GetLevel() { return m_world.get(); }
 
@@ -30,26 +33,23 @@ public:
 	CollisionManager* GetCollisionMgr() { return m_collisionManager.get(); }
 
 	Timer& GetTimer() { return m_timer; }
+	Camera& GetCamera() { return m_camera; }
 	Logger& GetLogger() { return m_logger; }
 	FontManager& GetFontMgr() { return m_fontManager; }
 	TextureManager& GetTextureMgr() { return m_texureManager; }
-
-	void ChangePlayer(Player* ply);
-
-	void Update(float deltaTime);
-	void Render(sf::RenderWindow& window);
 
 	void CheckInView();
 
 private:
 
 	static GameManager*	m_instance;
-	std::unique_ptr<Camera>				m_camera;
+
 	std::unique_ptr<Player>				m_player;
 	std::unique_ptr<World>				m_world;
 	std::unique_ptr<CollisionManager>	m_collisionManager;
 
 	Timer			m_timer;
+	Camera			m_camera;
 	Logger			m_logger;
 	FontManager		m_fontManager;
 	TextureManager	m_texureManager;

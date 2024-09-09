@@ -15,7 +15,6 @@ GameManager::GameManager()
 {
 	m_instance = this;
 	m_collisionManager = std::make_unique<CollisionManager>();
-	m_camera = std::make_unique<Camera>();
 
 
 	if (Automated)
@@ -52,10 +51,10 @@ void GameManager::Render(sf::RenderWindow & window)
 
 void GameManager::CheckInView()
 {
-	m_player->SetActive(m_camera->IsInView(m_player->GetAABB()));
+	m_player->SetActive(m_camera.IsInView(m_player->GetAABB()));
 
 	for (auto& tile : m_collisionManager->GetGrid())
-		tile->SetActive(m_camera->IsInView(tile->GetAABB()));
+		tile->SetActive(m_camera.IsInView(tile->GetAABB()));
 
 	m_world->CheckIsInView();
 }

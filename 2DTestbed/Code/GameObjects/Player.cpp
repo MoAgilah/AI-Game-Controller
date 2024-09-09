@@ -169,7 +169,7 @@ void Player::Update(float deltaTime)
 		}
 
 
-		if (gameMgr->GetCamera()->CheckVerticalBounds(GetAABB()))
+		if (gameMgr->GetCamera().CheckVerticalBounds(GetAABB()))
 			SetIsAlive(false, 0.4f);
 
 		if (gameMgr->GetTimer().CheckEnd())

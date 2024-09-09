@@ -276,7 +276,7 @@ void DieingState::Update(float deltaTime)
 
 		m_player->IncrementYVelocity(m_physCtrl->GetYAcceleration());
 		m_player->Move(sf::Vector2f(0, m_player->GetYVelocity() * FPS * deltaTime));
-		if (GameManager::GetGameMgr()->GetCamera()->CheckVerticalBounds(m_player->GetAABB()))
+		if (GameManager::GetGameMgr()->GetCamera().CheckVerticalBounds(m_player->GetAABB()))
 		{
 			if (!Automated)
 				m_player->Reset();

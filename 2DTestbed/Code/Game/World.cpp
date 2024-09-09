@@ -65,12 +65,12 @@ void World::Render(sf::RenderWindow& window)
 		object->Render(window);
 	}
 
-	auto camera = GameManager::GetGameMgr()->GetCamera();
+	auto& camera = GameManager::GetGameMgr()->GetCamera();
 	for (auto i = (int)Sprites::Pipe1; i <= (int)Sprites::Pipe3; i++)
 	{
 		m_foregroundBox.Update(m_sprites[i].GetPosition());
 
-		if (!camera->IsInView(&m_foregroundBox))
+		if (!camera.IsInView(&m_foregroundBox))
 			continue;
 
 		m_sprites[i].Render(window);
@@ -97,13 +97,13 @@ void World::ResetLevel()
 
 void World::CheckIsInView()
 {
-	auto camera = GameManager::GetGameMgr()->GetCamera();
+	auto& camera = GameManager::GetGameMgr()->GetCamera();
 
 	for (auto& enemy : m_enemies)
-		enemy->SetActive(camera->IsInView(enemy->GetAABB()));
+		enemy->SetActive(camera.IsInView(enemy->GetAABB()));
 
 	for (auto& object : m_objects)
-		object->SetActive(camera->IsInView(object->GetAABB()));
+		object->SetActive(camera.IsInView(object->GetAABB()));
 }
 
 void World::AddObject(const sf::Vector2f& pos)
@@ -280,7 +280,7 @@ void World::AddGUI()
 
 void World::UpdateGUI()
 {
-	auto view = GameManager::GetGameMgr()->GetCamera()->GetView();
+	auto view = GameManager::GetGameMgr()->GetCamera().GetView();
 
 	m_sprites[(int)Sprites::Name].SetPosition(sf::Vector2f((view.getCenter().x - screenDim.x * 0.5f) + 30, 20));
 

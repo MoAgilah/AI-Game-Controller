@@ -45,7 +45,7 @@ void MainState::Update(float deltaTime)
 
 void MainState::Render(sf::RenderWindow& window)
 {
-	m_gameMgr->GetCamera()->Reset(window);
+	m_gameMgr->GetCamera().Reset(window);
 
 	m_gameMgr->GetLevel()->Render(window);
 	m_gameMgr->GetPlayer()->Render(window);
