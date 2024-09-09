@@ -50,6 +50,7 @@ public:
 	void SetIsCrouched(bool crouched);
 
 	void ForceFall();
+	void Bounce();
 
 	bool GetIfInvulnerable() const { return !m_invulTimer.CheckEnd(); }
 	void SetInvulnerability();

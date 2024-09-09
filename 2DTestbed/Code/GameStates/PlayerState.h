@@ -2,6 +2,7 @@
 
 #include <memory>
 #include "GameState.h"
+#include "../Game/Timer.h"
 #include "../GameObjects/Player.h"
 
 class PlayerState : public GameState
@@ -46,7 +47,7 @@ private:
 	void UpdateGroundAnimation();
 	void Slide(bool dir);
 
-	float m_turnTime = 0;
+	Timer m_turnTimer;
 	bool m_turningAround = false;
 };
 

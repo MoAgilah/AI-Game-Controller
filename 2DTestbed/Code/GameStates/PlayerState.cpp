@@ -118,8 +118,8 @@ void GroundedState::Update(float deltaTime)
 {
 	if (m_turningAround)
 	{
-		m_turnTime -= deltaTime;
-		if (m_turnTime < 0)
+		m_turnTimer.Update(deltaTime);
+		if (m_turnTimer.CheckEnd())
 			m_turningAround = false;
 	}
 }
@@ -152,7 +152,7 @@ void GroundedState::Slide(bool dir)
 	m_player->DecrementXVelocity((dir ? -1.f : 1.f) * 0.3125f);
 	m_animSpr->ChangeAnim(MarioAnims::SKID);
 	m_turningAround = true;
-	m_turnTime = 0.2f;
+	m_turnTimer.SetTime(0.2f);
 }
 
 void AirborneState::Initialise()

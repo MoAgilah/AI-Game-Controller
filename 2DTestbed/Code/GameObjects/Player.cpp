@@ -306,6 +306,12 @@ void Player::ForceFall()
 	SetAirbourne(false);
 }
 
+void Player::Bounce()
+{
+	SetYVelocity(-(GetYVelocity() / 2));
+	SetXVelocity(GetDirection() ? GetXVelocity() : -GetXVelocity());
+}
+
 void Player::SetInvulnerability()
 {
 	m_invulTimer.ResetTime();
