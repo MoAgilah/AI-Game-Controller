@@ -71,9 +71,7 @@ CollisionManager::CollisionManager()
 
 void CollisionManager::AddCollidable(Object* go)
 {
-	std::shared_ptr<Object> obj;
-	obj.reset(go);
-	m_collidables.push_back(obj);
+	m_collidables.push_back(go);
 }
 
 void CollisionManager::RemoveLastAdded()
@@ -83,12 +81,12 @@ void CollisionManager::RemoveLastAdded()
 
 void CollisionManager::ReplacePlayer(Player * currPlayer)
 {
-	m_collidables[0].reset(currPlayer);
+	m_collidables[0] = currPlayer;
 }
 
 Object* CollisionManager::GetLastAdded()
 {
-	return m_collidables.back().get();
+	return m_collidables.back();
 }
 
 void CollisionManager::Render(sf::RenderWindow& window)
@@ -124,7 +122,7 @@ void CollisionManager::ProcessCollisions(Object* gobj)
 		if (gobj->GetObjectNum() == collidable->GetObjectNum())
 			continue;
 
-		ObjectToObjectCollisions(gobj, collidable.get());
+		ObjectToObjectCollisions(gobj, collidable);
 	}
 }
 
@@ -138,14 +136,14 @@ std::vector<std::shared_ptr<Tile>> CollisionManager::GetGrid()
 	return m_grid.GetGrid();
 }
 
-std::vector<std::shared_ptr<Object>> CollisionManager::GetCollidables()
+std::vector<Object*> CollisionManager::GetCollidables()
 {
 	return m_collidables;
 }
 
 void CollisionManager::DynamicObjectToTileCollisions(DynamicObject* obj)
 {
-	for (auto tile : m_tiles)
+	for (auto& tile : m_tiles)
 		tile->GetAABB()->hit = false;
 
 	bool collided = false;

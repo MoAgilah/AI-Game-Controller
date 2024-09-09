@@ -33,7 +33,7 @@ public:
 
 	Tile* GetTile(int x, int y);
 	std::vector<std::shared_ptr<Tile>> GetGrid();
-	std::vector<std::shared_ptr<Object>> GetCollidables();
+	std::vector<Object*> GetCollidables();
 
 private:
 
@@ -60,5 +60,5 @@ private:
 
 	Grid m_grid;
 	std::vector<std::shared_ptr<Tile>> m_tiles;
-	std::vector<std::shared_ptr<Object>> m_collidables;
+	std::vector<Object*> m_collidables;
 };
