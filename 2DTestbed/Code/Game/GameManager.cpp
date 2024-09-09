@@ -39,6 +39,11 @@ void GameManager::ChangePlayer(Player * ply)
 	m_collisionManager->ReplacePlayer(m_player.get());
 }
 
+void GameManager::ChangeWorld(World* world)
+{
+	m_world.reset(world);
+}
+
 void GameManager::Update(float deltaTime)
 {
 	m_stateManager.Update(deltaTime);

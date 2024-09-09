@@ -12,7 +12,7 @@ DebugState::DebugState(GameManager* gameMgr)
 
 void DebugState::Initialise()
 {
-	auto level = m_gameMgr->GetLevel();
+	auto level = m_gameMgr->GetWorld();
 
 	level->AddObjects();
 	level->AddEnemies();
@@ -41,14 +41,14 @@ void DebugState::Update(float deltaTime)
 	m_gameMgr->CheckInView();
 
 	m_gameMgr->GetPlayer()->Update(deltaTime);
-	m_gameMgr->GetLevel()->Update(deltaTime);
+	m_gameMgr->GetWorld()->Update(deltaTime);
 }
 
 void DebugState::Render(sf::RenderWindow& window)
 {
 	m_gameMgr->GetCamera().Reset(window);
 
-	m_gameMgr->GetLevel()->Render(window);
+	m_gameMgr->GetWorld()->Render(window);
 
 	GameManager::GetGameMgr()->GetCollisionMgr()->Render(window);
 	m_gameMgr->GetPlayer()->Render(window);

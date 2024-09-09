@@ -214,7 +214,7 @@ void Player::Reset()
 	m_keyStates.fill(false);
 	m_stateMgr.ClearStates();
 	GameManager::GetGameMgr()->GetTimer().ResetTime();
-	GameManager::GetGameMgr()->GetLevel()->ResetLevel();
+	GameManager::GetGameMgr()->GetWorld()->ResetLevel();
 }
 
 void Player::SetIsSuper(bool super)
