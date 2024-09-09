@@ -25,16 +25,20 @@ public:
 	bool Intersects(AABB* box);
 	bool IntersectsMoving(AABB* box, const Point& va, const Point& vb, float& tfirst, float& tlast);
 
-	AABB* GetBox() { return this; }
-	const sf::RectangleShape& GetRect() { return m_rect; }
-	Line GetSide(Side side);
-	Point GetPoint(Side side);
-
 	void SetPosition(const sf::Vector2f& pos) { m_rect.setPosition(pos); }
 	const sf::Vector2f& GetPosition() const { return m_rect.getPosition(); }
 
 	void SetOrigin(const sf::Vector2f& origin) { m_rect.setOrigin(origin); }
 	const sf::Vector2f& GetOrigin() const { return m_rect.getOrigin(); }
+
+	void Move(float x, float y);
+	void Move(const sf::Vector2f& pos);
+
+	AABB* GetBox() { return this; }
+	const sf::RectangleShape& GetRect() { return m_rect; }
+
+	Line GetSide(Side side);
+	Point GetPoint(Side side);
 
 	const Point& GetMin() const { return m_min; }
 	const Point& GetMax() const { return m_max; }
@@ -45,10 +49,6 @@ public:
 	void SetFillColour(const sf::Color& col) { m_rect.setFillColor(col); }
 	void SetOutlineColour(const sf::Color& col) { m_rect.setOutlineColor(col); }
 
-	void Move(float x, float y);
-	void Move(const sf::Vector2f& pos);
-
-	bool hit = false;
 private:
 
 	int m_boxNumber;

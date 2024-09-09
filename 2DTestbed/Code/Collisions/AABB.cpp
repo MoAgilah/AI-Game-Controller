@@ -98,6 +98,18 @@ bool AABB::IntersectsMoving(AABB* box, const Point& va, const Point& vb, float& 
 	return true;
 }
 
+void AABB::Move(float x, float y)
+{
+	m_rect.move(sf::Vector2f(x, y));
+	Update(GetPosition());
+}
+
+void AABB::Move(const sf::Vector2f& pos)
+{
+	m_rect.move(pos);
+	Update(GetPosition());
+}
+
 Line AABB::GetSide(Side side)
 {
 	switch (side)
@@ -130,16 +142,4 @@ Point AABB::GetPoint(Side side)
 	default:
 		throw std::out_of_range("Side enum value doesn't exist");
 	}
-}
-
-void AABB::Move(float x, float y)
-{
-	m_rect.move(sf::Vector2f(x, y));
-	Update(GetPosition());
-}
-
-void AABB::Move(const sf::Vector2f& pos)
-{
-	m_rect.move(pos);
-	Update(GetPosition());
 }
