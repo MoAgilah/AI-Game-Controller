@@ -8,13 +8,13 @@ class ControllerManager
 {
 public:
 	ControllerManager();
-	~ControllerManager() = default;
+	~ControllerManager();
 
-	static ControllerManager* GetCtrlMgr() { return m_instance.get(); }
+	static ControllerManager* GetCtrlMgr() { return m_instance; }
 	Controller* GetController() { return m_controller.get(); }
 
 private:
 
 	std::unique_ptr<Controller> m_controller;
-	static std::unique_ptr<ControllerManager> m_instance;
+	static ControllerManager* m_instance;
 };

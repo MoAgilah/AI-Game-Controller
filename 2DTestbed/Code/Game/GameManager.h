@@ -17,9 +17,9 @@ class GameManager
 {
 public:
 	GameManager();
-	~GameManager() = default;
+	~GameManager();
 
-	static GameManager* GetGameMgr() { return m_instance.get(); }
+	static GameManager* GetGameMgr() { return m_instance; }
 
 	Camera* GetCamera() { return m_camera.get(); }
 	Player* GetPlayer() { return m_player.get(); }
@@ -43,7 +43,7 @@ public:
 
 private:
 
-	static std::shared_ptr<GameManager>	m_instance;
+	static GameManager*	m_instance;
 	std::unique_ptr<Camera>				m_camera;
 	std::unique_ptr<Player>				m_player;
 	std::unique_ptr<World>				m_world;

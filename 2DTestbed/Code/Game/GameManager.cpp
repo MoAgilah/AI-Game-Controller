@@ -8,12 +8,12 @@
 #include "../GameStates/MainState.h"
 #include "../GameStates/DebugState.h"
 
-std::shared_ptr<GameManager> GameManager::m_instance = nullptr;
+GameManager* GameManager::m_instance = nullptr;
 
 GameManager::GameManager()
 	: m_timer(300.f)
 {
-	m_instance.reset(this);
+	m_instance = this;
 	m_collisionManager = std::make_unique<CollisionManager>();
 	m_camera = std::make_unique<Camera>();
 
@@ -26,6 +26,12 @@ GameManager::GameManager()
 	m_world = std::make_unique<World>();
 
 	m_stateManager.ChangeState(new DebugState(this));
+}
+
+GameManager::~GameManager()
+{
+	if (m_instance)
+		m_instance = nullptr;
 }
 
 void GameManager::ChangePlayer(Player * ply)

@@ -34,12 +34,16 @@ int main()
 
 		while (window.pollEvent(event))
 		{
-			switch (event.type)
+			if (event.type == sf::Event::Closed)
 			{
-			case sf::Event::Closed:
 				window.close();
-				break;
 			}
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+			{
+				window.close();
+			}
+
 		}
 
 		float newTime = clock.getElapsedTime().asSeconds();
