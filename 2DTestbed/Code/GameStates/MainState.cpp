@@ -7,15 +7,15 @@
 MainState::MainState(GameManager* gameMgr)
 	: GameState("Main")
 {
-	m_gameMgr.reset(gameMgr);
+	m_gameMgr = gameMgr;
 }
 
 void MainState::Initialise()
 {
-	auto level = m_gameMgr->GetWorld();
-	level->AddEnemies();
-	level->AddObjects();
-	level->AddForeGroundSprites();
+	auto world = m_gameMgr->GetWorld();
+	world->AddEnemies();
+	world->AddObjects();
+	world->AddForeGroundSprites();
 }
 
 void MainState::Pause()
@@ -32,7 +32,7 @@ void MainState::ProcessInputs()
 
 void MainState::Update(float deltaTime)
 {
-	GameManager::GetGameMgr()->GetTimer().Update(deltaTime);
+	m_gameMgr->GetTimer().Update(deltaTime);
 
 	if (GameConstants::Automated)
 		ControllerManager::GetCtrlMgr()->GetController()->Update();
@@ -50,5 +50,5 @@ void MainState::Render(sf::RenderWindow& window)
 	m_gameMgr->GetWorld()->Render(window);
 	m_gameMgr->GetPlayer()->Render(window);
 
-	GameManager::GetGameMgr()->GetCollisionMgr()->Render(window);
+	m_gameMgr->GetCollisionMgr()->Render(window);
 }

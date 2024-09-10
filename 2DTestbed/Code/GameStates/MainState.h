@@ -19,5 +19,5 @@ public:
 
 private:
 
-	std::shared_ptr<GameManager> m_gameMgr;
+	GameManager* m_gameMgr;
 };
