@@ -50,12 +50,12 @@ void Object::SetDirection(bool dir)
 	if (m_direction)
 	{
 		// flip X
-		m_sprite->SetScale(scale);
+		m_sprite->SetScale(GameConstants::Scale);
 	}
 	else
 	{
 		//unflip x
-		m_sprite->SetScale({ -scale.x, scale.y });
+		m_sprite->SetScale({ -GameConstants::Scale.x, GameConstants::Scale.y });
 	}
 }
 
@@ -160,5 +160,5 @@ void DynamicObject::Move(const sf::Vector2f& pos)
 void DynamicObject::CheckForHorizontalBounds(float deltaTime)
 {
 	if (GetPosition().x < GetAABB()->GetExtents().x)
-		Move(-GetXVelocity() * FPS * deltaTime, 0);
+		Move(-GetXVelocity() * GameConstants::FPS * deltaTime, 0);
 }

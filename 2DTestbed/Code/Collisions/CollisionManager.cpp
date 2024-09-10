@@ -450,7 +450,7 @@ void CollisionManager::PlayerToQBoxResolutions(Player* ply, QBox* box)
 				if (box->GetCanHit())//if not yet been hit
 				{
 					box->SetJustHit(true);
-					GameManager::GetGameMgr()->GetWorld()->AddObject(sf::Vector2f(box->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * scale.y) - (box->GetOrigin().y * scale.y) + 4.f));
+					GameManager::GetGameMgr()->GetWorld()->AddObject(sf::Vector2f(box->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * GameConstants::Scale.y) - (box->GetOrigin().y * GameConstants::Scale.y) + 4.f));
 					//ply->UpdateFitness(100);
 				}
 			}

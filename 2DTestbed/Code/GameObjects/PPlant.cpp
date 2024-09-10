@@ -50,7 +50,7 @@ void PPlant::Animate(float deltaTime)
 
 	if (GetYVelocity() != 0)
 	{
-		Move(0, GetYVelocity() * FPS * deltaTime);
+		Move(0, GetYVelocity() * GameConstants::FPS * deltaTime);
 		GameManager::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
 	}
 
@@ -70,6 +70,6 @@ void PPlant::Animate(float deltaTime)
 	if (GetAirTimer()->CheckEnd())
 	{
 		SetAirbourne(false);
-		SetAirTime(c_maxAirTime);
+		SetAirTime(GameConstants::MaxAirTime);
 	}
 }

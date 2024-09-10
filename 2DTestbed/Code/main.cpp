@@ -8,9 +8,9 @@
 int main()
 {
 	float t = 0.0f;
-	float dt = 1.f / FPS;
-	sf::RenderWindow window(sf::VideoMode((int)screenDim.x, (int)screenDim.y), "Super Mario World: Yoshi's Island 1");
-	window.setFramerateLimit((unsigned int)FPS);
+	float dt = 1.f / GameConstants::FPS;
+	sf::RenderWindow window(sf::VideoMode((int)GameConstants::ScreenDim.x, (int)GameConstants::ScreenDim.y), "Super Mario World: Yoshi's Island 1");
+	window.setFramerateLimit((unsigned int)GameConstants::FPS);
 
 	GameManager gameMgr;
 	ControllerManager ctrlMgr;
@@ -59,9 +59,8 @@ int main()
 
 		//do render
 		gameMgr.Render(window);
-#ifdef DControl
-		ctrlMgr.GetController()->GetAnnView()->Render(window);
-#endif
+		if (GameConstants::DControl)
+			ctrlMgr.GetController()->GetAnnView()->Render(window);
 		//end render
 
 		window.display();

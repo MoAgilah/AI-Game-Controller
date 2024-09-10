@@ -116,7 +116,7 @@ void Chuck::Animate(float deltaTime)
 
 	if (GetYVelocity() != 0)
 	{
-		Move(0, GetYVelocity() * FPS * deltaTime);
+		Move(0, GetYVelocity() * GameConstants::FPS * deltaTime);
 		GameManager::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
 	}
 }

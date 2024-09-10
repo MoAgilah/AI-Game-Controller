@@ -28,10 +28,10 @@ AABB::AABB(const sf::Vector2f& size)
 void AABB::Reset(const sf::Vector2f& size)
 {
 	m_rect.setSize(size);
-	m_rect.setScale(scale);
+	m_rect.setScale(GameConstants::Scale);
 	m_rect.setOrigin(size * 0.5f);
-	m_extents[0] = (m_rect.getSize().x * scale.x) / 2;
-	m_extents[1] = (m_rect.getSize().y * scale.y) / 2;
+	m_extents[0] = (m_rect.getSize().x * GameConstants::Scale.x) / 2;
+	m_extents[1] = (m_rect.getSize().y * GameConstants::Scale.y) / 2;
 }
 
 void AABB::Update(const sf::Vector2f& pos)

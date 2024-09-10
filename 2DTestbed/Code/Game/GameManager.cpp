@@ -12,7 +12,7 @@ GameManager::GameManager()
 	m_instance = this;
 	m_collisionManager = std::make_unique<CollisionManager>();
 
-	if (Automated)
+	if (GameConstants::Automated)
 		m_player.reset(ControllerManager::GetCtrlMgr()->GetController()->GetCurrentPlayer());
 	else
 		m_player = std::make_unique<Player>(m_collisionManager->GetTile(2, 11)->GetPosition());

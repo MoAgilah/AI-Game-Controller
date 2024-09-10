@@ -8,7 +8,7 @@ Controller::Controller()
 {
 	m_AnnView = std::make_unique<ANNView>();
 
-	if (Automated)
+	if (GameConstants::Automated)
 	{
 		Point startPos = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(2, 11)->GetPosition();
 		for (int i = 0; i< CParams::iNumPlayers; ++i)
@@ -131,7 +131,7 @@ double Controller::ColourToInput(sf::Color col)
 
 void Controller::EndOfRunCalculation(AutomatedPlayer* ply)
 {
-	float percent = ((ply->GetPosition().x - ply->GetInitialPosition().x) / RightMost) * 100;;
+	float percent = ((ply->GetPosition().x - ply->GetInitialPosition().x) / GameConstants::RightMost) * 100;;
 	GameManager::GetGameMgr()->GetLogger().AddExperimentLog(std::format("Player moved by {}%!", percent));
 	ply->UpdateFitness(percent);
 }

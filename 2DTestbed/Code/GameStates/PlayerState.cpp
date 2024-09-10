@@ -267,7 +267,7 @@ void DieingState::Update(float deltaTime)
 			m_physCtrl->SetAerial();
 
 		m_player->DecrementYVelocity(m_physCtrl->GetYAcceleration());
-		m_player->Move(sf::Vector2f(0, m_player->GetYVelocity() * FPS * deltaTime));
+		m_player->Move(sf::Vector2f(0, m_player->GetYVelocity() * GameConstants::FPS * deltaTime));
 	}
 	else
 	{
@@ -275,10 +275,10 @@ void DieingState::Update(float deltaTime)
 			m_physCtrl->SetAerial();
 
 		m_player->IncrementYVelocity(m_physCtrl->GetYAcceleration());
-		m_player->Move(sf::Vector2f(0, m_player->GetYVelocity() * FPS * deltaTime));
+		m_player->Move(sf::Vector2f(0, m_player->GetYVelocity() * GameConstants::FPS * deltaTime));
 		if (GameManager::GetGameMgr()->GetCamera().CheckVerticalBounds(m_player->GetAABB()))
 		{
-			if (!Automated)
+			if (!GameConstants::Automated)
 				m_player->Reset();
 		}
 	}

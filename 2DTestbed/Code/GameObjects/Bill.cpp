@@ -53,13 +53,13 @@ void Bill::Animate(float deltaTime)
 	SetPrevPosition(GetPosition());
 
 	if (GetDirection() != GetPrevDirection())
-		SetXVelocity((GetDirection() ? 1 : -1) * c_moveSpeed);
+		SetXVelocity((GetDirection() ? 1 : -1) * GameConstants::AerialSpeed);
 
 	if (GetIsAlive())
 	{
 		if (GetXVelocity() != 0)
 		{
-			Move(GetXVelocity() * FPS * deltaTime, 0);
+			Move(GetXVelocity() * GameConstants::FPS * deltaTime, 0);
 			GameManager::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
 		}
 	}
@@ -72,7 +72,7 @@ void Bill::Animate(float deltaTime)
 
 		IncrementYVelocity(physCtrl->GetYAcceleration());
 
-		Move(0, GetYVelocity() * FPS * deltaTime);
+		Move(0, GetYVelocity() * GameConstants::FPS * deltaTime);
 	}
 
 	UpdateBody();
@@ -93,8 +93,8 @@ bool Body::CircleToAABB(sf::CircleShape circle, AABB* box)
 	//convert object into sphere
 	sf::Vector2f Obj1Size = sf::Vector2f(box->GetOrigin().x * 2, box->GetOrigin().y * 2);
 
-	Obj1Size.x *= scale.x;
-	Obj1Size.y *= scale.y;
+	Obj1Size.x *= GameConstants::Scale.x;
+	Obj1Size.y *= GameConstants::Scale.y;
 
 	float Radius1 = (Obj1Size.x + Obj1Size.y) * 0.25f;
 

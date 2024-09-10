@@ -8,7 +8,7 @@ Enemy::Enemy(TexID sprId, const sf::Vector2f& boxSize, int maxLives)
 }
 
 Enemy::Enemy(TexID sprId, const sf::Vector2f& boxSize, AnimationData animData, int maxLives)
-	: DynamicObject(new AnimatedSprite(sprId, animData.rows, animData.cols, FPS, animData.symmetrical, animData.animationSpeed), boxSize),
+	: DynamicObject(new AnimatedSprite(sprId, animData.rows, animData.cols, GameConstants::FPS, animData.symmetrical, animData.animationSpeed), boxSize),
 	m_prevDirection(GetInitialDirection()), m_numLives(maxLives), m_maxLives(m_numLives), m_airTimer(0), m_resetTimer(0), m_activationTimer(0)
 {
 }
@@ -81,7 +81,7 @@ void Enemy::CheckForHorizontalBounds(float deltaTime)
 {
 	if (GetPosition().x < GetAABB()->GetExtents().x)
 	{
-		Move(-GetXVelocity() * FPS * deltaTime, 0);
+		Move(-GetXVelocity() * GameConstants::FPS * deltaTime, 0);
 		m_prevDirection = GetDirection();
 		SetDirection(!m_prevDirection);
 	}

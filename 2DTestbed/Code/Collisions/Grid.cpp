@@ -28,19 +28,19 @@ void Grid::SetTilePosition()
 	int begin = x;
 
 	//first row
-	sf::Vector2f pos(m_grid.front()->GetOrigin().x * scale.x, m_grid.front()->GetOrigin().y * scale.y);
+	sf::Vector2f pos(m_grid.front()->GetOrigin().x * GameConstants::Scale.x, m_grid.front()->GetOrigin().y * GameConstants::Scale.y);
 	m_grid[x]->SetPosition(pos);
 
 	for (x = x + 1; x < 313; x++)
 	{
-		pos = sf::Vector2f(pos.x + (m_grid.front()->GetOrigin().x * scale.x) * 2, pos.y);
+		pos = sf::Vector2f(pos.x + (m_grid.front()->GetOrigin().x * GameConstants::Scale.x) * 2, pos.y);
 		m_grid[x]->SetPosition(pos);
 	}
 
 	//remaining rows
 	for (int i = 0; i < 14; i++)
 	{
-		pos = sf::Vector2f(m_grid[begin]->GetPosition().x, m_grid[begin]->GetPosition().y + (m_grid.front()->GetOrigin().y * scale.y) * 2.f);
+		pos = sf::Vector2f(m_grid[begin]->GetPosition().x, m_grid[begin]->GetPosition().y + (m_grid.front()->GetOrigin().y * GameConstants::Scale.y) * 2.f);
 		m_grid[x]->SetPosition(pos);
 		begin = x;
 
@@ -48,7 +48,7 @@ void Grid::SetTilePosition()
 
 		for (x = x + 1; x < 313 * val; x++)
 		{
-			pos = sf::Vector2f(pos.x + (m_grid.front()->GetOrigin().x * scale.x) * 2, pos.y);
+			pos = sf::Vector2f(pos.x + (m_grid.front()->GetOrigin().x * GameConstants::Scale.x) * 2, pos.y);
 			m_grid[x]->SetPosition(pos);
 		}
 	}

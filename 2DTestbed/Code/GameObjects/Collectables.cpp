@@ -25,7 +25,7 @@ StaticCollectable::StaticCollectable(AnimatedSprite* sprite, const sf::Vector2f&
 }
 
 Coin::Coin(const sf::Vector2f& initPos)
-	: StaticCollectable(new AnimatedSprite(TexID::Coin, 1, 4, FPS, false, 0.5f), sf::Vector2f(12, 16), initPos)
+	: StaticCollectable(new AnimatedSprite(TexID::Coin, 1, 4, GameConstants::FPS, false, 0.5f), sf::Vector2f(12, 16), initPos)
 {
 	GetAnimSpr()->SetFrames({ 4 });
 }
@@ -43,7 +43,7 @@ void Coin::Collect(Player* player)
 }
 
 YCoin::YCoin(const sf::Vector2f& initPos)
-	: StaticCollectable(new AnimatedSprite(TexID::YCoin, 1, 6, FPS, false, 0.5f), sf::Vector2f(16, 25), initPos)
+	: StaticCollectable(new AnimatedSprite(TexID::YCoin, 1, 6, GameConstants::FPS, false, 0.5f), sf::Vector2f(16, 25), initPos)
 {
 	GetAnimSpr()->SetFrames({ 6 });
 }
@@ -109,7 +109,7 @@ void Mushroom::Update(float deltaTime)
 	SetPrevPosition(GetPosition());
 
 	if (GetDirection() != m_prevDirection)
-		SetXVelocity((GetDirection() ? 1.f : -1.f) * c_moveSpeed * 0.67f);
+		SetXVelocity((GetDirection() ? 1.f : -1.f) * GameConstants::GroundSpeed);
 
 	m_prevDirection = GetDirection();
 
@@ -122,18 +122,18 @@ void Mushroom::Update(float deltaTime)
 		if (physCtrl->GetPhysicsType() != PhysicsType::drop)
 			physCtrl->SetFalling();
 
-		IncrementYVelocity(c_gravity);
+		IncrementYVelocity(GameConstants::Gravity);
 	}
 
 	if (GetYVelocity() != 0)
 	{
-		Move(0, GetYVelocity() * FPS * deltaTime);
+		Move(0, GetYVelocity() * GameConstants::FPS * deltaTime);
 		colMgr->ProcessCollisions(this);
 	}
 
 	if (GetXVelocity() != 0)
 	{
-		Move(GetXVelocity() * FPS * deltaTime, 0);
+		Move(GetXVelocity() * GameConstants::FPS * deltaTime, 0);
 		colMgr->ProcessCollisions(this);
 	}
 
@@ -150,7 +150,7 @@ void Mushroom::CheckForHorizontalBounds(float deltaTime)
 {
 	if (GetPosition().x < GetAABB()->GetExtents().x)
 	{
-		Move(-GetXVelocity() * FPS * deltaTime, 0);
+		Move(-GetXVelocity() * GameConstants::FPS * deltaTime, 0);
 		m_prevDirection = GetDirection();
 		SetDirection(!m_prevDirection);
 	}
@@ -181,7 +181,7 @@ void Goal::Update(float deltaTime)
 
 	if (GetYVelocity() != 0)
 	{
-		Move(0, GetYVelocity() * FPS * deltaTime);
+		Move(0, GetYVelocity() * GameConstants::FPS * deltaTime);
 		GameManager::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
 	}
 

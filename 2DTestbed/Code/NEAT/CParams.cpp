@@ -3,7 +3,7 @@
 
 int CParams::WindowWidth = 600;
 int CParams::WindowHeight = 600;
-int CParams::iFramesPerSecond = (int)FPS;
+int CParams::iFramesPerSecond = (int)GameConstants::FPS;
 int CParams::iNumInputs = 0;
 int CParams::iNumOutputs = 0;
 int CParams::iNumPlayers = 300;

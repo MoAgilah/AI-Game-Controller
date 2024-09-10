@@ -6,15 +6,15 @@
 PhysicsController::PhysicsController()
 	: m_currX(XVelocity::walking), m_currY(YVelocity::jumping), m_currType(PhysicsType::ground)
 {
-	m_groundVelocities.push_back({ 0, 2.f * scale.x });
-	m_groundVelocities.push_back({ 0, 1.5f * scale.x });
-	m_groundVelocities.push_back({ m_groundVelocities[XVelocity::running].max, 3.f * scale.x });
+	m_groundVelocities.push_back({ 0, 2.f * GameConstants::Scale.x });
+	m_groundVelocities.push_back({ 0, 1.5f * GameConstants::Scale.x });
+	m_groundVelocities.push_back({ m_groundVelocities[XVelocity::running].max, 3.f * GameConstants::Scale.x });
 
-	m_slopedVelocities.push_back({ 0, 1.25f * scale.x });
-	m_slopedVelocities.push_back({ 0, 1.f * scale.x });
-	m_slopedVelocities.push_back({ m_slopedVelocities[XVelocity::running].max, 2.f * scale.x });
+	m_slopedVelocities.push_back({ 0, 1.25f * GameConstants::Scale.x });
+	m_slopedVelocities.push_back({ 0, 1.f * GameConstants::Scale.x });
+	m_slopedVelocities.push_back({ m_slopedVelocities[XVelocity::running].max, 2.f * GameConstants::Scale.x });
 
-	m_aerialVelocities = { 2.f * scale.y, 3.5f * scale.y, 4.f * scale.y, 4.5f * scale.y };
+	m_aerialVelocities = { 2.f * GameConstants::Scale.y, 3.5f * GameConstants::Scale.y, 4.f * GameConstants::Scale.y, 4.5f * GameConstants::Scale.y };
 	m_maxVelocity = { m_groundVelocities[m_currX], m_aerialVelocities[m_currY] };
 
 	m_groundAcceleration = 0.0546875f;

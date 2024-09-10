@@ -61,7 +61,7 @@ void Rex::Animate(float deltaTime)
 	SetPrevPosition(GetPosition());
 
 	if (GetDirection() != GetPrevDirection())
-		SetXVelocity((GetDirection() ? 1.f : -1.f) * c_moveSpeed * 0.67f);
+		SetXVelocity((GetDirection() ? 1.f : -1.f) * GameConstants::GroundSpeed);
 
 	if (GetOnGround())
 	{
@@ -72,14 +72,14 @@ void Rex::Animate(float deltaTime)
 		if (physCtrl->GetPhysicsType() != PhysicsType::drop)
 			physCtrl->SetFalling();
 
-		IncrementYVelocity(c_gravity);
+		IncrementYVelocity(GameConstants::Gravity);
 	}
 
 	if (HasLifes())
 	{
 		if (GetXVelocity() != 0)
 		{
-			Move(GetXVelocity() * FPS * deltaTime, 0);
+			Move(GetXVelocity() * GameConstants::FPS * deltaTime, 0);
 			colMgr->ProcessCollisions(this);
 		}
 
@@ -87,7 +87,7 @@ void Rex::Animate(float deltaTime)
 
 		if (GetYVelocity() != 0)
 		{
-			Move(0, GetYVelocity() * FPS * deltaTime);
+			Move(0, GetYVelocity() * GameConstants::FPS * deltaTime);
 			colMgr->ProcessCollisions(this);
 		}
 	}

@@ -6,7 +6,7 @@
 #include "../GameStates/PlayerState.h"
 
 Player::Player(const sf::Vector2f& pos)
-	: DynamicObject(new AnimatedSprite(TexID::Mario, 14, 4, FPS, false, 0.5f), sf::Vector2f(9,16)), m_airTimer(c_maxAirTime), m_invulTimer(1)
+	: DynamicObject(new AnimatedSprite(TexID::Mario, 14, 4, GameConstants::FPS, false, 0.5f), sf::Vector2f(9,16)), m_airTimer(GameConstants::MaxAirTime), m_invulTimer(1)
 {
 	SetInitialDirection(true);
 	SetDirection(GetInitialDirection());
@@ -122,7 +122,7 @@ void Player::Update(float deltaTime)
 			}
 			else
 			{
-				IncrementYVelocity(c_gravity);
+				IncrementYVelocity(GameConstants::Gravity);
 				if (!GetOnSlope())
 				{
 					if (physCtrl->GetPhysicsType() != PhysicsType::drop)
@@ -146,25 +146,25 @@ void Player::Update(float deltaTime)
 		if (GetXVelocity() != 0)
 		{
 			SetPrevPosition(GetPosition());
-			Move(sf::Vector2f(GetXVelocity() * FPS * deltaTime, 0));
+			Move(sf::Vector2f(GetXVelocity() * GameConstants::FPS * deltaTime, 0));
 			gameMgr->GetCollisionMgr()->ProcessCollisions(this);
 		}
 
 		CheckForHorizontalBounds(deltaTime);
-		SetGoalHit(GetPosition().x > RightMost);
+		SetGoalHit(GetPosition().x > GameConstants::RightMost);
 
 		if (GetGoalHit())
 		{
 			SetSpawnLoc();
 
-			if (!Automated)
+			if (!GameConstants::Automated)
 				Reset();
 		}
 
 		if (GetYVelocity() != 0)
 		{
 			SetPrevPosition(GetPosition());
-			Move(sf::Vector2f(0, GetYVelocity() * FPS * deltaTime));
+			Move(sf::Vector2f(0, GetYVelocity() * GameConstants::FPS * deltaTime));
 			gameMgr->GetCollisionMgr()->ProcessCollisions(this);
 		}
 

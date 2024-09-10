@@ -34,7 +34,7 @@ void MainState::Update(float deltaTime)
 {
 	GameManager::GetGameMgr()->GetTimer().Update(deltaTime);
 
-	if (Automated)
+	if (GameConstants::Automated)
 		ControllerManager::GetCtrlMgr()->GetController()->Update();
 
 	m_gameMgr->CheckInView();

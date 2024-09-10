@@ -27,9 +27,9 @@ ANNView::ANNView()
 	m_text[1]->setString("Generation: 0");
 	m_text[2]->setString("Highest fitness: 0");
 
-	m_background.setSize(screenDim);
-	m_background.setOrigin(screenDim * 0.5f);
-	m_background.setScale(scale);
+	m_background.setSize(GameConstants::ScreenDim);
+	m_background.setOrigin(GameConstants::ScreenDim * 0.5f);
+	m_background.setScale(GameConstants::Scale);
 	m_background.setFillColor(sf::Color(0, 0, 0, 125));
 }
 

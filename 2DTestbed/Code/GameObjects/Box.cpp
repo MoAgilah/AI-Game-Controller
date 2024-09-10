@@ -25,7 +25,7 @@ void Box::WasJustHit()
 }
 
 QBox::QBox(const sf::Vector2f& initPos)
-	: Box(new AnimatedSprite(TexID::QBox, 2, 4, FPS, false, 0.35f), initPos)
+	: Box(new AnimatedSprite(TexID::QBox, 2, 4, GameConstants::FPS, false, 0.35f), initPos)
 {
 	auto animSpr = GetAnimSpr();
 	animSpr->SetFrames({ 1, 4 });
@@ -55,7 +55,7 @@ void QBox::Reset()
 }
 
 SBox::SBox(const sf::Vector2f& initPos)
-	: Box(new AnimatedSprite(TexID::SBox, 2, 4, FPS, false, 0.35f), initPos)
+	: Box(new AnimatedSprite(TexID::SBox, 2, 4, GameConstants::FPS, false, 0.35f), initPos)
 {
 	GetAnimSpr()->SetFrames({ 1, 4 });
 }
@@ -131,7 +131,7 @@ void SBox::Scatter()
 {
 	auto animSpr = GetAnimSpr();
 
-	animSpr->Move(0, c_moveSpeed*0.75);
+	animSpr->Move(0, GameConstants::GroundSpeed);
 
 	if (GetPosition().y > 600.f + (float)animSpr->GetFrameSize().y)
 	{
