@@ -8,8 +8,8 @@ int Object::s_objectNum = 0;
 Object::Object(TexID sprId, const sf::Vector2f& boxSize)
 	: m_type(sprId)
 {
-	m_sprite = std::make_shared<Sprite>(sprId);
-	m_aabb = std::make_shared<AABB>(boxSize);
+	m_sprite = std::make_unique<Sprite>(sprId);
+	m_aabb = std::make_unique<AABB>(boxSize);
 	m_objectID = s_objectNum++;
 	GameManager::GetGameMgr()->GetCollisionMgr()->AddCollidable(this);
 }
@@ -18,7 +18,7 @@ Object::Object(AnimatedSprite* sprite, const sf::Vector2f& boxSize)
 	: m_type(sprite->GetTexID())
 {
 	m_sprite.reset(std::move(sprite));
-	m_aabb = std::make_shared<AABB>(boxSize);
+	m_aabb = std::make_unique<AABB>(boxSize);
 	m_objectID = s_objectNum++;
 	GameManager::GetGameMgr()->GetCollisionMgr()->AddCollidable(this);
 }
@@ -62,13 +62,13 @@ void Object::SetDirection(bool dir)
 DynamicObject::DynamicObject(TexID sprId, const sf::Vector2f& boxSize)
 	: Object(sprId, boxSize)
 {
-	m_physicsCtrl = std::make_shared<PhysicsController>();
+	m_physicsCtrl = std::make_unique<PhysicsController>();
 }
 
 DynamicObject::DynamicObject(AnimatedSprite* sprite, const sf::Vector2f& boxSize)
 	: Object(sprite, boxSize)
 {
-	m_physicsCtrl = std::make_shared<PhysicsController>();
+	m_physicsCtrl = std::make_unique<PhysicsController>();
 }
 
 void DynamicObject::Reset()

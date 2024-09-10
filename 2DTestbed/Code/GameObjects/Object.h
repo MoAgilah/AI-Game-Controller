@@ -73,8 +73,8 @@ private:
 	int m_objectID = 0;
 	static int s_objectNum;
 	SpawnData m_spawnData;
-	std::shared_ptr<Sprite> m_sprite;
-	std::shared_ptr<AABB> m_aabb;
+	std::unique_ptr<AABB> m_aabb;
+	std::unique_ptr<Sprite> m_sprite;
 };
 
 class DynamicObject : public Object
@@ -139,5 +139,5 @@ private:
 	bool m_onGround = false;
 	sf::Vector2f m_velocity;
 	sf::Vector2f m_previousPos;
-	std::shared_ptr<PhysicsController> m_physicsCtrl;
+	std::unique_ptr<PhysicsController> m_physicsCtrl;
 };

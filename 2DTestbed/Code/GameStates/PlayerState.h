@@ -11,23 +11,33 @@ public:
 	explicit PlayerState(std::string_view name, Player* ply)
 		: GameState(name)
 	{
-		m_player.reset(ply);
-		m_animSpr.reset(m_player->GetAnimSpr());
-		m_physCtrl.reset(m_player->GetPhysicsController());
+		m_player = ply;
+		m_animSpr = m_player->GetAnimSpr();
+		m_physCtrl = m_player->GetPhysicsController();
 	}
 
-	~PlayerState() override = default;
+	~PlayerState() override
+	{
+		if (m_player)
+			m_player = nullptr;
+
+		if (m_animSpr)
+			m_animSpr = nullptr;
+
+		if (m_physCtrl)
+			m_physCtrl = nullptr;
+	}
 
 	void Pause() override { m_player->SetActive(false); }
 	void Resume() override { m_player->SetActive(true); }
 
-	Player* GetPlayer() { return m_player.get(); }
+	Player* GetPlayer() { return m_player; }
 
 protected:
 
-	std::shared_ptr<Player> m_player;
-	std::shared_ptr<AnimatedSprite> m_animSpr;
-	std::shared_ptr<PhysicsController> m_physCtrl;
+	Player* m_player;
+	AnimatedSprite* m_animSpr;
+	PhysicsController* m_physCtrl;
 };
 
 class GroundedState : public PlayerState
@@ -35,7 +45,6 @@ class GroundedState : public PlayerState
 public:
 	explicit GroundedState(Player* ply)
 		: PlayerState("Grounded", ply), m_turnTimer(0) {}
-	~GroundedState() override = default;
 
 	void Initialise() override;
 	void Resume() override;
@@ -56,7 +65,6 @@ class AirborneState : public PlayerState
 public:
 	explicit AirborneState(Player* ply)
 		: PlayerState("Airborne", ply) {}
-	~AirborneState() override = default;
 
 	void Initialise() override;
 	void ProcessInputs() override;
@@ -68,7 +76,6 @@ class CrouchingState : public PlayerState
 public:
 	explicit CrouchingState(Player* ply)
 		: PlayerState("Crouching", ply) {}
-	~CrouchingState() override = default;
 
 	void Initialise() override;
 	void Resume() override;
@@ -81,7 +88,6 @@ class DieingState : public PlayerState
 public:
 	explicit DieingState(Player* ply)
 		: PlayerState("Dieing", ply) {}
-	~DieingState() override = default;
 
 	void Initialise() override;
 	void ProcessInputs() override;
