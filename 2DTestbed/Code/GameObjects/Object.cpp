@@ -162,7 +162,7 @@ void DynamicObject::CheckForHorizontalBounds(float deltaTime)
 	if (GetPosition().x < GetAABB()->GetExtents().x)
 	{
 		Move(-GetXVelocity() * GameConstants::FPS * deltaTime, 0);
-		if (IsPlayerObject(GetID()))
+		if (!IsPlayerObject(GetID()))
 			SetDirection(!GetDirection());
 	}
 }
