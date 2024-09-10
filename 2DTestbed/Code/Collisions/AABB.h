@@ -22,6 +22,8 @@ public:
 	void Update(const sf::Vector2f& pos);
 	void Render(sf::RenderWindow& window) { window.draw(m_rect); }
 
+	float SqDistPointAABB(Point p);
+
 	bool Intersects(AABB* box);
 	bool IntersectsMoving(AABB* box, const Point& va, const Point& vb, float& tfirst, float& tlast);
 

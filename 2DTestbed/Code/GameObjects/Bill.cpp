@@ -82,26 +82,17 @@ void Bill::Animate(float deltaTime)
 
 bool Body::Intersects(AABB* box)
 {
-	if (CircleToAABB(front, box))
+	if (CircleToAABB(box))
 		return true;
 
 	return back.Intersects(box);
 }
 
-bool Body::CircleToAABB(sf::CircleShape circle, AABB* box)
+bool Body::CircleToAABB(AABB* box)
 {
-	//convert object into sphere
-	sf::Vector2f Obj1Size = sf::Vector2f(box->GetOrigin().x * 2, box->GetOrigin().y * 2);
+	float sqDist = box->SqDistPointAABB(front.getPosition());
 
-	Obj1Size.x *= GameConstants::Scale.x;
-	Obj1Size.y *= GameConstants::Scale.y;
-
-	float Radius1 = (Obj1Size.x + Obj1Size.y) * 0.25f;
-
-	float Radius2 = circle.getRadius();
-
-	//collision check
-	sf::Vector2f Distance = box->GetPosition() - circle.getPosition();
-
-	return (Distance.x * Distance.x + Distance.y * Distance.y <= (Radius1 + Radius2) * (Radius1 + Radius2));
+	// Sphere and AABB intersect if the (squared) distance
+	// between them is less than the (squared) sphere radius
+	return sqDist <= std::pow(front.getRadius(),2);
 }

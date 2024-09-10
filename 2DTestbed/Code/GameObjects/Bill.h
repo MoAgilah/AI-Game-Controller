@@ -12,7 +12,7 @@ struct Body
 
 private:
 
-	bool CircleToAABB(sf::CircleShape circle, AABB* box);
+	bool CircleToAABB(AABB* box);
 };
 
 class Bill : public Enemy

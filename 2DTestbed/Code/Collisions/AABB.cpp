@@ -45,6 +45,20 @@ void AABB::Update(const sf::Vector2f& pos)
 	m_max = m_center + m_extents;
 }
 
+float AABB::SqDistPointAABB(Point p)
+{
+	float sqDist = 0.0f;
+
+	for (size_t i = 0; i < 2; i++)
+	{
+		float v = p[i];
+		if (v < m_min[i]) sqDist += (m_min[i] - v) * (m_min[i] - v);
+		if (v > m_max[i]) sqDist += (v - m_max[i]) * (v - m_max[i]);
+	}
+
+	return sqDist;
+}
+
 bool AABB::Intersects(AABB* box)
 {
 	for (size_t i = 0; i < 2; i++)
