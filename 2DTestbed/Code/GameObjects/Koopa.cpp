@@ -37,8 +37,7 @@ void Koopa::Animate(float deltaTime)
 
 	SetPrevPosition(GetPosition());
 
-	if (GetDirection() != GetPrevDirection())
-		SetXVelocity((GetDirection() ? 1.f : -1.f) * GameConstants::GroundSpeed * 0.67f);
+	SetXVelocity((GetDirection() ? 1.f : -1.f) * GameConstants::GroundSpeed * 0.67f);
 
 	if (GetOnGround())
 	{

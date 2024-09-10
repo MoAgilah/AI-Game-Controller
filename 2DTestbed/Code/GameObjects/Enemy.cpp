@@ -2,14 +2,14 @@
 #include "../Game/GameManager.h"
 
 Enemy::Enemy(TexID sprId, const sf::Vector2f& boxSize, int maxLives)
-	: DynamicObject(sprId, boxSize), m_prevDirection(GetInitialDirection()), m_numLives(maxLives), m_maxLives(m_numLives),
+	: DynamicObject(sprId, boxSize), m_numLives(maxLives), m_maxLives(m_numLives),
 	m_airTimer(0), m_resetTimer(0), m_activationTimer(0)
 {
 }
 
 Enemy::Enemy(TexID sprId, const sf::Vector2f& boxSize, AnimationData animData, int maxLives)
 	: DynamicObject(new AnimatedSprite(sprId, animData.rows, animData.cols, GameConstants::FPS, animData.symmetrical, animData.animationSpeed), boxSize),
-	m_prevDirection(GetInitialDirection()), m_numLives(maxLives), m_maxLives(m_numLives), m_airTimer(0), m_resetTimer(0), m_activationTimer(0)
+	m_numLives(maxLives), m_maxLives(m_numLives), m_airTimer(0), m_resetTimer(0), m_activationTimer(0)
 {
 }
 
@@ -18,8 +18,6 @@ void Enemy::Update(float deltaTime)
 	if (GetActive())
 	{
 		Animate(deltaTime);
-
-		m_prevDirection = GetDirection();
 
 		if (!HasLifes())
 		{
@@ -75,14 +73,4 @@ void Enemy::SetAirTime(float time)
 void Enemy::SetTimeLeftActive(float time)
 {
 	m_activationTimer.SetTime(time);
-}
-
-void Enemy::CheckForHorizontalBounds(float deltaTime)
-{
-	if (GetPosition().x < GetAABB()->GetExtents().x)
-	{
-		Move(-GetXVelocity() * GameConstants::FPS * deltaTime, 0);
-		m_prevDirection = GetDirection();
-		SetDirection(!m_prevDirection);
-	}
 }

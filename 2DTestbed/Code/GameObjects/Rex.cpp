@@ -60,8 +60,14 @@ void Rex::Animate(float deltaTime)
 
 	SetPrevPosition(GetPosition());
 
-	if (GetDirection() != GetPrevDirection())
-		SetXVelocity((GetDirection() ? 1.f : -1.f) * GameConstants::GroundSpeed);
+	if (GetDirection())
+	{
+		SetXVelocity(GameConstants::GroundSpeed);
+	}
+	else
+	{
+		SetXVelocity(-GameConstants::GroundSpeed);
+	}
 
 	if (GetOnGround())
 	{

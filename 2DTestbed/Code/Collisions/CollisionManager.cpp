@@ -56,6 +56,14 @@ namespace
 		auto colHeight = lDistY * percent + slopeY;
 		return ((currY - colHeight) / 16);
 	}
+
+	bool IsMovingTowards(Point p1, Point p2, Point v1, Point v2)
+	{
+		Point v = v2 - v1;
+		Point d = p2 - p1;
+
+		return (d.x * v.x + d.y * v.y < 0);
+	}
 }
 
 CollisionManager::CollisionManager()
@@ -222,17 +230,24 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 				if (tileTopEdge.IsPointAboveLine(objBottomPoint))
 				{
 					ResolveObjectToBoxTop(obj, tile->GetAABB());
-					if (!IsPlayerObject(obj->GetID()))
-					{
-						Point cnt = tile->GetType() == LCRN ?
-							obj->GetAABB()->GetPoint(Side::Right) :
-							obj->GetAABB()->GetPoint(Side::Left);
+				}
 
+				if (!IsPlayerObject(obj->GetID()))
+				{
+					Point cnt = tile->GetType() == LCRN ?
+						obj->GetAABB()->GetPoint(Side::Right) :
+						obj->GetAABB()->GetPoint(Side::Left);
+
+					Line edge = tile->GetEdge();
+
+					if (IsMovingTowards(edge.start, cnt, Point(0, 0), obj->GetVelocity()))
+					{
 						Circle circle(cnt, 4);
-						Capsule capsule(tile->GetEdge(), 4);
+						Capsule capsule(edge, 4);
 						if (capsule.IntersectsCircle(circle))
 							obj->SetDirection(!obj->GetDirection());
 					}
+
 				}
 			}
 		}

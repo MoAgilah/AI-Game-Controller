@@ -52,8 +52,14 @@ void Bill::Animate(float deltaTime)
 {
 	SetPrevPosition(GetPosition());
 
-	if (GetDirection() != GetPrevDirection())
-		SetXVelocity((GetDirection() ? 1 : -1) * GameConstants::AerialSpeed);
+	if (GetDirection())
+	{
+		SetXVelocity(GameConstants::AerialSpeed);
+	}
+	else
+	{
+		SetXVelocity(-GameConstants::AerialSpeed);
+	}
 
 	if (GetIsAlive())
 	{

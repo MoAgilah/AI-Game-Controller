@@ -32,16 +32,11 @@ public:
 	void SetAirTime(float time);
 	void SetTimeLeftActive(float time);
 
-	void CheckForHorizontalBounds(float deltaTime) final;
-
-	bool GetPrevDirection() const { return m_prevDirection; }
-
 private:
 
 	virtual void Animate(float deltaTime) = 0;
 
 	bool m_isAlive = true;
-	bool m_prevDirection;
 	bool m_airbourne = false;
 	bool m_invulnerable = false;
 	bool m_resetAllowed = false;

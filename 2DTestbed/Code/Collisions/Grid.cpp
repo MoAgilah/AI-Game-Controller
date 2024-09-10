@@ -61,9 +61,8 @@ void Grid::Render(sf::RenderWindow & window)
 		if (tile->GetActive())
 		{
 #if _DEBUG
-	#ifdef DRender
+			if (GameConstants::DRender)
 				tile->Render(window);
-	#endif //DRender
 #endif
 		}
 	}

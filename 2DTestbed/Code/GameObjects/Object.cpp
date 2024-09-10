@@ -160,5 +160,9 @@ void DynamicObject::Move(const sf::Vector2f& pos)
 void DynamicObject::CheckForHorizontalBounds(float deltaTime)
 {
 	if (GetPosition().x < GetAABB()->GetExtents().x)
+	{
 		Move(-GetXVelocity() * GameConstants::FPS * deltaTime, 0);
+		if (IsPlayerObject(GetID()))
+			SetDirection(!GetDirection());
+	}
 }

@@ -91,11 +91,6 @@ public:
 	void Update(float deltaTime) final;
 
 	void Collect(Player* player) final;
-
-	void CheckForHorizontalBounds(float deltaTime) final;
-
-private:
-	bool m_prevDirection;
 };
 
 class Goal : public DynamicCollectable
