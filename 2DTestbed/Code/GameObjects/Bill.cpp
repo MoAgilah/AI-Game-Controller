@@ -13,7 +13,6 @@ Bill::Bill(bool dir, const sf::Vector2f& initPos)
 	m_colbody.front.setOutlineThickness(2.0f);
 	m_colbody.front.setFillColor(sf::Color::Transparent);
 	m_colbody.front.setRadius(73.f);
-	m_colbody.front.setPointCount((size_t)30);
 	m_colbody.front.setOrigin(73.f, 73.f);
 
 	m_colbody.back.Reset(sf::Vector2f(30, 58));
@@ -52,14 +51,14 @@ void Bill::Animate(float deltaTime)
 {
 	SetPrevPosition(GetPosition());
 
-	if (GetDirection())
+	/*if (GetDirection())
 	{
-		SetXVelocity(GameConstants::AerialSpeed);
+		SetXVelocity(GameConstants::ObjectSpeed);
 	}
 	else
 	{
-		SetXVelocity(-GameConstants::AerialSpeed);
-	}
+		SetXVelocity(-GameConstants::ObjectSpeed);
+	}*/
 
 	if (GetIsAlive())
 	{

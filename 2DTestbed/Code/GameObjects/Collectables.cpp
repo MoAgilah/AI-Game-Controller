@@ -109,11 +109,11 @@ void Mushroom::Update(float deltaTime)
 
 	if (GetDirection())
 	{
-		SetXVelocity(GameConstants::GroundSpeed);
+		SetXVelocity(GameConstants::ObjectSpeed);
 	}
 	else
 	{
-		SetXVelocity(-GameConstants::GroundSpeed);
+		SetXVelocity(-GameConstants::ObjectSpeed);
 	}
 
 	if (GetOnGround())

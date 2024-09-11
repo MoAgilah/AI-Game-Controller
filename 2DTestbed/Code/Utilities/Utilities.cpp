@@ -1,17 +1,9 @@
 #include "Utilities.h"
+#include "Point.h"
+
 
 namespace
 {
-	float distance(const Point& p1, const Point& p2)
-	{
-		return std::sqrtf(std::powf((p2.x - p1.x), 2) + std::powf((p2.y - p1.y), 2));
-	}
-
-	float length(const Point& p)
-	{
-		return std::sqrtf(p.x * p.x + p.y * p.y);
-	}
-
 	float Dot(const Point& a, const Point& b)
 	{
 		return a.x * b.x + a.y * b.y;
@@ -55,10 +47,10 @@ bool Line::IsPointAboveLine(const Point & pnt) const
 bool Line::IntersectsPoint(const Point& pnt) const
 {
 	// get distance from the point to the two ends of the line
-	float d1 = distance(pnt, end);
-	float d2 = distance(pnt, start);
+	float d1 = pnt::distance(pnt, end);
+	float d2 = pnt::distance(pnt, start);
 
-	float lineLen = distance(start, end);
+	float lineLen = pnt::distance(start, end);
 
 	// a little buffer zone that will give collision
 	float buffer = 0.1f;    // higher # = less accurate
@@ -79,7 +71,7 @@ Circle::Circle(AABB* box, float radius)
 bool Circle::IntersectsPoint(const Point& pnt) const
 {
 	// get distance between the point and circle's center
-	float d = distance(pnt, center);
+	float d = pnt::distance(pnt, center);
 	return d <= radius;
 }
 
@@ -92,7 +84,7 @@ bool Circle::IntersectsLineSegment(const Line & line) const
 		return true;
 
 	// get length of the line
-	auto lineLen = distance(line.start, line.end);
+	auto lineLen = pnt::distance(line.start, line.end);
 
 	// get dot product of the line and circle
 	float dot = (((center.x - line.start.x) * (line.end.x - line.start.x)) +
@@ -108,7 +100,7 @@ bool Circle::IntersectsLineSegment(const Line & line) const
 		return false;
 
 	// get distance to closest point
-	float dist = distance(center, closestPnt);
+	float dist = pnt::distance(center, closestPnt);
 
 	return dist <= radius;
 }

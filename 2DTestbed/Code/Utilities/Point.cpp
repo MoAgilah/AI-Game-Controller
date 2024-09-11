@@ -120,3 +120,19 @@ Point::operator sf::Vector2f() const
 {
 	return sf::Vector2f(x, y);
 }
+
+float pnt::distance(const Point& p1, const Point& p2)
+{
+	return std::sqrtf(std::powf((p2.x - p1.x), 2) + std::powf((p2.y - p1.y), 2));
+}
+
+float pnt::length(const Point& p)
+{
+	return std::sqrtf(p.x * p.x + p.y * p.y);
+}
+
+Point pnt::Normalize(const Point& p)
+{
+	auto len = length(p);
+	return Point(p.x / len, p.y / len);
+}

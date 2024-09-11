@@ -12,8 +12,7 @@ public:
 	static float FPS;
 	static float Gravity;
 	static float MaxAirTime;
-	static float GroundSpeed;
-	static float AerialSpeed;
+	static float ObjectSpeed;
 	static Point ScreenDim;
 	static Point Scale;
 };

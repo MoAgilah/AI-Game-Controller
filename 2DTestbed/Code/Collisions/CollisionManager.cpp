@@ -520,9 +520,7 @@ void CollisionManager::PlayerToEnemyResolutions(Player* ply, Enemy* enmy)
 	if (!ply->GetIsAlive())
 		return;
 
-	Circle circle(ply->GetAABB(), 4);
-	Capsule capsule(enmy->GetAABB()->GetSide(Side::Top), 6);
-	if (capsule.IntersectsCircle(circle) && enmy->GetID() != TexID::PPlant)
+	if (enmy->IsPlayerAbove(ply))
 	{
 		enmy->DecrementLife();
 		ply->Bounce();

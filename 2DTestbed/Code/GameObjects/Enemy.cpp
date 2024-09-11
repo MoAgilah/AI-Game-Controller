@@ -46,6 +46,13 @@ void Enemy::Update(float deltaTime)
 	}
 }
 
+bool Enemy::IsPlayerAbove(Player* ply)
+{
+	Circle circle(ply->GetAABB(), 4);
+	Capsule capsule(GetAABB()->GetSide(Side::Top), 6);
+	return capsule.IntersectsCircle(circle) && GetID() != TexID::PPlant;
+}
+
 void Enemy::Reset()
 {
 	DynamicObject::Reset();

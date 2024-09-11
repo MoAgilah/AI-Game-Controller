@@ -4,6 +4,8 @@
 #include "../Game/Timer.h"
 #include "../GameObjects/Object.h"
 
+class Player;
+
 class Enemy : public DynamicObject
 {
 public:
@@ -14,6 +16,8 @@ public:
 	bool GetActive() const final { return GetIsAlive() && Object::GetActive(); }
 
 	void Update(float deltaTime) override;
+
+	virtual bool IsPlayerAbove(Player* ply);
 
 	void Reset() override;
 

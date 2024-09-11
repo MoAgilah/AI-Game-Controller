@@ -115,16 +115,16 @@ void World::AddObject(const sf::Vector2f& pos)
 void World::AddEnemies()
 {
 	Tile* tmp;
-	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(13, 5);
-	m_enemies.push_back(std::make_unique<Koopa>(false, tmp->GetPosition()));
+	/*tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(13, 5);
+	m_enemies.push_back(std::make_unique<Koopa>(false, tmp->GetPosition()));*/
 
-	/*tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(32, 8);
-	m_enemies.push_back(std::make_unique<Bill>(false, tmp->GetPosition() - sf::Vector2f(0, -16)));*/
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(32, 8);
+	m_enemies.push_back(std::make_unique<Bill>(false, tmp->GetPosition() - sf::Vector2f(0, -16)));
 
-	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(35, 11);
+	/*tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(35, 11);
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp->GetPosition()));
 
-	/*tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(47, 11);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(47, 11);
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp->GetPosition()));
 
 	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(55, 6);

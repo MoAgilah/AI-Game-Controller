@@ -37,4 +37,5 @@ namespace pnt
 {
 	float distance(const Point& p1, const Point& p2);
 	float length(const Point& p);
+	Point Normalize(const Point& p);
 }

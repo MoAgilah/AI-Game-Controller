@@ -131,7 +131,7 @@ void SBox::Scatter()
 {
 	auto animSpr = GetAnimSpr();
 
-	animSpr->Move(0, GameConstants::GroundSpeed);
+	animSpr->Move(0, GameConstants::ObjectSpeed);
 
 	if (GetPosition().y > 600.f + (float)animSpr->GetFrameSize().y)
 	{
