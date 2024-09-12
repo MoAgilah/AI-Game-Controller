@@ -119,7 +119,7 @@ void World::AddEnemies()
 	m_enemies.push_back(std::make_unique<Koopa>(false, tmp->GetPosition()));*/
 
 	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(32, 8);
-	m_enemies.push_back(std::make_unique<Bill>(false, tmp->GetPosition() - sf::Vector2f(0, -22)));
+	m_enemies.push_back(std::make_unique<Bill>(false, tmp->GetPosition() + sf::Vector2f(0, 22)));
 
 	/*tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(35, 11);
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp->GetPosition()));
