@@ -9,13 +9,13 @@ Bill::Bill(bool dir, const sf::Vector2f& initPos)
 	SetInitialPosition(initPos);
 	SetPosition(GetInitialPosition());
 
-	m_colbody.front.setOutlineColor(sf::Color::Red);
-	m_colbody.front.setOutlineThickness(2.0f);
-	m_colbody.front.setFillColor(sf::Color::Transparent);
-	m_colbody.front.setRadius(73.f);
-	m_colbody.front.setOrigin(73.f, 73.f);
+	m_halfCap.circle.setOutlineColor(sf::Color::Red);
+	m_halfCap.circle.setOutlineThickness(2.0f);
+	m_halfCap.circle.setFillColor(sf::Color::Transparent);
+	m_halfCap.circle.setRadius(74.f);
+	m_halfCap.circle.setOrigin(74.f, 74.f);
 
-	m_colbody.back.Reset(sf::Vector2f(30, 58));
+	m_halfCap.box.Reset(sf::Vector2f(28, 58));
 	GetAABB()->Update(GetPosition());
 
 	UpdateBody();
@@ -24,37 +24,53 @@ Bill::Bill(bool dir, const sf::Vector2f& initPos)
 void Bill::Render(sf::RenderWindow& window)
 {
 	GetSprite()->Render(window);
-	window.draw(m_colbody.front);
-	m_colbody.back.Render(window);
+	window.draw(m_halfCap.circle);
+	m_halfCap.box.Render(window);
 }
 
 bool Bill::Intersects(Object* obj)
 {
-	return GetBody().Intersects(obj->GetAABB());
+	return m_halfCap.Intersects(obj->GetAABB());
 }
 
 bool Bill::IsPlayerAbove(Player* ply)
 {
-	Circle circle(ply->GetAABB(), 4);
-	Capsule capsule(GetAABB()->GetSide(Side::Top), 6);
+	auto cnt = m_halfCap.circle.getPosition();
+	auto rad = m_halfCap.circle.getRadius();
+	auto end = cnt - Point(0, rad);
+
+	Point mid = ((cnt - Point(rad, 0)) - cnt) + (end - cnt);
+	mid = pnt::Normalize(mid) * rad;
+	mid = cnt + mid;
+
+	bool col = false;
+
+	Circle circle(ply->GetAABB()->GetMax(), 4);
+	Capsule capsule(Line(mid, end), 6);
+	if (capsule.line.IsPointAboveLine(circle.center))
+		col = capsule.IntersectsCircle(circle);
+
+	circle = Circle(ply->GetAABB(), 4);
+	if (capsule.line.IsPointAboveLine(circle.center))
+		col = capsule.IntersectsCircle(circle);
+
 
 	if (capsule.line.IsPointAboveLine(circle.center))
-		return capsule.IntersectsCircle(circle) && GetID() != TexID::PPlant;
+		col = capsule.IntersectsCircle(circle) && GetID() != TexID::PPlant;
 
-	return false;
+	return col;
 }
 
 void Bill::UpdateBody()
 {
+	m_halfCap.circle.setPosition(GetPosition());
 	if (GetDirection())
 	{
-		m_colbody.front.setPosition(GetPosition());
-		m_colbody.back.Update(GetPosition() - sf::Vector2f(GetAABB()->GetExtents().x/2, 0));
+		m_halfCap.box.Update(GetPosition() - sf::Vector2f(GetAABB()->GetExtents().x/2 + 5, 0));
 	}
 	else
 	{
-		m_colbody.front.setPosition(GetPosition());
-		m_colbody.back.Update(GetPosition() + sf::Vector2f(GetAABB()->GetExtents().x/2, 0));
+		m_halfCap.box.Update(GetPosition() + sf::Vector2f(GetAABB()->GetExtents().x/2 + 5, 0));
 	}
 }
 
@@ -64,14 +80,14 @@ void Bill::Animate(float deltaTime)
 
 	if (HasLifes())
 	{
-		/*if (GetDirection())
+		if (GetDirection())
 		{
 			SetXVelocity(GameConstants::ObjectSpeed);
 		}
 		else
 		{
 			SetXVelocity(-GameConstants::ObjectSpeed);
-		}*/
+		}
 
 		if (GetXVelocity() != 0)
 		{
@@ -96,19 +112,19 @@ void Bill::Animate(float deltaTime)
 	CheckForHorizontalBounds(deltaTime);
 }
 
-bool Body::Intersects(AABB* box)
+bool HalfCapsule::Intersects(AABB* other)
 {
-	if (CircleToAABB(box))
+	if (CircleToAABB(other))
 		return true;
 
-	return back.Intersects(box);
+	return box.Intersects(other);
 }
 
-bool Body::CircleToAABB(AABB* box)
+bool HalfCapsule::CircleToAABB(AABB* box)
 {
-	float sqDist = box->SqDistPointAABB(front.getPosition());
+	float sqDist = box->SqDistPointAABB(circle.getPosition());
 
 	// Sphere and AABB intersect if the (squared) distance
 	// between them is less than the (squared) sphere radius
-	return sqDist <= std::pow(front.getRadius(),2);
+	return sqDist <= std::pow(circle.getRadius(),2);
 }

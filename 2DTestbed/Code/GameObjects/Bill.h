@@ -3,10 +3,10 @@
 #include <SFML/Graphics.hpp>
 #include "../GameObjects/Enemy.h"
 
-struct Body
+struct HalfCapsule
 {
-	sf::CircleShape front;
-	AABB back;
+	sf::CircleShape circle;
+	AABB box;
 
 	bool Intersects(AABB* box);
 
@@ -36,12 +36,10 @@ public:
 
 	void Die() final { SetTimeLeftActive(2.f); }
 
-	Body GetBody() const { return m_colbody; }
-
 private:
 
 	void UpdateBody();
 	void Animate(float deltaTime) final;
 
-	Body m_colbody;
+	HalfCapsule m_halfCap;
 };
