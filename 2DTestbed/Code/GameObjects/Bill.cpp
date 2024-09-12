@@ -35,9 +35,13 @@ bool Bill::Intersects(Object* obj)
 
 bool Bill::IsPlayerAbove(Player* ply)
 {
-	Circle circle(m_colbody.back.GetBox(), 4);
+	Circle circle(ply->GetAABB(), 4);
 	Capsule capsule(GetAABB()->GetSide(Side::Top), 6);
-	return capsule.IntersectsCircle(circle) && GetID() != TexID::PPlant;
+
+	if (capsule.line.IsPointAboveLine(circle.center))
+		return capsule.IntersectsCircle(circle) && GetID() != TexID::PPlant;
+
+	return false;
 }
 
 void Bill::UpdateBody()
@@ -60,14 +64,14 @@ void Bill::Animate(float deltaTime)
 
 	if (HasLifes())
 	{
-		if (GetDirection())
+		/*if (GetDirection())
 		{
 			SetXVelocity(GameConstants::ObjectSpeed);
 		}
 		else
 		{
 			SetXVelocity(-GameConstants::ObjectSpeed);
-		}
+		}*/
 
 		if (GetXVelocity() != 0)
 		{

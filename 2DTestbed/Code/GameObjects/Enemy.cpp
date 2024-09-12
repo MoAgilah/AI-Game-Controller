@@ -50,7 +50,11 @@ bool Enemy::IsPlayerAbove(Player* ply)
 {
 	Circle circle(ply->GetAABB(), 4);
 	Capsule capsule(GetAABB()->GetSide(Side::Top), 6);
-	return capsule.IntersectsCircle(circle) && GetID() != TexID::PPlant;
+
+	if (capsule.line.IsPointAboveLine(circle.center))
+		return capsule.IntersectsCircle(circle) && GetID() != TexID::PPlant;
+
+	return false;
 }
 
 void Enemy::Reset()

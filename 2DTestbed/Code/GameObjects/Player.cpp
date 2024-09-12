@@ -321,11 +321,7 @@ void Player::SetAirbourne(bool air)
 {
 	m_airbourne = air;
 	if (m_airbourne)
-	{
 		SetOnGround(false);
-		m_cantjump = true;
-		m_cantSpinJump = true;
-	}
 }
 
 void Player::ProcessInput()

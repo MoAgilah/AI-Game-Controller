@@ -88,6 +88,7 @@ void GroundedState::ProcessInputs()
 			}
 
 			m_player->SetAirbourne(true);
+			m_player->SetCantJump(true);
 			if (m_physCtrl->GetPhysicsType() != PhysicsType::rise)
 				m_physCtrl->SetAerial();
 		}
@@ -104,6 +105,7 @@ void GroundedState::ProcessInputs()
 			m_animSpr->UpdateAnimSpeed(0.5f);
 			m_animSpr->ChangeAnim(MarioAnims::SPINJUMP);
 			m_player->SetAirbourne(true);
+			m_player->SetCantSpinJump(true);
 			if (m_physCtrl->GetPhysicsType() != PhysicsType::rise)
 				m_physCtrl->SetAerial();
 		}
