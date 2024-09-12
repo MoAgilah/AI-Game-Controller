@@ -284,7 +284,7 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 				auto yOffset = GetYOffSet(GetXDist(line.start, circle.center),
 					line.DistY(),
 					line.start.y,
-					obj->GetAABB()->GetPosition().y,
+					circle.center.y,
 					tile->GetTileHeight());
 
 				obj->Move(sf::Vector2f(0, yOffset));
@@ -343,7 +343,7 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 				auto yOffset = GetYOffSet(GetXDist(circle.center, line.start),
 					line.DistY(),
 					line.start.y,
-					obj->GetAABB()->GetPosition().y,
+					circle.center.y,
 					tile->GetTileHeight());
 
 				obj->Move(sf::Vector2f(0, yOffset));
