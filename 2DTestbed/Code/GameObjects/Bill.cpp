@@ -2,7 +2,7 @@
 #include "../Game/GameManager.h"
 
 Bill::Bill(bool dir, const sf::Vector2f& initPos)
-	: Enemy(TexID::Bill, sf::Vector2f(60,60), 2)
+	: Enemy(TexID::Bill, sf::Vector2f(60,60), 1)
 {
 	SetInitialDirection(dir);
 	SetDirection(GetInitialDirection());
@@ -33,6 +33,13 @@ bool Bill::Intersects(Object* obj)
 	return GetBody().Intersects(obj->GetAABB());
 }
 
+bool Bill::IsPlayerAbove(Player* ply)
+{
+	Circle circle(m_colbody.back.GetBox(), 4);
+	Capsule capsule(GetAABB()->GetSide(Side::Top), 6);
+	return capsule.IntersectsCircle(circle) && GetID() != TexID::PPlant;
+}
+
 void Bill::UpdateBody()
 {
 	if (GetDirection())
@@ -51,17 +58,17 @@ void Bill::Animate(float deltaTime)
 {
 	SetPrevPosition(GetPosition());
 
-	/*if (GetDirection())
+	if (HasLifes())
 	{
-		SetXVelocity(GameConstants::ObjectSpeed);
-	}
-	else
-	{
-		SetXVelocity(-GameConstants::ObjectSpeed);
-	}*/
+		if (GetDirection())
+		{
+			SetXVelocity(GameConstants::ObjectSpeed);
+		}
+		else
+		{
+			SetXVelocity(-GameConstants::ObjectSpeed);
+		}
 
-	if (GetIsAlive())
-	{
 		if (GetXVelocity() != 0)
 		{
 			Move(GetXVelocity() * GameConstants::FPS * deltaTime, 0);
