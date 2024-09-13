@@ -365,7 +365,7 @@ void Player::ProcessInput()
 
 void Player::Input()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad4))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
 		m_keyStates[Keys::LEFT_KEY] = true;
 	}
@@ -375,7 +375,7 @@ void Player::Input()
 			m_keyStates[Keys::LEFT_KEY] = false;
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad6))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
 		m_keyStates[Keys::RIGHT_KEY] = true;
 	}
@@ -383,6 +383,26 @@ void Player::Input()
 	{
 		if (m_keyStates[Keys::RIGHT_KEY])
 			m_keyStates[Keys::RIGHT_KEY] = false;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	{
+		m_keyStates[Keys::UP_KEY] = true;
+	}
+	else
+	{
+		if (m_keyStates[Keys::UP_KEY])
+			m_keyStates[Keys::UP_KEY] = false;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	{
+		m_keyStates[Keys::DOWN_KEY] = true;
+	}
+	else
+	{
+		if (m_keyStates[Keys::DOWN_KEY])
+			m_keyStates[Keys::DOWN_KEY] = false;
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
@@ -413,26 +433,6 @@ void Player::Input()
 	{
 		if (m_keyStates[Keys::SJUMP_KEY])
 			m_keyStates[Keys::SJUMP_KEY] = false;
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad8))
-	{
-		m_keyStates[Keys::UP_KEY] = true;
-	}
-	else
-	{
-		if (m_keyStates[Keys::UP_KEY])
-			m_keyStates[Keys::UP_KEY] = false;
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad2))
-	{
-		m_keyStates[Keys::DOWN_KEY] = true;
-	}
-	else
-	{
-		if (m_keyStates[Keys::DOWN_KEY])
-			m_keyStates[Keys::DOWN_KEY] = false;
 	}
 }
 
