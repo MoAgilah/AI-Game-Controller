@@ -80,6 +80,9 @@ void Player::Update(float deltaTime)
 
 						if (GetSlideRight())
 							IncrementXVelocity(physCtrl->GetXAcceleration());
+
+						if (animSpr->GetCurrentAnim() != MarioAnims::IDLE)
+							animSpr->ChangeAnim(MarioAnims::IDLE);
 					}
 				}
 			}
@@ -99,7 +102,10 @@ void Player::Update(float deltaTime)
 			if (!GetXVelocity() && !GetYVelocity())
 			{
 				if (!m_keyStates[Keys::DOWN_KEY] && !m_keyStates[Keys::UP_KEY])
-					animSpr->ChangeAnim(MarioAnims::IDLE);
+				{
+					if (animSpr->GetCurrentAnim() != MarioAnims::IDLE)
+						animSpr->ChangeAnim(MarioAnims::IDLE);
+				}
 			}
 		}
 		else

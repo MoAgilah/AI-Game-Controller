@@ -142,7 +142,7 @@ void GroundedState::UpdateGroundAnimation()
 		break;
 	case XVelocity::sprinting:
 		m_animSpr->UpdateAnimSpeed(0.5f);
-		if (m_animSpr->GetCurrentAnim() != MarioAnims::MOVING)
+		if (m_animSpr->GetCurrentAnim() != MarioAnims::RUNNING)
 			m_animSpr->ChangeAnim(MarioAnims::RUNNING);
 		break;
 	}
