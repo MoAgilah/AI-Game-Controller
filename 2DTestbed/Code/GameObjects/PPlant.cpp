@@ -37,17 +37,11 @@ void PPlant::Animate(float deltaTime)
 
 	if (GetDirection())
 	{
-		if (physCtrl->GetPhysicsType() != PhysicsType::drop)
-			physCtrl->SetFalling();
-
-		IncrementYVelocity(physCtrl->GetYAcceleration());
+		SetYVelocity(GameConstants::ObjectSpeed);
 	}
 	else
 	{
-		if (physCtrl->GetPhysicsType() != PhysicsType::rise)
-			physCtrl->SetAerial();
-
-		DecrementYVelocity(physCtrl->GetYAcceleration());
+		SetYVelocity(-GameConstants::ObjectSpeed);
 	}
 
 	if (GetYVelocity() != 0)
@@ -72,6 +66,6 @@ void PPlant::Animate(float deltaTime)
 	if (GetAirTimer()->CheckEnd())
 	{
 		SetAirbourne(false);
-		SetAirTime(GameConstants::MaxAirTime);
+		SetAirTime(GameConstants::MaxAirTime+.3f);
 	}
 }

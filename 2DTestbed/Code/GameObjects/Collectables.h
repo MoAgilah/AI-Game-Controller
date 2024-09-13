@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../GameObjects/Object.h"
+#include "../Game/Timer.h"
 
 class Player;
 
@@ -104,12 +105,8 @@ public:
 
 	void Collect(Player* player) final;
 
-	float GetAirTime() const { return m_travelTime; }
-	void SetAirTime(float val) { m_travelTime = val; }
-	void IncAirTime(float val) { m_travelTime += val; }
-
 private:
 
-	float m_travelTime = 0;
 	const float c_maxTravelTime = 2.15f;
+	Timer m_airTimer;
 };

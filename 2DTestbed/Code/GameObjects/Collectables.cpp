@@ -150,11 +150,10 @@ void Mushroom::Collect(Player* player)
 }
 
 Goal::Goal(const sf::Vector2f& initPos)
-	: DynamicCollectable(TexID::Goal, sf::Vector2f(25, 8), initPos)
+	: DynamicCollectable(TexID::Goal, sf::Vector2f(25, 8), initPos), m_airTimer(0)
 {
 	SetInitialDirection(true);
 	SetDirection(GetInitialDirection());
-	SetAirTime(0);
 	SetOnGround(true);
 }
 
@@ -164,12 +163,12 @@ void Goal::Update(float deltaTime)
 
 	if (GetOnGround())
 	{
-		IncAirTime(-deltaTime);
-		SetYVelocity(-2.5);
+		m_airTimer.Update(deltaTime);
+		SetYVelocity(-GameConstants::ObjectSpeed);
 	}
 	else
 	{
-		SetYVelocity(2.5);
+		SetYVelocity(GameConstants::ObjectSpeed);
 	}
 
 	if (GetYVelocity() != 0)
@@ -178,9 +177,9 @@ void Goal::Update(float deltaTime)
 		GameManager::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
 	}
 
-	if (GetAirTime() < 0)
+	if (m_airTimer.CheckEnd())
 	{
-		SetAirTime(c_maxTravelTime);
+		m_airTimer.SetTime(c_maxTravelTime);
 		SetOnGround(false);
 	}
 }

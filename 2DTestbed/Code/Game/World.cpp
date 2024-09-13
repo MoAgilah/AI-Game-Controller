@@ -148,7 +148,7 @@ void World::AddEnemies()
 	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(138, 11);
 	m_enemies.push_back(std::make_unique<Rex>(false, tmp->GetPosition()));
 
-	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(139, 9);
+	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(139, 8);
 	m_enemies.push_back(std::make_unique<PPlant>(tmp->GetPosition() + sf::Vector2f(18, 16)));
 
 	tmp = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(172, 11);

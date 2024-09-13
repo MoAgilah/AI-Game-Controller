@@ -16,7 +16,7 @@ void DebugState::Initialise()
 
 	world->AddObjects();
 	world->AddEnemies();
-	world->AddForeGroundSprites();
+	//world->AddForeGroundSprites();
 }
 
 void DebugState::Pause()
