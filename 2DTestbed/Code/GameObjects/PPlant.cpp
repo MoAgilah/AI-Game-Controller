@@ -15,7 +15,9 @@ PPlant::PPlant(const sf::Vector2f& initPos)
 
 void PPlant::Reset()
 {
-	GetAnimSpr()->ChangeAnim(PPlantAnims::SINK);
+	auto animSpr = GetAnimSpr();
+	if (animSpr->GetCurrentAnim() != PPlantAnims::SINK)
+		animSpr->ChangeAnim(PPlantAnims::SINK);
 	Enemy::Reset();
 }
 

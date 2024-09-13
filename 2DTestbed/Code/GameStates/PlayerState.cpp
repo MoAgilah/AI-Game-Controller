@@ -6,7 +6,8 @@
 
 void GroundedState::Initialise()
 {
-	m_animSpr->ChangeAnim(MarioAnims::IDLE);
+	if (m_animSpr->GetCurrentAnim() != MarioAnims::IDLE)
+		m_animSpr->ChangeAnim(MarioAnims::IDLE);
 }
 
 void GroundedState::Resume()
@@ -55,7 +56,10 @@ void GroundedState::ProcessInputs()
 	}
 
 	if (keyStates[Keys::UP_KEY])
-		m_animSpr->ChangeAnim(MarioAnims::LOOKUP);
+	{
+		if (m_animSpr->GetCurrentAnim() != MarioAnims::LOOKUP)
+			m_animSpr->ChangeAnim(MarioAnims::LOOKUP);
+	}
 
 	if (keyStates[Keys::RUN_KEY])
 	{
@@ -103,7 +107,8 @@ void GroundedState::ProcessInputs()
 		if (m_player->GetOnGround() && !m_player->GetCantSpinJump())
 		{
 			m_animSpr->UpdateAnimSpeed(0.5f);
-			m_animSpr->ChangeAnim(MarioAnims::SPINJUMP);
+			if (m_animSpr->GetCurrentAnim() != MarioAnims::SPINJUMP)
+				m_animSpr->ChangeAnim(MarioAnims::SPINJUMP);
 			m_player->SetAirbourne(true);
 			m_player->SetCantSpinJump(true);
 			if (m_physCtrl->GetPhysicsType() != PhysicsType::rise)
@@ -152,7 +157,8 @@ void GroundedState::Slide(bool dir)
 {
 	m_player->SetXVelocity(m_player->GetXVelocity() / 2);
 	m_player->DecrementXVelocity((dir ? -1.f : 1.f) * 0.3125f);
-	m_animSpr->ChangeAnim(MarioAnims::SKID);
+	if (m_animSpr->GetCurrentAnim() != MarioAnims::SKID)
+		m_animSpr->ChangeAnim(MarioAnims::SKID);
 	m_turningAround = true;
 	m_turnTimer.SetTime(0.2f);
 }
@@ -203,12 +209,14 @@ void AirborneState::Update(float deltaTime)
 void CrouchingState::Initialise()
 {
 	m_player->SetXVelocity(0);
-	m_player->GetAnimSpr()->ChangeAnim(MarioAnims::CROUCH);
+	if (m_animSpr->GetCurrentAnim() != MarioAnims::CROUCH)
+		m_animSpr->ChangeAnim(MarioAnims::CROUCH);
 }
 
 void CrouchingState::Resume()
 {
-	m_animSpr->ChangeAnim(MarioAnims::CROUCH);
+	if (m_animSpr->GetCurrentAnim() != MarioAnims::CROUCH)
+		m_animSpr->ChangeAnim(MarioAnims::CROUCH);
 	m_player->SetXVelocity(0);
 	PlayerState::Resume();
 }
@@ -231,7 +239,8 @@ void CrouchingState::ProcessInputs()
 	{
 		if (!m_player->GetCantSpinJump())
 		{
-			m_player->GetAnimSpr()->ChangeAnim(MarioAnims::SPINJUMP);
+			if (m_animSpr->GetCurrentAnim() != MarioAnims::SPINJUMP)
+				m_animSpr->ChangeAnim(MarioAnims::SPINJUMP);
 			m_player->SetAirbourne(true);
 		}
 	}
@@ -248,7 +257,8 @@ void CrouchingState::Update(float deltaTime)
 
 void DieingState::Initialise()
 {
-	m_animSpr->ChangeAnim(MarioAnims::DIE);
+	if (m_animSpr->GetCurrentAnim() != MarioAnims::DIE)
+		m_animSpr->ChangeAnim(MarioAnims::DIE);
 	m_player->SetAirbourne(true);
 }
 

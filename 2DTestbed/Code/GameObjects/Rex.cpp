@@ -15,7 +15,10 @@ Rex::Rex(bool dir, const sf::Vector2f& initPos)
 
 void Rex::Reset()
 {
-	GetAnimSpr()->ChangeAnim(RexAnims::WALKTALL);
+
+	auto animSpr = GetAnimSpr();
+	if (animSpr->GetCurrentAnim() != RexAnims::WALKTALL)
+		animSpr->ChangeAnim(RexAnims::WALKTALL);
 	GetAABB()->Reset(sf::Vector2f(10, 28));
 	Enemy::Reset();
 	GetAABB()->Update(GetPosition());
@@ -23,7 +26,9 @@ void Rex::Reset()
 
 void Rex::Die()
 {
-	GetAnimSpr()->ChangeAnim(RexAnims::FLATTEN);
+	auto animSpr = GetAnimSpr();
+	if (animSpr->GetCurrentAnim() != RexAnims::FLATTEN)
+		animSpr->ChangeAnim(RexAnims::FLATTEN);
 	SetTimeLeftActive(1.f);
 }
 
@@ -31,7 +36,9 @@ void Rex::DecrementLife()
 {
 	if (Tall())
 	{
-		GetAnimSpr()->ChangeAnim(RexAnims::TRANSITION);
+		auto animSpr = GetAnimSpr();
+		if (animSpr->GetCurrentAnim() != RexAnims::TRANSITION)
+			animSpr->ChangeAnim(RexAnims::TRANSITION);
 		GetAABB()->Reset(sf::Vector2f(14, 16));
 		GetAABB()->Move((GetDirection() ? -1.f : 1.f) * 3.f, m_heightDiff);
 		m_transitioning = true;
@@ -53,7 +60,8 @@ void Rex::Animate(float deltaTime)
 	{
 		if (animSpr->PlayedNumTimes(1))
 		{
-			animSpr->ChangeAnim(RexAnims::WALKSHORT);
+			if (animSpr->GetCurrentAnim() != RexAnims::WALKSHORT)
+				animSpr->ChangeAnim(RexAnims::WALKSHORT);
 			m_transitioning = false;
 		}
 	}

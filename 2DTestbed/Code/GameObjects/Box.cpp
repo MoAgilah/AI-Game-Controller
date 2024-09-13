@@ -41,7 +41,8 @@ void QBox::Update(float deltaTime)
 
 		if (GetJustHit())
 		{
-			animSpr->ChangeAnim(QBoxAnims::DUD);
+			if (animSpr->GetCurrentAnim() != QBoxAnims::DUD)
+				animSpr->ChangeAnim(QBoxAnims::DUD);
 			SetCanHit(false);
 			SetJustHit(false);
 		}
@@ -50,7 +51,9 @@ void QBox::Update(float deltaTime)
 
 void QBox::Reset()
 {
-	GetAnimSpr()->ChangeAnim(QBoxAnims::ROTATE);
+	auto animSpr = GetAnimSpr();
+	if (animSpr->GetCurrentAnim() != QBoxAnims::ROTATE)
+		animSpr->ChangeAnim(QBoxAnims::ROTATE);
 	Box::Reset();
 }
 
@@ -73,7 +76,8 @@ void SBox::Update(float deltaTime)
 				animSpr->SetTexture(TexID::BreakingBox);
 				animSpr->SetFrameData(2, 9, { 9, 9 });
 				animSpr->SetScale(sf::Vector2f(1, 1));
-				animSpr->ChangeAnim(ShatterAnims::SCATTER);
+				if (animSpr->GetCurrentAnim() != ShatterAnims::SCATTER)
+					animSpr->ChangeAnim(ShatterAnims::SCATTER);
 				animSpr->SetShouldLoop(false);
 			}
 
@@ -87,14 +91,16 @@ void SBox::Update(float deltaTime)
 				animSpr->Update(deltaTime);
 				if (animSpr->PlayedNumTimes(2))
 				{
-					animSpr->ChangeAnim(SBoxAnims::WAIT);
+					if (animSpr->GetCurrentAnim() != SBoxAnims::WAIT)
+						animSpr->ChangeAnim(SBoxAnims::WAIT);
 					SetCanHit(true);
 				}
 			}
 
 			if (GetJustHit())
 			{
-				animSpr->ChangeAnim(SBoxAnims::SPIN);
+				if (animSpr->GetCurrentAnim() != SBoxAnims::SPIN)
+					animSpr->ChangeAnim(SBoxAnims::SPIN);
 				SetCanHit(false);
 				SetJustHit(false);
 			}
@@ -123,7 +129,9 @@ void SBox::Reset()
 		animSpr->SetTexture(TexID::SBox);
 		animSpr->SetFrameData(2, 4, { 1, 4 });
 	}
-	animSpr->ChangeAnim(SBoxAnims::WAIT);
+
+	if (animSpr->GetCurrentAnim() != SBoxAnims::WAIT)
+		animSpr->ChangeAnim(SBoxAnims::WAIT);
 	Box::Reset();
 }
 
@@ -140,7 +148,8 @@ void SBox::Scatter()
 
 	if (animSpr->PlayedOnce())
 	{
-		animSpr->ChangeAnim(ShatterAnims::DROP);
+		if (animSpr->GetCurrentAnim() != ShatterAnims::DROP)
+			animSpr->ChangeAnim(ShatterAnims::DROP);
 		animSpr->SetShouldLoop(true);
 	}
 }

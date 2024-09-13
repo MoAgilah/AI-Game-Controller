@@ -207,7 +207,9 @@ void Player::Reset()
 	SetInitialPosition(m_spawnLoc);
 	DynamicObject::Reset();
 	SetIsSuper(false);
-	GetAnimSpr()->ChangeAnim(MarioAnims::IDLE);
+	auto animSpr = GetAnimSpr();
+	if (animSpr->GetCurrentAnim() != MarioAnims::IDLE)
+		GetAnimSpr()->ChangeAnim(MarioAnims::IDLE);
 
 	m_crouched = false;
 	m_alive = true;

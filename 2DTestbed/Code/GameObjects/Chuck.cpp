@@ -16,13 +16,17 @@ Chuck::Chuck(bool dir, const sf::Vector2f& initPos)
 
 void Chuck::Reset()
 {
-	GetAnimSpr()->ChangeAnim(ChuckAnims::BOUNCE);
+	auto animSpr = GetAnimSpr();
+	if (animSpr->GetCurrentAnim() != ChuckAnims::BOUNCE)
+		animSpr->ChangeAnim(ChuckAnims::BOUNCE);
 	Enemy::Reset();
 }
 
 void Chuck::Die()
 {
-	GetAnimSpr()->ChangeAnim(ChuckAnims::WHIPLASH);
+	auto animSpr = GetAnimSpr();
+	if (animSpr->GetCurrentAnim() != ChuckAnims::WHIPLASH)
+		animSpr->ChangeAnim(ChuckAnims::WHIPLASH);
 	SetTimeLeftActive(0.5f);
 }
 
@@ -35,7 +39,9 @@ void Chuck::DecrementLife()
 	{
 		m_tookHit = true;
 		SetInvulnerability(true);
-		GetAnimSpr()->ChangeAnim(ChuckAnims::HIT);
+		auto animSpr = GetAnimSpr();
+		if (animSpr->GetCurrentAnim() != ChuckAnims::HIT)
+			animSpr->ChangeAnim(ChuckAnims::HIT);
 	}
 }
 
@@ -79,7 +85,8 @@ void Chuck::Animate(float deltaTime)
 
 				DecrementYVelocity(physCtrl->GetYAcceleration());
 				GetAirTimer()->Update(deltaTime);
-				animSpr->ChangeAnim(ChuckAnims::LEAP);
+				if (animSpr->GetCurrentAnim() != ChuckAnims::LEAP)
+					animSpr->ChangeAnim(ChuckAnims::LEAP);
 			}
 			else
 			{
@@ -98,7 +105,8 @@ void Chuck::Animate(float deltaTime)
 
 		if (GetAirTimer()->CheckEnd())
 		{
-			animSpr->ChangeAnim(ChuckAnims::CLAP);
+			if (animSpr->GetCurrentAnim() != ChuckAnims::CLAP)
+				animSpr->ChangeAnim(ChuckAnims::CLAP);
 			SetAirbourne(false);
 		}
 
@@ -106,7 +114,8 @@ void Chuck::Animate(float deltaTime)
 		{
 			if (!GetAirbourne())
 			{
-				animSpr->ChangeAnim(ChuckAnims::BOUNCE);
+				if (animSpr->GetCurrentAnim() != ChuckAnims::BOUNCE)
+					animSpr->ChangeAnim(ChuckAnims::BOUNCE);
 				m_waitTimer.SetTime(0.5f);
 				SetAirTime(0.75f);
 				SetAirbourne(true);

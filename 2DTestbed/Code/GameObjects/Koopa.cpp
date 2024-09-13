@@ -10,20 +10,24 @@ Koopa::Koopa(bool dir, const sf::Vector2f& initPos)
 	SetInitialPosition(initPos);
 	SetPosition(GetInitialPosition());
 	GetAABB()->Update(sf::Vector2f(GetPosition().x, GetPosition().y));
-	AnimatedSprite* animSpr = GetAnimSpr();
+	auto animSpr = GetAnimSpr();
 	animSpr->SetFrames({ 2, 3, 1 });
 	animSpr->ChangeAnim(KoopaAnims::WALK);
 }
 
 void Koopa::Reset()
 {
-	GetAnimSpr()->ChangeAnim(KoopaAnims::WALK);
+	auto animSpr = GetAnimSpr();
+	if (animSpr->GetCurrentAnim() != KoopaAnims::WALK)
+		animSpr->ChangeAnim(KoopaAnims::WALK);
 	Enemy::Reset();
 }
 
 void Koopa::Die()
 {
-	GetAnimSpr()->ChangeAnim(KoopaAnims::COMPRESS);
+	auto animSpr = GetAnimSpr();
+	if (animSpr->GetCurrentAnim() != KoopaAnims::COMPRESS)
+		animSpr->ChangeAnim(KoopaAnims::COMPRESS);
 	SetTimeLeftActive(0.5f);
 }
 
@@ -73,7 +77,7 @@ void Koopa::Animate(float deltaTime)
 		}
 		else
 		{
-			if (animSpr->GetCurrentAnim() == KoopaAnims::NOSEDIVE)
+			if (animSpr->GetCurrentAnim() == KoopaAnims::WALK)
 				animSpr->ChangeAnim(KoopaAnims::WALK);
 
 			SetSlideLeft(false);
