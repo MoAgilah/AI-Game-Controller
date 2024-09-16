@@ -1,5 +1,4 @@
 #include "../Game/GameManager.h"
-#include "../Controller/ControllerManager.h"
 #include "../Game/Constants.h"
 #include "../GameStates/MainState.h"
 #include "../GameStates/DebugState.h"
@@ -11,11 +10,12 @@ GameManager::GameManager()
 {
 	m_instance = this;
 	m_collisionManager = std::make_unique<CollisionManager>();
+	m_aiController = std::make_unique<AIController>();
 
 	if (GameConstants::Automated)
-		m_player.reset(ControllerManager::GetCtrlMgr()->GetController()->GetCurrentPlayer());
+		m_player = m_aiController->GetCurrentPlayer();
 	else
-		m_player = std::make_unique<Player>(m_collisionManager->GetTile(2, 11)->GetPosition());
+		m_player =  new Player(m_collisionManager->GetTile(2, 11)->GetPosition());
 
 	m_world = std::make_unique<World>();
 
@@ -26,6 +26,13 @@ GameManager::~GameManager()
 {
 	if (m_instance)
 		m_instance = nullptr;
+
+	if (!GameConstants::Automated)
+	{
+		if (m_player)
+			delete m_player;
+		m_player = nullptr;
+	}
 }
 
 void GameManager::CheckInView()
@@ -50,8 +57,8 @@ void GameManager::Render(sf::RenderWindow& window)
 
 void GameManager::ChangePlayer(Player * ply)
 {
-	m_player.reset(ply);
-	m_collisionManager->ReplacePlayer(m_player.get());
+	m_player = ply;
+	m_collisionManager->ReplacePlayer(m_player);
 }
 
 void GameManager::ChangeWorld(World* world)

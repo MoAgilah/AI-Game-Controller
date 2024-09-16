@@ -11,6 +11,7 @@
 #include "World.h"
 #include "../GameObjects/Player.h"
 #include "../Collisions/CollisionManager.h"
+#include "../Controller/AIController.h"
 #include "../GameStates/GameStateMgr.h"
 
 class GameManager
@@ -20,7 +21,7 @@ public:
 	~GameManager();
 	GameManager(const GameManager& obj) = delete;
 
-	static GameManager* GetGameMgr() { return m_instance; }
+	static GameManager* Get() { return m_instance; }
 
 	void CheckInView();
 
@@ -28,7 +29,7 @@ public:
 	void Render(sf::RenderWindow& window);
 
 	void ChangePlayer(Player* ply);
-	Player* GetPlayer() { return m_player.get(); }
+	Player* GetPlayer() { return m_player; }
 
 	void ChangeWorld(World* world);
 	World* GetWorld() { return m_world.get(); }
@@ -39,6 +40,7 @@ public:
 	FontManager& GetFontMgr() { return m_fontManager; }
 	TextureManager& GetTextureMgr() { return m_texureManager; }
 	CollisionManager* GetCollisionMgr() { return m_collisionManager.get(); }
+	AIController* GetAIController() { return m_aiController.get(); }
 
 private:
 
@@ -49,7 +51,8 @@ private:
 	FontManager							m_fontManager;
 	TextureManager						m_texureManager;
 	GameStateMgr						m_stateManager;
-	std::unique_ptr<Player>				m_player;
+	Player*								m_player;
 	std::unique_ptr<World>				m_world;
 	std::unique_ptr<CollisionManager>	m_collisionManager;
+	std::unique_ptr<AIController>		m_aiController;
 };

@@ -35,7 +35,7 @@ void Koopa::Animate(float deltaTime)
 {
 	AnimatedSprite* animSpr = GetAnimSpr();
 	PhysicsController* physCtrl = GetPhysicsController();
-	CollisionManager* colMgr = GameManager::GetGameMgr()->GetCollisionMgr();
+	CollisionManager* colMgr = GameManager::Get()->GetCollisionMgr();
 
 	animSpr->Update(deltaTime);
 

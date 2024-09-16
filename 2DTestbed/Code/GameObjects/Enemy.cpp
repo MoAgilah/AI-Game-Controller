@@ -39,7 +39,7 @@ void Enemy::Update(float deltaTime)
 			m_resetTimer.Update(deltaTime);
 			if (m_resetTimer.CheckEnd())
 			{
-				if (GameManager::GetGameMgr()->GetCamera().CheckVerticalBounds(GetAABB()))
+				if (GameManager::Get()->GetCamera().CheckVerticalBounds(GetAABB()))
 					Reset();
 			}
 		}

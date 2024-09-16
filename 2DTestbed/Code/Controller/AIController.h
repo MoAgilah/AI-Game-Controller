@@ -7,11 +7,11 @@
 
 class Player;
 class AutomatedPlayer;
-class Controller
+class AIController
 {
 public:
-	Controller();
-	~Controller() = default;
+	AIController();
+	~AIController() = default;
 
 	bool Update();
 

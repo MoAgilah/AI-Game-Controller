@@ -102,7 +102,7 @@ Mushroom::Mushroom(const sf::Vector2f& initPos)
 
 void Mushroom::Update(float deltaTime)
 {
-	CollisionManager* colMgr = GameManager::GetGameMgr()->GetCollisionMgr();
+	CollisionManager* colMgr = GameManager::Get()->GetCollisionMgr();
 	PhysicsController* physCtrl = GetPhysicsController();
 
 	SetPrevPosition(GetPosition());
@@ -174,7 +174,7 @@ void Goal::Update(float deltaTime)
 	if (GetYVelocity() != 0)
 	{
 		Move(0, GetYVelocity() * GameConstants::FPS * deltaTime);
-		GameManager::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
+		GameManager::Get()->GetCollisionMgr()->ProcessCollisions(this);
 	}
 
 	if (m_airTimer.CheckEnd())

@@ -1,8 +1,5 @@
 #include "DebugState.h"
-#include "../Collisions/Grid.h"
-#include "../Controller/ControllerManager.h"
 #include "../Game/Constants.h"
-#include "../GameObjects/Player.h"
 
 DebugState::DebugState(GameManager* gameMgr)
 	: GameState("Debug")
@@ -35,7 +32,7 @@ void DebugState::Update(float deltaTime)
 	m_gameMgr->GetTimer().Update(deltaTime);
 
 	if (GameConstants::Automated)
-		ControllerManager::GetCtrlMgr()->GetController()->Update();
+		GameManager::Get()->GetAIController()->Update();
 
 	m_gameMgr->CheckInView();
 	m_gameMgr->GetPlayer()->Update(deltaTime);

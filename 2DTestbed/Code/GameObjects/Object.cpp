@@ -11,7 +11,7 @@ Object::Object(TexID sprId, const sf::Vector2f& boxSize)
 	m_sprite = std::make_unique<Sprite>(sprId);
 	m_aabb = std::make_unique<AABB>(boxSize);
 	m_objectID = s_objectNum++;
-	GameManager::GetGameMgr()->GetCollisionMgr()->AddCollidable(this);
+	GameManager::Get()->GetCollisionMgr()->AddCollidable(this);
 }
 
 Object::Object(AnimatedSprite* sprite, const sf::Vector2f& boxSize)
@@ -20,7 +20,7 @@ Object::Object(AnimatedSprite* sprite, const sf::Vector2f& boxSize)
 	m_sprite.reset(std::move(sprite));
 	m_aabb = std::make_unique<AABB>(boxSize);
 	m_objectID = s_objectNum++;
-	GameManager::GetGameMgr()->GetCollisionMgr()->AddCollidable(this);
+	GameManager::Get()->GetCollisionMgr()->AddCollidable(this);
 }
 
 void Object::Render(sf::RenderWindow& window)

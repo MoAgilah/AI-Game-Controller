@@ -111,10 +111,7 @@
     <ClCompile Include="Code\Controller\ANNView.cpp">
       <Filter>Source Files\Controller</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Controller\Controller.cpp">
-      <Filter>Source Files\Controller</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Controller\ControllerManager.cpp">
+    <ClCompile Include="Code\Controller\AIController.cpp">
       <Filter>Source Files\Controller</Filter>
     </ClCompile>
     <ClCompile Include="Code\Game\Camera.cpp">
@@ -251,10 +248,7 @@
     <ClInclude Include="Code\Controller\ANNView.h">
       <Filter>Header Files\Controller</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Controller\Controller.h">
-      <Filter>Header Files\Controller</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Controller\ControllerManager.h">
+    <ClInclude Include="Code\Controller\AIController.h">
       <Filter>Header Files\Controller</Filter>
     </ClInclude>
     <ClInclude Include="Code\Game\Camera.h">

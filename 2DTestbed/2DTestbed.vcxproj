@@ -163,8 +163,7 @@
     <ClCompile Include="Code\Collisions\Grid.cpp" />
     <ClCompile Include="Code\Collisions\Tile.cpp" />
     <ClCompile Include="Code\Controller\ANNView.cpp" />
-    <ClCompile Include="Code\Controller\Controller.cpp" />
-    <ClCompile Include="Code\Controller\ControllerManager.cpp" />
+    <ClCompile Include="Code\Controller\AIController.cpp" />
     <ClCompile Include="Code\Drawables\Sprite.cpp" />
     <ClCompile Include="Code\GameObjects\Box.cpp" />
     <ClCompile Include="Code\GameObjects\Collectables.cpp" />
@@ -207,8 +206,7 @@
     <ClInclude Include="Code\Collisions\Grid.h" />
     <ClInclude Include="Code\Collisions\Tile.h" />
     <ClInclude Include="Code\Controller\ANNView.h" />
-    <ClInclude Include="Code\Controller\Controller.h" />
-    <ClInclude Include="Code\Controller\ControllerManager.h" />
+    <ClInclude Include="Code\Controller\AIController.h" />
     <ClInclude Include="Code\Drawables\Sprite.h" />
     <ClInclude Include="Code\GameObjects\Box.h" />
     <ClInclude Include="Code\GameObjects\Collectables.h" />

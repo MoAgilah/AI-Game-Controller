@@ -1,9 +1,6 @@
 #include <SFML/Graphics.hpp>
-#include "Controller/ANNView.h"
-#include "Controller/ControllerManager.h"
 #include "Game/Constants.h"
 #include "Game/GameManager.h"
-#include "GameObjects/Player.h"
 
 int main()
 {
@@ -13,10 +10,9 @@ int main()
 	window.setFramerateLimit((unsigned int)GameConstants::FPS);
 
 	GameManager gameMgr;
-	ControllerManager ctrlMgr;
 
-	gameMgr.GetLogger().AddDebugLog("Current Generation: " + std::to_string(ctrlMgr.GetController()->GetCurrentGeneration()));
-	gameMgr.GetLogger().AddExperimentLog("Current Generation: " + std::to_string(ctrlMgr.GetController()->GetCurrentGeneration()));
+	gameMgr.GetLogger().AddDebugLog("Current Generation: " + std::to_string(gameMgr.GetAIController()->GetCurrentGeneration()));
+	gameMgr.GetLogger().AddExperimentLog("Current Generation: " + std::to_string(gameMgr.GetAIController()->GetCurrentGeneration()));
 	gameMgr.GetLogger().AddExperimentLog(gameMgr.GetLogger().GetTimeStamp());
 
 	sf::Clock clock;
@@ -39,7 +35,7 @@ int main()
 		float frameTime = newTime - currentTime;
 		currentTime = newTime;
 
-		ctrlMgr.GetController()->GetAnnView()->Update();
+		gameMgr.GetAIController()->GetAnnView()->Update();
 
 		window.clear(sf::Color::White);
 
@@ -48,7 +44,7 @@ int main()
 			float deltaTime = std::min(frameTime, dt);
 
 			//do update
-			ctrlMgr.GetController()->GetGridInputs();
+			gameMgr.GetAIController()->GetGridInputs();
 
 			gameMgr.Update(deltaTime);
 			//end update
@@ -60,7 +56,7 @@ int main()
 		//do render
 		gameMgr.Render(window);
 		if (GameConstants::DControl)
-			ctrlMgr.GetController()->GetAnnView()->Render(window);
+			gameMgr.GetAIController()->GetAnnView()->Render(window);
 		//end render
 
 		window.display();

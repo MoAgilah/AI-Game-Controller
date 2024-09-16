@@ -1,8 +1,5 @@
 #include "MainState.h"
-#include "../Collisions/Grid.h"
-#include "../Controller/ControllerManager.h"
 #include "../Game/Constants.h"
-#include "../GameObjects/Player.h"
 
 MainState::MainState(GameManager* gameMgr)
 	: GameState("Main")
@@ -35,7 +32,7 @@ void MainState::Update(float deltaTime)
 	m_gameMgr->GetTimer().Update(deltaTime);
 
 	if (GameConstants::Automated)
-		ControllerManager::GetCtrlMgr()->GetController()->Update();
+		GameManager::Get()->GetAIController()->Update();
 
 	m_gameMgr->CheckInView();
 

@@ -1,7 +1,6 @@
 #include "CollisionManager.h"
 #include <format>
 #include <algorithm>
-#include "../Controller/ControllerManager.h"
 #include "../Game/Constants.h"
 #include "../Game/GameManager.h"
 #include "../GameObjects/Bill.h"
@@ -466,7 +465,7 @@ void CollisionManager::PlayerToQBoxResolutions(Player* ply, QBox* box)
 				if (box->GetCanHit())//if not yet been hit
 				{
 					box->SetJustHit(true);
-					GameManager::GetGameMgr()->GetWorld()->AddObject(sf::Vector2f(box->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * GameConstants::Scale.y) - (box->GetOrigin().y * GameConstants::Scale.y) + 4.f));
+					GameManager::Get()->GetWorld()->AddObject(sf::Vector2f(box->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * GameConstants::Scale.y) - (box->GetOrigin().y * GameConstants::Scale.y) + 4.f));
 					//ply->UpdateFitness(100);
 				}
 			}

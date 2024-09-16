@@ -47,7 +47,7 @@ void PPlant::Animate(float deltaTime)
 	if (GetYVelocity() != 0)
 	{
 		Move(0, GetYVelocity() * GameConstants::FPS * deltaTime);
-		GameManager::GetGameMgr()->GetCollisionMgr()->ProcessCollisions(this);
+		GameManager::Get()->GetCollisionMgr()->ProcessCollisions(this);
 	}
 
 	if (GetAirbourne())

@@ -21,7 +21,7 @@ Camera::Camera()
 void Camera::Update()
 {
 	//scroll the screen view with the player
-	float posX = GameManager::GetGameMgr()->GetPlayer()->GetPosition().x - GameConstants::ScreenDim.x * 0.5f;
+	float posX = GameManager::Get()->GetPlayer()->GetPosition().x - GameConstants::ScreenDim.x * 0.5f;
 
 	if (posX < 0)
 		posX = 0;

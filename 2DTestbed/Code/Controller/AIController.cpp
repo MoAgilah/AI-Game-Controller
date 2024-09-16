@@ -1,16 +1,16 @@
-#include "../Controller/Controller.h"
+#include "../Controller/AIController.h"
 #include <format>
 #include "../Game/Constants.h"
 #include "../Game/GameManager.h"
 #include "../GameObjects/Player.h"
 
-Controller::Controller()
+AIController::AIController()
 {
 	m_AnnView = std::make_unique<ANNView>();
 
 	if (GameConstants::Automated)
 	{
-		Point startPos = GameManager::GetGameMgr()->GetCollisionMgr()->GetTile(2, 11)->GetPosition();
+		Point startPos = GameManager::Get()->GetCollisionMgr()->GetTile(2, 11)->GetPosition();
 		for (int i = 0; i< CParams::iNumPlayers; ++i)
 			m_players.push_back(std::make_shared<AutomatedPlayer>(startPos));
 
@@ -30,7 +30,7 @@ Controller::Controller()
 	m_inputs.resize(255);
 }
 
-bool Controller::Update()
+bool AIController::Update()
 {
 	if (m_players[m_currPlayer]->GetPosition().x > m_players[m_currPlayer]->GetPrevPosition().x)
 	{
@@ -43,8 +43,8 @@ bool Controller::Update()
 
 		if (m_currPlayer < m_players.size())
 		{
-			GameManager::GetGameMgr()->ChangePlayer(m_players[m_currPlayer].get());
-			GameManager::GetGameMgr()->GetPlayer()->Reset();
+			GameManager::Get()->ChangePlayer(m_players[m_currPlayer].get());
+			GameManager::Get()->GetPlayer()->Reset();
 		}
 	}
 
@@ -56,7 +56,7 @@ bool Controller::Update()
 		//and each one has a coefficient)
 		for (int swp = 0; swp < m_players.size(); ++swp)
 		{
-			GameManager::GetGameMgr()->GetLogger().AddExperimentLog(std::format("Player: {}", swp), false);
+			GameManager::Get()->GetLogger().AddExperimentLog(std::format("Player: {}", swp), false);
 			EndOfRunCalculation(m_players[swp].get());
 		}
 
@@ -73,31 +73,31 @@ bool Controller::Update()
 		//state
 		for (int i = 0; i < CParams::iNumPlayers; ++i)
 		{
-			GameManager::GetGameMgr()->GetLogger().AddExperimentLog(std::format("Player: {} Fitness:{}", i, m_players[i]->Fitness()));
+			GameManager::Get()->GetLogger().AddExperimentLog(std::format("Player: {} Fitness:{}", i, m_players[i]->Fitness()));
 			m_players[i]->InsertNewBrain(pBrains[i]);
 			m_players[i]->Reset();
 		}
 
 		m_currPlayer = 0;
-		GameManager::GetGameMgr()->ChangePlayer(m_players[m_currPlayer].get());
-		GameManager::GetGameMgr()->GetPlayer()->Reset();
+		GameManager::Get()->ChangePlayer(m_players[m_currPlayer].get());
+		GameManager::Get()->GetPlayer()->Reset();
 
 		m_bestFitness = m_pop->BestEverFitness();
 
-		GameManager::GetGameMgr()->GetLogger().AddExperimentLog(std::format("Best Fitness : {}", m_bestFitness));
-		GameManager::GetGameMgr()->GetLogger().AddExperimentLog(std::format("Current Generation: {}", m_generations));
-		GameManager::GetGameMgr()->GetLogger().AddExperimentLog(GameManager::GetGameMgr()->GetLogger().GetTimeStamp());
+		GameManager::Get()->GetLogger().AddExperimentLog(std::format("Best Fitness : {}", m_bestFitness));
+		GameManager::Get()->GetLogger().AddExperimentLog(std::format("Current Generation: {}", m_generations));
+		GameManager::Get()->GetLogger().AddExperimentLog(GameManager::Get()->GetLogger().GetTimeStamp());
 	}
 
 	return true;
 }
 
-Player* Controller::GetCurrentPlayer()
+Player* AIController::GetCurrentPlayer()
 {
 	return m_players[m_currPlayer].get();
 }
 
-const std::vector<double>& Controller::GetGridInputs()
+const std::vector<double>& AIController::GetGridInputs()
 {
 	const std::array<std::shared_ptr<Tile>, 255>& tiles = m_AnnView->GetVecView();
 
@@ -107,7 +107,7 @@ const std::vector<double>& Controller::GetGridInputs()
 	return m_inputs;
 }
 
-std::vector<double> Controller::GetFitnessScores() const
+std::vector<double> AIController::GetFitnessScores() const
 {
 	std::vector<double> scores;
 
@@ -117,7 +117,7 @@ std::vector<double> Controller::GetFitnessScores() const
 	return scores;
 }
 
-double Controller::ColourToInput(sf::Color col)
+double AIController::ColourToInput(sf::Color col)
 {
 	if (col == sf::Color::Red) return 0.0f;
 	if (col == sf::Color::Transparent) return 0.2f;
@@ -129,9 +129,9 @@ double Controller::ColourToInput(sf::Color col)
 	return -1.0f;
 }
 
-void Controller::EndOfRunCalculation(AutomatedPlayer* ply)
+void AIController::EndOfRunCalculation(AutomatedPlayer* ply)
 {
 	float percent = ((ply->GetPosition().x - ply->GetInitialPosition().x) / GameConstants::RightMost) * 100;;
-	GameManager::GetGameMgr()->GetLogger().AddExperimentLog(std::format("Player moved by {}%!", percent));
+	GameManager::Get()->GetLogger().AddExperimentLog(std::format("Player moved by {}%!", percent));
 	ply->UpdateFitness(percent);
 }

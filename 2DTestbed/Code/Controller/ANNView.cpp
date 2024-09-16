@@ -1,6 +1,6 @@
 #include "../Controller/ANNView.h"
 #include <format>
-#include "../Controller/ControllerManager.h"
+#include "../Controller/AIController.h"
 #include "../Game/Constants.h"
 #include "../Game/GameManager.h"
 #include "../GameObjects/Player.h"
@@ -11,7 +11,7 @@ ANNView::ANNView()
 	for (int i = 0; i < 255; i++)
 		m_vecView[i] = std::make_shared<Tile>();
 
-	auto& font = GameManager::GetGameMgr()->GetFontMgr().GetStandardFont();
+	auto& font = GameManager::Get()->GetFontMgr().GetStandardFont();
 
 	for (size_t i = 0; i < 3; i++)
 	{
@@ -35,7 +35,7 @@ ANNView::ANNView()
 
 void ANNView::Update()
 {
-	auto& camera = GameManager::GetGameMgr()->GetCamera();
+	auto& camera = GameManager::Get()->GetCamera();
 	sf::View standard = camera.GetView();
 
 	//reset mini view with standard view
@@ -46,7 +46,7 @@ void ANNView::Update()
 	//update bkg image with standard view center position
 	m_background.setPosition(camera.GetView().getCenter());
 
-	Controller* ctrl = ControllerManager::GetCtrlMgr()->GetController();
+	AIController* ctrl = GameManager::Get()->GetAIController();
 
 	m_text[0]->setString(std::format("Player: {} / {}", ctrl->GetCurrentPlayerNum(), CParams::iNumPlayers));
 	m_text[0]->setPosition(m_view.getCenter() - sf::Vector2f(400, -200));
@@ -59,7 +59,7 @@ void ANNView::Update()
 
 	//extract m_visible tiles
 	int cnt = 0;
-	for (auto& tile : GameManager::GetGameMgr()->GetCollisionMgr()->GetGrid())
+	for (auto& tile : GameManager::Get()->GetCollisionMgr()->GetGrid())
 	{
 		if (cnt == 255) break;
 
@@ -81,7 +81,7 @@ void ANNView::Update()
 			continue;
 		}
 
-		for (auto& gobj : GameManager::GetGameMgr()->GetCollisionMgr()->GetCollidables())
+		for (auto& gobj : GameManager::Get()->GetCollisionMgr()->GetCollidables())
 		{
 			sf::RectangleShape tmp(sf::Vector2f(16, 16));
 			TexID type = gobj->GetID();

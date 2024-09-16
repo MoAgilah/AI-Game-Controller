@@ -1,7 +1,6 @@
 #include "Player.h"
 #include <format>
 #include <iostream>
-#include "../Controller/ControllerManager.h"
 #include "../Game/GameManager.h"
 #include "../GameStates/PlayerState.h"
 
@@ -26,7 +25,7 @@ void Player::Update(float deltaTime)
 {
 	AnimatedSprite* animSpr = GetAnimSpr();
 	PhysicsController* physCtrl = GetPhysicsController();
-	GameManager* gameMgr = GameManager::GetGameMgr();
+	GameManager* gameMgr = GameManager::Get();
 
 	ProcessInput();
 
@@ -221,8 +220,8 @@ void Player::Reset()
 	m_airTimer.ResetTime();
 	m_keyStates.fill(false);
 	m_stateMgr.ClearStates();
-	GameManager::GetGameMgr()->GetTimer().ResetTime();
-	GameManager::GetGameMgr()->GetWorld()->ResetLevel();
+	GameManager::Get()->GetTimer().ResetTime();
+	GameManager::Get()->GetWorld()->ResetLevel();
 }
 
 void Player::SetIsSuper(bool super)
@@ -450,7 +449,7 @@ AutomatedPlayer::AutomatedPlayer(const sf::Vector2f& pos)
 	: Player(pos)
 {
 	if (s_playerInserted)
-		GameManager::GetGameMgr()->GetCollisionMgr()->RemoveLastAdded();
+		GameManager::Get()->GetCollisionMgr()->RemoveLastAdded();
 
 	s_playerInserted = true;
 }
@@ -459,7 +458,7 @@ bool AutomatedPlayer::UpdateANN()
 {
 	std::vector<double> inputs;
 
-	inputs = ControllerManager::GetCtrlMgr()->GetController()->GetGridInputs();
+	inputs = GameManager::Get()->GetAIController()->GetGridInputs();
 
 	outputs = m_itsBrain->Update(inputs, CNeuralNet::active);
 
@@ -471,7 +470,7 @@ bool AutomatedPlayer::UpdateANN()
 
 void AutomatedPlayer::Input()
 {
-	GameManager::GetGameMgr()->GetLogger().AddDebugLog(std::format("Player {}", ControllerManager::GetCtrlMgr()->GetController()->GetCurrentPlayerNum()), false);
+	GameManager::Get()->GetLogger().AddDebugLog(std::format("Player {}", GameManager::Get()->GetAIController()->GetCurrentPlayerNum()), false);
 
 	for (int i = 0; i < outputs.size(); ++i)
 	{
@@ -511,11 +510,11 @@ void AutomatedPlayer::Input()
 		else if (oval >= 0.9) output = true;
 		else output = false;
 
-		GameManager::GetGameMgr()->GetLogger().AddDebugLog(std::format("{} = {} = {}", move, oval, output), false);
-		GameManager::GetGameMgr()->GetLogger().AddDebugLog("\t", false);
+		GameManager::Get()->GetLogger().AddDebugLog(std::format("{} = {} = {}", move, oval, output), false);
+		GameManager::Get()->GetLogger().AddDebugLog("\t", false);
 		//store output
 		SetKeyState(i, output);
 	}
 
-	GameManager::GetGameMgr()->GetLogger().AddDebugLog("");
+	GameManager::Get()->GetLogger().AddDebugLog("");
 }
