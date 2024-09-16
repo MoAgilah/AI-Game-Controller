@@ -42,7 +42,7 @@ namespace
 
 	std::array<TexID, 9> dynamicObject =
 	{
-		TexID::Mario, TexID::Super, TexID::Koopa, TexID::Bill, TexID::Rex, TexID::PPlant, TexID::Chuck, TexID::Shroom
+		TexID::Mario, TexID::Super, TexID::Koopa, TexID::Rex, TexID::PPlant, TexID::Chuck, TexID::Shroom
 	};
 
 	bool IsDynamicObject(TexID id)
@@ -107,15 +107,15 @@ void CollisionManager::ProcessCollisions(Object* gobj)
 	if (CanCollideWithTile(gobj->GetID()))
 		DynamicObjectToTileCollisions((DynamicObject*)gobj);
 
-	for (auto& collidable : m_collidables)
+	for (size_t i = 0; i < m_collidables.size(); i++)
 	{
-		if (!collidable->GetActive())
+		if (!m_collidables[i]->GetActive())
 			continue;
 
-		if (gobj->GetObjectNum() == collidable->GetObjectNum())
+		if (gobj->GetObjectNum() == m_collidables[i]->GetObjectNum())
 			continue;
 
-		ObjectToObjectCollisions(gobj, collidable);
+		ObjectToObjectCollisions(gobj, m_collidables[i]);
 	}
 }
 

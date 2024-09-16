@@ -14,6 +14,7 @@ Camera::Camera()
 	m_viewBox.Reset(sf::Vector2f(253,237));
 	m_viewBox.Update(m_camera.getCenter());
 	m_viewBox.SetFillColour(sf::Color(255, 0, 0, 128));
+	GameConstants::LeftMost = m_viewBox.GetMin().x;
 }
 
 

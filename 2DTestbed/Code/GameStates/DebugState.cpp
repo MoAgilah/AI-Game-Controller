@@ -13,10 +13,9 @@ DebugState::DebugState(GameManager* gameMgr)
 void DebugState::Initialise()
 {
 	auto world = m_gameMgr->GetWorld();
-
 	world->AddObjects();
 	world->AddEnemies();
-	//world->AddForeGroundSprites();
+	world->AddForeGroundSprites();
 }
 
 void DebugState::Pause()
@@ -49,4 +48,5 @@ void DebugState::Render(sf::RenderWindow& window)
 	m_gameMgr->GetWorld()->Render(window);
 	m_gameMgr->GetCollisionMgr()->Render(window);
 	m_gameMgr->GetPlayer()->Render(window);
+	//m_gameMgr->GetCamera().RenderViewBox(window);
 }
