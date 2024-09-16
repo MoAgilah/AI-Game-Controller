@@ -81,11 +81,11 @@ void ANNView::Update()
 			continue;
 		}
 
-		sf::RectangleShape tmp(sf::Vector2f(16, 16));
 		for (auto& gobj : GameManager::GetGameMgr()->GetCollisionMgr()->GetCollidables())
 		{
+			sf::RectangleShape tmp(sf::Vector2f(16, 16));
 			TexID type = gobj->GetID();
-			if (type == TexID::Bill)
+				if (type == TexID::Bill)
 			{
 				tmp.setSize(sf::Vector2f(96, 108));
 				tmp.setOrigin(48, 54);

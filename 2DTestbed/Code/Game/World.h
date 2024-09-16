@@ -37,6 +37,6 @@ private:
 	AABB m_foregroundBox;
 	Sprite m_backgroundSpr;
 	std::array<Sprite, (int)Sprites::Max> m_sprites;
-	std::vector<std::unique_ptr<Enemy>> m_enemies;
-	std::vector<std::unique_ptr<Object>> m_objects;
+	std::vector<std::shared_ptr<Enemy>> m_enemies;
+	std::vector<std::shared_ptr<Object>> m_objects;
 };

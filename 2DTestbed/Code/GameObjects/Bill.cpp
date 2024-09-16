@@ -35,7 +35,7 @@ bool Bill::Intersects(Object* obj)
 
 bool Bill::IsPlayerAbove(Player* ply)
 {
-	auto cnt = m_halfCap.circle.getPosition();
+ 	auto cnt = m_halfCap.circle.getPosition();
 	auto rad = m_halfCap.circle.getRadius();
 	auto end = cnt - Point(0, rad);
 
@@ -53,10 +53,10 @@ bool Bill::IsPlayerAbove(Player* ply)
 	{
 		circle = Circle(ply->GetAABB(), 4);
 		col = capsule.IntersectsCircle(circle);
-
-		if (!col)
-			col = capsule.IntersectsCircle(circle) && GetID() != TexID::PPlant;
 	}
+
+	if (!col)
+		col = capsule.IntersectsCircle(circle) && GetID() != TexID::PPlant;
 
 	return col;
 }
