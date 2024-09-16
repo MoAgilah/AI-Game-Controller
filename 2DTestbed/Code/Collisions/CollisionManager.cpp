@@ -444,7 +444,8 @@ void CollisionManager::ObjectToObjectCollisions(Object* obj1, Object* obj2)
 	}
 	else
 	{
-		DynamicObjectToDynamicObject((DynamicObject*)obj1, (DynamicObject*)obj2);
+		if (IsDynamicObject(obj1->GetID()) && IsDynamicObject(obj2->GetID()))
+			DynamicObjectToDynamicObject((DynamicObject*)obj1, (DynamicObject*)obj2);
 	}
 }
 
