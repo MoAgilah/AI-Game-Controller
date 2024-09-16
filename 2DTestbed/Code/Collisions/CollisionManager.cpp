@@ -40,9 +40,9 @@ namespace
 		return id == TexID::Shroom || id == TexID::Goal;
 	}
 
-	std::array<TexID, 9> dynamicObject =
+	std::array<TexID, 4> dynamicObject =
 	{
-		TexID::Mario, TexID::Super, TexID::Koopa, TexID::Rex, TexID::PPlant, TexID::Chuck, TexID::Shroom
+		TexID::Mario, TexID::Super, TexID::Koopa, TexID::Rex,
 	};
 
 	bool IsDynamicObject(TexID id)
