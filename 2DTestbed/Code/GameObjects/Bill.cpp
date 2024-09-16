@@ -53,11 +53,8 @@ bool Bill::IsPlayerAbove(Player* ply)
 	{
 		circle = Circle(ply->GetAABB(), 4);
 		col = capsule.IntersectsCircle(circle);
-	}
 
-	if (!col)
-	{
-		if (capsule.line.IsPointAboveLine(circle.center))
+		if (!col)
 			col = capsule.IntersectsCircle(circle) && GetID() != TexID::PPlant;
 	}
 
