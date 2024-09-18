@@ -32,19 +32,37 @@ AIController::AIController()
 
 bool AIController::Update()
 {
-	if (m_players[m_currPlayer]->GetPosition().x > m_players[m_currPlayer]->GetPrevPosition().x)
-	{
-		m_ticks = 0;
-	}
-	if (m_ticks++ > CParams::iNumTicks || !m_players[m_currPlayer]->GetIsAlive() || m_players[m_currPlayer]->GetGoalHit())
+	//if havent moved in 2000 ticks
+	if ((m_players[m_currPlayer]->GetPosition().x == m_players[m_currPlayer]->GetPrevPosition().x && m_ticks++ > CParams::iNumTicks) ||
+		//if been killed
+		m_players[m_currPlayer]->GetIsAlive() == false ||
+		//if level completed
+		m_players[m_currPlayer]->GetGoalHit() == true)
 	{
 		m_currPlayer++;
+
 		m_ticks = 0;
 
 		if (m_currPlayer < m_players.size())
 		{
 			GameManager::Get()->ChangePlayer(m_players[m_currPlayer].get());
 			GameManager::Get()->GetPlayer()->Reset();
+		}
+	}
+	//if have moved right before timing out
+	else if (m_players[m_currPlayer]->GetPosition().x != m_players[m_currPlayer]->GetPrevPosition().x && m_players[m_currPlayer]->GetPosition().x > 75.0f)
+	{
+		m_ticks = 0;
+	}
+
+	if (m_currPlayer < m_players.size())
+	{
+		if (!m_players[m_currPlayer]->UpdateANN())
+		{
+			//error in processing the neural net
+			std::cout << "Wrong amount of NN inputs!" << std::endl;
+
+			return false;
 		}
 	}
 

@@ -6,12 +6,12 @@
 //  default ctor
 //------------------------------------------------------------------------
 CGenome::CGenome():m_pPhenotype(NULL),
-				   m_GenomeID(0),
-				   m_fitness(0),
-				   m_dAdjustedFitness(0),
-				   m_iNumInputs(0),
-				   m_iNumOutPuts(0),
-				   m_dAmountToSpawn(0)
+                   m_GenomeID(0),
+                   m_dFitness(0),
+                   m_dAdjustedFitness(0),
+                   m_iNumInputs(0),
+                   m_iNumOutPuts(0),
+                   m_dAmountToSpawn(0)
 {}
 
 
@@ -20,13 +20,13 @@ CGenome::CGenome():m_pPhenotype(NULL),
 //	input neurons and each input neuron is connected to each output neuron.
 //------------------------------------------------------------------------
 CGenome::CGenome(int id, int inputs, int outputs):m_pPhenotype(NULL),
-												  m_GenomeID(id),
-												  m_fitness(0),
-												  m_dAdjustedFitness(0),
-												  m_iNumInputs(inputs),
-												  m_iNumOutPuts(outputs),
-												  m_dAmountToSpawn(0),
-												  m_iSpecies(0)
+                                                  m_GenomeID(id),
+                                                  m_dFitness(0),
+                                                  m_dAdjustedFitness(0),
+                                                  m_iNumInputs(inputs),
+                                                  m_iNumOutPuts(outputs),
+                                                  m_dAmountToSpawn(0),
+                                                  m_iSpecies(0)
 
 {
   //create the input neurons
@@ -55,10 +55,10 @@ CGenome::CGenome(int id, int inputs, int outputs):m_pPhenotype(NULL),
 		for (int j=0; j<outputs; j++)
 		{
 			m_vecLinks.push_back(SLinkGene(m_vecNeurons[i].iID,
-										 m_vecNeurons[inputs+j+1].iID,
-										 true,
-										 inputs+outputs+1+NumGenes(),
-										 RandomClamped()));
+                                         m_vecNeurons[inputs+j+1].iID,
+                                         true,
+                                         inputs+outputs+1+NumGenes(),
+                                         RandomClamped()));
 		}
 	}
 
@@ -66,22 +66,22 @@ CGenome::CGenome(int id, int inputs, int outputs):m_pPhenotype(NULL),
 
 //------------------------------------------------------------------------
 //
-//  this constructor creates a genome from a vector of SLinkGenes, a
-//  vector of SNeuronGenes and an ID number.
+//  this constructor creates a genome from a std::vector of SLinkGenes, a
+//  std::vector of SNeuronGenes and an ID number.
 //------------------------------------------------------------------------
 CGenome::CGenome(int                 id,
-				 std::vector<SNeuronGene> neurons,
-				 std::vector<SLinkGene>   genes,
-				 int                 inputs,
-				 int                 outputs):m_GenomeID(id),
-												  m_pPhenotype(NULL),
-												  m_vecLinks(genes),
-												  m_vecNeurons(neurons),
-												  m_dAmountToSpawn(0),
-												  m_fitness(0),
-												  m_dAdjustedFitness(0),
-												  m_iNumInputs(inputs),
-												  m_iNumOutPuts(outputs)
+                 std::vector<SNeuronGene> neurons,
+                 std::vector<SLinkGene>   genes,
+                 int                 inputs,
+                 int                 outputs):m_GenomeID(id),
+                                                  m_pPhenotype(NULL),
+                                                  m_vecLinks(genes),
+                                                  m_vecNeurons(neurons),
+                                                  m_dAmountToSpawn(0),
+                                                  m_dFitness(0),
+                                                  m_dAdjustedFitness(0),
+                                                  m_iNumInputs(inputs),
+                                                  m_iNumOutPuts(outputs)
 
 {}
 
@@ -94,7 +94,7 @@ CGenome::~CGenome()
   {
 		delete m_pPhenotype;
 
-	m_pPhenotype = NULL;
+    m_pPhenotype = NULL;
   }
 }
 
@@ -103,15 +103,15 @@ CGenome::~CGenome()
 //---------------------------------------------------------------------------------------
 CGenome::CGenome(const CGenome& g)
 {
-	m_GenomeID   = g.m_GenomeID;
-	m_vecNeurons   = g.m_vecNeurons;
-	m_vecLinks   = g.m_vecLinks;
-	m_pPhenotype = NULL;              //no need to perform a deep copy
-	m_fitness   = g.m_fitness;
-	m_dAdjustedFitness = g.m_dAdjustedFitness;
-	m_iNumInputs  = g.m_iNumInputs;
-	m_iNumOutPuts = g.m_iNumOutPuts;
-	m_dAmountToSpawn = g.m_dAmountToSpawn;
+    m_GenomeID   = g.m_GenomeID;
+    m_vecNeurons   = g.m_vecNeurons;
+    m_vecLinks   = g.m_vecLinks;
+    m_pPhenotype = NULL;              //no need to perform a deep copy
+    m_dFitness   = g.m_dFitness;
+    m_dAdjustedFitness = g.m_dAdjustedFitness;
+    m_iNumInputs  = g.m_iNumInputs;
+    m_iNumOutPuts = g.m_iNumOutPuts;
+    m_dAmountToSpawn = g.m_dAmountToSpawn;
 }
 
 //---------------------------------assignment operator-----------------------------------
@@ -119,21 +119,21 @@ CGenome::CGenome(const CGenome& g)
 //----------------------------------------------------------------------------------------
 CGenome& CGenome::operator =(const CGenome& g)
 {
-	//self assignment guard
+    //self assignment guard
 	  if (this != &g)
 	  {
-	  m_GenomeID         = g.m_GenomeID;
-	  m_vecNeurons         = g.m_vecNeurons;
-	  m_vecLinks         = g.m_vecLinks;
-	  m_pPhenotype       = NULL;        //no need to perform a deep copy
-	  m_fitness         = g.m_fitness;
-	  m_dAdjustedFitness = g.m_dAdjustedFitness;
-	  m_iNumInputs        = g.m_iNumInputs;
-	  m_iNumOutPuts       = g.m_iNumOutPuts;
-	  m_dAmountToSpawn   = g.m_dAmountToSpawn;
-	}
+      m_GenomeID         = g.m_GenomeID;
+      m_vecNeurons         = g.m_vecNeurons;
+      m_vecLinks         = g.m_vecLinks;
+      m_pPhenotype       = NULL;        //no need to perform a deep copy
+      m_dFitness         = g.m_dFitness;
+      m_dAdjustedFitness = g.m_dAdjustedFitness;
+      m_iNumInputs        = g.m_iNumInputs;
+      m_iNumOutPuts       = g.m_iNumOutPuts;
+      m_dAmountToSpawn   = g.m_dAmountToSpawn;
+    }
 
-	return *this;
+    return *this;
 }
 
 //-------------------------------CreatePhenotype--------------------------
@@ -152,39 +152,39 @@ CNeuralNet* CGenome::CreatePhenotype(int depth)
   //first, create all the required neurons
   for (int i=0; i<m_vecNeurons.size(); i++)
   {
-	SNeuron* pNeuron = new SNeuron(m_vecNeurons[i].NeuronType,
-								   m_vecNeurons[i].iID,
-								   m_vecNeurons[i].dSplitY,
-								   m_vecNeurons[i].dSplitX,
-								   m_vecNeurons[i].dActivationResponse);
+    SNeuron* pNeuron = new SNeuron(m_vecNeurons[i].NeuronType,
+                                   m_vecNeurons[i].iID,
+                                   m_vecNeurons[i].dSplitY,
+                                   m_vecNeurons[i].dSplitX,
+                                   m_vecNeurons[i].dActivationResponse);
 
-	vecNeurons.push_back(pNeuron);
+    vecNeurons.push_back(pNeuron);
   }
 
   //now to create the links.
   for (int cGene=0; cGene<m_vecLinks.size(); ++cGene)
   {
-	//make sure the link gene is enabled before the connection is created
-	if (m_vecLinks[cGene].bEnabled)
-	{
-	  //get the pointers to the relevant neurons
-	  int element         = GetElementPos(m_vecLinks[cGene].FromNeuron);
-	  SNeuron* FromNeuron = vecNeurons[element];
+    //make sure the link gene is enabled before the connection is created
+    if (m_vecLinks[cGene].bEnabled)
+    {
+      //get the pointers to the relevant neurons
+      int element         = GetElementPos(m_vecLinks[cGene].FromNeuron);
+      SNeuron* FromNeuron = vecNeurons[element];
 
-	  element           = GetElementPos(m_vecLinks[cGene].ToNeuron);
-	  SNeuron* ToNeuron = vecNeurons[element];
+      element           = GetElementPos(m_vecLinks[cGene].ToNeuron);
+      SNeuron* ToNeuron = vecNeurons[element];
 
-	  //create a link between those two neurons and assign the weight stored
-	  //in the gene
-	  SLink tmpLink(m_vecLinks[cGene].dWeight,
-					FromNeuron,
-					ToNeuron,
-					m_vecLinks[cGene].bRecurrent);
+      //create a link between those two neurons and assign the weight stored
+      //in the gene
+      SLink tmpLink(m_vecLinks[cGene].dWeight,
+                    FromNeuron,
+                    ToNeuron,
+                    m_vecLinks[cGene].bRecurrent);
 
-	  //add new links to neuron
-	  FromNeuron->vecLinksOut.push_back(tmpLink);
-	  ToNeuron->vecLinksIn.push_back(tmpLink);
-	}
+      //add new links to neuron
+      FromNeuron->vecLinksOut.push_back(tmpLink);
+      ToNeuron->vecLinksIn.push_back(tmpLink);
+    }
   }
 
   //now the neurons contain all the connectivity information, a neural
@@ -201,7 +201,7 @@ void CGenome::DeletePhenotype()
 {
   if (m_pPhenotype)
   {
-	delete m_pPhenotype;
+    delete m_pPhenotype;
   }
 
   m_pPhenotype = NULL;
@@ -217,9 +217,9 @@ int CGenome::GetElementPos(int neuron_id)
   for (int i=0; i<m_vecNeurons.size(); i++)
 	{
 		if (m_vecNeurons[i].iID == neuron_id)
-	{
-	  return i;
-	}
+    {
+      return i;
+    }
 	}
 
   std::cout << "Error in CGenome::GetElementPos" << std::endl;
@@ -236,7 +236,7 @@ bool CGenome::DuplicateLink(int NeuronIn, int NeuronOut)
 	for (int cGene = 0; cGene < m_vecLinks.size(); ++cGene)
 	{
 		if ((m_vecLinks[cGene].FromNeuron == NeuronIn) &&
-		(m_vecLinks[cGene].ToNeuron == NeuronOut))
+        (m_vecLinks[cGene].ToNeuron == NeuronOut))
 		{
 			//we already have this link
 			return true;
@@ -251,10 +251,10 @@ bool CGenome::DuplicateLink(int NeuronIn, int NeuronOut)
 // create a new link with the probability of CParams::dChanceAddLink
 //------------------------------------------------------------------------
 void CGenome::AddLink(double       MutationRate,
-					  double       ChanceOfLooped,
-					  CInnovation  &innovation,
-					  int          NumTrysToFindLoop,
-					  int          NumTrysToAddLink)
+                      double       ChanceOfLooped,
+                      CInnovation  &innovation,
+                      int          NumTrysToFindLoop,
+                      int          NumTrysToAddLink)
 {
   //just return dependent on the mutation rate
   if (RandFloat() > MutationRate) return;
@@ -271,68 +271,68 @@ void CGenome::AddLink(double       MutationRate,
   //link that loops back into the same neuron
   if (RandFloat() < ChanceOfLooped)
   {
-	//YES: try NumTrysToFindLoop times to find a neuron that is not an
-	//input or bias neuron and that does not already have a loopback
-	//connection
-	while(NumTrysToFindLoop--)
-	{
-	  //grab a random neuron
-	  int NeuronPos = RandInt(m_iNumInputs+1, (int)m_vecNeurons.size()-1);
+    //YES: try NumTrysToFindLoop times to find a neuron that is not an
+    //input or bias neuron and that does not already have a loopback
+    //connection
+    while(NumTrysToFindLoop--)
+    {
+      //grab a random neuron
+      int NeuronPos = RandInt(m_iNumInputs+1, (int)m_vecNeurons.size()-1);
 
-	  //check to make sure the neuron does not already have a loopback
-	  //link and that it is not an input or bias neuron
-	  if (!m_vecNeurons[NeuronPos].bRecurrent &&
-		 (m_vecNeurons[NeuronPos].NeuronType != bias) &&
-		 (m_vecNeurons[NeuronPos].NeuronType != input))
-	  {
-		ID_neuron1 = ID_neuron2 = m_vecNeurons[NeuronPos].iID;
+      //check to make sure the neuron does not already have a loopback
+      //link and that it is not an input or bias neuron
+      if (!m_vecNeurons[NeuronPos].bRecurrent &&
+         (m_vecNeurons[NeuronPos].NeuronType != bias) &&
+         (m_vecNeurons[NeuronPos].NeuronType != input))
+      {
+        ID_neuron1 = ID_neuron2 = m_vecNeurons[NeuronPos].iID;
 
-		m_vecNeurons[NeuronPos].bRecurrent = true;
+        m_vecNeurons[NeuronPos].bRecurrent = true;
 
-		bRecurrent = true;
+        bRecurrent = true;
 
-		NumTrysToFindLoop = 0;
-	  }
-	}
+        NumTrysToFindLoop = 0;
+      }
+    }
   }
 
   else
   {
-	//No: try to find two unlinked neurons. Make NumTrysToAddLink
-	//attempts
-	while(NumTrysToAddLink--)
-	{
-	  //choose two neurons, the second must not be an input or a bias
-	  ID_neuron1 = m_vecNeurons[RandInt(0, (int)m_vecNeurons.size()-1)].iID;
+    //No: try to find two unlinked neurons. Make NumTrysToAddLink
+    //attempts
+    while(NumTrysToAddLink--)
+    {
+      //choose two neurons, the second must not be an input or a bias
+      ID_neuron1 = m_vecNeurons[RandInt(0, (int)m_vecNeurons.size()-1)].iID;
 
-	  ID_neuron2 =
-	  m_vecNeurons[RandInt(m_iNumInputs+1, (int)m_vecNeurons.size()-1)].iID;
+      ID_neuron2 =
+      m_vecNeurons[RandInt(m_iNumInputs+1, (int)m_vecNeurons.size()-1)].iID;
 
-	  if (ID_neuron2 == 2)
-	  {
-		continue;
-	  }
+      if (ID_neuron2 == 2)
+      {
+        continue;
+      }
 
-	  //make sure these two are not already linked and that they are
-	  //not the same neuron
-	  if ( !( DuplicateLink(ID_neuron1, ID_neuron2) ||
-			  (ID_neuron1 == ID_neuron2)))
-	  {
-		NumTrysToAddLink = 0;
-	  }
+      //make sure these two are not already linked and that they are
+      //not the same neuron
+      if ( !( DuplicateLink(ID_neuron1, ID_neuron2) ||
+              (ID_neuron1 == ID_neuron2)))
+      {
+        NumTrysToAddLink = 0;
+      }
 
-	  else
-	  {
-		ID_neuron1 = -1;
-		ID_neuron2 = -1;
-	  }
-	}
+      else
+      {
+        ID_neuron1 = -1;
+        ID_neuron2 = -1;
+      }
+    }
   }
 
   //return if unsuccessful in finding a link
   if ( (ID_neuron1 < 0) || (ID_neuron2 < 0) )
   {
-	return;
+    return;
   }
 
   //check to see if we have already created this innovation
@@ -340,41 +340,41 @@ void CGenome::AddLink(double       MutationRate,
 
   //is this link recurrent?
   if (m_vecNeurons[GetElementPos(ID_neuron1)].dSplitY >
-	  m_vecNeurons[GetElementPos(ID_neuron2)].dSplitY)
+      m_vecNeurons[GetElementPos(ID_neuron2)].dSplitY)
   {
-	bRecurrent = true;
+    bRecurrent = true;
   }
 
   if ( id < 0)
   {
-	//we need to create a new innovation
-	innovation.CreateNewInnovation(ID_neuron1, ID_neuron2, new_link);
+    //we need to create a new innovation
+    innovation.CreateNewInnovation(ID_neuron1, ID_neuron2, new_link);
 
-	//then create the new gene
-	int id = innovation.NextNumber() - 1;
+    //then create the new gene
+    int id = innovation.NextNumber() - 1;
 
-	SLinkGene NewGene(ID_neuron1,
-						  ID_neuron2,
-						  true,
-						  id,
-						  RandomClamped(),
-						  bRecurrent);
+    SLinkGene NewGene(ID_neuron1,
+                          ID_neuron2,
+                          true,
+                          id,
+                          RandomClamped(),
+                          bRecurrent);
 
-	m_vecLinks.push_back(NewGene);
+    m_vecLinks.push_back(NewGene);
   }
 
   else
   {
-	//the innovation has already been created so all we need to
-	//do is create the new gene using the existing innovation ID
-	SLinkGene NewGene(ID_neuron1,
-						  ID_neuron2,
-						  true,
-						  id,
-						  RandomClamped(),
-						  bRecurrent);
+    //the innovation has already been created so all we need to
+    //do is create the new gene using the existing innovation ID
+    SLinkGene NewGene(ID_neuron1,
+                          ID_neuron2,
+                          true,
+                          id,
+                          RandomClamped(),
+                          bRecurrent);
 
-	m_vecLinks.push_back(NewGene);
+    m_vecLinks.push_back(NewGene);
   }
 
   return;
@@ -386,8 +386,8 @@ void CGenome::AddLink(double       MutationRate,
 //	splitting one of the links and inserting the new neuron.
 //------------------------------------------------------------------------
 void CGenome::AddNeuron(double       MutationRate,
-						CInnovation &innovations,
-						int          NumTrysToFindOldLink)
+                        CInnovation &innovations,
+                        int          NumTrysToFindOldLink)
 {
   //just return dependent on mutation rate
   if (RandFloat() > MutationRate) return;
@@ -407,50 +407,50 @@ void CGenome::AddNeuron(double       MutationRate,
 
   if (m_vecLinks.size() < SizeThreshold)
   {
-	while(NumTrysToFindOldLink--)
-	{
-	  //choose a link with a bias towards the older links in the genome
-	  ChosenLink = RandInt(0, NumGenes()-1-(int)sqrt(NumGenes()));
+    while(NumTrysToFindOldLink--)
+    {
+      //choose a link with a bias towards the older links in the genome
+      ChosenLink = RandInt(0, NumGenes()-1-(int)sqrt(NumGenes()));
 
-	  //make sure the link is enabled and that it is not a recurrent link
-	  //or has a bias input
-	  int FromNeuron = m_vecLinks[ChosenLink].FromNeuron;
+      //make sure the link is enabled and that it is not a recurrent link
+      //or has a bias input
+      int FromNeuron = m_vecLinks[ChosenLink].FromNeuron;
 
-	  if ( (m_vecLinks[ChosenLink].bEnabled)    &&
-		   (!m_vecLinks[ChosenLink].bRecurrent) &&
-		   (m_vecNeurons[GetElementPos(FromNeuron)].NeuronType != bias))
-	   {
-		  bDone = true;
+      if ( (m_vecLinks[ChosenLink].bEnabled)    &&
+           (!m_vecLinks[ChosenLink].bRecurrent) &&
+           (m_vecNeurons[GetElementPos(FromNeuron)].NeuronType != bias))
+       {
+          bDone = true;
 
-		  NumTrysToFindOldLink = 0;
-		}
-	}
+          NumTrysToFindOldLink = 0;
+        }
+    }
 
-	if (!bDone)
-	{
-	  //failed to find a decent link
-	  return;
-	}
+    if (!bDone)
+    {
+      //failed to find a decent link
+      return;
+    }
   }
 
   else
   {
-	//the genome is of sufficient size for any link to be acceptable
-	while (!bDone)
-	{
-	  ChosenLink = RandInt(0, NumGenes()-1);
+    //the genome is of sufficient size for any link to be acceptable
+    while (!bDone)
+    {
+      ChosenLink = RandInt(0, NumGenes()-1);
 
-	  //make sure the link is enabled and that it is not a recurrent link
-	  //or has a BIAS input
-	  int FromNeuron = m_vecLinks[ChosenLink].FromNeuron;
+      //make sure the link is enabled and that it is not a recurrent link
+      //or has a BIAS input
+      int FromNeuron = m_vecLinks[ChosenLink].FromNeuron;
 
-	  if ( (m_vecLinks[ChosenLink].bEnabled) &&
-		   (!m_vecLinks[ChosenLink].bRecurrent) &&
-		   (m_vecNeurons[GetElementPos(FromNeuron)].NeuronType != bias))
-	  {
-		bDone = true;
-	  }
-	}
+      if ( (m_vecLinks[ChosenLink].bEnabled) &&
+           (!m_vecLinks[ChosenLink].bRecurrent) &&
+           (m_vecNeurons[GetElementPos(FromNeuron)].NeuronType != bias))
+      {
+        bDone = true;
+      }
+    }
   }
 
   //disable this gene
@@ -468,130 +468,130 @@ void CGenome::AddNeuron(double       MutationRate,
   //calculate the depth and width of the new neuron. We can use the depth
   //to see if the link feeds backwards or forwards
   double NewDepth = (m_vecNeurons[GetElementPos(from)].dSplitY +
-					 m_vecNeurons[GetElementPos(to)].dSplitY) /2;
+                     m_vecNeurons[GetElementPos(to)].dSplitY) /2;
 
   double NewWidth = (m_vecNeurons[GetElementPos(from)].dSplitX +
-					 m_vecNeurons[GetElementPos(to)].dSplitX) /2;
+                     m_vecNeurons[GetElementPos(to)].dSplitX) /2;
 
   //Now to see if this innovation has been created previously by
   //another member of the population
   int id = innovations.CheckInnovation(from,
-									   to,
-									   new_neuron);
+                                       to,
+                                       new_neuron);
 
 
 
   /*it is possible for NEAT to repeatedly do the following:
 
-	  1. Find a link. Lets say we choose link 1 to 5
-	  2. Disable the link,
-	  3. Add a new neuron and two new links
-	  4. The link disabled in Step 2 maybe re-enabled when this genome
-		 is recombined with a genome that has that link enabled.
-	  5  etc etc
+      1. Find a link. Lets say we choose link 1 to 5
+      2. Disable the link,
+      3. Add a new neuron and two new links
+      4. The link disabled in Step 2 maybe re-enabled when this genome
+         is recombined with a genome that has that link enabled.
+      5  etc etc
 
   Therefore, this function must check to see if a neuron ID is already
   being used. If it is then the function creates a new innovation
   for the neuron. */
   if (id >= 0)
   {
-	int NeuronID = innovations.GetNeuronID(id);
+    int NeuronID = innovations.GetNeuronID(id);
 
-	if (AlreadyHaveThisNeuronID(NeuronID))
-	{
-	  id = -1;
-	}
+    if (AlreadyHaveThisNeuronID(NeuronID))
+    {
+      id = -1;
+    }
   }
 
   if (id < 0)
   {
-	//add the innovation for the new neuron
-	int NewNeuronID = innovations.CreateNewInnovation(from,
-													  to,
-													  new_neuron,
-													  hidden,
-													  NewWidth,
-													  NewDepth);
+    //add the innovation for the new neuron
+    int NewNeuronID = innovations.CreateNewInnovation(from,
+                                                      to,
+                                                      new_neuron,
+                                                      hidden,
+                                                      NewWidth,
+                                                      NewDepth);
 
-	//create the new neuron gene and add it.
-	m_vecNeurons.push_back(SNeuronGene(hidden,
-									   NewNeuronID,
-									   NewDepth,
-									   NewWidth));
+    //create the new neuron gene and add it.
+    m_vecNeurons.push_back(SNeuronGene(hidden,
+                                       NewNeuronID,
+                                       NewDepth,
+                                       NewWidth));
 
-	//Two new link innovations are required, one for each of the
-	//new links created when this gene is split.
+    //Two new link innovations are required, one for each of the
+    //new links created when this gene is split.
 
-	//-----------------------------------first link
+    //-----------------------------------first link
 
-	//get the next innovation ID
-	int idLink1 = innovations.NextNumber();
+    //get the next innovation ID
+    int idLink1 = innovations.NextNumber();
 
-	//create the new innovation
-	innovations.CreateNewInnovation(from,
-									NewNeuronID,
-									new_link);
+    //create the new innovation
+    innovations.CreateNewInnovation(from,
+                                    NewNeuronID,
+                                    new_link);
 
-	//create the new link gene
-	SLinkGene link1(from,
-						NewNeuronID,
-						true,
-						idLink1,
-						1.0);
+    //create the new link gene
+    SLinkGene link1(from,
+                        NewNeuronID,
+                        true,
+                        idLink1,
+                        1.0);
 
-	m_vecLinks.push_back(link1);
+    m_vecLinks.push_back(link1);
 
-	//-----------------------------------second link
+    //-----------------------------------second link
 
-	//get the next innovation ID
-	int idLink2 = innovations.NextNumber();
+    //get the next innovation ID
+    int idLink2 = innovations.NextNumber();
 
-	//create the new innovation
-	innovations.CreateNewInnovation(NewNeuronID,
-									to,
-									new_link);
+    //create the new innovation
+    innovations.CreateNewInnovation(NewNeuronID,
+                                    to,
+                                    new_link);
 
-	//create the new gene
-	SLinkGene link2(NewNeuronID,
-						to,
-						true,
-						idLink2,
-						OriginalWeight);
+    //create the new gene
+    SLinkGene link2(NewNeuronID,
+                        to,
+                        true,
+                        idLink2,
+                        OriginalWeight);
 
-	m_vecLinks.push_back(link2);
+    m_vecLinks.push_back(link2);
   }
 
   else
   {
-	//this innovation has already been created so grab the relevant neuron
-	//and link info from the innovation database
-	int NewNeuronID = innovations.GetNeuronID(id);
+    //this innovation has already been created so grab the relevant neuron
+    //and link info from the innovation database
+    int NewNeuronID = innovations.GetNeuronID(id);
 
-	//get the innovation IDs for the two new link genes.
-	int idLink1 = innovations.CheckInnovation(from, NewNeuronID, new_link);
-	int idLink2 = innovations.CheckInnovation(NewNeuronID, to, new_link);
+    //get the innovation IDs for the two new link genes.
+    int idLink1 = innovations.CheckInnovation(from, NewNeuronID, new_link);
+    int idLink2 = innovations.CheckInnovation(NewNeuronID, to, new_link);
 
-	//this should never happen because the innovations *should* have already
-	//occurred
-	if ( (idLink1 < 0) || (idLink2 < 0) )
-	{
+    //this should never happen because the innovations *should* have already
+    //occurred
+    if ( (idLink1 < 0) || (idLink2 < 0) )
+    {
 		std::cout << "Error in CGenome::AddNeuron" << std::endl;
 
-	  return;
-	}
+      return;
+    }
 
-	//now we need to create 2 new genes to represent the new links
-	SLinkGene link1(from, NewNeuronID, true, idLink1, 1.0);
-	SLinkGene link2(NewNeuronID, to, true, idLink2, OriginalWeight);
+    //now we need to create 2 new genes to represent the new links
+    SLinkGene link1(from, NewNeuronID, true, idLink1, 1.0);
+    SLinkGene link2(NewNeuronID, to, true, idLink2, OriginalWeight);
 
-	m_vecLinks.push_back(link1);
-	m_vecLinks.push_back(link2);
+    m_vecLinks.push_back(link1);
+    m_vecLinks.push_back(link2);
 
-	//create the new neuron
-	SNeuronGene NewNeuron(hidden, NewNeuronID, NewDepth, NewWidth);
+    //create the new neuron
+    SNeuronGene NewNeuron(hidden, NewNeuronID, NewDepth, NewWidth);
 
-	//and add it
-	m_vecNeurons.push_back(NewNeuron);
+    //and add it
+    m_vecNeurons.push_back(NewNeuron);
   }
 
   return;
@@ -607,10 +607,10 @@ bool CGenome::AlreadyHaveThisNeuronID(const int ID)
 {
   for (int n=0; n<m_vecNeurons.size(); ++n)
   {
-	if (ID == m_vecNeurons[n].iID)
-	{
-	  return true;
-	}
+    if (ID == m_vecNeurons[n].iID)
+    {
+      return true;
+    }
   }
 
   return false;
@@ -627,8 +627,8 @@ bool CGenome::AlreadyHaveThisNeuronID(const int ID)
 //	type is the type of random number algorithm we use
 //------------------------------------------------------------------------
 void CGenome::MutateWeights(double mut_rate,
-							double prob_new_mut,
-							double MaxPertubation)
+                            double prob_new_mut,
+                            double MaxPertubation)
 {
 	for (int cGen=0; cGen<m_vecLinks.size(); ++cGen)
 	{
@@ -654,14 +654,14 @@ void CGenome::MutateWeights(double mut_rate,
 }
 
 void CGenome::MutateActivationResponse(double mut_rate,
-									   double MaxPertubation)
+                                       double MaxPertubation)
 {
   for (int cGen=0; cGen<m_vecNeurons.size(); ++cGen)
   {
-	if (RandFloat() < mut_rate)
-	{
-	  m_vecNeurons[cGen].dActivationResponse += RandomClamped() * MaxPertubation;
-	}
+    if (RandFloat() < mut_rate)
+    {
+      m_vecNeurons[cGen].dActivationResponse += RandomClamped() * MaxPertubation;
+    }
   }
 }
 //------------------------- GetCompatibilityScore ------------------------
@@ -688,52 +688,52 @@ double CGenome::GetCompatibilityScore(const CGenome &genome)
 
   while ( (g1 < m_vecLinks.size()-1) || (g2 < genome.m_vecLinks.size()-1) )
   {
-	//we've reached the end of genome1 but not genome2 so increment
-	//the excess score
-	if (g1 == m_vecLinks.size()-1)
-	{
-	  ++g2;
-	  ++NumExcess;
+    //we've reached the end of genome1 but not genome2 so increment
+    //the excess score
+    if (g1 == m_vecLinks.size()-1)
+    {
+      ++g2;
+      ++NumExcess;
 
-	  continue;
-	}
+      continue;
+    }
 
-	//and vice versa
-	if (g2 == genome.m_vecLinks.size()-1)
-	{
-	  ++g1;
-	  ++NumExcess;
+    //and vice versa
+    if (g2 == genome.m_vecLinks.size()-1)
+    {
+      ++g1;
+      ++NumExcess;
 
-	  continue;
-	}
+      continue;
+    }
 
-	//get innovation numbers for each gene at this point
-	int id1 = m_vecLinks[g1].InnovationID;
-	int id2 = genome.m_vecLinks[g2].InnovationID;
+    //get innovation numbers for each gene at this point
+    int id1 = m_vecLinks[g1].InnovationID;
+    int id2 = genome.m_vecLinks[g2].InnovationID;
 
-	//innovation numbers are identical so increase the matched score
-	if (id1 == id2)
-	{
-	  ++g1;
-	  ++g2;
-	  ++NumMatched;
+    //innovation numbers are identical so increase the matched score
+    if (id1 == id2)
+    {
+      ++g1;
+      ++g2;
+      ++NumMatched;
 
-	  //get the weight difference between these two genes
-	  WeightDifference += fabs(m_vecLinks[g1].dWeight - genome.m_vecLinks[g2].dWeight);
-	}
+      //get the weight difference between these two genes
+      WeightDifference += fabs(m_vecLinks[g1].dWeight - genome.m_vecLinks[g2].dWeight);
+    }
 
-	//innovation numbers are different so increment the disjoint score
-	if (id1 < id2)
-	{
-	  ++NumDisjoint;
-	  ++g1;
-	}
+    //innovation numbers are different so increment the disjoint score
+    if (id1 < id2)
+    {
+      ++NumDisjoint;
+      ++g1;
+    }
 
-	if (id1 > id2)
-	{
-	  ++NumDisjoint;
-	  ++g2;
-	}
+    if (id1 > id2)
+    {
+      ++NumDisjoint;
+      ++g2;
+    }
 
   }//end while
 
@@ -742,7 +742,7 @@ double CGenome::GetCompatibilityScore(const CGenome &genome)
 
   if (NumGenes() > longest)
   {
-	longest = NumGenes();
+    longest = NumGenes();
   }
 
   //these are multipliers used to tweak the final score.
@@ -752,8 +752,8 @@ double CGenome::GetCompatibilityScore(const CGenome &genome)
 
   //finally calculate the scores
   double score = (mExcess * NumExcess/(double)longest) +
-				 (mDisjoint * NumDisjoint/(double)longest) +
-				 (mMatched * WeightDifference / NumMatched);
+                 (mDisjoint * NumDisjoint/(double)longest) +
+                 (mMatched * WeightDifference / NumMatched);
 
 
   return score;

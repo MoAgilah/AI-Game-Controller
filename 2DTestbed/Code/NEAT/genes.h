@@ -1,4 +1,6 @@
-#pragma once
+
+#ifndef GENES_H
+#define GENES_H
 //-----------------------------------------------------------------------
 //
 //  Name: GeneGenes.h
@@ -46,19 +48,18 @@ struct SNeuronGene
   double    dActivationResponse;
 
   //position in network grid
-  double    dSplitY;
-  double	dSplitX;
+  double    dSplitY, dSplitX;
 
   SNeuronGene(neuron_type type,
-			  int         id,
-			  double      y,
-			  double      x,
-			  bool        r = false):iID(id),
-									 NeuronType(type),
-									 bRecurrent(r),
-									 dSplitY(y),
-									 dSplitX(x),
-									 dActivationResponse(1)
+              int         id,
+              double      y,
+              double      x,
+              bool        r = false):iID(id),
+                                     NeuronType(type),
+                                     bRecurrent(r),
+                                     dSplitY(y),
+                                     dSplitX(x),
+                                     dActivationResponse(1)
   {}
 };
 
@@ -69,32 +70,32 @@ struct SNeuronGene
 struct SLinkGene
 {
 	//the IDs of the two neurons this link connects
-	int     FromNeuron{},
-		ToNeuron{};
+	int     FromNeuron,
+	        ToNeuron;
 
-	double	dWeight{};
+	double	dWeight;
 
   //flag to indicate if this link is currently enabled or not
-	bool    bEnabled{};
+  bool    bEnabled;
 
   //flag to indicate if this link is recurrent or not
-	bool    bRecurrent{};
+  bool    bRecurrent;
 
-	int     InnovationID{};
+	int     InnovationID;
 
   SLinkGene(){}
 
   SLinkGene(int    in,
-			int    out,
-			bool   enable,
-			int    tag,
-			double w,
-			bool   rec = false):bEnabled(enable),
+            int    out,
+            bool   enable,
+            int    tag,
+            double w,
+            bool   rec = false):bEnabled(enable),
 								InnovationID(tag),
-								FromNeuron(in),
-								ToNeuron(out),
-								dWeight(w),
-								bRecurrent(rec)
+                                FromNeuron(in),
+                                ToNeuron(out),
+                                dWeight(w),
+                                bRecurrent(rec)
 	{}
 
   //overload '<' used for sorting(we use the innovation ID as the criteria)
@@ -103,3 +104,7 @@ struct SLinkGene
 		return (lhs.InnovationID < rhs.InnovationID);
 	}
 };
+
+
+
+#endif

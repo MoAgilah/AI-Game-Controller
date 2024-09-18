@@ -131,8 +131,8 @@ public:
 		dHalfPi = dPi / 2;
 		dTwoPi = dPi * 2;
 
-		iNumInputs = 240;
-		iNumOutputs = 6;
+		iNumInputs = 255;
+		iNumOutputs = 7;
 
 		return true;
 

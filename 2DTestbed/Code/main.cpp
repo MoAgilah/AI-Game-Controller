@@ -9,6 +9,7 @@ int main()
 	sf::RenderWindow window(sf::VideoMode((int)GameConstants::ScreenDim.x, (int)GameConstants::ScreenDim.y), "Super Mario World: Yoshi's Island 1");
 	window.setFramerateLimit((unsigned int)GameConstants::FPS);
 
+	CParams g_params;
 	GameManager gameMgr;
 
 	gameMgr.GetLogger().AddDebugLog("Current Generation: " + std::to_string(gameMgr.GetAIController()->GetCurrentGeneration()));

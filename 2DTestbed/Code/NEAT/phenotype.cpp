@@ -1,5 +1,4 @@
 #include "phenotype.h"
-#include <algorithm>
 
 //------------------------------------Sigmoid function------------------------
 //
@@ -14,8 +13,8 @@ float Sigmoid(float netinput, float response)
 //
 //------------------------------------------------------------------------
 CNeuralNet::CNeuralNet(std::vector<SNeuron*> neurons,
-					   int              depth):m_vecpNeurons(neurons),
-											   m_iDepth(depth)
+                       int              depth):m_vecpNeurons(neurons),
+                                               m_iDepth(depth)
 {}
 
 
@@ -27,12 +26,12 @@ CNeuralNet::~CNeuralNet()
   //delete any live neurons
   for (int i=0; i<m_vecpNeurons.size(); ++i)
   {
-	if (m_vecpNeurons[i])
-	{
-	  delete m_vecpNeurons[i];
+    if (m_vecpNeurons[i])
+    {
+      delete m_vecpNeurons[i];
 
-	  m_vecpNeurons[i] = NULL;
-	}
+      m_vecpNeurons[i] = NULL;
+    }
   }
 }
 
@@ -40,13 +39,13 @@ CNeuralNet::~CNeuralNet()
 //	takes a list of doubles as inputs into the network then steps through
 //  the neurons calculating each neurons next output.
 //
-//	finally returns a std::vector of doubles as the output from the net.
+//	finally returns a std::std::vector of doubles as the output from the net.
 //------------------------------------------------------------------------
 std::vector<double> CNeuralNet::Update(const std::vector<double> &inputs,
-								  const run_type        type)
+                                  const run_type        type)
 {
-  //create a vector to put the outputs into
-	std::vector<double>	outputs;
+  //create a std::vector to put the outputs into
+  std::vector<double>	outputs;
 
   //if the mode is snapshot then we require all the neurons to be
   //iterated through as many times as the network is deep. If the
@@ -56,69 +55,69 @@ std::vector<double> CNeuralNet::Update(const std::vector<double> &inputs,
 
   if (type == snapshot)
   {
-	FlushCount = m_iDepth;
+    FlushCount = m_iDepth;
   }
   else
   {
-	FlushCount = 1;
+    FlushCount = 1;
   }
 
   //iterate through the network FlushCount times
   for (int i=0; i<FlushCount; ++i)
   {
-	//clear the output vector
-	outputs.clear();
+    //clear the output std::vector
+    outputs.clear();
 
-	//this is an index into the current neuron
-	int cNeuron = 0;
+    //this is an index into the current neuron
+    int cNeuron = 0;
 
-	//first set the outputs of the 'input' neurons to be equal
-	//to the values passed into the function in inputs
-	while (m_vecpNeurons[cNeuron]->NeuronType == input)
-	{
-	  m_vecpNeurons[cNeuron]->dOutput = inputs[cNeuron];
+    //first set the outputs of the 'input' neurons to be equal
+    //to the values passed into the function in inputs
+    while (m_vecpNeurons[cNeuron]->NeuronType == input)
+    {
+      m_vecpNeurons[cNeuron]->dOutput = inputs[cNeuron];
 
-	  ++cNeuron;
-	}
+      ++cNeuron;
+    }
 
-	//set the output of the bias to 1
-	m_vecpNeurons[cNeuron++]->dOutput = 1;
+    //set the output of the bias to 1
+    m_vecpNeurons[cNeuron++]->dOutput = 1;
 
-	//then we step through the network a neuron at a time
-	while (cNeuron < m_vecpNeurons.size())
-	{
-	  //this will hold the sum of all the inputs x weights
-	  double sum = 0;
+    //then we step through the network a neuron at a time
+    while (cNeuron < m_vecpNeurons.size())
+    {
+      //this will hold the sum of all the inputs x weights
+      double sum = 0;
 
-	  //sum this neuron's inputs by iterating through all the links into
-	  //the neuron
-	  for (int lnk=0; lnk<m_vecpNeurons[cNeuron]->vecLinksIn.size(); ++lnk)
-	  {
-		//get this link's weight
-		double Weight = m_vecpNeurons[cNeuron]->vecLinksIn[lnk].dWeight;
+      //sum this neuron's inputs by iterating through all the links into
+      //the neuron
+      for (int lnk=0; lnk<m_vecpNeurons[cNeuron]->vecLinksIn.size(); ++lnk)
+      {
+        //get this link's weight
+        double Weight = m_vecpNeurons[cNeuron]->vecLinksIn[lnk].dWeight;
 
-		//get the output from the neuron this link is coming from
-		double NeuronOutput =
-		m_vecpNeurons[cNeuron]->vecLinksIn[lnk].pIn->dOutput;
+        //get the output from the neuron this link is coming from
+        double NeuronOutput =
+        m_vecpNeurons[cNeuron]->vecLinksIn[lnk].pIn->dOutput;
 
-		//add to sum
-		sum += Weight * NeuronOutput;
-	  }
+        //add to sum
+        sum += Weight * NeuronOutput;
+      }
 
-	  //now put the sum through the activation function and assign the
-	  //value to this neuron's output
-	  m_vecpNeurons[cNeuron]->dOutput =
-	  Sigmoid((float)sum, (float)m_vecpNeurons[cNeuron]->dActivationResponse);
+      //now put the sum through the activation function and assign the
+      //value to this neuron's output
+      m_vecpNeurons[cNeuron]->dOutput =
+      Sigmoid((float)sum, (float)m_vecpNeurons[cNeuron]->dActivationResponse);
 
-	  if (m_vecpNeurons[cNeuron]->NeuronType == output)
-	  {
-		//add to our outputs
-		outputs.push_back(m_vecpNeurons[cNeuron]->dOutput);
-	  }
+      if (m_vecpNeurons[cNeuron]->NeuronType == output)
+      {
+        //add to our outputs
+        outputs.push_back(m_vecpNeurons[cNeuron]->dOutput);
+      }
 
-	  //next neuron
-	  ++cNeuron;
-	}
+      //next neuron
+      ++cNeuron;
+    }
 
   }//next iteration through the network
 
@@ -127,10 +126,10 @@ std::vector<double> CNeuralNet::Update(const std::vector<double> &inputs,
   //the training data is presented
   if (type == snapshot)
   {
-	for (int n=0; n<m_vecpNeurons.size(); ++n)
-	{
-	  m_vecpNeurons[n]->dOutput = 0;
-	}
+    for (int n=0; n<m_vecpNeurons.size(); ++n)
+    {
+      m_vecpNeurons[n]->dOutput = 0;
+    }
   }
 
   //return the outputs
@@ -144,62 +143,62 @@ std::vector<double> CNeuralNet::Update(const std::vector<double> &inputs,
 void TidyXSplits(std::vector<SNeuron*> &neurons)
 {
   //stores the index of any neurons with identical splitY values
-	std::vector<int>    SameLevelNeurons;
+  std::vector<int>    SameLevelNeurons;
 
   //stores all the splitY values already checked
-	std::vector<double> DepthsChecked;
+  std::vector<double> DepthsChecked;
 
 
   //for each neuron find all neurons of identical ySplit level
   for (int n=0; n<neurons.size(); ++n)
   {
-	double ThisDepth = neurons[n]->dSplitY;
+    double ThisDepth = neurons[n]->dSplitY;
 
-	//check to see if we have already adjusted the neurons at this depth
-	bool bAlreadyChecked = false;
+    //check to see if we have already adjusted the neurons at this depth
+    bool bAlreadyChecked = false;
 
-	for (int i=0; i<DepthsChecked.size(); ++i)
-	{
-	  if (DepthsChecked[i] == ThisDepth)
-	  {
-		bAlreadyChecked = true;
+    for (int i=0; i<DepthsChecked.size(); ++i)
+    {
+      if (DepthsChecked[i] == ThisDepth)
+      {
+        bAlreadyChecked = true;
 
-		break;
-	  }
-	}
+        break;
+      }
+    }
 
-	//add this depth to the depths checked.
-	DepthsChecked.push_back(ThisDepth);
+    //add this depth to the depths checked.
+    DepthsChecked.push_back(ThisDepth);
 
-	//if this depth has not already been adjusted
-	if (!bAlreadyChecked)
-	{
-	  //clear this storage and add the neuron's index we are checking
-	  SameLevelNeurons.clear();
-	  SameLevelNeurons.push_back(n);
+    //if this depth has not already been adjusted
+    if (!bAlreadyChecked)
+    {
+      //clear this storage and add the neuron's index we are checking
+      SameLevelNeurons.clear();
+      SameLevelNeurons.push_back(n);
 
-	  //find all the neurons with this splitY depth
-	  for (int i=n+1; i<neurons.size(); ++i)
-	  {
-		if (neurons[i]->dSplitY == ThisDepth)
-		{
-		  //add the index to this neuron
-		  SameLevelNeurons.push_back(i);
-		}
-	  }
+      //find all the neurons with this splitY depth
+      for (int i=n+1; i<neurons.size(); ++i)
+      {
+        if (neurons[i]->dSplitY == ThisDepth)
+        {
+          //add the index to this neuron
+          SameLevelNeurons.push_back(i);
+        }
+      }
 
-	  //calculate the distance between each neuron
-	  double slice = 1.0/(SameLevelNeurons.size()+1);
+      //calculate the distance between each neuron
+      double slice = 1.0/(SameLevelNeurons.size()+1);
 
 
-	  //separate all neurons at this level
-	  for (int i=0; i<SameLevelNeurons.size(); ++i)
-	  {
-		int idx = SameLevelNeurons[i];
+      //separate all neurons at this level
+      for (int i=0; i<SameLevelNeurons.size(); ++i)
+      {
+        int idx = SameLevelNeurons[i];
 
-		neurons[idx]->dSplitX = (i+1) * slice;
-	  }
-	}
+        neurons[idx]->dSplitX = (i+1) * slice;
+      }
+    }
 
   }//next neuron to check
 
@@ -225,8 +224,8 @@ void CNeuralNet::DrawNet(HDC &surface, int Left, int Right, int Top, int Bottom)
 
   for (int cNeuron=0; cNeuron<m_vecpNeurons.size(); ++cNeuron)
   {
-	m_vecpNeurons[cNeuron]->iPosX = Left + spanX* (int)m_vecpNeurons[cNeuron]->dSplitX;
-	m_vecpNeurons[cNeuron]->iPosY = (Top - border) - (spanY * (int)m_vecpNeurons[cNeuron]->dSplitY);
+    m_vecpNeurons[cNeuron]->iPosX = Left + spanX* (int)m_vecpNeurons[cNeuron]->dSplitX;
+    m_vecpNeurons[cNeuron]->iPosY = (Top - border) - (spanY * (int)m_vecpNeurons[cNeuron]->dSplitY);
   }
 
   //create some pens and brushes to draw with
@@ -252,137 +251,137 @@ void CNeuralNet::DrawNet(HDC &surface, int Left, int Right, int Top, int Bottom)
   //the links
   for (int cNeuron=0; cNeuron<m_vecpNeurons.size(); ++cNeuron)
   {
-	//grab this neurons position as the start position of each
-	//connection
-	int StartX = m_vecpNeurons[cNeuron]->iPosX;
-	int StartY = m_vecpNeurons[cNeuron]->iPosY;
+    //grab this neurons position as the start position of each
+    //connection
+    int StartX = m_vecpNeurons[cNeuron]->iPosX;
+    int StartY = m_vecpNeurons[cNeuron]->iPosY;
 
-	//is this a bias neuron? If so, draw the link in green
-	bool bBias = false;
+    //is this a bias neuron? If so, draw the link in green
+    bool bBias = false;
 
-	if (m_vecpNeurons[cNeuron]->NeuronType == bias)
-	{
-	  bBias = true;
-	}
+    if (m_vecpNeurons[cNeuron]->NeuronType == bias)
+    {
+      bBias = true;
+    }
 
-	//now iterate through each outgoing link to grab the end points
-	for (int cLnk=0; cLnk<m_vecpNeurons[cNeuron]->vecLinksOut.size(); ++ cLnk)
-	{
-	  int EndX = m_vecpNeurons[cNeuron]->vecLinksOut[cLnk].pOut->iPosX;
-	  int EndY = m_vecpNeurons[cNeuron]->vecLinksOut[cLnk].pOut->iPosY;
+    //now iterate through each outgoing link to grab the end points
+    for (int cLnk=0; cLnk<m_vecpNeurons[cNeuron]->vecLinksOut.size(); ++ cLnk)
+    {
+      int EndX = m_vecpNeurons[cNeuron]->vecLinksOut[cLnk].pOut->iPosX;
+      int EndY = m_vecpNeurons[cNeuron]->vecLinksOut[cLnk].pOut->iPosY;
 
-	  //if link is forward draw a straight line
-	  if( (!m_vecpNeurons[cNeuron]->vecLinksOut[cLnk].bRecurrent) && !bBias)
-	  {
-		int thickness = (int)(fabs(m_vecpNeurons[cNeuron]->vecLinksOut[cLnk].dWeight));
+      //if link is forward draw a straight line
+      if( (!m_vecpNeurons[cNeuron]->vecLinksOut[cLnk].bRecurrent) && !bBias)
+      {
+        int thickness = (int)(fabs(m_vecpNeurons[cNeuron]->vecLinksOut[cLnk].dWeight));
 
-		thickness = std::clamp(thickness, 0, MaxThickness);
+        Clamp(thickness, 0, MaxThickness);
 
-		HPEN Pen;
+        HPEN Pen;
 
-		//create a yellow pen for inhibitory weights
-		if (m_vecpNeurons[cNeuron]->vecLinksOut[cLnk].dWeight <= 0)
-		{
-		  Pen  = CreatePen(PS_SOLID, thickness, RGB(240, 230, 170));
-		}
+        //create a yellow pen for inhibitory weights
+        if (m_vecpNeurons[cNeuron]->vecLinksOut[cLnk].dWeight <= 0)
+        {
+          Pen  = CreatePen(PS_SOLID, thickness, RGB(240, 230, 170));
+        }
 
-		//grey for excitory
-		else
-		{
-		  Pen  = CreatePen(PS_SOLID, thickness, RGB(200, 200, 200));
-		}
+        //grey for excitory
+        else
+        {
+          Pen  = CreatePen(PS_SOLID, thickness, RGB(200, 200, 200));
+        }
 
-		HPEN tempPen = (HPEN)SelectObject(surface, Pen);
+        HPEN tempPen = (HPEN)SelectObject(surface, Pen);
 
-		//draw the link
-		MoveToEx(surface, StartX, StartY, NULL);
-		LineTo(surface, EndX, EndY);
+        //draw the link
+        MoveToEx(surface, StartX, StartY, NULL);
+        LineTo(surface, EndX, EndY);
 
-		SelectObject(surface, tempPen);
+        SelectObject(surface, tempPen);
 
-		DeleteObject(Pen);
-	  }
+        DeleteObject(Pen);
+      }
 
-	  else if( (!m_vecpNeurons[cNeuron]->vecLinksOut[cLnk].bRecurrent) && bBias)
-	  {
-		SelectObject(surface, GreenPen);
+      else if( (!m_vecpNeurons[cNeuron]->vecLinksOut[cLnk].bRecurrent) && bBias)
+      {
+        SelectObject(surface, GreenPen);
 
-		//draw the link
-		MoveToEx(surface, StartX, StartY, NULL);
-		LineTo(surface, EndX, EndY);
-	  }
+        //draw the link
+        MoveToEx(surface, StartX, StartY, NULL);
+        LineTo(surface, EndX, EndY);
+      }
 
-	  //recurrent link draw in red
-	  else
-	  {
-		if ((StartX == EndX) && (StartY == EndY))
-		{
+      //recurrent link draw in red
+      else
+      {
+        if ((StartX == EndX) && (StartY == EndY))
+        {
 
-		  int thickness = (int)(fabs(m_vecpNeurons[cNeuron]->vecLinksOut[cLnk].dWeight));
+          int thickness = (int)(fabs(m_vecpNeurons[cNeuron]->vecLinksOut[cLnk].dWeight));
 
-		  thickness = std::clamp(thickness, 0, MaxThickness);
+          Clamp(thickness, 0, MaxThickness);
 
-		  HPEN Pen;
+          HPEN Pen;
 
-		  //blue for inhibitory
-		  if (m_vecpNeurons[cNeuron]->vecLinksOut[cLnk].dWeight <= 0)
-		  {
-			Pen  = CreatePen(PS_SOLID, thickness, RGB(0,0,255));
-		  }
+          //blue for inhibitory
+          if (m_vecpNeurons[cNeuron]->vecLinksOut[cLnk].dWeight <= 0)
+          {
+            Pen  = CreatePen(PS_SOLID, thickness, RGB(0,0,255));
+          }
 
-		  //red for excitory
-		  else
-		  {
-			Pen  = CreatePen(PS_SOLID, thickness, RGB(255, 0, 0));
-		  }
+          //red for excitory
+          else
+          {
+            Pen  = CreatePen(PS_SOLID, thickness, RGB(255, 0, 0));
+          }
 
-		  HPEN tempPen = (HPEN)SelectObject(surface, Pen);
+          HPEN tempPen = (HPEN)SelectObject(surface, Pen);
 
-		  //we have a recursive link to the same neuron draw an ellipse
-		  int x = m_vecpNeurons[cNeuron]->iPosX ;
-		  int y = m_vecpNeurons[cNeuron]->iPosY - (int)(1.5 * radNeuron);
+          //we have a recursive link to the same neuron draw an ellipse
+          int x = m_vecpNeurons[cNeuron]->iPosX ;
+          int y = m_vecpNeurons[cNeuron]->iPosY - (int)(1.5 * radNeuron);
 
-		  Ellipse(surface, x-radLink, y-radLink, x+radLink, y+radLink);
+          Ellipse(surface, x-radLink, y-radLink, x+radLink, y+radLink);
 
-		  SelectObject(surface, tempPen);
+          SelectObject(surface, tempPen);
 
-		  DeleteObject(Pen);
-		}
+          DeleteObject(Pen);
+        }
 
-		else
-		{
-		  int thickness = (int)(fabs(m_vecpNeurons[cNeuron]->vecLinksOut[cLnk].dWeight));
+        else
+        {
+          int thickness = (int)(fabs(m_vecpNeurons[cNeuron]->vecLinksOut[cLnk].dWeight));
 
-		  thickness = std::clamp(thickness, 0, MaxThickness);
+          Clamp(thickness, 0, MaxThickness);
 
-		  HPEN Pen;
+          HPEN Pen;
 
-		  //blue for inhibitory
-		  if (m_vecpNeurons[cNeuron]->vecLinksOut[cLnk].dWeight <= 0)
-		  {
-			Pen  = CreatePen(PS_SOLID, thickness, RGB(0,0,255));
-		  }
+          //blue for inhibitory
+          if (m_vecpNeurons[cNeuron]->vecLinksOut[cLnk].dWeight <= 0)
+          {
+            Pen  = CreatePen(PS_SOLID, thickness, RGB(0,0,255));
+          }
 
-		  //red for excitory
-		  else
-		  {
-			Pen  = CreatePen(PS_SOLID, thickness, RGB(255, 0, 0));
-		  }
+          //red for excitory
+          else
+          {
+            Pen  = CreatePen(PS_SOLID, thickness, RGB(255, 0, 0));
+          }
 
 
-		  HPEN tempPen = (HPEN)SelectObject(surface, Pen);
+          HPEN tempPen = (HPEN)SelectObject(surface, Pen);
 
-		  //draw the link
-		  MoveToEx(surface, StartX, StartY, NULL);
-		  LineTo(surface, EndX, EndY);
+          //draw the link
+          MoveToEx(surface, StartX, StartY, NULL);
+          LineTo(surface, EndX, EndY);
 
-		  SelectObject(surface, tempPen);
+          SelectObject(surface, tempPen);
 
-		  DeleteObject(Pen);
-		}
-	  }
+          DeleteObject(Pen);
+        }
+      }
 
-	}
+    }
   }
 
   //now draw the neurons and their IDs
@@ -391,11 +390,11 @@ void CNeuralNet::DrawNet(HDC &surface, int Left, int Right, int Top, int Bottom)
 
   for (int cNeuron=0; cNeuron<m_vecpNeurons.size(); ++cNeuron)
   {
-	int x = m_vecpNeurons[cNeuron]->iPosX;
-	int y = m_vecpNeurons[cNeuron]->iPosY;
+    int x = m_vecpNeurons[cNeuron]->iPosX;
+    int y = m_vecpNeurons[cNeuron]->iPosY;
 
-	//display the neuron
-	Ellipse(surface, x-radNeuron, y-radNeuron, x+radNeuron, y+radNeuron);
+    //display the neuron
+    Ellipse(surface, x-radNeuron, y-radNeuron, x+radNeuron, y+radNeuron);
   }
 
   //cleanup

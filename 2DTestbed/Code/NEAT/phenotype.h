@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PHENOTYPE_H
+#define PHENOTYPE_H
 
 //-----------------------------------------------------------------------
 //
@@ -14,7 +15,7 @@
 #include <vector>
 #include <math.h>
 #define NOMINMAX
-#include <Windows.h>
+#include <windows.h>
 #include <algorithm>
 
 #include "Utils.h"
@@ -40,9 +41,9 @@ struct SLink
   bool    bRecurrent;
 
   SLink(double dW, SNeuron* pIn, SNeuron* pOut, bool bRec):dWeight(dW),
-														   pIn(pIn),
-														   pOut(pOut),
-														   bRecurrent(bRec)
+                                                           pIn(pIn),
+                                                           pOut(pOut),
+                                                           bRecurrent(bRec)
   {}
 };
 
@@ -75,25 +76,23 @@ struct SNeuron
   double        dActivationResponse;
 
   //used in visualization of the phenotype
-  int           iPosX;
-  int			iPosY;
-  double        dSplitY;
-  double		dSplitX;
+  int           iPosX,   iPosY;
+  double        dSplitY, dSplitX;
 
   //--- ctors
   SNeuron(neuron_type type,
-		  int         id,
-		  double      y,
-		  double      x,
-		  double      ActResponse):NeuronType(type),
-								   iNeuronID(id),
-								   dSumActivation(0),
-								   dOutput(0),
-								   iPosX(0),
-								   iPosY(0),
-								   dSplitY(y),
-								   dSplitX(x),
-								   dActivationResponse(ActResponse)
+          int         id,
+          double      y,
+          double      x,
+          double      ActResponse):NeuronType(type),
+                                   iNeuronID(id),
+                                   dSumActivation(0),
+                                   dOutput(0),
+                                   iPosX(0),
+                                   iPosY(0),
+                                   dSplitY(y),
+                                   dSplitX(x),
+                                   dActivationResponse(ActResponse)
 	{}
 };
 
@@ -115,7 +114,7 @@ private:
 public:
 
   CNeuralNet(std::vector<SNeuron*> neurons,
-			 int              depth);
+             int              depth);
 
 
   ~CNeuralNet();
@@ -131,9 +130,12 @@ public:
 
   //draws a graphical representation of the network to a user speciefied window
   void            DrawNet(HDC &surface,
-						  int cxLeft,
-						  int cxRight,
-						  int cyTop,
-						  int cyBot);
+                          int cxLeft,
+                          int cxRight,
+                          int cyTop,
+                          int cyBot);
 
 };
+
+
+#endif

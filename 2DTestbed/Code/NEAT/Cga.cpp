@@ -1,25 +1,25 @@
 #include "Cga.h"
-#include <cmath>
+
 
 //-------------------------------------------------------------------------
 //	this constructor creates a base genome from supplied values and creates
 //	a population of 'size' similar (same topology, varying weights) genomes
 //-------------------------------------------------------------------------
 Cga::Cga(int  size,
-		 int  inputs,
-		 int  outputs,
-		 int  cx,
-		 int  cy):  m_iPopSize(size),
-					m_iGeneration(0),
-					m_pInnovation(NULL),
-					m_iNextGenomeID(0),
-					m_iNextSpeciesID(0),
-					m_iFittestGenome(0),
-					m_dBestEverFitness(0),
-					m_dTotFitAdj(0),
-					m_dAvFitAdj(0),
-					cxClient(cx),
-					cyClient(cy)
+         int  inputs,
+         int  outputs,
+         int  cx,
+         int  cy):  m_iPopSize(size),
+                    m_iGeneration(0),
+                    m_pInnovation(NULL),
+                    m_iNextGenomeID(0),
+                    m_iNextSpeciesID(0),
+                    m_iFittestGenome(0),
+                    m_dBestEverFitness(0),
+                    m_dTotFitAdj(0),
+                    m_dAvFitAdj(0),
+                    cxClient(cx),
+                    cyClient(cy)
 {
 	//create the population of genomes
 	for (int i=0; i<m_iPopSize; ++i)
@@ -44,16 +44,16 @@ Cga::~Cga()
 {
   if (m_pInnovation)
   {
-	delete m_pInnovation;
+    delete m_pInnovation;
 
-	m_pInnovation = NULL;
+    m_pInnovation = NULL;
   }
 }
 
 //-------------------------------CreatePhenotypes-------------------------
 //
 //	cycles through all the members of the population and creates their
-//  phenotypes. Returns a vector containing pointers to the new phenotypes
+//  phenotypes. Returns a std::std::vector containing pointers to the new phenotypes
 //-------------------------------------------------------------------------
 std::vector<CNeuralNet*> Cga::CreatePhenotypes()
 {
@@ -61,13 +61,13 @@ std::vector<CNeuralNet*> Cga::CreatePhenotypes()
 
   for (int i=0; i<m_iPopSize; i++)
 	{
-	//calculate max network depth
-	int depth = CalculateNetDepth(m_vecGenomes[i]);
+    //calculate max network depth
+    int depth = CalculateNetDepth(m_vecGenomes[i]);
 
 		//create new phenotype
 		CNeuralNet* net = m_vecGenomes[i].CreatePhenotype(depth);
 
-	networks.push_back(net);
+    networks.push_back(net);
 	}
 
 	return networks;
@@ -84,15 +84,15 @@ int Cga::CalculateNetDepth(const CGenome &gen)
 
   for (int nd=0; nd<gen.NumNeurons(); ++nd)
   {
-	for (int i=0; i<vecSplits.size(); ++i)
-	{
+    for (int i=0; i<vecSplits.size(); ++i)
+    {
 
-	  if ((gen.SplitY(nd) == vecSplits[i].val) &&
-		  (vecSplits[i].depth > MaxSoFar))
-	  {
-		MaxSoFar = vecSplits[i].depth;
-	  }
-	}
+      if ((gen.SplitY(nd) == vecSplits[i].val) &&
+          (vecSplits[i].depth > MaxSoFar))
+      {
+        MaxSoFar = vecSplits[i].depth;
+      }
+    }
   }
   return MaxSoFar + 2;
 }
@@ -100,7 +100,7 @@ int Cga::CalculateNetDepth(const CGenome &gen)
 
 //-----------------------------------AddNeuronID----------------------------
 //
-//	just checks to see if a node ID has already been added to a vector of
+//	just checks to see if a node ID has already been added to a std::vector of
 //  nodes. If not 	then the new ID  gets added. Used in Crossover.
 //------------------------------------------------------------------------
 void Cga::AddNeuronID(const int nodeID, std::vector<int> &vec)
@@ -122,7 +122,7 @@ void Cga::AddNeuronID(const int nodeID, std::vector<int> &vec)
 //------------------------------------- Epoch ----------------------------
 //
 //  This function performs one epoch of the genetic algorithm and returns
-//  a vector of pointers to the new phenotypes
+//  a std::vector of pointers to the new phenotypes
 //------------------------------------------------------------------------
 std::vector<CNeuralNet*> Cga::Epoch(const std::vector<double> &FitnessScores)
 {
@@ -139,7 +139,7 @@ std::vector<CNeuralNet*> Cga::Epoch(const std::vector<double> &FitnessScores)
   //update the genomes with the fitnesses scored in the last run
   for (int gen=0; gen<m_vecGenomes.size(); ++gen)
   {
-	m_vecGenomes[gen].SetFitness(FitnessScores[gen]);
+    m_vecGenomes[gen].SetFitness(FitnessScores[gen]);
   }
 
   //sort genomes and keep a record of the best performers
@@ -162,118 +162,118 @@ std::vector<CNeuralNet*> Cga::Epoch(const std::vector<double> &FitnessScores)
   //mutated
   for (int spc=0; spc<m_vecSpecies.size(); ++spc)
   {
-	//because of the number to spawn from each species is a double
-	//rounded up or down to an integer it is possible to get an overflow
-	//of genomes spawned. This statement just makes sure that doesn't
-	//happen
-	if (NumSpawnedSoFar < CParams::iNumPlayers)
-	{
-	  //this is the amount of offspring this species is required to
-	  // spawn. Rounded simply rounds the double up or down.
-	  int NumToSpawn = (int)std::round(m_vecSpecies[spc].NumToSpawn());
+    //because of the number to spawn from each species is a double
+    //rounded up or down to an integer it is possible to get an overflow
+    //of genomes spawned. This statement just makes sure that doesn't
+    //happen
+    if (NumSpawnedSoFar < CParams::iNumPlayers)
+    {
+      //this is the amount of offspring this species is required to
+      // spawn. Rounded simply rounds the double up or down.
+      int NumToSpawn = Rounded(m_vecSpecies[spc].NumToSpawn());
 
-	  bool bChosenBestYet = false;
+      bool bChosenBestYet = false;
 
-	  while (NumToSpawn--)
-	  {
-		//first grab the best performing genome from this species and transfer
-		//to the new population without mutation. This provides per species
-		//elitism
-		if (!bChosenBestYet)
-		{
-		  baby = m_vecSpecies[spc].Leader();
+      while (NumToSpawn--)
+      {
+        //first grab the best performing genome from this species and transfer
+        //to the new population without mutation. This provides per species
+        //elitism
+        if (!bChosenBestYet)
+        {
+          baby = m_vecSpecies[spc].Leader();
 
-		  bChosenBestYet = true;
-		}
+          bChosenBestYet = true;
+        }
 
-		else
-		{
-		  //if the number of individuals in this species is only one
-		  //then we can only perform mutation
-		  if (m_vecSpecies[spc].NumMembers() == 1)
-		  {
-			//spawn a child
-			baby = m_vecSpecies[spc].Spawn();
-		  }
+        else
+        {
+          //if the number of individuals in this species is only one
+          //then we can only perform mutation
+          if (m_vecSpecies[spc].NumMembers() == 1)
+          {
+            //spawn a child
+            baby = m_vecSpecies[spc].Spawn();
+          }
 
-		  //if greater than one we can use the crossover operator
-		  else
-		  {
-			//spawn1
-			CGenome g1 = m_vecSpecies[spc].Spawn();
+          //if greater than one we can use the crossover operator
+          else
+          {
+            //spawn1
+            CGenome g1 = m_vecSpecies[spc].Spawn();
 
-			if (RandFloat() < CParams::dCrossoverRate)
-			{
+            if (RandFloat() < CParams::dCrossoverRate)
+            {
 
-			  //spawn2, make sure it's not the same as g1
-			  CGenome g2 = m_vecSpecies[spc].Spawn();
+              //spawn2, make sure it's not the same as g1
+              CGenome g2 = m_vecSpecies[spc].Spawn();
 
-			  //number of attempts at finding a different genome
-			  int NumAttempts = 5;
+              //number of attempts at finding a different genome
+              int NumAttempts = 5;
 
-			  while ( (g1.ID() == g2.ID()) && (NumAttempts--) )
-			  {
-				g2 = m_vecSpecies[spc].Spawn();
-			  }
+              while ( (g1.ID() == g2.ID()) && (NumAttempts--) )
+              {
+                g2 = m_vecSpecies[spc].Spawn();
+              }
 
-			  if (g1.ID() != g2.ID())
-			  {
-				baby = Crossover(g1, g2);
-			  }
-			}
+              if (g1.ID() != g2.ID())
+              {
+                baby = Crossover(g1, g2);
+              }
+            }
 
-			else
-			{
-			  baby = g1;
-			}
-		  }
+            else
+            {
+              baby = g1;
+            }
+          }
 
 
-		  ++m_iNextGenomeID;
+          ++m_iNextGenomeID;
 
-		  baby.SetID(m_iNextGenomeID);
+          baby.SetID(m_iNextGenomeID);
 
-		  //now we have a spawned child lets mutate it! First there is the
-		  //chance a neuron may be added
-		  if (baby.NumNeurons() < CParams::iMaxPermittedNeurons)
-		  {
-			baby.AddNeuron(CParams::dChanceAddNode,
-						   *m_pInnovation,
-						   CParams::iNumTrysToFindOldLink);
-		  }
+          //now we have a spawned child lets mutate it! First there is the
+          //chance a neuron may be added
+          if (baby.NumNeurons() < CParams::iMaxPermittedNeurons)
+          {
+            baby.AddNeuron(CParams::dChanceAddNode,
+                           *m_pInnovation,
+                           CParams::iNumTrysToFindOldLink);
+          }
 
-		  //now there's the chance a link may be added
-		  baby.AddLink(CParams::dChanceAddLink,
-					   CParams::dChanceAddRecurrentLink,
-					   *m_pInnovation,
-					   CParams::iNumTrysToFindLoopedLink,
-					   CParams::iNumAddLinkAttempts);
+          //now there's the chance a link may be added
+          baby.AddLink(CParams::dChanceAddLink,
+                       CParams::dChanceAddRecurrentLink,
+                       *m_pInnovation,
+                       CParams::iNumTrysToFindLoopedLink,
+                       CParams::iNumAddLinkAttempts);
 
-		  //mutate the weights
-		  baby.MutateWeights(CParams::dMutationRate,
-							 CParams::dProbabilityWeightReplaced,
-							 CParams::dMaxWeightPerturbation);
+          //mutate the weights
+          baby.MutateWeights(CParams::dMutationRate,
+                             CParams::dProbabilityWeightReplaced,
+                             CParams::dMaxWeightPerturbation);
 
-		  baby.MutateActivationResponse(CParams::dActivationMutationRate,
-										CParams::dMaxActivationPerturbation);
-		}
+          baby.MutateActivationResponse(CParams::dActivationMutationRate,
+                                        CParams::dMaxActivationPerturbation);
+        }
 
-		//sort the babies genes by their innovation numbers
-		baby.SortGenes();
+        //sort the babies genes by their innovation numbers
+        baby.SortGenes();
 
-		//add to new pop
-		NewPop.push_back(baby);
+        //add to new pop
+        NewPop.push_back(baby);
 
-		++NumSpawnedSoFar;
+        ++NumSpawnedSoFar;
 
-		if (NumSpawnedSoFar == CParams::iNumPlayers)
-		{
-		  NumToSpawn = 0;
-		}
+        if (NumSpawnedSoFar == CParams::iNumPlayers)
+        {
+          NumToSpawn = 0;
+        }
 
-	  }//end while
+      }//end while
 
-	}//end if
+    }//end if
 
   }//next species
 
@@ -285,14 +285,14 @@ std::vector<CNeuralNet*> Cga::Epoch(const std::vector<double> &FitnessScores)
   if (NumSpawnedSoFar < CParams::iNumPlayers)
   {
 
-	//calculate amount of additional children required
-	int Rqd = CParams::iNumPlayers - NumSpawnedSoFar;
+    //calculate amount of additional children required
+    int Rqd = CParams::iNumPlayers - NumSpawnedSoFar;
 
-	//grab them
-	while (Rqd--)
-	{
-	  NewPop.push_back(TournamentSelection(m_iPopSize/5));
-	}
+    //grab them
+    while (Rqd--)
+    {
+      NewPop.push_back(TournamentSelection(m_iPopSize/5));
+    }
   }
 
   //replace the current population with the new one
@@ -303,12 +303,12 @@ std::vector<CNeuralNet*> Cga::Epoch(const std::vector<double> &FitnessScores)
 
   for (int gen=0; gen<m_vecGenomes.size(); ++gen)
   {
-	//calculate max network depth
-	int depth = CalculateNetDepth(m_vecGenomes[gen]);
+    //calculate max network depth
+    int depth = CalculateNetDepth(m_vecGenomes[gen]);
 
-	CNeuralNet* phenotype = m_vecGenomes[gen].CreatePhenotype(depth);
+    CNeuralNet* phenotype = m_vecGenomes[gen].CreatePhenotype(depth);
 
-	new_phenotypes.push_back(phenotype);
+    new_phenotypes.push_back(phenotype);
   }
 
   //increase generation counter
@@ -331,7 +331,7 @@ void Cga::SortAndRecord()
   //is the best genome this generation the best ever?
   if (m_vecGenomes[0].Fitness() > m_dBestEverFitness)
   {
-	m_dBestEverFitness = m_vecGenomes[0].Fitness();
+    m_dBestEverFitness = m_vecGenomes[0].Fitness();
   }
 
   //keep a record of the n best genomes
@@ -350,13 +350,13 @@ void Cga::StoreBestGenomes()
   //numbestgenomes not sure if it will be kept
   for (int gen=0; gen< 4; ++gen)
   {
-	m_vecBestGenomes.push_back(m_vecGenomes[gen]);
+    m_vecBestGenomes.push_back(m_vecGenomes[gen]);
   }
 }
 
 //----------------- GetBestPhenotypesFromLastGeneration ------------------
 //
-//  returns a std::vector of the n best phenotypes from the previous
+//  returns a std::std::vector of the n best phenotypes from the previous
 //  generation
 //------------------------------------------------------------------------
 std::vector<CNeuralNet*> Cga::GetBestPhenotypesFromLastGeneration()
@@ -365,10 +365,10 @@ std::vector<CNeuralNet*> Cga::GetBestPhenotypesFromLastGeneration()
 
   for (int gen=0; gen<m_vecBestGenomes.size(); ++gen)
   {
-	//calculate max network depth
-	int depth = CalculateNetDepth(m_vecBestGenomes[gen]);
+    //calculate max network depth
+    int depth = CalculateNetDepth(m_vecBestGenomes[gen]);
 
-	brains.push_back(m_vecBestGenomes[gen].CreatePhenotype(depth));
+    brains.push_back(m_vecBestGenomes[gen].CreatePhenotype(depth));
   }
 
   return brains;
@@ -383,7 +383,7 @@ void Cga::AdjustSpeciesFitnesses()
 {
   for (int sp=0; sp<m_vecSpecies.size(); ++sp)
   {
-	m_vecSpecies[sp].AdjustFitnesses();
+    m_vecSpecies[sp].AdjustFitnesses();
   }
 }
 
@@ -402,33 +402,33 @@ void Cga::SpeciateAndCalculateSpawnLevels()
   //iterate through each genome and speciate
   for (int gen=0; gen<m_vecGenomes.size(); ++gen)
   {
-	//calculate its compatibility score with each species leader. If
-	//compatible add to species. If not, create a new species
-	for (int spc=0; spc<m_vecSpecies.size(); ++spc)
-	{
-	  double compatibility = m_vecGenomes[gen].GetCompatibilityScore(m_vecSpecies[spc].Leader());
+    //calculate its compatibility score with each species leader. If
+    //compatible add to species. If not, create a new species
+    for (int spc=0; spc<m_vecSpecies.size(); ++spc)
+    {
+      double compatibility = m_vecGenomes[gen].GetCompatibilityScore(m_vecSpecies[spc].Leader());
 
-	  //if this individual is similar to this species add to species
-	  if (compatibility <= CParams::dCompatibilityThreshold)
-	  {
-		m_vecSpecies[spc].AddMember(m_vecGenomes[gen]);
+      //if this individual is similar to this species add to species
+      if (compatibility <= CParams::dCompatibilityThreshold)
+      {
+        m_vecSpecies[spc].AddMember(m_vecGenomes[gen]);
 
-		//let the genome know which species it's in
-		m_vecGenomes[gen].SetSpecies(m_vecSpecies[spc].ID());
+        //let the genome know which species it's in
+        m_vecGenomes[gen].SetSpecies(m_vecSpecies[spc].ID());
 
-		bAdded = true;
+        bAdded = true;
 
-		break;
-	  }
-	}
+        break;
+      }
+    }
 
-	if (!bAdded)
-	{
-	  //we have not found a compatible species so let's create a new one
-	  m_vecSpecies.push_back(CSpecies(m_vecGenomes[gen], m_iNextSpeciesID++));
-	}
+    if (!bAdded)
+    {
+      //we have not found a compatible species so let's create a new one
+      m_vecSpecies.push_back(CSpecies(m_vecGenomes[gen], m_iNextSpeciesID++));
+    }
 
-	bAdded = false;
+    bAdded = false;
   }
 
   //now all the genomes have been assigned a species the fitness scores
@@ -438,7 +438,7 @@ void Cga::SpeciateAndCalculateSpawnLevels()
   //calculate new adjusted total & average fitness for the population
   for (int gen=0; gen<m_vecGenomes.size(); ++gen)
   {
-	 m_dTotFitAdj += m_vecGenomes[gen].GetAdjFitness();
+     m_dTotFitAdj += m_vecGenomes[gen].GetAdjFitness();
   }
 
   m_dAvFitAdj = m_dTotFitAdj/m_vecGenomes.size();
@@ -447,16 +447,16 @@ void Cga::SpeciateAndCalculateSpawnLevels()
   //should spawn
   for (int gen=0; gen<m_vecGenomes.size(); ++gen)
   {
-	 double ToSpawn = m_vecGenomes[gen].GetAdjFitness() / m_dAvFitAdj;
+     double ToSpawn = m_vecGenomes[gen].GetAdjFitness() / m_dAvFitAdj;
 
-	 m_vecGenomes[gen].SetAmountToSpawn(ToSpawn);
+     m_vecGenomes[gen].SetAmountToSpawn(ToSpawn);
   }
 
   //iterate through all the species and calculate how many offspring
   //each species should spawn
   for (int spc=0; spc<m_vecSpecies.size(); ++spc)
   {
-	m_vecSpecies[spc].CalculateSpawnAmount();
+    m_vecSpecies[spc].CalculateSpawnAmount();
   }
 }
 
@@ -474,14 +474,14 @@ CGenome Cga::TournamentSelection(const int NumComparisons)
    //against the best found so far
    for (int i=0; i<NumComparisons; ++i)
    {
-	 int ThisTry = RandInt(0, (int)m_vecGenomes.size()-1);
+     int ThisTry = RandInt(0, (int)m_vecGenomes.size()-1);
 
-	 if (m_vecGenomes[ThisTry].Fitness() > BestFitnessSoFar)
-	 {
-	   ChosenOne = ThisTry;
+     if (m_vecGenomes[ThisTry].Fitness() > BestFitnessSoFar)
+     {
+       ChosenOne = ThisTry;
 
-	   BestFitnessSoFar = m_vecGenomes[ThisTry].Fitness();
-	 }
+       BestFitnessSoFar = m_vecGenomes[ThisTry].Fitness();
+     }
    }
 
    //return the champion
@@ -505,45 +505,45 @@ CGenome Cga::Crossover(CGenome& mum, CGenome& dad)
   //the networks as small as possible)
   if (mum.Fitness() == dad.Fitness())
   {
-	//if they are of equal fitness and length just choose one at
-	//random
-	if (mum.NumGenes() == dad.NumGenes())
-	{
-	  best = (parent_type)RandInt(0, 1);
-	}
+    //if they are of equal fitness and length just choose one at
+    //random
+    if (mum.NumGenes() == dad.NumGenes())
+    {
+      best = (parent_type)RandInt(0, 1);
+    }
 
-	else
-	{
-	  if (mum.NumGenes() < dad.NumGenes())
-	  {
-		best = MUM;
-	  }
+    else
+    {
+      if (mum.NumGenes() < dad.NumGenes())
+      {
+        best = MUM;
+      }
 
-	  else
-	  {
-		best = DAD;
-	  }
-	}
+      else
+      {
+        best = DAD;
+      }
+    }
   }
 
   else
   {
-	if (mum.Fitness() > dad.Fitness())
-	{
-	  best = MUM;
-	}
+    if (mum.Fitness() > dad.Fitness())
+    {
+      best = MUM;
+    }
 
-	else
-	{
-	  best = DAD;
-	}
+    else
+    {
+      best = DAD;
+    }
   }
 
-  //these vectors will hold the offspring's nodes and genes
+  //these std::vectors will hold the offspring's nodes and genes
   std::vector<SNeuronGene>  BabyNeurons;
   std::vector<SLinkGene>    BabyGenes;
 
-  //temporary vector to store all added node IDs
+  //temporary std::vector to store all added node IDs
   std::vector<int> vecNeurons;
 
   //create iterators so we can step through each parents genes and set
@@ -558,98 +558,98 @@ CGenome Cga::Crossover(CGenome& mum, CGenome& dad)
   while (!((curMum == mum.EndOfGenes()) && (curDad == dad.EndOfGenes())))
   {
 
-	//the end of mum's genes have been reached
-	if ((curMum == mum.EndOfGenes())&&(curDad != dad.EndOfGenes()))
-	{
-	  //if dad is fittest
-	  if (best == DAD)
-	  {
-		//add dads genes
-		SelectedGene = *curDad;
-	  }
+    //the end of mum's genes have been reached
+    if ((curMum == mum.EndOfGenes())&&(curDad != dad.EndOfGenes()))
+    {
+      //if dad is fittest
+      if (best == DAD)
+      {
+        //add dads genes
+        SelectedGene = *curDad;
+      }
 
-	  //move onto dad's next gene
-	  ++curDad;
-	}
+      //move onto dad's next gene
+      ++curDad;
+    }
 
-	//the end of dads's genes have been reached
-	else if ( (curDad == dad.EndOfGenes()) && (curMum != mum.EndOfGenes()))
-	{
-	  //if mum is fittest
-	  if (best == MUM)
-	  {
-		//add mums genes
-		SelectedGene = *curMum;
-	  }
+    //the end of dads's genes have been reached
+    else if ( (curDad == dad.EndOfGenes()) && (curMum != mum.EndOfGenes()))
+    {
+      //if mum is fittest
+      if (best == MUM)
+      {
+        //add mums genes
+        SelectedGene = *curMum;
+      }
 
-	  //move onto mum's next gene
-	  ++curMum;
-	}
+      //move onto mum's next gene
+      ++curMum;
+    }
 
-	//if mums innovation number is less than dads
-	else if (curMum->InnovationID < curDad->InnovationID)
-	{
-	  //if mum is fittest add gene
-	  if (best == MUM)
-	  {
-		SelectedGene = *curMum;
-	  }
+    //if mums innovation number is less than dads
+    else if (curMum->InnovationID < curDad->InnovationID)
+    {
+      //if mum is fittest add gene
+      if (best == MUM)
+      {
+        SelectedGene = *curMum;
+      }
 
-	  //move onto mum's next gene
-	  ++curMum;
-	}
+      //move onto mum's next gene
+      ++curMum;
+    }
 
-	//if dads innovation number is less than mums
-	else if (curDad->InnovationID < curMum->InnovationID)
-	{
-	  //if dad is fittest add gene
-	  if (best == DAD)
-	  {
-		SelectedGene = *curDad;
-	  }
+    //if dads innovation number is less than mums
+    else if (curDad->InnovationID < curMum->InnovationID)
+    {
+      //if dad is fittest add gene
+      if (best = DAD)
+      {
+        SelectedGene = *curDad;
+      }
 
-	  //move onto dad's next gene
-	  ++curDad;
-	}
+      //move onto dad's next gene
+      ++curDad;
+    }
 
-	//if innovation numbers are the same
-	else if (curDad->InnovationID == curMum->InnovationID)
-	{
-	  //grab a gene from either parent
-	  if (RandFloat() < 0.5f)
-	  {
-		SelectedGene = *curMum;
-	  }
+    //if innovation numbers are the same
+    else if (curDad->InnovationID == curMum->InnovationID)
+    {
+      //grab a gene from either parent
+      if (RandFloat() < 0.5f)
+      {
+        SelectedGene = *curMum;
+      }
 
-	  else
-	  {
-		SelectedGene = *curDad;
-	  }
+      else
+      {
+        SelectedGene = *curDad;
+      }
 
-	  //move onto next gene of each parent
-	  ++curMum;
-	  ++curDad;
-	}
+      //move onto next gene of each parent
+      ++curMum;
+      ++curDad;
+    }
 
-	//add the selected gene if not already added
-	if (BabyGenes.size() == 0)
-	{
-	  BabyGenes.push_back(SelectedGene);
-	}
+    //add the selected gene if not already added
+    if (BabyGenes.size() == 0)
+    {
+      BabyGenes.push_back(SelectedGene);
+    }
 
-	else
-	{
-	  if (BabyGenes[BabyGenes.size()-1].InnovationID !=
-		  SelectedGene.InnovationID)
-	  {
-		BabyGenes.push_back(SelectedGene);
-	  }
-	}
+    else
+    {
+      if (BabyGenes[BabyGenes.size()-1].InnovationID !=
+          SelectedGene.InnovationID)
+      {
+        BabyGenes.push_back(SelectedGene);
+      }
+    }
 
-	//Check if we already have the nodes referred to in SelectedGene.
-	//If not, they need to be added.
-	AddNeuronID(SelectedGene.FromNeuron, vecNeurons);
-	AddNeuronID(SelectedGene.ToNeuron, vecNeurons);
+    //Check if we already have the nodes referred to in SelectedGene.
+    //If not, they need to be added.
+    AddNeuronID(SelectedGene.FromNeuron, vecNeurons);
+    AddNeuronID(SelectedGene.ToNeuron, vecNeurons);
 
   }//end while
 
@@ -658,15 +658,15 @@ CGenome Cga::Crossover(CGenome& mum, CGenome& dad)
 
   for (int i=0; i<vecNeurons.size(); i++)
   {
-	BabyNeurons.push_back(m_pInnovation->CreateNeuronFromID(vecNeurons[i]));
+    BabyNeurons.push_back(m_pInnovation->CreateNeuronFromID(vecNeurons[i]));
   }
 
   //finally, create the genome
   CGenome babyGenome(m_iNextGenomeID++,
-					 BabyNeurons,
-					 BabyGenes,
-					 mum.NumInputs(),
-					 mum.NumOutputs());
+                     BabyNeurons,
+                     BabyGenes,
+                     mum.NumInputs(),
+                     mum.NumOutputs());
 
   return babyGenome;
 }
@@ -687,24 +687,24 @@ void Cga::ResetAndKill()
 
   while (curSp != m_vecSpecies.end())
   {
-	curSp->Purge();
+    curSp->Purge();
 
-	//kill off species if not improving and if not the species which contains
-	//the best genome found so far
-	if ( (curSp->GensNoImprovement() > CParams::iNumGensAllowedNoImprovement) &&
-		 (curSp->BestFitness() < m_dBestEverFitness) )
-	{
-	 curSp = m_vecSpecies.erase(curSp);
-	 --curSp;
-	}
+    //kill off species if not improving and if not the species which contains
+    //the best genome found so far
+    if ( (curSp->GensNoImprovement() > CParams::iNumGensAllowedNoImprovement) &&
+         (curSp->BestFitness() < m_dBestEverFitness) )
+    {
+     curSp = m_vecSpecies.erase(curSp);
+     --curSp;
+    }
 
-	++curSp;
+    ++curSp;
   }
 
   //we can also delete the phenotypes
   for (int gen=0; gen<m_vecGenomes.size(); ++gen)
   {
-	m_vecGenomes[gen].DeletePhenotype();
+    m_vecGenomes[gen].DeletePhenotype();
   }
 }
 
@@ -723,15 +723,15 @@ std::vector<SplitDepth> Cga::Split(double low, double high, int depth)
 
   if (depth > 6)
   {
-	return vecSplits;
+    return vecSplits;
   }
 
   else
   {
-	Split(low, low+span/2, depth+1);
-	Split(low+span/2, high, depth+1);
+    Split(low, low+span/2, depth+1);
+    Split(low+span/2, high, depth+1);
 
-	return vecSplits;
+    return vecSplits;
   }
 }
 

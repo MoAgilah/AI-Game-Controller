@@ -1,6 +1,7 @@
 #include "Player.h"
 #include <format>
 #include <iostream>
+#include "../NEAT/phenotype.h"
 #include "../Game/GameManager.h"
 #include "../GameStates/PlayerState.h"
 
@@ -507,7 +508,8 @@ void AutomatedPlayer::Input()
 
 		//clamp output
 		if (oval <= 0.1) output = false;
-		else if (oval >= 0.9) output = true;
+		else if (oval >= 0.9)
+			output = true;
 		else output = false;
 
 		GameManager::Get()->GetLogger().AddDebugLog(std::format("{} = {} = {}", move, oval, output), false);

@@ -6,7 +6,7 @@
 //  all the appropriate innovations.
 //------------------------------------------------------------------------
 CInnovation::CInnovation(std::vector<SLinkGene>   start_genes,
-						 std::vector<SNeuronGene> start_neurons)
+                         std::vector<SNeuronGene> start_neurons)
 {
 	m_NextNeuronID		  = 0;
 	m_NextInnovationNum = 0;
@@ -14,22 +14,22 @@ CInnovation::CInnovation(std::vector<SLinkGene>   start_genes,
 	//add the neurons
   for (int nd=0; nd<start_neurons.size(); ++nd)
   {
-	m_vecInnovs.push_back(SInnovation(start_neurons[nd],
-									  m_NextInnovationNum++,
-									  m_NextNeuronID++));
+    m_vecInnovs.push_back(SInnovation(start_neurons[nd],
+                                      m_NextInnovationNum++,
+                                      m_NextNeuronID++));
   }
 
   //add the links
   for (int cGen = 0; cGen<start_genes.size(); ++cGen)
 	{
 		SInnovation NewInnov(start_genes[cGen].FromNeuron,
-						 start_genes[cGen].ToNeuron,
-						 new_link,
-						 m_NextInnovationNum);
+                         start_genes[cGen].ToNeuron,
+                         new_link,
+                         m_NextInnovationNum);
 
 		m_vecInnovs.push_back(NewInnov);
 
-	++m_NextInnovationNum;
+    ++m_NextInnovationNum;
 
 	}
 }
@@ -45,9 +45,9 @@ int CInnovation::CheckInnovation(int in, int out, innov_type type)
   //three parameters
 	for (int inv=0; inv<m_vecInnovs.size(); ++inv)
 	{
-	if ( (m_vecInnovs[inv].NeuronIn == in)   &&
-		 (m_vecInnovs[inv].NeuronOut == out) &&
-		 (m_vecInnovs[inv].InnovationType == type))
+    if ( (m_vecInnovs[inv].NeuronIn == in)   &&
+         (m_vecInnovs[inv].NeuronOut == out) &&
+         (m_vecInnovs[inv].InnovationType == type))
 		{
 			//found a match so assign this innovation number to id
 			return m_vecInnovs[inv].InnovationID;
@@ -85,11 +85,11 @@ int CInnovation::CreateNewInnovation(int in, int out, innov_type type)
 //  as above but includes adding x/y position of new neuron
 //------------------------------------------------------------------------
 int CInnovation::CreateNewInnovation(int          from,
-									 int          to,
-									 innov_type   InnovType,
-									 neuron_type  NeuronType,
-									 double       x,
-									 double       y)
+                                     int          to,
+                                     innov_type   InnovType,
+                                     neuron_type  NeuronType,
+                                     double       x,
+                                     double       y)
 {
 
 	SInnovation new_innov(from, to, InnovType, m_NextInnovationNum, NeuronType, x, y);
@@ -120,15 +120,15 @@ SNeuronGene CInnovation::CreateNeuronFromID(int NeuronID)
 
   for (int inv=0; inv<m_vecInnovs.size(); ++inv)
   {
-	if (m_vecInnovs[inv].NeuronID == NeuronID)
-	{
-	  temp.NeuronType = m_vecInnovs[inv].NeuronType;
-	  temp.iID      = m_vecInnovs[inv].NeuronID;
-	  temp.dSplitY  = m_vecInnovs[inv].dSplitY;
-	  temp.dSplitX  = m_vecInnovs[inv].dSplitX;
+    if (m_vecInnovs[inv].NeuronID == NeuronID)
+    {
+      temp.NeuronType = m_vecInnovs[inv].NeuronType;
+      temp.iID      = m_vecInnovs[inv].NeuronID;
+      temp.dSplitY  = m_vecInnovs[inv].dSplitY;
+      temp.dSplitX  = m_vecInnovs[inv].dSplitX;
 
-	  return temp;
-	}
+      return temp;
+    }
   }
 
   return temp;

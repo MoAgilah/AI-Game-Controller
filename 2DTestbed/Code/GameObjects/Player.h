@@ -2,7 +2,6 @@
 
 #include <array>
 #include <string>
-#include "../NEAT/phenotype.h"
 #include "../Game/Constants.h"
 #include "../Game/Timer.h"
 #include "../GameObjects/Object.h"
@@ -13,6 +12,8 @@ enum MarioAnims { IDLE, LOOKUP, JUMP, FALL, RUNJUMP, SKID, SLIDE, VICTORY, CROUC
 enum MarioBoxes { REGULAR, SUPER, CROUCHED, NUMBOXES };
 
 enum Keys { LEFT_KEY, RIGHT_KEY, UP_KEY, DOWN_KEY, RUN_KEY, JUMP_KEY, SJUMP_KEY, MAXKEYS };
+
+class CNeuralNet;
 
 class Player : public DynamicObject
 {

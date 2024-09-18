@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CSPECIES_H
+#define CSPECIES_H
 //-----------------------------------------------------------------------
 //
 //  Name: CSpecies.h
@@ -92,7 +93,9 @@ public:
   //so we can sort species by best fitness. Largest first
   friend bool operator<(const CSpecies &lhs, const CSpecies &rhs)
   {
-	return lhs.m_dBestFitness > rhs.m_dBestFitness;
+    return lhs.m_dBestFitness > rhs.m_dBestFitness;
   }
 
 };
+
+#endif

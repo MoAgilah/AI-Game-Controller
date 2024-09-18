@@ -1,4 +1,5 @@
-#pragma once
+#ifndef NEATGENOTYPE_H
+#define NEATGENOTYPE_H
 //-----------------------------------------------------------------------
 //
 //  Name: genotype.h
@@ -14,7 +15,7 @@
 #include "phenotype.h"
 #include "Utils.h"
 #include "CInnovation.h"
-#include "genes.h"
+#include "Genes.h"
 
 class Cga;
 class CInnovation;
@@ -22,8 +23,8 @@ class CInnovation;
 
 //------------------------------------------------------------------------
 //
-// CGenome class definition. A genome basically consists of a vector of
-// link genes, a vector of neuron genes and a fitness score.
+// CGenome class definition. A genome basically consists of a std::vector of
+// link genes, a std::vector of neuron genes and a fitness score.
 //------------------------------------------------------------------------
 class CGenome
 {
@@ -43,7 +44,7 @@ private:
   CNeuralNet*             m_pPhenotype;
 
   //its raw fitness score
-  double                  m_fitness;
+  double                  m_dFitness;
 
   //its fitness score after it has been placed into a
   //species and adjusted accordingly
@@ -54,8 +55,8 @@ private:
   double                  m_dAmountToSpawn;
 
   //keep a record of the number of inputs and outputs
-  int                     m_iNumInputs;
-  int					  m_iNumOutPuts;
+  int                     m_iNumInputs,
+                          m_iNumOutPuts;
 
   //keeps a track of which species this genome is in (only used
   //for display purposes)
@@ -81,13 +82,13 @@ public:
   //input neurons and every input neuron is connected to each output neuron
   CGenome(int id, int inputs, int outputs);
 
-  //this constructor creates a genome from a vector of SLinkGenes
-  //a vector of SNeuronGenes and an ID number
+  //this constructor creates a genome from a std::vector of SLinkGenes
+  //a std::vector of SNeuronGenes and an ID number
   CGenome(int                 id,
-		  std::vector<SNeuronGene> neurons,
-		  std::vector<SLinkGene>   genes,
-		  int                 inputs,
-		  int                 outputs);
+          std::vector<SNeuronGene> neurons,
+          std::vector<SLinkGene>   genes,
+          int                 inputs,
+          int                 outputs);
 
   ~CGenome();
 
@@ -105,24 +106,24 @@ public:
 
   //add a link to the genome dependent upon the mutation rate
   void                AddLink(double      MutationRate,
-							  double      ChanceOfRecurrent,
-							  CInnovation &innovation,
-							  int         NumTrysToFindLoop,
-							  int         NumTrysToAddLink);
+                              double      ChanceOfRecurrent,
+                              CInnovation &innovation,
+                              int         NumTrysToFindLoop,
+                              int         NumTrysToAddLink);
 
   //and a neuron
   void                AddNeuron(double      MutationRate,
-								CInnovation &innovation,
-								int         NumTrysToFindOldLink);
+                                CInnovation &innovation,
+                                int         NumTrysToFindOldLink);
 
   //this function mutates the connection weights
   void                MutateWeights(double  mut_rate,
-									double  prob_new_mut,
-									double  dMaxPertubation);
+                                    double  prob_new_mut,
+                                    double  dMaxPertubation);
 
   //perturbs the activation responses of the neurons
   void                MutateActivationResponse(double mut_rate,
-											   double MaxPertubation);
+                                               double MaxPertubation);
 
   //calculates the compatibility score between this genome and
   //another genome
@@ -133,7 +134,7 @@ public:
   //overload '<' used for sorting. From fittest to poorest.
   friend bool operator<(const CGenome& lhs, const CGenome& rhs)
   {
-	return (lhs.m_fitness > rhs.m_fitness);
+    return (lhs.m_dFitness > rhs.m_dFitness);
   }
 
 
@@ -149,9 +150,9 @@ public:
   double  AmountToSpawn()const{return m_dAmountToSpawn;}
   void    SetAmountToSpawn(double num){m_dAmountToSpawn = num;}
 
-  void    SetFitness(const double num){m_fitness = num;}
+  void    SetFitness(const double num){m_dFitness = num;}
   void    SetAdjFitness(const double num){m_dAdjustedFitness = num;}
-  double  Fitness()const{return m_fitness;}
+  double  Fitness()const{return m_dFitness;}
   double  GetAdjFitness()const{return m_dAdjustedFitness;}
 
   int     GetSpecies()const{return m_iSpecies;}
@@ -165,3 +166,7 @@ public:
   std::vector<SLinkGene>::iterator StartOfGenes(){return m_vecLinks.begin();}
   std::vector<SLinkGene>::iterator EndOfGenes(){return m_vecLinks.end();}
 };
+
+
+
+#endif

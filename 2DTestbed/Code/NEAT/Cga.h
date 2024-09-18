@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CGA_H
+#define	CGA_H
 
 //------------------------------------------------------------------------
 //
@@ -12,7 +13,7 @@
 //------------------------------------------------------------------------
 #include <vector>
 #define NOMINMAX
-#include <Windows.h>
+#include <windows.h>
 
 #include "phenotype.h"
 #include "genotype.h"
@@ -63,8 +64,8 @@ private:
 	int	m_iPopSize;
 
 	//adjusted fitness scores
-	double	m_dTotFitAdj;
-	double		m_dAvFitAdj;
+	double	m_dTotFitAdj,
+			m_dAvFitAdj;
 
 	//index into the genomes for the fittest genome
 	int	m_iFittestGenome;
@@ -72,8 +73,7 @@ private:
 	double	m_dBestEverFitness;
 
 	//local copies of client area
-	int	cxClient;
-	int cyClient;
+	int	cxClient, cyClient;
 
 	//this holds the precalculated split depths. They are used
 	//to calculate a neurons x/y position for rendering and also
@@ -117,10 +117,10 @@ private:
 
 public:
 	Cga(int	size,
-			  int	inputs,
-			  int	outputs,
-			  int   cx,
-			  int   cy);
+              int	inputs,
+              int	outputs,
+              int   cx,
+              int   cy);
 
 	~Cga();
 
@@ -133,7 +133,7 @@ public:
 	//(used to display the best genomes)
 	 void	StoreBestGenomes();
 
-	//returns a vector of the n best phenotypes from the previous generation
+	//returns a std::vector of the n best phenotypes from the previous generation
 	std::vector<CNeuralNet*>  GetBestPhenotypesFromLastGeneration();
 
 	//----------------------------------------------------accessor methods
@@ -141,3 +141,6 @@ public:
 
 	double  BestEverFitness()const{return m_dBestEverFitness;}
 };
+
+
+#endif
