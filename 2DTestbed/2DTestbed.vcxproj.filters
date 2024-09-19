@@ -242,7 +242,7 @@
     <ClInclude Include="Code\NEAT\resource.h">
       <Filter>Header Files\Controller\NEAT</Filter>
     </ClInclude>
-    <ClInclude Include="Code\NEAT\Utils.h">
+    <ClInclude Include="Code\NEAT\utils.h">
       <Filter>Header Files\Controller\NEAT</Filter>
     </ClInclude>
     <ClInclude Include="Code\Controller\ANNView.h">

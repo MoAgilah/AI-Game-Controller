@@ -4,7 +4,7 @@
 //	Name: Cga.h
 //
 //  Author: Mat Buckland 2002
-//  Edited and updated: Mo Agilah 2024
+//  Edited: Mo Agilah 2024
 //
 //  Desc: The evolutionary algorithm class  used in the implementation of
 //        Kenneth Owen Stanley's and Risto Miikkulainen's NEAT idea.
@@ -27,12 +27,12 @@
 //------------------------------------------------------------------------
 struct SplitDepth
 {
-  double val;
+	double val;
 
-  int    depth;
+	int    depth;
 
-  SplitDepth(double v, int d)
-	  :val(v), depth(d) {}
+	SplitDepth(double v, int d)
+		:val(v), depth(d) {}
 };
 
 
