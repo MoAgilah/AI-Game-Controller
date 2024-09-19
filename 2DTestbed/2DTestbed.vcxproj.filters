@@ -227,10 +227,7 @@
     <ClInclude Include="Code\NEAT\CTimer.h">
       <Filter>Header Files\Controller\NEAT</Filter>
     </ClInclude>
-    <ClInclude Include="Code\NEAT\defines.h">
-      <Filter>Header Files\Controller\NEAT</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\NEAT\genes.h">
+    <ClInclude Include="Code\NEAT\Genes.h">
       <Filter>Header Files\Controller\NEAT</Filter>
     </ClInclude>
     <ClInclude Include="Code\NEAT\genotype.h">

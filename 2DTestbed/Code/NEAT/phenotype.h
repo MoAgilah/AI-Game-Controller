@@ -20,7 +20,7 @@
 
 #include "utils.h"
 #include "CParams.h"
-#include "genes.h"
+#include "Genes.h"
 
 struct SNeuron;
 

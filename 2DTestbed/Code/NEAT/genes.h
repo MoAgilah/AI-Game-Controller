@@ -1,11 +1,10 @@
-
-#ifndef GENES_H
-#define GENES_H
+#pragma once
 //-----------------------------------------------------------------------
 //
-//  Name: GeneGenes.h
+//  Name: Genes.h
 //
 //  Author: Mat Buckland 2002
+//  Edited: Mo Agilah 2024
 //
 //	Desc: neuron and link gene definitions used in the
 //        implementation of Kenneth Owen Stanley's and Risto
@@ -22,11 +21,11 @@ class CNeuron;
 //------------------------------------------------------------------------
 enum neuron_type
 {
-  input,
-  hidden,
-  output,
-  bias,
-  none
+	input,
+	hidden,
+	output,
+	bias,
+	none
 };
 
 //------------------------------------------------------------------------
@@ -35,32 +34,30 @@ enum neuron_type
 //------------------------------------------------------------------------
 struct SNeuronGene
 {
-  //its identification
-  int         iID;
+	SNeuronGene(neuron_type type, int id, double y, double x, bool r = false)
+		: iID(id),
+		NeuronType(type),
+		bRecurrent(r),
+		dSplitY(y),
+		dSplitX(x),
+		dActivationResponse(1)
+	{}
 
-  //its type
-  neuron_type NeuronType;
+	//its identification
+	int         iID;
 
-  //is it recurrent
-  bool        bRecurrent;
+	//is it recurrent
+	bool        bRecurrent;
 
-  //sets the curvature of the sigmoid function
-  double    dActivationResponse;
+	//sets the curvature of the sigmoid function
+	double		dActivationResponse;
 
-  //position in network grid
-  double    dSplitY, dSplitX;
+	//position in network grid
+	double		dSplitY;
+	double		dSplitX;
 
-  SNeuronGene(neuron_type type,
-              int         id,
-              double      y,
-              double      x,
-              bool        r = false):iID(id),
-                                     NeuronType(type),
-                                     bRecurrent(r),
-                                     dSplitY(y),
-                                     dSplitX(x),
-                                     dActivationResponse(1)
-  {}
+	//its type
+	neuron_type NeuronType;
 };
 
 //------------------------------------------------------------------------
@@ -69,42 +66,34 @@ struct SNeuronGene
 //------------------------------------------------------------------------
 struct SLinkGene
 {
-	//the IDs of the two neurons this link connects
-	int     FromNeuron,
-	        ToNeuron;
+	SLinkGene() = default;
 
-	double	dWeight;
-
-  //flag to indicate if this link is currently enabled or not
-  bool    bEnabled;
-
-  //flag to indicate if this link is recurrent or not
-  bool    bRecurrent;
-
-	int     InnovationID;
-
-  SLinkGene(){}
-
-  SLinkGene(int    in,
-            int    out,
-            bool   enable,
-            int    tag,
-            double w,
-            bool   rec = false):bEnabled(enable),
-								InnovationID(tag),
-                                FromNeuron(in),
-                                ToNeuron(out),
-                                dWeight(w),
-                                bRecurrent(rec)
+	SLinkGene(int in, int out, bool enable, int tag, double w, bool rec = false)
+		: bEnabled(enable),
+		InnovationID(tag),
+		FromNeuron(in),
+		ToNeuron(out),
+		dWeight(w),
+		bRecurrent(rec)
 	{}
 
-  //overload '<' used for sorting(we use the innovation ID as the criteria)
+	//overload '<' used for sorting(we use the innovation ID as the criteria)
 	friend bool operator<(const SLinkGene& lhs, const SLinkGene& rhs)
 	{
 		return (lhs.InnovationID < rhs.InnovationID);
 	}
+
+	//flag to indicate if this link is currently enabled or not
+	bool    bEnabled;
+
+	//flag to indicate if this link is recurrent or not
+	bool    bRecurrent;
+
+	int     InnovationID;
+
+	//the IDs of the two neurons this link connects
+	int     FromNeuron;
+	int		ToNeuron;
+
+	double	dWeight;
 };
-
-
-
-#endif
