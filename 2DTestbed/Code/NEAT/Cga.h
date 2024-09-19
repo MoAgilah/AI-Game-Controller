@@ -18,7 +18,7 @@
 #include "CParams.h"
 #include "CSpecies.h"
 #include "Genotype.h"
-#include "phenotype.h"
+#include "Phenotype.h"
 
 //------------------------------------------------------------------------
 //

@@ -105,7 +105,7 @@
     <ClCompile Include="Code\NEAT\Genotype.cpp">
       <Filter>Source Files\Controller\NEAT</Filter>
     </ClCompile>
-    <ClCompile Include="Code\NEAT\phenotype.cpp">
+    <ClCompile Include="Code\NEAT\Phenotype.cpp">
       <Filter>Source Files\Controller\NEAT</Filter>
     </ClCompile>
     <ClCompile Include="Code\Controller\ANNView.cpp">
@@ -233,7 +233,7 @@
     <ClInclude Include="Code\NEAT\Genotype.h">
       <Filter>Header Files\Controller\NEAT</Filter>
     </ClInclude>
-    <ClInclude Include="Code\NEAT\phenotype.h">
+    <ClInclude Include="Code\NEAT\Phenotype.h">
       <Filter>Header Files\Controller\NEAT</Filter>
     </ClInclude>
     <ClInclude Include="Code\NEAT\resource.h">

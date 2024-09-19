@@ -196,7 +196,7 @@
     <ClCompile Include="Code\NEAT\CSpecies.cpp" />
     <ClCompile Include="Code\NEAT\CTimer.cpp" />
     <ClCompile Include="Code\NEAT\Genotype.cpp" />
-    <ClCompile Include="Code\NEAT\phenotype.cpp" />
+    <ClCompile Include="Code\NEAT\Phenotype.cpp" />
     <ClCompile Include="Code\Utilities\Point.cpp" />
     <ClCompile Include="Code\Utilities\Utilities.cpp" />
   </ItemGroup>
@@ -239,7 +239,7 @@
     <ClInclude Include="Code\NEAT\CTimer.h" />
     <ClInclude Include="Code\NEAT\Genes.h" />
     <ClInclude Include="Code\NEAT\Genotype.h" />
-    <ClInclude Include="Code\NEAT\phenotype.h" />
+    <ClInclude Include="Code\NEAT\Phenotype.h" />
     <ClInclude Include="Code\NEAT\resource.h" />
     <ClInclude Include="Code\NEAT\Utils.h" />
     <ClInclude Include="Code\Utilities\Point.h" />

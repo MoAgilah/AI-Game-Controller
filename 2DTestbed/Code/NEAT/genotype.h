@@ -14,7 +14,7 @@
 
 #include "CInnovation.h"
 #include "Genes.h"
-#include "phenotype.h"
+#include "Phenotype.h"
 #include "Utils.h"
 
 class Cga;
