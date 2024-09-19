@@ -1,5 +1,4 @@
-#include <SFML/Graphics.hpp>
-
+#pragma once
 #include <stdlib.h>
 #include <math.h>
 #include <sstream>
@@ -7,30 +6,27 @@
 #include <iostream>
 #include <vector>
 
-#ifndef UtilsH
-#define UtilsH
-
 //----------------------------------------------------------------------------
 //	some random number functions.
 //----------------------------------------------------------------------------
 
 //returns a random integer between x and y
-inline int	  RandInt(int x, int y) { return rand() % (y - x + 1) + x; }
+inline int	RandInt(int x, int y) { return rand() % (y - x + 1) + x; }
 
 //returns a random float between zero and 1
 inline double RandFloat() { return (rand()) / (RAND_MAX + 1.0); }
 
 //returns a random bool
-inline bool   RandBool()
+inline bool RandBool()
 {
-	if (RandInt(0, 1)) return true;
-
-	else return false;
+	if (RandInt(0, 1))
+		return true;
+	else
+		return false;
 }
 
 //returns a random float in the range -1 < n < 1
 inline double RandomClamped() { return RandFloat() - RandFloat(); }
-
 
 //-----------------------------------------------------------------------
 //
@@ -48,7 +44,6 @@ inline std::string itos(int arg)
 	//capture the string
 	return buffer.str();
 }
-
 
 //converts a float to a string
 inline std::string ftos(float arg)
@@ -99,7 +94,6 @@ inline int Rounded(double val)
 	{
 		return integral;
 	}
-
 	else
 	{
 		return integral + 1;
@@ -117,13 +111,11 @@ inline int RoundUnderOffset(double val, double offset)
 	{
 		return integral;
 	}
-
 	else
 	{
 		return integral + 1;
 	}
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
@@ -132,11 +124,11 @@ inline int RoundUnderOffset(double val, double offset)
 /////////////////////////////////////////////////////////////////////
 struct SPoint
 {
-	float x, y;
+	SPoint() = default;
+	SPoint(float a, float b)
+		: x(a), y(b)
+	{}
 
-	SPoint() {}
-	SPoint(float a, float b) :x(a), y(b) {}
+	float x;
+	float y;
 };
-
-
-#endif // !UtilsH

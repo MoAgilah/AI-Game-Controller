@@ -102,7 +102,7 @@
     <ClCompile Include="Code\NEAT\CTimer.cpp">
       <Filter>Source Files\Controller\NEAT</Filter>
     </ClCompile>
-    <ClCompile Include="Code\NEAT\genotype.cpp">
+    <ClCompile Include="Code\NEAT\Genotype.cpp">
       <Filter>Source Files\Controller\NEAT</Filter>
     </ClCompile>
     <ClCompile Include="Code\NEAT\phenotype.cpp">
@@ -230,7 +230,7 @@
     <ClInclude Include="Code\NEAT\Genes.h">
       <Filter>Header Files\Controller\NEAT</Filter>
     </ClInclude>
-    <ClInclude Include="Code\NEAT\genotype.h">
+    <ClInclude Include="Code\NEAT\Genotype.h">
       <Filter>Header Files\Controller\NEAT</Filter>
     </ClInclude>
     <ClInclude Include="Code\NEAT\phenotype.h">
@@ -239,7 +239,7 @@
     <ClInclude Include="Code\NEAT\resource.h">
       <Filter>Header Files\Controller\NEAT</Filter>
     </ClInclude>
-    <ClInclude Include="Code\NEAT\utils.h">
+    <ClInclude Include="Code\NEAT\Utils.h">
       <Filter>Header Files\Controller\NEAT</Filter>
     </ClInclude>
     <ClInclude Include="Code\Controller\ANNView.h">

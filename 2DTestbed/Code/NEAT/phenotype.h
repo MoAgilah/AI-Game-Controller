@@ -18,7 +18,7 @@
 #include <windows.h>
 #include <algorithm>
 
-#include "utils.h"
+#include "Utils.h"
 #include "CParams.h"
 #include "Genes.h"
 

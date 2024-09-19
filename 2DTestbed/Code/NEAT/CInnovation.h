@@ -13,9 +13,9 @@
 #include <vector>
 #include <algorithm>
 
-#include "genotype.h"
+#include "Genotype.h"
 #include "phenotype.h"
-#include "utils.h"
+#include "Utils.h"
 
 struct SLinkGene;
 

@@ -15,7 +15,7 @@
 #include <iomanip>
 #include <iostream>
 
-#include "genotype.h"
+#include "Genotype.h"
 
 //------------------------------------------------------------------------
 //
