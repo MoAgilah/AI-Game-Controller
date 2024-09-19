@@ -236,9 +236,6 @@
     <ClInclude Include="Code\NEAT\Phenotype.h">
       <Filter>Header Files\Controller\NEAT</Filter>
     </ClInclude>
-    <ClInclude Include="Code\NEAT\resource.h">
-      <Filter>Header Files\Controller\NEAT</Filter>
-    </ClInclude>
     <ClInclude Include="Code\NEAT\Utils.h">
       <Filter>Header Files\Controller\NEAT</Filter>
     </ClInclude>
@@ -331,6 +328,9 @@
     </ClInclude>
     <ClInclude Include="Code\Game\Timer.h">
       <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\NEAT\Resource.h">
+      <Filter>Header Files\Controller\NEAT</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

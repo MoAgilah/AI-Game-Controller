@@ -240,7 +240,7 @@
     <ClInclude Include="Code\NEAT\Genes.h" />
     <ClInclude Include="Code\NEAT\Genotype.h" />
     <ClInclude Include="Code\NEAT\Phenotype.h" />
-    <ClInclude Include="Code\NEAT\resource.h" />
+    <ClInclude Include="Code\NEAT\Resource.h" />
     <ClInclude Include="Code\NEAT\Utils.h" />
     <ClInclude Include="Code\Utilities\Point.h" />
     <ClInclude Include="Code\Utilities\Utilities.h" />
