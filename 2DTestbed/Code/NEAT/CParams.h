@@ -4,6 +4,7 @@
 //	Name: CParams.h
 //
 //  Author: Mat Buckland 2002
+//  Edited: Mo Agilah 2024
 //
 //  Desc: class to hold all the parameters used in this project. The values
 //        are loaded in from an ini file when an instance of the class is
@@ -18,12 +19,15 @@
 
 class CParams
 {
-
 public:
+	CParams()
+	{
+		Initialize();
+	}
+
 	//-------------------------------------------------------------------
 	//  general parameters
 	//-------------------------------------------------------------------
-
 	static double dPi;
 	static double dHalfPi;
 	static double dTwoPi;
@@ -32,6 +36,7 @@ public:
 	static int    WindowHeight;
 
 	static int    iFramesPerSecond;
+
 	//-------------------------------------------------------------------
 	//  used to define the players
 	//-------------------------------------------------------------------
@@ -51,10 +56,10 @@ public:
 	static double dBias;
 	//starting value for the sigmoid response
 	static double dSigmoidResponse;
+
 	//----------------------------------------------------------------------
 	// used in genotype.h/cpp
 	//----------------------------------------------------------------------
-
 	//number of times we try to find 2 unlinked nodes when adding a link.
 	//see CGenome::AddLink()
 	static int    iNumAddLinkAttempts;
@@ -89,7 +94,6 @@ public:
 	//----------------------------------------------------------------------
 	// used in CSpecies.h/cpp
 	//----------------------------------------------------------------------
-
 	//during fitness adjustment this is how much the fitnesses of
 	//young species are boosted (eg 1.2 is a 20% boost)
 	static double dYoungFitnessBonus;
@@ -109,7 +113,6 @@ public:
 	//----------------------------------------------------------------------
 	// used in Cga.h/cpp
 	//----------------------------------------------------------------------
-
 	//how long we allow a species to exist without any improvement
 	static int    iNumGensAllowedNoImprovement;
 
@@ -118,12 +121,7 @@ public:
 
 	static double dCrossoverRate;
 
-	//---------------------------------------------
-
-	//
-	CParams() {
-		Initialize();
-	}
+private:
 
 	bool Initialize()
 	{
