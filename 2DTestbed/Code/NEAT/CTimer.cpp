@@ -3,17 +3,17 @@
 //---------------------- default constructor ------------------------------
 //
 //-------------------------------------------------------------------------
-
-CTimer::CTimer(): m_FPS(0),
-				          m_TimeElapsed(0.0f),
-				          m_FrameTime(0),
-				          m_LastTime(0),
-				          m_PerfCountFreq(0)
+CTimer::CTimer()
+	: m_FPS(0),
+	m_TimeElapsed(0.0f),
+	m_FrameTime(0),
+	m_LastTime(0),
+	m_PerfCountFreq(0)
 {
 	//how many ticks per sec do we get
-	QueryPerformanceFrequency( (LARGE_INTEGER*) &m_PerfCountFreq);
-	
-	m_TimeScale = 1.0f/m_PerfCountFreq;
+	QueryPerformanceFrequency((LARGE_INTEGER*)&m_PerfCountFreq);
+
+	m_TimeScale = 1.0f / m_PerfCountFreq;
 }
 
 //---------------------- constructor -------------------------------------
@@ -21,22 +21,21 @@ CTimer::CTimer(): m_FPS(0),
 //	use to specify FPS
 //
 //-------------------------------------------------------------------------
-
-CTimer::CTimer(float fps): m_FPS(fps),
-						               m_TimeElapsed(0.0f),
-						               m_LastTime(0),
-						               m_PerfCountFreq(0)
+CTimer::CTimer(float fps)
+	: m_FPS(fps),
+	m_TimeElapsed(0.0f),
+	m_LastTime(0),
+	m_PerfCountFreq(0)
 {
 
 	//how many ticks per sec do we get
-	QueryPerformanceFrequency( (LARGE_INTEGER*) &m_PerfCountFreq);
+	QueryPerformanceFrequency((LARGE_INTEGER*)&m_PerfCountFreq);
 
-	m_TimeScale = 1.0f/m_PerfCountFreq;
+	m_TimeScale = 1.0f / m_PerfCountFreq;
 
 	//calculate ticks per frame
 	m_FrameTime = (LONGLONG)(m_PerfCountFreq / m_FPS);
 }
-
 
 //------------------------Start()-----------------------------------------
 //
@@ -46,12 +45,10 @@ CTimer::CTimer(float fps): m_FPS(fps),
 void CTimer::Start()
 {
 	//get the time
-	QueryPerformanceCounter( (LARGE_INTEGER*) &m_LastTime);
+	QueryPerformanceCounter((LARGE_INTEGER*)&m_LastTime);
 
 	//update time to render next frame
 	m_NextTime = m_LastTime + m_FrameTime;
-
-	return;
 }
 
 //-------------------------ReadyForNextFrame()-------------------------------
@@ -63,19 +60,19 @@ void CTimer::Start()
 bool CTimer::ReadyForNextFrame()
 {
 	if (!m_FPS)
-  {
+	{
 		std::cout << "No FPS set in timer" << std::endl;
 
-    return false;
-  }
-  
-  QueryPerformanceCounter( (LARGE_INTEGER*) &m_CurrentTime);
+		return false;
+	}
+
+	QueryPerformanceCounter((LARGE_INTEGER*)&m_CurrentTime);
 
 	if (m_CurrentTime > m_NextTime)
 	{
 
-		m_TimeElapsed	= (m_CurrentTime - m_LastTime) * m_TimeScale;
-		m_LastTime		= m_CurrentTime;
+		m_TimeElapsed = (m_CurrentTime - m_LastTime) * m_TimeScale;
+		m_LastTime = m_CurrentTime;
 
 		//update time to render next frame
 		m_NextTime = m_CurrentTime + m_FrameTime;
@@ -94,12 +91,11 @@ bool CTimer::ReadyForNextFrame()
 //-------------------------------------------------------------------------
 double CTimer::TimeElapsed()
 {
-	QueryPerformanceCounter( (LARGE_INTEGER*) &m_CurrentTime);
-	
-	m_TimeElapsed	= (m_CurrentTime - m_LastTime) * m_TimeScale;
-	
-	m_LastTime		= m_CurrentTime;
+	QueryPerformanceCounter((LARGE_INTEGER*)&m_CurrentTime);
+
+	m_TimeElapsed = (m_CurrentTime - m_LastTime) * m_TimeScale;
+
+	m_LastTime = m_CurrentTime;
 
 	return m_TimeElapsed;
-		
 }
