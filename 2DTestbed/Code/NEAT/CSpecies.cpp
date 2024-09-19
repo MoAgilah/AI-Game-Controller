@@ -1,24 +1,22 @@
 #include "CSpecies.h"
 
-
 //------------------------------------------------------------------------
 //
 //  this ctor creates an instance of a new species. A local copy of
 //  the initializing genome is kept in m_Leader and the first element
 //  of m_vecMembers is a pointer to that genome.
 //------------------------------------------------------------------------
-CSpecies::CSpecies(CGenome  &FirstOrg,
-                   int      SpeciesID):m_iSpeciesID(SpeciesID),
-                                       m_dBestFitness(FirstOrg.Fitness()),
-                                       m_iGensNoImprovement(0),
-                                       m_iAge(0),
-                                       m_Leader(FirstOrg),
-                                       m_dSpawnsRqd(0)
-
+CSpecies::CSpecies(CGenome& FirstOrg, int SpeciesID)
+	: m_iSpeciesID(SpeciesID),
+	m_dBestFitness(FirstOrg.Fitness()),
+	m_iGensNoImprovement(0),
+	m_iAge(0),
+	m_Leader(FirstOrg),
+	m_dSpawnsRqd(0)
 {
-  m_vecMembers.push_back(&FirstOrg);
+	m_vecMembers.push_back(&FirstOrg);
 
-  m_Leader = FirstOrg;
+	m_Leader = FirstOrg;
 }
 
 //------------------------ AddMember -------------------------------------
@@ -26,22 +24,19 @@ CSpecies::CSpecies(CGenome  &FirstOrg,
 //  this function adds a new member to this species and updates the member
 //  variables accordingly
 //------------------------------------------------------------------------
-void CSpecies::AddMember(CGenome &NewMember)
+void CSpecies::AddMember(CGenome& NewMember)
 {
+	//is the new member's fitness better than the best fitness?
+	if (NewMember.Fitness() > m_dBestFitness)
+	{
+		m_dBestFitness = NewMember.Fitness();
 
-   //is the new member's fitness better than the best fitness?
-  if (NewMember.Fitness() > m_dBestFitness)
-  {
-    m_dBestFitness = NewMember.Fitness();
+		m_iGensNoImprovement = 0;
 
-    m_iGensNoImprovement = 0;
+		m_Leader = NewMember;
+	}
 
-    m_Leader = NewMember;
-  }
-
-
-  m_vecMembers.push_back(&NewMember);
-
+	m_vecMembers.push_back(&NewMember);
 }
 
 //-------------------------- Purge ---------------------------------------
@@ -51,14 +46,14 @@ void CSpecies::AddMember(CGenome &NewMember)
 //------------------------------------------------------------------------
 void CSpecies::Purge()
 {
-  m_vecMembers.clear();
+	m_vecMembers.clear();
 
-  //update age etc
-  ++m_iAge;
+	//update age etc
+	++m_iAge;
 
-  ++m_iGensNoImprovement;
+	++m_iGensNoImprovement;
 
-  m_dSpawnsRqd = 0;
+	m_dSpawnsRqd = 0;
 }
 
 //--------------------------- AdjustFitness ------------------------------
@@ -71,32 +66,31 @@ void CSpecies::Purge()
 //------------------------------------------------------------------------
 void CSpecies::AdjustFitnesses()
 {
-  double total = 0;
+	double total = 0;
 
-  for (int gen=0; gen<m_vecMembers.size(); ++gen)
-  {
-    double fitness = m_vecMembers[gen]->Fitness();
+	for (auto& gen : m_vecMembers)
+	{
+		double fitness = gen->Fitness();
 
-    //boost the fitness scores if the species is young
-    if (m_iAge < CParams::iYoungBonusAgeThreshhold)
-    {
-      fitness *= CParams::dYoungFitnessBonus;
-    }
+		//boost the fitness scores if the species is young
+		if (m_iAge < CParams::iYoungBonusAgeThreshhold)
+		{
+			fitness *= CParams::dYoungFitnessBonus;
+		}
 
-    //punish older species
-    if (m_iAge > CParams::iOldAgeThreshold)
-    {
-      fitness *= CParams::dOldAgePenalty;
-    }
+		//punish older species
+		if (m_iAge > CParams::iOldAgeThreshold)
+		{
+			fitness *= CParams::dOldAgePenalty;
+		}
 
-    total += fitness;
+		total += fitness;
 
-    //apply fitness sharing to adjusted fitnesses
-    double AdjustedFitness = fitness/m_vecMembers.size();
+		//apply fitness sharing to adjusted fitnesses
+		double AdjustedFitness = fitness / m_vecMembers.size();
 
-    m_vecMembers[gen]->SetAdjFitness(AdjustedFitness);
-
-  }
+		gen->SetAdjFitness(AdjustedFitness);
+	}
 }
 
 //------------------------ CalculateSpawnAmount --------------------------
@@ -107,13 +101,12 @@ void CSpecies::AdjustFitnesses()
 //------------------------------------------------------------------------
 void CSpecies::CalculateSpawnAmount()
 {
-  for (int gen=0; gen<m_vecMembers.size(); ++gen)
-  {
-    m_dSpawnsRqd += m_vecMembers[gen]->AmountToSpawn();
+	for (auto& gen : m_vecMembers)
+	{
+		m_dSpawnsRqd += gen->AmountToSpawn();
 
-  }
+	}
 }
-
 
 //------------------------ Spawn -----------------------------------------
 //
@@ -121,23 +114,20 @@ void CSpecies::CalculateSpawnAmount()
 //------------------------------------------------------------------------
 CGenome CSpecies::Spawn()
 {
-  CGenome baby;
+	CGenome baby;
 
-  if (m_vecMembers.size() == 1)
-  {
-    baby = *m_vecMembers[0];
-  }
+	if (m_vecMembers.size() == 1)
+	{
+		baby = *m_vecMembers[0];
+	}
+	else
+	{
+		int MaxIndexSize = (int)(CParams::dSurvivalRate * m_vecMembers.size()) + 1;
 
-  else
-  {
-    int MaxIndexSize = (int) (CParams::dSurvivalRate * m_vecMembers.size())+1;
+		int TheOne = RandInt(0, MaxIndexSize);
 
-    int TheOne = RandInt(0, MaxIndexSize);
+		baby = *m_vecMembers[TheOne];
+	}
 
-    baby = *m_vecMembers[TheOne];
-  }
-
-  return baby;
+	return baby;
 }
-
-
