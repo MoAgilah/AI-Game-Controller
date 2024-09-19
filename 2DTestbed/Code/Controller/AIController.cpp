@@ -4,7 +4,43 @@
 #include "../Game/GameManager.h"
 #include "../GameObjects/Player.h"
 
+namespace
+{
+	std::string OutputDebugMessage(bool didNotMove, bool movedLeft, bool movedRight, bool plyDeath, bool lvlFin)
+	{
+		std::string msg = "new player has been assigned because previous player ";
+
+		if (plyDeath)
+			msg += std::format("because of player death", CParams::iNumTicks);
+
+		if (lvlFin)
+			msg += std::format("because of player's level completion", CParams::iNumTicks);
+
+		if (didNotMove)
+		{
+			msg += std::format("did not move for {} seconds", CParams::iNumTicks);
+
+			if (movedLeft)
+			{
+				msg += ", after moving left\n";
+			}
+			else if (movedRight)
+			{
+				msg += ", after moving right\n";
+			}
+			else
+			{
+				msg += "\n";
+			}
+		}
+
+		return msg;
+
+	}
+}
+
 AIController::AIController()
+	: m_timer(CParams::iNumTicks)
 {
 	m_AnnView = std::make_unique<ANNView>();
 
@@ -30,29 +66,38 @@ AIController::AIController()
 	m_inputs.resize(255);
 }
 
-bool AIController::Update()
+bool AIController::Update(float deltaTime)
 {
-	//if havent moved in 2000 ticks
-	if ((m_players[m_currPlayer]->GetPosition().x == m_players[m_currPlayer]->GetPrevPosition().x && m_ticks++ > CParams::iNumTicks) ||
-		//if been killed
-		m_players[m_currPlayer]->GetIsAlive() == false ||
-		//if level completed
-		m_players[m_currPlayer]->GetGoalHit() == true)
+	m_timer.Update(deltaTime);
+
+	auto currPly = GetCurrentPlayer();
+
+	auto currPosX = currPly->GetPosition().x;
+	auto prevPosX = currPly->GetPosition().x;
+
+	bool didNotMove = (currPosX == prevPosX);
+	bool movedLeft = (currPosX < currPly->GetInitialPosition().x);
+	bool movedRight = (currPosX > currPly->GetInitialPosition().x);
+	bool plyDeath = !currPly->GetIsAlive();
+	bool lvlFin = currPly->GetGoalHit();
+
+	if ((didNotMove || movedLeft) && m_timer.CheckEnd()
+		|| plyDeath
+		|| lvlFin)
 	{
 		m_currPlayer++;
-
-		m_ticks = 0;
-
+		m_timer.ResetTime();
 		if (m_currPlayer < m_players.size())
 		{
-			GameManager::Get()->ChangePlayer(m_players[m_currPlayer].get());
+			std::cout << OutputDebugMessage(didNotMove, movedLeft, movedRight, plyDeath, lvlFin);
+			GameManager::Get()->ChangePlayer(GetCurrentPlayer());
 			GameManager::Get()->GetPlayer()->Reset();
 		}
 	}
-	//if have moved right before timing out
-	else if (m_players[m_currPlayer]->GetPosition().x != m_players[m_currPlayer]->GetPrevPosition().x && m_players[m_currPlayer]->GetPosition().x > 75.0f)
+	else if (currPosX > prevPosX)
 	{
-		m_ticks = 0;
+		std::cout << "current player has moved further right\n";
+		m_timer.ResetTime();
 	}
 
 	if (m_currPlayer < m_players.size())
@@ -82,7 +127,7 @@ bool AIController::Update()
 		++m_generations;
 
 		//reset cycles
-		m_ticks = 0;
+		m_timer.ResetTime();
 
 		//perform an epoch and grab the new brains
 		std::vector<CNeuralNet*> pBrains = m_pop->Epoch(GetFitnessScores());

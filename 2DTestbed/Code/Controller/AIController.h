@@ -4,16 +4,18 @@
 #include <SFML/Graphics.hpp>
 #include "../NEAT/Cga.h"
 #include "../Controller/ANNView.h"
+#include "../Game/Timer.h"
 
 class Player;
 class AutomatedPlayer;
+
 class AIController
 {
 public:
 	AIController();
 	~AIController() = default;
 
-	bool Update();
+	bool Update(float deltaTime);
 
 	Player* GetCurrentPlayer();
 
@@ -30,11 +32,11 @@ private:
 	double ColourToInput(sf::Color col);
 	void EndOfRunCalculation(AutomatedPlayer* ply);
 
-	int m_ticks = 0;
 	int m_currPlayer = 0;
 	int m_generations = 0;
 	double m_bestFitness = 0;
 
+	Timer m_timer;
 	std::unique_ptr<Cga> m_pop;
 	std::vector<double> m_inputs;
 	std::unique_ptr<ANNView> m_AnnView;

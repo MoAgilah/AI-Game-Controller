@@ -1,6 +1,7 @@
 #include "GameStateMgr.h"
 #include <iostream>
 #include <format>
+#include "../Game/Constants.h"
 
 GameStateMgr::~GameStateMgr()
 {
@@ -22,7 +23,9 @@ void GameStateMgr::ChangeState(GameState* state)
 
 	m_vGameStates.push_back(state);
 	m_vGameStates.back()->Initialise();
-	std::cout << std::format("Changed too {} state\n", m_vGameStates.back()->GetStateName());
+
+	if (GameConstants::DRender)
+		std::cout << std::format("Changed too {} state\n", m_vGameStates.back()->GetStateName());
 }
 
 void GameStateMgr::PushState(GameState* state)
@@ -32,14 +35,17 @@ void GameStateMgr::PushState(GameState* state)
 
 	m_vGameStates.push_back(state);
 	m_vGameStates.back()->Initialise();
-	std::cout << std::format("Pushed {} state\n", m_vGameStates.back()->GetStateName());
+
+	if (GameConstants::DRender)
+		std::cout << std::format("Pushed {} state\n", m_vGameStates.back()->GetStateName());
 }
 
 void GameStateMgr::PopState()
 {
 	if (!m_vGameStates.empty())
 	{
-		std::cout << std::format("Popped {} state\n", m_vGameStates.back()->GetStateName());
+		if (GameConstants::DRender)
+			std::cout << std::format("Popped {} state\n", m_vGameStates.back()->GetStateName());
 		m_vGameStates.pop_back();
 	}
 

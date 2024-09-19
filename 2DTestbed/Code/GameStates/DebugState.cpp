@@ -32,7 +32,7 @@ void DebugState::Update(float deltaTime)
 	m_gameMgr->GetTimer().Update(deltaTime);
 
 	if (GameConstants::Automated)
-		GameManager::Get()->GetAIController()->Update();
+		GameManager::Get()->GetAIController()->Update(deltaTime);
 
 	m_gameMgr->CheckInView();
 	m_gameMgr->GetPlayer()->Update(deltaTime);
