@@ -11,31 +11,36 @@ namespace
 		std::string msg = "new player has been assigned because previous player ";
 
 		if (plyDeath)
+		{
 			msg += std::format("because of player death\n", CParams::iNumTicks);
+			return msg;
+		}
 
 		if (lvlFin)
-			msg += std::format("because of player's level completion\n", CParams::iNumTicks);
-
-		if (didNotMove)
 		{
-			msg += std::format("did not move for {} seconds", CParams::iNumTicks);
+			msg += std::format("because of player's level completion\n", CParams::iNumTicks);
+			return msg;
+		}
 
-			if (movedLeft)
-			{
-				msg += ", after moving left\n";
-			}
-			else if (movedRight)
-			{
-				msg += ", after moving right\n";
-			}
-			else
-			{
-				msg += "\n";
-			}
+		if (!didNotMove)
+			return std::string();
+
+		msg += std::format("did not move for {} seconds", CParams::iNumTicks);
+
+		if (movedLeft)
+		{
+			msg += ", after moving left\n";
+		}
+		else if (movedRight)
+		{
+			msg += ", after moving right\n";
+		}
+		else
+		{
+			msg += "\n";
 		}
 
 		return msg;
-
 	}
 }
 
