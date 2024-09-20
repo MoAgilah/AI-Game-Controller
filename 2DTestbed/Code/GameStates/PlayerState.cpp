@@ -23,35 +23,53 @@ void GroundedState::Resume()
 void GroundedState::ProcessInputs()
 {
 	auto& keyStates = m_player->GetKeyStates();
-	if (keyStates[Keys::LEFT_KEY])
+
+	if (keyStates[Keys::LEFT_KEY] && keyStates[Keys::RIGHT_KEY])
 	{
+		// prioritize multi keys based on previous direction
 		if (m_player->GetDirection())
 		{
-			m_player->SetDirection(false);
-			if (m_player->GetXVelocity() > m_physCtrl->GetXAcceleration())
-				Slide(m_player->GetDirection());
+			UpdateGroundAnimation();
+			m_player->IncrementXVelocity(m_physCtrl->GetXAcceleration());
 		}
-
-		if (!m_turningAround)
+		else
 		{
 			UpdateGroundAnimation();
 			m_player->DecrementXVelocity(m_physCtrl->GetXAcceleration());
 		}
 	}
-
-	if (keyStates[Keys::RIGHT_KEY])
+	else
 	{
-		if (!m_player->GetDirection())
+		if (keyStates[Keys::LEFT_KEY])
 		{
-			m_player->SetDirection(true);
-			if (m_player->GetXVelocity() < -m_physCtrl->GetXAcceleration())
-				Slide(m_player->GetDirection());
+			if (m_player->GetDirection())
+			{
+				m_player->SetDirection(false);
+				if (m_player->GetXVelocity() > m_physCtrl->GetXAcceleration())
+					Slide(m_player->GetDirection());
+			}
+
+			if (!m_turningAround)
+			{
+				UpdateGroundAnimation();
+				m_player->DecrementXVelocity(m_physCtrl->GetXAcceleration());
+			}
 		}
 
-		if (!m_turningAround)
+		if (keyStates[Keys::RIGHT_KEY])
 		{
-			UpdateGroundAnimation();
-			m_player->IncrementXVelocity(m_physCtrl->GetXAcceleration());
+			if (!m_player->GetDirection())
+			{
+				m_player->SetDirection(true);
+				if (m_player->GetXVelocity() < -m_physCtrl->GetXAcceleration())
+					Slide(m_player->GetDirection());
+			}
+
+			if (!m_turningAround)
+			{
+				UpdateGroundAnimation();
+				m_player->IncrementXVelocity(m_physCtrl->GetXAcceleration());
+			}
 		}
 	}
 
