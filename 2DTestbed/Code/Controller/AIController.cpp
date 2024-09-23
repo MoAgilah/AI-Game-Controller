@@ -199,7 +199,22 @@ double AIController::ColourToInput(sf::Color col)
 
 void AIController::EndOfRunCalculation(AutomatedPlayer* ply)
 {
-	float percent = ((ply->GetPosition().x - ply->GetInitialPosition().x) / GameConstants::RightMost) * 100;;
+	auto currPly = ply;
+
+	auto currPosX = currPly->GetPosition().x;
+	auto initPosX = currPly->GetInitialPosition().x;
+
+	float percent = 0;
+
+	if (currPosX > initPosX)
+	{
+		percent = ((currPosX - initPosX) / GameConstants::RightMost) * 100;
+	}
+	else if (currPosX < initPosX)
+	{
+		percent = ((currPosX - initPosX) / (initPosX - GameConstants::LeftMost)) * 100;
+	}
+
 	GameManager::Get()->GetLogger().AddExperimentLog(std::format("Player moved by {}%!", percent));
 	ply->UpdateFitness(percent);
 }

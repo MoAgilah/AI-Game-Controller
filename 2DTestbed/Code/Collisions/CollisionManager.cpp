@@ -466,7 +466,8 @@ void CollisionManager::PlayerToQBoxResolutions(Player* ply, QBox* box)
 				{
 					box->SetJustHit(true);
 					GameManager::Get()->GetWorld()->AddObject(sf::Vector2f(box->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * GameConstants::Scale.y) - (box->GetOrigin().y * GameConstants::Scale.y) + 4.f));
-					//ply->UpdateFitness(100);
+					if (GameConstants::Automated)
+						((AutomatedPlayer*)ply)->UpdateFitness(20);
 				}
 			}
 		}
@@ -505,6 +506,8 @@ void CollisionManager::PlayerToSBoxResolutions(Player* ply, SBox* box)
 					if (ply->GetIsSuper() && ply->GetCantSpinJump())
 					{
 						box->SetJustSmashed(true);
+						if (GameConstants::Automated)
+							((AutomatedPlayer*)ply)->UpdateFitness(20);
 						return;
 					}
 				}
@@ -524,7 +527,8 @@ void CollisionManager::PlayerToEnemyResolutions(Player* ply, Enemy* enmy)
 	{
 		enmy->DecrementLife();
 		ply->Bounce();
-		//	ptmp->UpdateFitness(-100);
+		if (GameConstants::Automated)
+			((AutomatedPlayer*)ply)->UpdateFitness(30);
 	}
 	else
 	{
@@ -534,7 +538,8 @@ void CollisionManager::PlayerToEnemyResolutions(Player* ply, Enemy* enmy)
 			{
 				ply->SetInvulnerability();
 				ply->SetIsSuper(false);
-				//ptmp->UpdateFitness(-100);
+				if (GameConstants::Automated)
+					((AutomatedPlayer*)ply)->UpdateFitness(-30);
 			}
 			else
 			{
