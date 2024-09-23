@@ -75,8 +75,11 @@ void GroundedState::ProcessInputs()
 
 	if (keyStates[Keys::UP_KEY])
 	{
-		if (m_animSpr->GetCurrentAnim() != MarioAnims::LOOKUP)
-			m_animSpr->ChangeAnim(MarioAnims::LOOKUP);
+		if (!keyStates[Keys::LEFT_KEY] && !keyStates[Keys::RIGHT_KEY])
+		{
+			if (m_animSpr->GetCurrentAnim() != MarioAnims::LOOKUP)
+				m_animSpr->ChangeAnim(MarioAnims::LOOKUP);
+		}
 	}
 
 	if (keyStates[Keys::RUN_KEY])

@@ -121,7 +121,7 @@ void World::AddEnemies()
 	tmp = GameManager::Get()->GetCollisionMgr()->GetTile(31, 8);
 	m_enemies.push_back(std::make_shared<Bill>(false, tmp->GetPosition() + sf::Vector2f(0, 22)));
 
-	tmp = GameManager::Get()->GetCollisionMgr()->GetTile(35, 11);
+	tmp = GameManager::Get()->GetCollisionMgr()->GetTile(37, 11);
 	m_enemies.push_back(std::make_shared<Rex>(false, tmp->GetPosition()));
 
 	tmp = GameManager::Get()->GetCollisionMgr()->GetTile(47, 11);

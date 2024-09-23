@@ -1,6 +1,6 @@
 #include "Constants.h"
 
-bool  GameConstants::Automated = true;
+bool  GameConstants::Automated = false;
 bool  GameConstants::DControl = true;
 bool  GameConstants::DRender = false;
 float GameConstants::LeftMost = 15.6f;
