@@ -68,7 +68,7 @@ void YCoin::Collect(Player* player)
 	SetCollected();
 	player->IncreaseCoins(s_collected * 1000);
 	if (GameConstants::Automated)
-		((AutomatedPlayer*)player)->UpdateFitness(5 * s_collected);
+		((AutomatedPlayer*)player)->UpdateFitness(5.f * (float)s_collected);
 }
 
 CheckPoint::CheckPoint(const sf::Vector2f& initPos)

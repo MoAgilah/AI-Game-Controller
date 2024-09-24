@@ -49,6 +49,7 @@ public:
 	float GetMaxXVelocity() const { return m_maxVelocity.first.max; }
 	float GetMaxYVelocity() const { return m_maxVelocity.second; }
 
+	float GetAirTimer() const { return m_airTime; }
 private:
 
 	int m_currX;
@@ -57,9 +58,11 @@ private:
 	std::pair<Velocity, float> m_maxVelocity;
 	Point m_currAccelerations;
 	float m_groundAcceleration;
+	float m_airTime;
 	std::vector<Velocity> m_groundVelocities;
 	std::vector<Velocity> m_slopedVelocities;
 	std::vector<float> m_aerialVelocities;
 	std::vector<float> m_slopedAccelerations;
 	std::vector<float> m_aerialAccelerations;
+	std::vector<float> m_aerialTimer;
 };

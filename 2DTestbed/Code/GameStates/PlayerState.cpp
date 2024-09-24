@@ -115,7 +115,10 @@ void GroundedState::ProcessInputs()
 			m_player->SetAirbourne(true);
 			m_player->SetCantJump(true);
 			if (m_physCtrl->GetPhysicsType() != PhysicsType::rise)
+			{
 				m_physCtrl->SetAerial();
+				m_player->GetAirTimer()->SetTime(m_physCtrl->GetAirTimer());
+			}
 		}
 	}
 	else
@@ -133,7 +136,10 @@ void GroundedState::ProcessInputs()
 			m_player->SetAirbourne(true);
 			m_player->SetCantSpinJump(true);
 			if (m_physCtrl->GetPhysicsType() != PhysicsType::rise)
+			{
 				m_physCtrl->SetAerial();
+				m_player->GetAirTimer()->SetTime(m_physCtrl->GetAirTimer());
+			}
 		}
 	}
 	else

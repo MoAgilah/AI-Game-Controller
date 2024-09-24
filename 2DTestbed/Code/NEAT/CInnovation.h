@@ -46,7 +46,8 @@ struct	SInnovation
 	{}
 
 	SInnovation(SNeuronGene neuron, int innov_id, int neuron_id)
-		: InnovationID(innov_id),
+		: InnovationType(innov_type::new_neuron),
+		InnovationID(innov_id),
 		NeuronID(neuron_id),
 		dSplitX(neuron.dSplitX),
 		dSplitY(neuron.dSplitY),

@@ -115,8 +115,8 @@ void World::AddObject(const sf::Vector2f& pos)
 void World::AddEnemies()
 {
 	Tile* tmp;
-	tmp = GameManager::Get()->GetCollisionMgr()->GetTile(13, 5);
-	m_enemies.push_back(std::make_shared<Koopa>(false, tmp->GetPosition()));
+	/*tmp = GameManager::Get()->GetCollisionMgr()->GetTile(13, 5);
+	m_enemies.push_back(std::make_shared<Koopa>(false, tmp->GetPosition()));*/
 
 	tmp = GameManager::Get()->GetCollisionMgr()->GetTile(31, 8);
 	m_enemies.push_back(std::make_shared<Bill>(false, tmp->GetPosition() + sf::Vector2f(0, 22)));

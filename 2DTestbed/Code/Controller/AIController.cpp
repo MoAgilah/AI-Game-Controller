@@ -45,7 +45,7 @@ namespace
 }
 
 AIController::AIController()
-	: m_timer(CParams::iNumTicks)
+	: m_timer((float)CParams::iNumTicks)
 {
 	m_AnnView = std::make_unique<ANNView>();
 

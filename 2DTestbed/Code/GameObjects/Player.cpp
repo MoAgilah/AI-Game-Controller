@@ -123,7 +123,7 @@ void Player::Update(float deltaTime)
 				}
 				else
 				{
-					if (m_airTimer.GetTime() < 0.25f)
+					if (m_airTimer.GetTime() < physCtrl->GetAirTimer() * 0.625f)
 						DecrementYVelocity(GameConstants::ObjectSpeed);
 				}
 			}
