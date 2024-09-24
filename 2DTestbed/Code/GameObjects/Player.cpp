@@ -6,7 +6,7 @@
 #include "../GameStates/PlayerState.h"
 
 Player::Player(const sf::Vector2f& pos)
-	: DynamicObject(new AnimatedSprite(TexID::Mario, 14, 4, GameConstants::FPS, false, 0.5f), sf::Vector2f(9,16)), m_airTimer(GameConstants::MaxAirTime), m_invulTimer(1)
+	: DynamicObject(new AnimatedSprite(TexID::Mario, 14, 4, GameConstants::FPS, false, 0.5f), sf::Vector2f(9,16)), m_airTimer(0.4f), m_invulTimer(1)
 {
 	SetInitialDirection(true);
 	SetDirection(GetInitialDirection());
@@ -123,7 +123,8 @@ void Player::Update(float deltaTime)
 				}
 				else
 				{
-					DecrementYVelocity(physCtrl->GetYAcceleration());
+					if (m_airTimer.GetTime() < 0.25f)
+						DecrementYVelocity(GameConstants::ObjectSpeed);
 				}
 			}
 			else

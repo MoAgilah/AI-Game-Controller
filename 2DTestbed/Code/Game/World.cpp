@@ -115,8 +115,8 @@ void World::AddObject(const sf::Vector2f& pos)
 void World::AddEnemies()
 {
 	Tile* tmp;
-	/*tmp = GameManager::Get()->GetCollisionMgr()->GetTile(13, 5);
-	m_enemies.push_back(std::make_shared<Koopa>(false, tmp->GetPosition()));*/
+	tmp = GameManager::Get()->GetCollisionMgr()->GetTile(13, 5);
+	m_enemies.push_back(std::make_shared<Koopa>(false, tmp->GetPosition()));
 
 	tmp = GameManager::Get()->GetCollisionMgr()->GetTile(31, 8);
 	m_enemies.push_back(std::make_shared<Bill>(false, tmp->GetPosition() + sf::Vector2f(0, 22)));
@@ -199,7 +199,7 @@ void World::AddEnemies()
 
 void World::AddObjects()
 {
-	Tile* tmp = GameManager::Get()->GetCollisionMgr()->GetTile(17, 5);
+	Tile* tmp = GameManager::Get()->GetCollisionMgr()->GetTile(17, 4);
 	m_objects.push_back(std::make_shared<YCoin>(tmp->GetPosition()));
 
 	tmp = GameManager::Get()->GetCollisionMgr()->GetTile(37, 8);

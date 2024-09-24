@@ -187,6 +187,7 @@ void GroundedState::Slide(bool dir)
 void AirborneState::Initialise()
 {
 	// nothing to update
+	m_player->SetYVelocity(-GameConstants::ObjectSpeed*4);
 }
 
 void AirborneState::ProcessInputs()
