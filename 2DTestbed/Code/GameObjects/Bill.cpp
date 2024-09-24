@@ -39,7 +39,7 @@ bool Bill::IsPlayerAbove(Player* ply)
 	auto rad = m_halfCap.circle.getRadius();
 	auto end = cnt - Point(0, rad);
 
-	Point mid = ((cnt - Point(rad, 0)) - cnt) + (end - cnt);
+	Point mid = ((cnt - Point(rad*2, 0)) - cnt) + (end - cnt);
 	mid = pnt::Normalize(mid) * rad;
 	mid = cnt + mid;
 

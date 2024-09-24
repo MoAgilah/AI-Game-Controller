@@ -187,11 +187,11 @@ std::vector<double> AIController::GetFitnessScores() const
 
 double AIController::ColourToInput(sf::Color col)
 {
-	if (col == sf::Color::Red) return 0.0f;
-	if (col == sf::Color::Transparent) return 0.2f;
-	if (col == sf::Color::White) return 0.4f;
-	if (col == sf::Color::Green) return 0.6f;
-	if (col == sf::Color::Yellow) return 0.8f;
+	if (col == sf::Color::Transparent) return 0.f;
+	if (col == sf::Color::Green) return 0.2f;
+	if (col == sf::Color::Yellow) return 0.4f;
+	if (col == sf::Color::Red) return 0.6f;
+	if (col == sf::Color::White) return 0.8f;
 	if (col == sf::Color::Black) return 1.0f;
 
 	return -1.0f;
@@ -208,7 +208,8 @@ void AIController::EndOfRunCalculation(AutomatedPlayer* ply)
 
 	if (currPosX > initPosX)
 	{
-		percent = ((currPosX - initPosX) / GameConstants::RightMost) * 100;
+		percent = (GameConstants::RightMost / GameConstants::Scale.x) *
+			((currPosX - initPosX) / GameConstants::RightMost);
 	}
 	else if (currPosX < initPosX)
 	{

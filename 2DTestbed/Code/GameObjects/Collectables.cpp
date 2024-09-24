@@ -68,7 +68,7 @@ void YCoin::Collect(Player* player)
 	SetCollected();
 	player->IncreaseCoins(s_collected * 1000);
 	if (GameConstants::Automated)
-		((AutomatedPlayer*)player)->UpdateFitness(5.f * (float)s_collected);
+		((AutomatedPlayer*)player)->UpdateFitness(2.f * (float)s_collected);
 }
 
 CheckPoint::CheckPoint(const sf::Vector2f& initPos)
@@ -87,7 +87,7 @@ void CheckPoint::Collect(Player* player)
 	player->SetIsSuper(true);
 	player->SetSpawnLoc(GetPosition());
 	if (GameConstants::Automated)
-		((AutomatedPlayer*)player)->UpdateFitness(20);
+		((AutomatedPlayer*)player)->UpdateFitness(5);
 }
 
 DynamicCollectable::DynamicCollectable(TexID sprID, const sf::Vector2f& boxSize, const sf::Vector2f& initPos)
@@ -153,7 +153,7 @@ void Mushroom::Collect(Player* player)
 	SetCollected();
 	player->SetIsSuper(true);
 	if (GameConstants::Automated)
-		((AutomatedPlayer*)player)->UpdateFitness(30);
+		((AutomatedPlayer*)player)->UpdateFitness(10);
 }
 
 Goal::Goal(const sf::Vector2f& initPos)
@@ -196,5 +196,5 @@ void Goal::Collect(Player* player)
 	SetCollected();
 	player->SetGoalHit(true);
 	if (GameConstants::Automated)
-		((AutomatedPlayer*)player)->UpdateFitness(30);
+		((AutomatedPlayer*)player)->UpdateFitness(10);
 }
