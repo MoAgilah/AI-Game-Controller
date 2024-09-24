@@ -77,6 +77,9 @@ void Koopa::Animate(float deltaTime)
 		}
 		else
 		{
+			if (physCtrl->GetPhysicsType() == PhysicsType::drop)
+				physCtrl->SetWalking();
+
 			if (animSpr->GetCurrentAnim() == KoopaAnims::NOSEDIVE)
 				animSpr->ChangeAnim(KoopaAnims::WALK);
 

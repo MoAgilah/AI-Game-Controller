@@ -82,11 +82,11 @@ void Bill::Animate(float deltaTime)
 	{
 		if (GetDirection())
 		{
-			SetXVelocity(GameConstants::ObjectSpeed);
+			SetXVelocity(GameConstants::ObjectSpeed + 0.5f);
 		}
 		else
 		{
-			SetXVelocity(-GameConstants::ObjectSpeed);
+			SetXVelocity(-(GameConstants::ObjectSpeed + 0.5f));
 		}
 
 		if (GetXVelocity() != 0)
