@@ -15,7 +15,7 @@ PhysicsController::PhysicsController()
 	m_slopedVelocities.push_back({ m_slopedVelocities[XVelocity::running].max, 2.f * GameConstants::Scale.x });
 
 	m_aerialVelocities = { 2.f * GameConstants::Scale.y, 3.5f * GameConstants::Scale.y, 4.f * GameConstants::Scale.y, 4.5f * GameConstants::Scale.y };
-	m_aerialTimer = { 0.4f, 0.3f,0.3f };
+	m_aerialTimer = { 0.35f, 0.25f,0.25f };
 	m_maxVelocity = { m_groundVelocities[m_currX], m_aerialVelocities[m_currY] };
 
 	m_groundAcceleration = 0.0546875f;

@@ -123,7 +123,7 @@ void Player::Update(float deltaTime)
 				}
 				else
 				{
-					if (m_airTimer.GetTime() < physCtrl->GetAirTimer() * 0.625f)
+					if (m_airTimer.GetTime() < physCtrl->GetAirTime() * 0.6f)
 						DecrementYVelocity(physCtrl->GetYAcceleration());
 				}
 			}
@@ -454,6 +454,12 @@ AutomatedPlayer::AutomatedPlayer(const sf::Vector2f& pos)
 		GameManager::Get()->GetCollisionMgr()->RemoveLastAdded();
 
 	s_playerInserted = true;
+}
+
+void AutomatedPlayer::Reset()
+{
+	Player::Reset();
+	m_fitness = 0;
 }
 
 bool AutomatedPlayer::UpdateANN()

@@ -23,7 +23,7 @@ public:
 
 	void Update(float deltaTime) final;
 	void Render(sf::RenderWindow& window) final;
-	void Reset() final;
+	void Reset() override;
 
 	bool GetIsSuper() const { return m_super; }
 	void SetIsSuper(bool super);
@@ -89,6 +89,8 @@ class AutomatedPlayer : public Player
 public:
 	AutomatedPlayer(const sf::Vector2f& pos);
 	~AutomatedPlayer() final = default;
+
+	void Reset() final;
 
 	void UpdateFitness(float fitness) { m_fitness += fitness; }
 	double Fitness() const { return m_fitness; }

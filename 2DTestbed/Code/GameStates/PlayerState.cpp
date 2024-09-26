@@ -117,7 +117,7 @@ void GroundedState::ProcessInputs()
 			if (m_physCtrl->GetPhysicsType() != PhysicsType::rise)
 			{
 				m_physCtrl->SetAerial();
-				m_player->GetAirTimer()->SetTime(m_physCtrl->GetAirTimer());
+				m_player->GetAirTimer()->SetTime(m_physCtrl->GetAirTime());
 			}
 		}
 	}
@@ -138,7 +138,7 @@ void GroundedState::ProcessInputs()
 			if (m_physCtrl->GetPhysicsType() != PhysicsType::rise)
 			{
 				m_physCtrl->SetAerial();
-				m_player->GetAirTimer()->SetTime(m_physCtrl->GetAirTimer());
+				m_player->GetAirTimer()->SetTime(m_physCtrl->GetAirTime());
 			}
 		}
 	}
@@ -193,7 +193,7 @@ void GroundedState::Slide(bool dir)
 void AirborneState::Initialise()
 {
 	// nothing to update
-	m_player->SetYVelocity(-GameConstants::ObjectSpeed*4);
+	m_player->SetYVelocity(-15);
 }
 
 void AirborneState::ProcessInputs()

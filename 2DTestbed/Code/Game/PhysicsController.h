@@ -49,7 +49,7 @@ public:
 	float GetMaxXVelocity() const { return m_maxVelocity.first.max; }
 	float GetMaxYVelocity() const { return m_maxVelocity.second; }
 
-	float GetAirTimer() const { return m_airTime; }
+	float GetAirTime() const { return m_airTime; }
 private:
 
 	int m_currX;
