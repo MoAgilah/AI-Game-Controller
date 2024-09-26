@@ -23,7 +23,7 @@ void PPlant::Reset()
 
 void PPlant::Die()
 {
-	// no way to destroy currently, requires fire plant mario
+	// no way to destroy currently, requires fire plant mario, shell toss, or star power not currently implemented
 }
 
 void PPlant::Animate(float deltaTime)

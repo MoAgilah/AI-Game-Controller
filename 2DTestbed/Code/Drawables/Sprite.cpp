@@ -112,4 +112,3 @@ void AnimatedSprite::UpdateAnimSpeed(float animSpd)
 	if (m_animSpeed != animSpd)
 		m_animSpeed = animSpd;
 }
-
