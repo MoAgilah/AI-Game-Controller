@@ -50,11 +50,18 @@ private:
 
 	void DynamicObjectToBoxResolutions(Direction dirOfTravel, const Point& prevOverlap, DynamicObject* obj, AABB* box, bool resolveUpDir = true);
 
-	void DynamicObjectToDynamicObject(DynamicObject* obj1, DynamicObject* obj2);
+	void DynamicObjectToDynamicObjectCollisions(DynamicObject* obj1, DynamicObject* obj2);
+	void DynamicObjectToDynamicObjectResolution(DynamicObject* obj, float tFirst);
 
 	void ResolveObjectToBoxTop(DynamicObject* obj, AABB* box);
 	void ResolveObjectToBoxBottom(DynamicObject* obj, AABB* box);
 	void ResolveObjectToBoxHorizontally(DynamicObject* obj, AABB* box);
+
+	bool ResolveObjectToSlopeTop(DynamicObject* obj, Tile* box);
+	bool ResolveObjectToSlopeIncline(DynamicObject* obj, Tile* box, int start, int end);
+	bool ResolveObjectToSlopeDecline(DynamicObject* obj, Tile* box, int start, int end);
+
+	void DynamicObjectToEdgeBounds(DynamicObject* obj, Tile* tile);
 
 	Direction GetFacingDirection(DynamicObject* obj);
 

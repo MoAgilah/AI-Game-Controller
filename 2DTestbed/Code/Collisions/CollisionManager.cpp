@@ -61,7 +61,14 @@ namespace
 		Point v = v2 - v1;
 		Point d = p2 - p1;
 
-		return (d.x * v.x + d.y * v.y < 0);
+		return (d.x * v.x + d.y * v.y) < 0;
+	}
+
+	Point GetPreviousOverlap(AABB* box, DynamicObject* obj)
+	{
+		Point delta = box->GetPosition() - obj->GetPrevPosition();
+		delta = Point(std::abs(delta.x), std::abs(delta.y));
+		return (obj->GetAABB()->GetExtents() + box->GetExtents()) - delta;
 	}
 }
 
@@ -200,24 +207,26 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 		[[fallthrough]];
 	case Types::RCRN:
 	{
-		Point delta = tile->GetAABB()->GetPosition() - obj->GetPrevPosition();
-		delta = Point(std::abs(delta.x), std::abs(delta.y));
-		Point prevOverlap = (obj->GetAABB()->GetExtents() + tile->GetAABB()->GetExtents()) - delta;
+		Point prevOverlap = GetPreviousOverlap(tile->GetAABB(), obj);
 
 		if (dir == DDIR)
 		{
+			// the collision came from a vertical direction
 			if (prevOverlap.x > 0)
 			{
+				// the collision came from the bottom
 				if (prevOverlap.x > prevOverlap.y)
 				{
 					if (tileTopEdge.IsPointAboveLine(objBottomPoint))
 					{
 						ResolveObjectToBoxTop(obj, tile->GetAABB());
+						return;
 					}
 				}
 			}
 		}
 
+		// the collision came from a horizontal direction
 		if (prevOverlap.y > 0)
 		{
 			ResolveObjectToBoxHorizontally(obj, tile->GetAABB());
@@ -231,145 +240,67 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 					ResolveObjectToBoxTop(obj, tile->GetAABB());
 				}
 
-				if (!IsPlayerObject(obj->GetID()))
-				{
-					Point cnt = tile->GetType() == LCRN ?
-						obj->GetAABB()->GetPoint(Side::Right) :
-						obj->GetAABB()->GetPoint(Side::Left);
-
-					Line edge = tile->GetEdge();
-
-					if (IsMovingTowards(edge.start, cnt, Point(0, 0), obj->GetVelocity()))
-					{
-						Circle circle(cnt, 4);
-						Capsule capsule(edge, 4);
-						if (capsule.IntersectsCircle(circle))
-							obj->SetDirection(!obj->GetDirection());
-					}
-
-				}
+				DynamicObjectToEdgeBounds(obj, tile);
 			}
 		}
-	}
 		return;
+	}
 	case Types::WALL:
 		ResolveObjectToBoxHorizontally(obj, tile->GetAABB());
 		return;
 	case Types::DIAGU:
 	{
-		if (dir == DDIR)
+		switch (dir)
 		{
-			Line line = tile->GetSlope(0, 1);
-			Circle circle(obj->GetAABB(), 4);
-			if (line.IsPointAboveLine(circle.center))
+		case DDIR:
+			if (ResolveObjectToSlopeTop(obj, tile))
 			{
-				Capsule capsule(line, 6);
-				if (capsule.IntersectsCircle(circle))
-				{
-					obj->SetOnSlope(true);
-					if (!obj->GetShouldSlideLeft())
-						obj->SetShouldSlideLeft(true);
-				}
-			}
-		}
-
-		if (dir == RDIR)
-		{
-			Line line = tile->GetSlope(0, 1);
-			Circle circle(obj->GetAABB(), 4);
-			Capsule capsule(line, 6);
-			if (capsule.IntersectsCircle(circle))
-			{
-				auto yOffset = GetYOffSet(GetXDist(line.start, circle.center),
-					line.DistY(),
-					line.start.y,
-					obj->GetAABB()->GetPosition().y,
-					tile->GetTileHeight());
-
-				obj->Move(sf::Vector2f(0, yOffset));
-				obj->SetOnSlope(true);
 				if (!obj->GetShouldSlideLeft())
 					obj->SetShouldSlideLeft(true);
 			}
-		}
-
-		if (dir == LDIR)
-		{
-			Line line = tile->GetSlope(1, 0);
-			Circle circle(obj->GetAABB(), 4);
-			Capsule capsule(line, 6);
-			if (!capsule.IntersectsCircle(circle))
+			break;
+		case RDIR:
+			if (ResolveObjectToSlopeIncline(obj, tile, 0, 1))
 			{
-				auto yOffset = GetYOffSet(GetXDist(circle.center, line.start),
-					line.DistY(),
-					line.start.y,
-					obj->GetAABB()->GetPosition().y,
-					tile->GetTileHeight());
-
-				obj->Move(sf::Vector2f(0, -yOffset));
-				obj->SetOnSlope(true);
 				if (!obj->GetShouldSlideLeft())
 					obj->SetShouldSlideLeft(true);
 			}
+			break;
+		case LDIR:
+			if (ResolveObjectToSlopeDecline(obj, tile, 1, 0))
+			{
+				if (!obj->GetShouldSlideLeft())
+					obj->SetShouldSlideLeft(true);
+			}
+			break;
 		}
 		return;
 	}
 	case Types::DIAGD:
 	{
-		if (dir == DDIR)
+		switch (dir)
 		{
-			Line line = tile->GetSlope(0, 1);
-			Circle circle(obj->GetAABB(), 4);
-			if (line.IsPointAboveLine(circle.center))
+		case DDIR:
+			if (ResolveObjectToSlopeTop(obj, tile))
 			{
-				Capsule capsule(line, 6);
-				if (capsule.IntersectsCircle(circle))
-				{
-					obj->SetOnSlope(true);
-					if (!obj->GetShouldSlideRight())
-						obj->SetShouldSlideRight(true);
-				}
-			}
-		}
-
-		if (dir == LDIR)
-		{
-			Line line = tile->GetSlope(1, 0);
-			Circle circle(obj->GetAABB(), 4);
-			Capsule capsule(line, 6);
-			if (capsule.IntersectsCircle(circle))
-			{
-				auto yOffset = GetYOffSet(GetXDist(circle.center, line.start),
-					line.DistY(),
-					line.start.y,
-					obj->GetAABB()->GetPosition().y,
-					tile->GetTileHeight());
-
-				obj->Move(sf::Vector2f(0, yOffset));
-				obj->SetOnSlope(true);
 				if (!obj->GetShouldSlideRight())
 					obj->SetShouldSlideRight(true);
 			}
-		}
-
-		if (dir == RDIR)
-		{
-			Line line = tile->GetSlope(0, 1);
-			Circle circle(obj->GetAABB(), 4);
-			Capsule capsule(line, 6);
-			if (!capsule.IntersectsCircle(circle))
+			break;
+		case LDIR:
+			if (ResolveObjectToSlopeIncline(obj, tile, 1, 0))
 			{
-				auto yOffset = GetYOffSet(GetXDist(line.start, circle.center),
-					line.DistY(),
-					line.start.y,
-					obj->GetAABB()->GetPosition().y,
-					tile->GetTileHeight());
-
-				obj->Move(sf::Vector2f(0, -yOffset));
-				obj->SetOnSlope(true);
 				if (!obj->GetShouldSlideRight())
 					obj->SetShouldSlideRight(true);
 			}
+			break;
+		case RDIR:
+			if (ResolveObjectToSlopeDecline(obj, tile, 0, 1))
+			{
+				if (!obj->GetShouldSlideRight())
+					obj->SetShouldSlideRight(true);
+			}
+			break;
 		}
 		return;
 	}
@@ -398,13 +329,9 @@ void CollisionManager::PlayerToObjectCollisions(Player* ply, Object* obj)
 		if (obj->Intersects(ply))
 		{
 			if (IsDynamicCollectable(obj->GetID()))
-			{
 				((DynamicCollectable*)obj)->Collect(ply);
-			}
 			else
-			{
 				((StaticCollectable*)obj)->Collect(ply);
-			}
 		}
 	}
 	else if (IsEnemyObject(obj->GetID()))
@@ -434,9 +361,7 @@ void CollisionManager::ObjectToObjectCollisions(Object* obj1, Object* obj2)
 		{
 			DynamicObject* dynObj = (DynamicObject*)obj1;
 
-			Point delta = obj2->GetAABB()->GetPosition() - dynObj->GetPrevPosition();
-			delta = Point(std::abs(delta.x), std::abs(delta.y));
-			Point prevOverlap = (dynObj->GetAABB()->GetExtents() + obj2->GetAABB()->GetExtents()) - delta;
+			Point prevOverlap = GetPreviousOverlap(obj2->GetAABB(), dynObj);
 
 			DynamicObjectToBoxResolutions(GetFacingDirection(dynObj), prevOverlap, dynObj, obj2->GetAABB());
 		}
@@ -444,28 +369,28 @@ void CollisionManager::ObjectToObjectCollisions(Object* obj1, Object* obj2)
 	else
 	{
 		if (IsDynamicObject(obj1->GetID()) && IsDynamicObject(obj2->GetID()))
-			DynamicObjectToDynamicObject((DynamicObject*)obj1, (DynamicObject*)obj2);
+			DynamicObjectToDynamicObjectCollisions((DynamicObject*)obj1, (DynamicObject*)obj2);
 	}
 }
 
 void CollisionManager::PlayerToQBoxResolutions(Player* ply, QBox* box)
 {
 	Direction dir = GetFacingDirection(ply);
-	// calculate the overlap
-	Point delta = box->GetAABB()->GetPosition() - ply->GetPrevPosition();
-	delta = Point(std::abs(delta.x), std::abs(delta.y));
-	Point prevOverlap = (ply->GetAABB()->GetExtents() + box->GetAABB()->GetExtents()) - delta;
+	Point prevOverlap = GetPreviousOverlap(box->GetAABB(), ply);
 
 	if (dir == Direction::UDIR)
 	{
+		// the collision came from a vertical direction
 		if (prevOverlap.x > 0)
 		{
+			// collision came from the bottom
 			if (prevOverlap.x > prevOverlap.y)
 			{
-				if (box->GetCanHit())//if not yet been hit
+				if (box->GetCanHit())
 				{
 					box->SetJustHit(true);
-					GameManager::Get()->GetWorld()->AddObject(sf::Vector2f(box->GetPosition().x, (box->GetPosition().y - box->GetOrigin().y * GameConstants::Scale.y) - (box->GetOrigin().y * GameConstants::Scale.y) + 4.f));
+					GameManager::Get()->GetWorld()->AddObject(sf::Vector2f(box->GetPosition().x, (box->GetPosition().y - box->GetAABB()->GetExtents().y) + 4.f));
+
 					if (GameConstants::Automated)
 						((AutomatedPlayer*)ply)->UpdateFitness(5);
 				}
@@ -479,17 +404,16 @@ void CollisionManager::PlayerToQBoxResolutions(Player* ply, QBox* box)
 void CollisionManager::PlayerToSBoxResolutions(Player* ply, SBox* box)
 {
 	Direction dir = GetFacingDirection(ply);
-	// calculate the overlap
-	Point delta = box->GetAABB()->GetPosition() - ply->GetPrevPosition();
-	delta = Point(std::abs(delta.x), std::abs(delta.y));
-	Point prevOverlap = (ply->GetAABB()->GetExtents() + box->GetAABB()->GetExtents()) - delta;
+	Point prevOverlap = GetPreviousOverlap(box->GetAABB(), ply);
 
-	if (box->GetCanHit())//if not yet been hit
+	if (box->GetCanHit())
 	{
 		if (dir == Direction::UDIR)
 		{
+			// the collision came from a vertical direction
 			if (prevOverlap.x > 0)
 			{
+				// the collision came from the bottom
 				if (prevOverlap.x > prevOverlap.y)
 				{
 					if (!box->GetJustHit())
@@ -499,13 +423,16 @@ void CollisionManager::PlayerToSBoxResolutions(Player* ply, SBox* box)
 		}
 		else if (dir == Direction::DDIR)
 		{
+			// the collision came from a vertical direction
 			if (prevOverlap.x > 0)
 			{
+				// the collision came from the top
 				if (prevOverlap.x < prevOverlap.y)
 				{
 					if (ply->GetIsSuper() && ply->GetCantSpinJump())
 					{
 						box->SetJustSmashed(true);
+
 						if (GameConstants::Automated)
 							((AutomatedPlayer*)ply)->UpdateFitness(5);
 						return;
@@ -527,6 +454,7 @@ void CollisionManager::PlayerToEnemyResolutions(Player* ply, Enemy* enmy)
 	{
 		enmy->DecrementLife();
 		ply->Bounce();
+
 		if (GameConstants::Automated)
 			((AutomatedPlayer*)ply)->UpdateFitness(10);
 	}
@@ -538,6 +466,7 @@ void CollisionManager::PlayerToEnemyResolutions(Player* ply, Enemy* enmy)
 			{
 				ply->SetInvulnerability();
 				ply->SetIsSuper(false);
+
 				if (GameConstants::Automated)
 					((AutomatedPlayer*)ply)->UpdateFitness(-10);
 			}
@@ -551,9 +480,11 @@ void CollisionManager::PlayerToEnemyResolutions(Player* ply, Enemy* enmy)
 
 void CollisionManager::DynamicObjectToBoxResolutions(Direction dirOfTravel, const Point& prevOverlap, DynamicObject* obj, AABB* box, bool resolveUpDir)
 {
+	// the collision came from a horizontal direction
 	if (prevOverlap.y > 0)
 	{
-		if (prevOverlap.x <=0)
+		// there is no collision vertically
+		if (prevOverlap.x <= 0)
 		{
 			ResolveObjectToBoxHorizontally(obj, box);
 			if (IsPlayerObject(obj->GetID()))
@@ -562,12 +493,14 @@ void CollisionManager::DynamicObjectToBoxResolutions(Direction dirOfTravel, cons
 		}
 	}
 
+	// the collision came from a vertical direction
 	if (prevOverlap.x > 0)
 	{
 		if (dirOfTravel == Direction::UDIR)
 		{
 			if (resolveUpDir)
 			{
+				// collision came from the bottom
 				if (prevOverlap.x > prevOverlap.y)
 				{
 					ResolveObjectToBoxBottom(obj, box);
@@ -582,28 +515,30 @@ void CollisionManager::DynamicObjectToBoxResolutions(Direction dirOfTravel, cons
 	}
 }
 
-void CollisionManager::DynamicObjectToDynamicObject(DynamicObject* obj1, DynamicObject* obj2)
+void CollisionManager::DynamicObjectToDynamicObjectResolution(DynamicObject* obj, float tFirst)
 {
+	// get amount to move the object out of collision
+	Point move = Point(std::lerp(obj->GetPrevPosition().x, obj->GetPosition().y, tFirst),
+		std::lerp(obj->GetPrevPosition().y, obj->GetPosition().y, tFirst));
+
+	Point amt = obj->GetPosition() - move;
+
+	// resolve collision and invert direction of travel and associated velocity
+	obj->Move(amt * (obj->GetDirection() ? 1.f : -1.f));
+	obj->SetDirection(!obj->GetDirection());
+	obj->SetVelocity(obj->GetVelocity().x * -1, obj->GetVelocity().x * -1);
+}
+
+void CollisionManager::DynamicObjectToDynamicObjectCollisions(DynamicObject* obj1, DynamicObject* obj2)
+{
+	if (!IsMovingTowards(obj1->GetAABB()->GetPosition(), obj2->GetAABB()->GetPosition(), obj1->GetVelocity(), obj2->GetVelocity()))
+		return;
+
 	float tFirst, tLast = 0;
 	if (obj1->GetAABB()->IntersectsMoving(obj2->GetAABB(), obj1->GetVelocity(), obj2->GetVelocity(), tFirst, tLast))
 	{
-		Point move = Point(std::lerp(obj1->GetPrevPosition().x, obj1->GetPosition().y, tFirst),
-			std::lerp(obj1->GetPrevPosition().y, obj1->GetPosition().y, tFirst));
-
-		Point amt = obj1->GetPosition() - move;
-
-		obj1->Move(amt * (obj1->GetDirection() ? 1.f : -1.f));
-		obj1->SetDirection(!obj1->GetDirection());
-		obj1->SetVelocity(obj1->GetVelocity().x * -1, obj1->GetVelocity().x * -1);
-
-		move = Point(std::lerp(obj2->GetPrevPosition().x, obj2->GetPosition().y, tFirst),
-			std::lerp(obj2->GetPrevPosition().y, obj2->GetPosition().y, tFirst));
-
-		amt = obj2->GetPosition() - move;
-
-		obj2->Move(amt * (obj2->GetDirection() ? 1.f : -1.f));
-		obj2->SetDirection(!obj2->GetDirection());
-		obj2->SetVelocity(obj2->GetVelocity().x * -1, obj2->GetVelocity().x * -1);
+		DynamicObjectToDynamicObjectResolution(obj1, tFirst);
+		DynamicObjectToDynamicObjectResolution(obj2, tFirst);
 	}
 }
 
@@ -626,6 +561,90 @@ void CollisionManager::ResolveObjectToBoxHorizontally(DynamicObject* obj, AABB* 
 	obj->Move((obj->GetDirection() ? -1 : 1) * box->GetOverlap().x, 0);
 	if (!IsPlayerObject(obj->GetID()))
 		obj->SetDirection(!obj->GetDirection());
+}
+
+bool CollisionManager::ResolveObjectToSlopeTop(DynamicObject* obj, Tile* tile)
+{
+	Line line = tile->GetSlope(0, 1);
+	Circle circle(obj->GetAABB(), 4);
+	if (line.IsPointAboveLine(circle.center))
+	{
+		Capsule capsule(line, 6);
+		if (capsule.IntersectsCircle(circle))
+		{
+			obj->SetOnSlope(true);
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool CollisionManager::ResolveObjectToSlopeIncline(DynamicObject* obj, Tile* tile, int start, int end)
+{
+	Line line = tile->GetSlope(start, end);
+	Circle circle(obj->GetAABB(), 4);
+	Capsule capsule(line, 6);
+	if (capsule.IntersectsCircle(circle))
+	{
+		auto yOffset = GetYOffSet(start ? GetXDist(circle.center, line.start) : GetXDist(line.start, circle.center),
+			line.DistY(),
+			line.start.y,
+			obj->GetAABB()->GetPosition().y,
+			tile->GetTileHeight());
+
+		obj->Move(sf::Vector2f(0, yOffset));
+		obj->SetOnSlope(true);
+
+		return true;
+	}
+
+
+	return false;
+}
+
+bool CollisionManager::ResolveObjectToSlopeDecline(DynamicObject* obj, Tile* tile, int start, int end)
+{
+	Line line = tile->GetSlope(start, end);
+	Circle circle(obj->GetAABB(), 4);
+	Capsule capsule(line, 6);
+	if (!capsule.IntersectsCircle(circle))
+	{
+		auto yOffset = GetYOffSet(start ? GetXDist(circle.center, line.start) : GetXDist(line.start, circle.center),
+			line.DistY(),
+			line.start.y,
+			obj->GetAABB()->GetPosition().y,
+			tile->GetTileHeight());
+
+		obj->Move(sf::Vector2f(0, -yOffset));
+		obj->SetOnSlope(true);
+
+		return true;
+	}
+
+	return false;
+}
+
+void CollisionManager::DynamicObjectToEdgeBounds(DynamicObject* obj, Tile* tile)
+{
+	if (IsPlayerObject(obj->GetID()))
+		return;
+
+	Point side;
+	if (tile->GetType() == LCRN)
+		side = obj->GetAABB()->GetPoint(Side::Right);
+	else
+		side = obj->GetAABB()->GetPoint(Side::Left);
+
+	Line edge = tile->GetEdge();
+
+	if (IsMovingTowards(edge.start, side, Point(0, 0), obj->GetVelocity()))
+	{
+		Circle circle(side, 4);
+		Capsule capsule(edge, 4);
+		if (capsule.IntersectsCircle(circle))
+			obj->SetDirection(!obj->GetDirection());
+	}
 }
 
 Direction CollisionManager::GetFacingDirection(DynamicObject* obj)
