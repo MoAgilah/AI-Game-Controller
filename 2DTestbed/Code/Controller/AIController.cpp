@@ -148,7 +148,6 @@ bool AIController::Update(float deltaTime)
 
 		m_currPlayer = 0;
 		GameManager::Get()->ChangePlayer(m_players[m_currPlayer].get());
-		GameManager::Get()->GetPlayer()->Reset();
 
 		m_bestFitness = m_pop->BestEverFitness();
 
