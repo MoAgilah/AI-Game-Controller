@@ -11,8 +11,17 @@ During my time at university, I employed SFML to build a replica of Super Mario 
 
 I aim to continue to implement the following:
 - [x] refactor the code.
-- [ ] optimise the collision code.
-- [ ] seperate the 2d test bed for other uses.
+- [x] optimise the collision code.
+- [ ] Add missing super mario world features
+  - [ ] Underworld
+  - [ ] Shells
+  - [ ] Clouds
+  - [ ] Multiple power ups
+  - [ ] Fire Flower power up
+  - [ ] Particles
+- [ ] Neural Network output for easy reload upon training.
+     
+Currently I am doing Artificial Controller testing to see if updates still allows for it to finish the level.
 
 ## Project Controls
 | Key    | Response |
