@@ -10,9 +10,18 @@ With the hope it can be an alternative or a replace for the industry standard me
 During my time at university, I employed SFML to build a replica of Super Mario World: Yoshi island 1, that can be played manually for debugging purposes. When utilising the artificial controller it utilises a genetic algorithm to control the level automatically. I have incorporating more prevalent contemporary C++ techniques into the implementation. An occasion to demonstrate my development as a programmer during my tenure in the industry.
 
 I aim to continue to implement the following:
-- [ ] refactor the code.
-- [ ] optimise the collision code.
-- [ ] seperate the 2d test bed for other uses.
+- [x] refactor the code.
+- [x] optimise the collision code.
+- [ ] Add missing super mario world features
+  - [ ] Underworld
+  - [ ] Shells
+  - [ ] Clouds
+  - [ ] Multiple power ups
+  - [ ] Fire Flower power up
+  - [ ] Particles
+- [ ] Neural Network output for easy reload upon training.
+     
+Currently I am doing Artificial Controller testing to see if updates still allows for it to finish the level.
 
 ## Project Controls
 | Key    | Response |
