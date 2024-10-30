@@ -10,9 +10,9 @@ DebugState::DebugState(GameManager* gameMgr)
 void DebugState::Initialise()
 {
 	auto world = m_gameMgr->GetWorld();
-	world->AddObjects();
+	/*world->AddObjects();
 	world->AddEnemies();
-	world->AddForeGroundSprites();
+	world->AddForeGroundSprites();*/
 }
 
 void DebugState::Pause()
