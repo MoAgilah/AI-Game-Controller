@@ -10,4 +10,4 @@ float GameConstants::Gravity = 0.981f;
 float GameConstants::MaxAirTime = 1.f;
 float GameConstants::ObjectSpeed = 2.f;
 Point GameConstants::ScreenDim = Point(600.f, 600.f);
-Point GameConstants::Scale = Point(2.34375f, 2.5f);
+Point GameConstants::Scale = Point(2.5f, 2.5f);
