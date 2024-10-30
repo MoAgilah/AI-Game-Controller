@@ -11,7 +11,7 @@ Camera::Camera()
 	m_camera.setViewport(sf::FloatRect(0, 0, 1.0f, 1.0f));
 	m_camera.setCenter(GameConstants::ScreenDim * 0.5f);
 
-	m_viewBox.Reset(sf::Vector2f(253,237));
+	m_viewBox.Reset(GameConstants::ScreenDim / GameConstants::Scale);
 	m_viewBox.Update(m_camera.getCenter());
 	m_viewBox.SetFillColour(sf::Color(255, 0, 0, 128));
 	GameConstants::LeftMost = m_viewBox.GetMin().x;
@@ -20,6 +20,7 @@ Camera::Camera()
 
 void Camera::Update()
 {
+	m_viewBox.Update(m_camera.getCenter());
 	//scroll the screen view with the player
 	float posX = GameManager::Get()->GetPlayer()->GetPosition().x - GameConstants::ScreenDim.x * 0.5f;
 
@@ -28,7 +29,6 @@ void Camera::Update()
 
 	//reset the m_camera position
 	m_camera.reset(sf::FloatRect(posX, 0, GameConstants::ScreenDim.x, GameConstants::ScreenDim.y));
-	m_viewBox.Update(m_camera.getCenter());
 }
 
 void Camera::Reset(sf::RenderWindow& window)

@@ -45,5 +45,5 @@ void DebugState::Render(sf::RenderWindow& window)
 	m_gameMgr->GetWorld()->Render(window);
 	m_gameMgr->GetCollisionMgr()->Render(window);
 	m_gameMgr->GetPlayer()->Render(window);
-	//m_gameMgr->GetCamera().RenderViewBox(window);
+	m_gameMgr->GetCamera().RenderViewBox(window);
 }
