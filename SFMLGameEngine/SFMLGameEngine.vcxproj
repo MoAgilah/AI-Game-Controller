@@ -179,6 +179,7 @@
     <ClCompile Include="Code\GameStates\DebugState.cpp" />
     <ClCompile Include="Code\GameStates\GameState.cpp" />
     <ClCompile Include="Code\GameStates\GameStateMgr.cpp" />
+    <ClCompile Include="Code\GameStates\LoadingState.cpp" />
     <ClCompile Include="Code\GameStates\MainState.cpp" />
     <ClCompile Include="Code\GameStates\MenuState.cpp" />
     <ClCompile Include="Code\GameStates\PlayerState.cpp" />
@@ -225,6 +226,7 @@
     <ClInclude Include="Code\GameStates\DebugState.h" />
     <ClInclude Include="Code\GameStates\GameState.h" />
     <ClInclude Include="Code\GameStates\GameStateMgr.h" />
+    <ClInclude Include="Code\GameStates\LoadingState.h" />
     <ClInclude Include="Code\GameStates\MainState.h" />
     <ClInclude Include="Code\GameStates\MenuState.h" />
     <ClInclude Include="Code\GameStates\PlayerState.h" />

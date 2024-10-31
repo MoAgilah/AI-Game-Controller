@@ -50,7 +50,10 @@ int main()
 		float frameTime = newTime - currentTime;
 		currentTime = newTime;
 
-		gameMgr.GetAIController()->GetAnnView()->Update();
+		if (GameConstants::GameIsReady)
+		{
+			gameMgr.GetAIController()->GetAnnView()->Update();
+		}
 
 		window.clear(sf::Color::White);
 

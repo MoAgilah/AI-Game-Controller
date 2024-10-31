@@ -3,14 +3,15 @@
 #include <SFML/Graphics.hpp>
 #include "GameState.h"
 #include "../Game/GameManager.h"
+#include "../UI/UIElements.h"
 
+void LoadResources();
 
-
-class MainState : public GameState
+class LoadingState : public GameState
 {
 public:
-	explicit MainState(GameManager* gameMgr);
-	~MainState() override = default;
+	explicit LoadingState(GameManager* gameMgr);
+	~LoadingState() override = default;
 
 	void Initialise() override;
 	void Pause() override;
@@ -21,6 +22,7 @@ public:
 
 private:
 
-	bool m_ready = false;
+	Sprite m_backgroundSpr;
+	FlashingText m_titleMessage;
 	GameManager* m_gameMgr;
 };
