@@ -22,5 +22,6 @@ public:
 private:
 
 	bool m_ready = false;
+	bool m_isPaused = false;
 	GameManager* m_gameMgr;
 };

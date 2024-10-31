@@ -1,10 +1,10 @@
 #pragma once
+#include <SFML/Graphics.hpp>
 #include "../Utilities/Point.h"
 
 class GameConstants
 {
 public:
-
 	static bool Automated;
 	static bool DControl;		// shows debug window for the controller
 	static bool DRender;		// shows if should render debug elements

@@ -5,8 +5,8 @@
 
 GameManager* GameManager::m_instance = nullptr;
 
-GameManager::GameManager()
-	: m_timer(300.f)
+GameManager::GameManager(sf::RenderWindow& window)
+	: m_window(window), m_timer(300.f)
 {
 	m_instance = this;
 	m_collisionManager = std::make_unique<CollisionManager>();
@@ -28,6 +28,21 @@ GameManager::~GameManager()
 			delete m_player;
 		m_player = nullptr;
 	}
+}
+
+void GameManager::Reinitialise()
+{
+	if (!GameConstants::Automated)
+	{
+		if (m_player)
+			delete m_player;
+		m_player = nullptr;
+	}
+
+	m_collisionManager = std::make_unique<CollisionManager>();
+	m_aiController = std::make_unique<AIController>();
+
+	m_world = std::make_unique<World>();
 }
 
 void GameManager::InitPlayer()
@@ -58,9 +73,9 @@ void GameManager::Update(float deltaTime)
 	m_stateManager.Update(deltaTime);
 }
 
-void GameManager::Render(sf::RenderWindow& window)
+void GameManager::Render()
 {
-	m_stateManager.Render(window);
+	m_stateManager.Render(m_window);
 }
 
 void GameManager::ChangePlayer(Player * ply)

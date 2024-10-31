@@ -1,6 +1,7 @@
 #include "MainState.h"
 #include "../Game/Constants.h"
 #include "../GameStates/LoadingState.h"
+#include "../GameStates/PauseMenuState.h"
 
 MainState::MainState(GameManager* gameMgr)
 	: GameState("Main")
@@ -21,16 +22,28 @@ void MainState::Pause()
 void MainState::Resume()
 {
 	m_ready = true;
+	m_isPaused = false;
 }
 
 void MainState::ProcessInputs()
 {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	{
+		if (!m_isPaused)
+		{
+			m_gameMgr->GetCamera().Reset(m_gameMgr->GetRenderWindow());
+			m_gameMgr->GetGameStateMgr()->PushState(new PauseMenuState(m_gameMgr));
+			m_isPaused = true;
+		}
+	}
 }
 
 void MainState::Update(float deltaTime)
 {
 	if (m_ready)
 	{
+		ProcessInputs();
+
 		m_gameMgr->GetAIController()->GetGridInputs();
 
 		m_gameMgr->GetTimer().Update(deltaTime);

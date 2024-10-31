@@ -10,7 +10,7 @@ int main()
 	window.setFramerateLimit((unsigned int)GameConstants::FPS);
 
 	CParams g_params;
-	GameManager gameMgr;
+	GameManager gameMgr(window);
 
 	if (GameConstants::Automated)
 	{
@@ -67,7 +67,7 @@ int main()
 			t += deltaTime;
 		}
 
-		gameMgr.Render(window);
+		gameMgr.Render();
 
 		window.display();
 	}

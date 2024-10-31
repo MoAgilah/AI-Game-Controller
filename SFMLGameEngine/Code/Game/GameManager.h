@@ -17,9 +17,11 @@
 class GameManager
 {
 public:
-	GameManager();
+	GameManager(sf::RenderWindow& window);
 	~GameManager();
 	GameManager(const GameManager& obj) = delete;
+
+	void Reinitialise();
 
 	static GameManager* Get() { return m_instance; }
 
@@ -28,7 +30,9 @@ public:
 	void CheckInView();
 
 	void Update(float deltaTime);
-	void Render(sf::RenderWindow& window);
+	void Render();
+
+	sf::RenderWindow& GetRenderWindow() { return m_window; }
 
 	void ChangePlayer(Player* ply);
 	Player* GetPlayer() { return m_player; }
@@ -48,6 +52,7 @@ public:
 private:
 
 	static GameManager*	m_instance;
+	sf::RenderWindow&					m_window;
 	Timer								m_timer;
 	Camera								m_camera;
 	Logger								m_logger;

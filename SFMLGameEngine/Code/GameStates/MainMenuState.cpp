@@ -3,7 +3,7 @@
 #include "../GameStates/MainState.h"
 
 MainMenuState::MainMenuState(GameManager* gameMgr)
-	: GameState("Menu")
+	: GameState("MainMenu")
 {
 	m_gameMgr = gameMgr;
 }

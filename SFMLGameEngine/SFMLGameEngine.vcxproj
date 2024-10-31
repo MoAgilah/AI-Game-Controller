@@ -182,6 +182,7 @@
     <ClCompile Include="Code\GameStates\LoadingState.cpp" />
     <ClCompile Include="Code\GameStates\MainState.cpp" />
     <ClCompile Include="Code\GameStates\MainMenuState.cpp" />
+    <ClCompile Include="Code\GameStates\PauseMenuState.cpp" />
     <ClCompile Include="Code\GameStates\PlayerState.cpp" />
     <ClCompile Include="Code\GameStates\TitleState.cpp" />
     <ClCompile Include="Code\Game\Camera.cpp" />
@@ -229,6 +230,7 @@
     <ClInclude Include="Code\GameStates\LoadingState.h" />
     <ClInclude Include="Code\GameStates\MainState.h" />
     <ClInclude Include="Code\GameStates\MainMenuState.h" />
+    <ClInclude Include="Code\GameStates\PauseMenuState.h" />
     <ClInclude Include="Code\GameStates\PlayerState.h" />
     <ClInclude Include="Code\GameStates\TitleState.h" />
     <ClInclude Include="Code\Game\Camera.h" />
