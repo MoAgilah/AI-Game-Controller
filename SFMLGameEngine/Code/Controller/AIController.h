@@ -15,6 +15,7 @@ public:
 	AIController();
 	~AIController() = default;
 
+	void InitAIController();
 	bool Update(float deltaTime);
 
 	Player* GetCurrentPlayer();

@@ -15,8 +15,11 @@ public:
 	void Update(float deltaTime);
 	void Render(sf::RenderWindow& window);
 
+	void Pause();
+	void Resume();
 private:
 
+	bool m_paused;
 	bool m_reduceAlpha = true;
 	float m_maxTime;
 	Timer m_timer;

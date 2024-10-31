@@ -49,26 +49,26 @@ AIController::AIController()
 {
 	m_AnnView = std::make_unique<ANNView>();
 
-	if (GameConstants::Automated)
-	{
-		Point startPos = GameManager::Get()->GetCollisionMgr()->GetTile(2, 11)->GetPosition();
-		for (int i = 0; i< CParams::iNumPlayers; ++i)
-			m_players.push_back(std::make_shared<AutomatedPlayer>(startPos));
-
-		m_pop = std::make_unique<Cga>(CParams::iNumPlayers,
-			CParams::iNumInputs,
-			CParams::iNumOutputs,
-			10, 10);
-
-		//create the phenotypes
-		std::vector<CNeuralNet*> pBrains = m_pop->CreatePhenotypes();
-
-		//assign the phenotypes
-		for (int i = 0; i < CParams::iNumPlayers; i++)
-			m_players[i]->InsertNewBrain(pBrains[i]);
-	}
-
 	m_inputs.resize(255);
+}
+
+void AIController::InitAIController()
+{
+	Point startPos = GameManager::Get()->GetCollisionMgr()->GetTile(2, 11)->GetPosition();
+	for (int i = 0; i < CParams::iNumPlayers; ++i)
+		m_players.push_back(std::make_shared<AutomatedPlayer>(startPos));
+
+	m_pop = std::make_unique<Cga>(CParams::iNumPlayers,
+		CParams::iNumInputs,
+		CParams::iNumOutputs,
+		10, 10);
+
+	//create the phenotypes
+	std::vector<CNeuralNet*> pBrains = m_pop->CreatePhenotypes();
+
+	//assign the phenotypes
+	for (int i = 0; i < CParams::iNumPlayers; i++)
+		m_players[i]->InsertNewBrain(pBrains[i]);
 }
 
 bool AIController::Update(float deltaTime)

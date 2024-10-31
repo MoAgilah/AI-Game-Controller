@@ -23,6 +23,8 @@ public:
 
 	static GameManager* Get() { return m_instance; }
 
+	void InitPlayer();
+
 	void CheckInView();
 
 	void Update(float deltaTime);
@@ -41,6 +43,7 @@ public:
 	TextureManager& GetTextureMgr() { return m_texureManager; }
 	CollisionManager* GetCollisionMgr() { return m_collisionManager.get(); }
 	AIController* GetAIController() { return m_aiController.get(); }
+	GameStateMgr* GetGameStateMgr() { return &m_stateManager; }
 
 private:
 

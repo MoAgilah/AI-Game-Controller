@@ -180,6 +180,7 @@
     <ClCompile Include="Code\GameStates\GameState.cpp" />
     <ClCompile Include="Code\GameStates\GameStateMgr.cpp" />
     <ClCompile Include="Code\GameStates\MainState.cpp" />
+    <ClCompile Include="Code\GameStates\MenuState.cpp" />
     <ClCompile Include="Code\GameStates\PlayerState.cpp" />
     <ClCompile Include="Code\GameStates\TitleState.cpp" />
     <ClCompile Include="Code\Game\Camera.cpp" />
@@ -225,6 +226,7 @@
     <ClInclude Include="Code\GameStates\GameState.h" />
     <ClInclude Include="Code\GameStates\GameStateMgr.h" />
     <ClInclude Include="Code\GameStates\MainState.h" />
+    <ClInclude Include="Code\GameStates\MenuState.h" />
     <ClInclude Include="Code\GameStates\PlayerState.h" />
     <ClInclude Include="Code\GameStates\TitleState.h" />
     <ClInclude Include="Code\Game\Camera.h" />

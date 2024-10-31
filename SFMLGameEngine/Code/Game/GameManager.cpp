@@ -12,11 +12,6 @@ GameManager::GameManager()
 	m_collisionManager = std::make_unique<CollisionManager>();
 	m_aiController = std::make_unique<AIController>();
 
-	if (GameConstants::Automated)
-		m_player = m_aiController->GetCurrentPlayer();
-	else
-		m_player =  new Player(m_collisionManager->GetTile(2, 11)->GetPosition());
-
 	m_world = std::make_unique<World>();
 
 	m_stateManager.ChangeState(new TitleState(this));
@@ -32,6 +27,19 @@ GameManager::~GameManager()
 		if (m_player)
 			delete m_player;
 		m_player = nullptr;
+	}
+}
+
+void GameManager::InitPlayer()
+{
+	if (GameConstants::Automated)
+	{
+		m_aiController->InitAIController();
+		m_player = m_aiController->GetCurrentPlayer();
+	}
+	else
+	{
+		m_player = new Player(m_collisionManager->GetTile(2, 11)->GetPosition());
 	}
 }
 

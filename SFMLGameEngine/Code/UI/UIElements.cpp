@@ -3,7 +3,7 @@
 #include "../Game/Constants.h"
 
 FlashingText::FlashingText()
-	: m_maxTime(0.75), m_timer(m_maxTime)
+	: m_paused(false), m_maxTime(0.75), m_timer(m_maxTime)
 {
 	m_text.setFont(GameManager::Get()->GetFontMgr().GetMenuFont());
 
@@ -22,33 +22,55 @@ void FlashingText::Init(const std::string text, unsigned int charSize, const sf:
 	m_text.setString(text);
 	m_text.setOutlineThickness(charSize / 10.f);
 	m_text.setOutlineColor(sf::Color::Black);
+
+	sf::FloatRect textRect = m_text.getLocalBounds();
+	m_text.setOrigin((textRect.left + textRect.width) / 2.0f,
+		(textRect.top + textRect.height) / 2.0f);
+
 	m_text.setPosition(pos);
 }
 
 void FlashingText::Update(float deltaTime)
 {
-	if (m_reduceAlpha)
+	if (m_paused)
 	{
-		m_timer.Update(deltaTime);
-		if (m_timer.CheckEnd())
-		{
-			m_reduceAlpha = false;
-		}
+		m_textShader.setUniform("time", 1.f);
 	}
 	else
 	{
-		m_timer.Update(-deltaTime);
-		if (m_timer.GetTime() >= m_maxTime)
+		if (m_reduceAlpha)
 		{
-			m_reduceAlpha = true;
-			m_timer.ResetTime();
+			m_timer.Update(deltaTime);
+			if (m_timer.CheckEnd())
+			{
+				m_reduceAlpha = false;
+			}
 		}
-	}
+		else
+		{
+			m_timer.Update(-deltaTime);
+			if (m_timer.GetTime() >= m_maxTime)
+			{
+				m_reduceAlpha = true;
+				m_timer.ResetTime();
+			}
+		}
 
-	m_textShader.setUniform("time", m_timer.GetTime() / m_maxTime);
+		m_textShader.setUniform("time", m_timer.GetTime() / m_maxTime);
+	}
 }
 
 void FlashingText::Render(sf::RenderWindow& window)
 {
 	window.draw(m_text, &m_textShader);
+}
+
+void FlashingText::Pause()
+{
+	m_paused = true;
+}
+
+void FlashingText::Resume()
+{
+	m_paused = false;
 }

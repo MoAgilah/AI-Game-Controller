@@ -3,6 +3,7 @@
 bool  GameConstants::Automated = false;
 bool  GameConstants::DControl = true;
 bool  GameConstants::DRender = false;
+bool GameConstants::KeyPressed = false;
 float GameConstants::LeftMost = 15.6f;
 float GameConstants::RightMost = 11400.f;
 float GameConstants::FPS = 60.f;

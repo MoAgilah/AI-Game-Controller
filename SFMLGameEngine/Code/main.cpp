@@ -30,8 +30,20 @@ int main()
 			if (event.type == sf::Event::Closed)
 				window.close();
 
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-				window.close();
+			if (event.type == sf::Event::KeyPressed)
+			{
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+				{
+					window.close();
+				}
+				else
+				{
+					if (!GameConstants::KeyPressed)
+					{
+						GameConstants::KeyPressed = true;
+					}
+				}
+			}
 		}
 
 		float newTime = clock.getElapsedTime().asSeconds();

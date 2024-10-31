@@ -9,6 +9,8 @@ MainState::MainState(GameManager* gameMgr)
 
 void MainState::Initialise()
 {
+	m_gameMgr->InitPlayer();
+
 	auto world = m_gameMgr->GetWorld();
 	world->AddEnemies();
 	world->AddObjects();

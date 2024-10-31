@@ -8,6 +8,7 @@ public:
 	static bool Automated;
 	static bool DControl;		// shows debug window for the controller
 	static bool DRender;		// shows if should render debug elements
+	static bool KeyPressed;
 	static float LeftMost;
 	static float RightMost;
 	static float FPS;
