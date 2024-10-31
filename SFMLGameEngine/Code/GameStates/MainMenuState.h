@@ -7,11 +7,11 @@
 
 enum MenuPosition { Automation, Manual, Max = Manual };
 
-class MenuState : public GameState
+class MainMenuState : public GameState
 {
 public:
-	explicit MenuState(GameManager* gameMgr);
-	~MenuState() override = default;
+	explicit MainMenuState(GameManager* gameMgr);
+	~MainMenuState() override = default;
 
 	void Initialise() override;
 	void Pause() override;

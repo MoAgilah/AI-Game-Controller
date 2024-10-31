@@ -1,14 +1,14 @@
-#include "MenuState.h"
+#include "MainMenuState.h"
 #include "../Game/Constants.h"
 #include "../GameStates/MainState.h"
 
-MenuState::MenuState(GameManager* gameMgr)
+MainMenuState::MainMenuState(GameManager* gameMgr)
 	: GameState("Menu")
 {
 	m_gameMgr = gameMgr;
 }
 
-void MenuState::Initialise()
+void MainMenuState::Initialise()
 {
 	m_backgroundSpr.SetTexture(TexID::Title);
 	m_backgroundSpr.SetScale(sf::Vector2f(GameConstants::Scale));
@@ -19,15 +19,15 @@ void MenuState::Initialise()
 	m_manualMessage.Pause();
 }
 
-void MenuState::Pause()
+void MainMenuState::Pause()
 {
 }
 
-void MenuState::Resume()
+void MainMenuState::Resume()
 {
 }
 
-void MenuState::ProcessInputs()
+void MainMenuState::ProcessInputs()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
@@ -62,7 +62,7 @@ void MenuState::ProcessInputs()
 	}
 }
 
-void MenuState::Update(float deltaTime)
+void MainMenuState::Update(float deltaTime)
 {
 	ProcessInputs();
 
@@ -97,7 +97,7 @@ void MenuState::Update(float deltaTime)
 	m_manualMessage.Update(deltaTime);
 }
 
-void MenuState::Render(sf::RenderWindow& window)
+void MainMenuState::Render(sf::RenderWindow& window)
 {
 	m_backgroundSpr.Render(window);
 

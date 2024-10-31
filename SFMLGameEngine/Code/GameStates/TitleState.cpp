@@ -1,6 +1,6 @@
 #include "TitleState.h"
 #include "../Game/Constants.h"
-#include "../GameStates/MenuState.h"
+#include "../GameStates/MainMenuState.h"
 
 TitleState::TitleState(GameManager* gameMgr)
 	: GameState("Title")
@@ -29,7 +29,7 @@ void TitleState::ProcessInputs()
 {
 	if (GameConstants::KeyPressed)
 	{
-		m_gameMgr->GetGameStateMgr()->ChangeState(new MenuState(m_gameMgr));
+		m_gameMgr->GetGameStateMgr()->ChangeState(new MainMenuState(m_gameMgr));
 	}
 }
 

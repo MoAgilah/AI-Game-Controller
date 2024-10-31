@@ -213,7 +213,7 @@
     <ClCompile Include="Code\UI\UIElements.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Code\GameStates\MenuState.cpp">
+    <ClCompile Include="Code\GameStates\MainMenuState.cpp">
       <Filter>Source Files\GameStates</Filter>
     </ClCompile>
     <ClCompile Include="Code\GameStates\LoadingState.cpp">
@@ -356,7 +356,7 @@
     <ClInclude Include="Code\UI\UIElements.h">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Code\GameStates\MenuState.h">
+    <ClInclude Include="Code\GameStates\MainMenuState.h">
       <Filter>Header Files\GameStates</Filter>
     </ClInclude>
     <ClInclude Include="Code\GameStates\LoadingState.h">

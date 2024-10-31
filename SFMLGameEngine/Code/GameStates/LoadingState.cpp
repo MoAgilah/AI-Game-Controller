@@ -1,7 +1,7 @@
 #include "LoadingState.h"
 #include <thread>
 #include "../Game/Constants.h"
-#include "../GameStates/MenuState.h"
+#include "../GameStates/MainMenuState.h"
 
 void LoadResources()
 {
