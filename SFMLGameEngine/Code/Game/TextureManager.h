@@ -7,7 +7,7 @@
 enum class TexID
 {
 	None = -1,
-	Background,
+	Title, Background,
 	Mario, Super,
 	Koopa, Bill, Rex, PPlant, Chuck,
 	Shroom, Goal, Coin, YCoin, ChkPnt, QBox, SBox, BreakingBox,

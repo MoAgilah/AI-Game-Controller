@@ -7,6 +7,7 @@ std::string TexIDToString(TexID id)
 {
 	switch (id)
 	{
+	case TexID::Title:			return "Title";
 	case TexID::Background:		return "Background";
 	case TexID::Mario:			return "Mario";
 	case TexID::Super:			return "Super";

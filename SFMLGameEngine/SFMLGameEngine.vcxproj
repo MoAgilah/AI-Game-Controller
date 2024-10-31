@@ -181,6 +181,7 @@
     <ClCompile Include="Code\GameStates\GameStateMgr.cpp" />
     <ClCompile Include="Code\GameStates\MainState.cpp" />
     <ClCompile Include="Code\GameStates\PlayerState.cpp" />
+    <ClCompile Include="Code\GameStates\TitleState.cpp" />
     <ClCompile Include="Code\Game\Camera.cpp" />
     <ClCompile Include="Code\Game\Constants.cpp" />
     <ClCompile Include="Code\Game\FontManager.cpp" />
@@ -198,6 +199,7 @@
     <ClCompile Include="Code\NEAT\CTimer.cpp" />
     <ClCompile Include="Code\NEAT\Genotype.cpp" />
     <ClCompile Include="Code\NEAT\Phenotype.cpp" />
+    <ClCompile Include="Code\UI\UIElements.cpp" />
     <ClCompile Include="Code\Utilities\Point.cpp" />
     <ClCompile Include="Code\Utilities\Utilities.cpp" />
   </ItemGroup>
@@ -224,6 +226,7 @@
     <ClInclude Include="Code\GameStates\GameStateMgr.h" />
     <ClInclude Include="Code\GameStates\MainState.h" />
     <ClInclude Include="Code\GameStates\PlayerState.h" />
+    <ClInclude Include="Code\GameStates\TitleState.h" />
     <ClInclude Include="Code\Game\Camera.h" />
     <ClInclude Include="Code\Game\Constants.h" />
     <ClInclude Include="Code\Game\FontManager.h" />
@@ -243,6 +246,7 @@
     <ClInclude Include="Code\NEAT\Phenotype.h" />
     <ClInclude Include="Code\NEAT\Resource.h" />
     <ClInclude Include="Code\NEAT\Utils.h" />
+    <ClInclude Include="Code\UI\UIElements.h" />
     <ClInclude Include="Code\Utilities\Point.h" />
     <ClInclude Include="Code\Utilities\Utilities.h" />
   </ItemGroup>
@@ -251,6 +255,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Code\NEAT\params.ini" />
+    <None Include="Resources\Shaders\FadeInOutShader.frag" />
     <None Include="Resources\Shaders\FlashShader.frag" />
   </ItemGroup>
   <ItemGroup>

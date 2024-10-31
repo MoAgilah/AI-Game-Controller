@@ -1,7 +1,7 @@
 #include "../Game/GameManager.h"
 #include "../Game/Constants.h"
 #include "../GameStates/MainState.h"
-#include "../GameStates/DebugState.h"
+#include "../GameStates/TitleState.h"
 
 GameManager* GameManager::m_instance = nullptr;
 
@@ -19,7 +19,7 @@ GameManager::GameManager()
 
 	m_world = std::make_unique<World>();
 
-	m_stateManager.ChangeState(new DebugState(this));
+	m_stateManager.ChangeState(new TitleState(this));
 }
 
 GameManager::~GameManager()
