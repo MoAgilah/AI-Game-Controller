@@ -12,9 +12,12 @@ int main()
 	CParams g_params;
 	GameManager gameMgr;
 
-	gameMgr.GetLogger().AddDebugLog("Current Generation: " + std::to_string(gameMgr.GetAIController()->GetCurrentGeneration()));
-	gameMgr.GetLogger().AddExperimentLog("Current Generation: " + std::to_string(gameMgr.GetAIController()->GetCurrentGeneration()));
-	gameMgr.GetLogger().AddExperimentLog(gameMgr.GetLogger().GetTimeStamp());
+	if (GameConstants::Automated)
+	{
+		gameMgr.GetLogger().AddDebugLog("Current Generation: " + std::to_string(gameMgr.GetAIController()->GetCurrentGeneration()));
+		gameMgr.GetLogger().AddExperimentLog("Current Generation: " + std::to_string(gameMgr.GetAIController()->GetCurrentGeneration()));
+		gameMgr.GetLogger().AddExperimentLog(gameMgr.GetLogger().GetTimeStamp());
+	}
 
 	sf::Clock clock;
 	sf::Event event;
@@ -22,7 +25,6 @@ int main()
 
 	while (window.isOpen())
 	{
-
 		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
@@ -44,21 +46,13 @@ int main()
 		{
 			float deltaTime = std::min(frameTime, dt);
 
-			//do update
-			gameMgr.GetAIController()->GetGridInputs();
-
 			gameMgr.Update(deltaTime);
-			//end update
 
 			frameTime -= deltaTime;
 			t += deltaTime;
 		}
 
-		//do render
 		gameMgr.Render(window);
-		if (GameConstants::DControl)
-			gameMgr.GetAIController()->GetAnnView()->Render(window);
-		//end render
 
 		window.display();
 	}

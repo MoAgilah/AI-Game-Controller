@@ -29,10 +29,12 @@ void MainState::ProcessInputs()
 
 void MainState::Update(float deltaTime)
 {
+	m_gameMgr->GetAIController()->GetGridInputs();
+
 	m_gameMgr->GetTimer().Update(deltaTime);
 
 	if (GameConstants::Automated)
-		GameManager::Get()->GetAIController()->Update(deltaTime);
+		m_gameMgr->GetAIController()->Update(deltaTime);
 
 	m_gameMgr->CheckInView();
 
@@ -48,4 +50,7 @@ void MainState::Render(sf::RenderWindow& window)
 	m_gameMgr->GetPlayer()->Render(window);
 
 	m_gameMgr->GetCollisionMgr()->Render(window);
+
+	if (GameConstants::DControl)
+		m_gameMgr->GetAIController()->GetAnnView()->Render(window);
 }
