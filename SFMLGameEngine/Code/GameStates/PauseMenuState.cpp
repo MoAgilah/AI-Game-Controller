@@ -33,22 +33,41 @@ void PauseMenuState::Resume()
 
 void PauseMenuState::ProcessInputs()
 {
+	static bool upKey = false;
+	static bool downKey = false;
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		if (!m_menuMoved)
+		if (!upKey)
 		{
-			m_menuPosition--;
-			m_menuMoved = true;
+			if (!m_menuMoved)
+			{
+				m_menuPosition--;
+				m_menuMoved = true;
+				upKey = true;
+			}
 		}
+	}
+	else
+	{
+		upKey = false;
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
-		if (!m_menuMoved)
+		if (!downKey)
 		{
-			m_menuPosition++;
-			m_menuMoved = true;
+			if (!m_menuMoved)
+			{
+				m_menuPosition++;
+				m_menuMoved = true;
+				downKey = true;
+			}
 		}
+	}
+	else
+	{
+		downKey = false;
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
@@ -60,6 +79,8 @@ void PauseMenuState::ProcessInputs()
 		else if (m_menuPosition == MenuPosition::ToTitle)
 		{
 			m_gameMgr->Reinitialise();
+			m_gameMgr->GetGameStateMgr()->ClearStates();
+			GameConstants::GameIsReady = false;
 			m_gameMgr->GetGameStateMgr()->ChangeState(new TitleState(m_gameMgr));
 		}
 		else if (m_menuPosition == MenuPosition::Quit)
