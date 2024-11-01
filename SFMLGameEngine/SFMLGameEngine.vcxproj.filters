@@ -222,6 +222,9 @@
     <ClCompile Include="Code\GameStates\PauseMenuState.cpp">
       <Filter>Source Files\GameStates</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Game\InputManager.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Collisions\CollisionManager.h">
@@ -367,6 +370,9 @@
     </ClInclude>
     <ClInclude Include="Code\GameStates\PauseMenuState.h">
       <Filter>Header Files\GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Game\InputManager.h">
+      <Filter>Header Files\Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

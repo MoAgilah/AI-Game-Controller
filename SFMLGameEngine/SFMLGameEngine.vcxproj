@@ -189,6 +189,7 @@
     <ClCompile Include="Code\Game\Constants.cpp" />
     <ClCompile Include="Code\Game\FontManager.cpp" />
     <ClCompile Include="Code\Game\GameManager.cpp" />
+    <ClCompile Include="Code\Game\InputManager.cpp" />
     <ClCompile Include="Code\Game\Logger.cpp" />
     <ClCompile Include="Code\Game\Timer.cpp" />
     <ClCompile Include="Code\Game\PhysicsController.cpp" />
@@ -237,6 +238,7 @@
     <ClInclude Include="Code\Game\Constants.h" />
     <ClInclude Include="Code\Game\FontManager.h" />
     <ClInclude Include="Code\Game\GameManager.h" />
+    <ClInclude Include="Code\Game\InputManager.h" />
     <ClInclude Include="Code\Game\Logger.h" />
     <ClInclude Include="Code\Game\Timer.h" />
     <ClInclude Include="Code\Game\PhysicsController.h" />
