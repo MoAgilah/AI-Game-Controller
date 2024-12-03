@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "Game/Constants.h"
 #include "Game/GameManager.h"
+#include "Game/InputManager.h"
 
 int main()
 {
@@ -11,6 +12,7 @@ int main()
 
 	CParams g_params;
 	GameManager gameMgr(window);
+	InputManager inputTest;
 
 	if (GameConstants::Automated)
 	{
@@ -38,11 +40,13 @@ int main()
 				}
 				else
 				{
-					if (!GameConstants::KeyPressed)
-					{
-						GameConstants::KeyPressed = true;
-					}
+					gameMgr.GetInputManager().ProcessKeyPressedEvent(event);
 				}
+			}
+
+			if (event.type == sf::Event::KeyReleased)
+			{
+				gameMgr.GetInputManager().ProcessKeyReleasedEvent(event);
 			}
 		}
 

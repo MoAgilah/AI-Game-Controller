@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include "Timer.h"
 #include "Camera.h"
+#include "InputManager.h"
 #include "Logger.h"
 #include "FontManager.h"
 #include "TextureManager.h"
@@ -42,6 +43,7 @@ public:
 
 	Timer& GetTimer() { return m_timer; }
 	Camera& GetCamera() { return m_camera; }
+	InputManager& GetInputManager() { return m_inputManager; }
 	Logger& GetLogger() { return m_logger; }
 	FontManager& GetFontMgr() { return m_fontManager; }
 	TextureManager& GetTextureMgr() { return m_texureManager; }
@@ -55,6 +57,7 @@ private:
 	sf::RenderWindow&					m_window;
 	Timer								m_timer;
 	Camera								m_camera;
+	InputManager						m_inputManager;
 	Logger								m_logger;
 	FontManager							m_fontManager;
 	TextureManager						m_texureManager;

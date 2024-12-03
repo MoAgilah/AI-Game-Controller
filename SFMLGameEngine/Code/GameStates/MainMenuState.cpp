@@ -29,7 +29,7 @@ void MainMenuState::Resume()
 
 void MainMenuState::ProcessInputs()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	if (m_gameMgr->GetInputManager().IsKeyPressed(sf::Keyboard::Up))
 	{
 		if (!m_menuMoved)
 		{
@@ -38,7 +38,7 @@ void MainMenuState::ProcessInputs()
 		}
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	if (m_gameMgr->GetInputManager().IsKeyPressed(sf::Keyboard::Down))
 	{
 		if (!m_menuMoved)
 		{
@@ -47,7 +47,7 @@ void MainMenuState::ProcessInputs()
 		}
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+	if (m_gameMgr->GetInputManager().IsKeyPressed(sf::Keyboard::Enter))
 	{
 		if (m_menuPosition == MenuPosition::Automation)
 		{

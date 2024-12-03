@@ -27,7 +27,7 @@ void TitleState::Resume()
 
 void TitleState::ProcessInputs()
 {
-	if (GameConstants::KeyPressed)
+	if (m_gameMgr->GetInputManager().IsAnyKeyPressed())
 	{
 		m_gameMgr->GetGameStateMgr()->ChangeState(new MainMenuState(m_gameMgr));
 	}
