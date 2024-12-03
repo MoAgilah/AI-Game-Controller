@@ -34,25 +34,35 @@ void PauseMenuState::Resume()
 void PauseMenuState::ProcessInputs()
 {
 
-	if (m_gameMgr->GetInputManager().IsKeyPressed(sf::Keyboard::Up))
+	if (m_gameMgr->GetInputManager().GetKeyState(sf::Keyboard::Up))
 	{
-		if (!m_menuMoved)
+		if (m_canGoUp)
 		{
 			m_menuPosition--;
+			m_canGoUp = false;
 			m_menuMoved = true;
 		}
 	}
-
-	if (m_gameMgr->GetInputManager().IsKeyPressed(sf::Keyboard::Down))
+	else
 	{
-		if (!m_menuMoved)
+		m_canGoUp = true;
+	}
+
+	if (m_gameMgr->GetInputManager().GetKeyState(sf::Keyboard::Down))
+	{
+		if (m_canGoDown)
 		{
 			m_menuPosition++;
+			m_canGoDown = false;
 			m_menuMoved = true;
 		}
 	}
+	else
+	{
+		m_canGoDown = true;
+	}
 
-	if (m_gameMgr->GetInputManager().IsKeyPressed(sf::Keyboard::Enter))
+	if (m_gameMgr->GetInputManager().GetKeyState(sf::Keyboard::Enter))
 	{
 		if (m_menuPosition == MenuPosition::Resume)
 		{

@@ -24,6 +24,8 @@ private:
 
 	int m_menuPosition = MenuPosition::Resume;
 	const int m_maxMenuPosition = MenuPosition::Max;
+	bool m_canGoUp = true;
+	bool m_canGoDown = true;
 	bool m_menuMoved = false;
 	Sprite m_backgroundSpr;
 	FlashingText m_resumeMessage;

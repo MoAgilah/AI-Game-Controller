@@ -8,43 +8,24 @@ InputManager::InputManager()
 
 void InputManager::ProcessKeyPressedEvent(sf::Event& event)
 {
-	if (IsKeyPressed(event.key.code))
-	{
-		std::cout << " key is pressed" << std::endl;
-	}
-	else if (IsKeyHeld(event.key.code))
-	{
-		std::cout << " key is held" << std::endl;
-	}
+	SetKeyPressed(event.key.code);
 }
 
 void InputManager::ProcessKeyReleasedEvent(sf::Event& event)
 {
-	if (IsKeyReleased(event.key.code))
-	{
-		std::cout << " key is released" << std::endl;
-	}
+	SetKeyReleased(event.key.code);
 }
 
-bool InputManager::IsKeyPressed(sf::Keyboard::Key key)
+void InputManager::SetKeyPressed(sf::Keyboard::Key key)
 {
-	bool prevKeyState = m_keyStates[key];
-	SetKeyState(key, sf::Keyboard::isKeyPressed(key));
-	return m_keyStates[key] && !prevKeyState;
+	SetKeyState(key, true);
+	std::cout << " key is pressed" << std::endl;
 }
 
-bool InputManager::IsKeyReleased(sf::Keyboard::Key key)
+void InputManager::SetKeyReleased(sf::Keyboard::Key key)
 {
-	bool prevKeyState = m_keyStates[key];
-	SetKeyState(key, sf::Keyboard::isKeyPressed(key));
-	return !m_keyStates[key] && prevKeyState;
-}
-
-bool InputManager::IsKeyHeld(sf::Keyboard::Key key)
-{
-	bool prevKeyState = m_keyStates[key];
-	SetKeyState(key, sf::Keyboard::isKeyPressed(key));
-	return m_keyStates[key] && prevKeyState;
+	SetKeyState(key, false);
+	std::cout << " key is released" << std::endl;
 }
 
 bool InputManager::IsAnyKeyPressed()

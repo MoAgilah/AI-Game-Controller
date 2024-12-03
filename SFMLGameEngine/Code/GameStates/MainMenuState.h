@@ -25,6 +25,8 @@ private:
 	int m_menuPosition = MenuPosition::Automation;
 	const int m_maxMenuPosition = MenuPosition::Max;
 	bool m_menuMoved = false;
+	bool m_canGoDown = true;
+	bool m_canGoUp = true;
 	Sprite m_backgroundSpr;
 	FlashingText m_automationMessage;
 	FlashingText m_manualMessage;
