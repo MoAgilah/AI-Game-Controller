@@ -82,6 +82,24 @@
     <Filter Include="Source Files\UI">
       <UniqueIdentifier>{43c87c70-342b-4177-9070-bf2c388b5e97}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GameStates\MenuState">
+      <UniqueIdentifier>{b71368c2-d370-4e95-889f-15fda25a06e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameStates\GameStates">
+      <UniqueIdentifier>{1e63650f-693b-45b1-8a8d-1404fa902dbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameStates\GameObjectStates">
+      <UniqueIdentifier>{d47e94c1-bd35-452d-a6e7-5c070613df6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameStates\MenuStates">
+      <UniqueIdentifier>{9acd1216-5eae-4347-9b3a-d3776bd1ed98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameStates\GameStates">
+      <UniqueIdentifier>{10fc78ad-1692-49fe-9b64-000722fdda8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameStates\GameObjectStates">
+      <UniqueIdentifier>{439ccfda-69d5-4b79-896d-02c56c0a74b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Collisions\CollisionManager.cpp">
@@ -147,16 +165,7 @@
     <ClCompile Include="Code\GameStates\GameStateMgr.cpp">
       <Filter>Source Files\GameStates</Filter>
     </ClCompile>
-    <ClCompile Include="Code\GameStates\PlayerState.cpp">
-      <Filter>Source Files\GameStates</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\GameStates\MainState.cpp">
-      <Filter>Source Files\GameStates</Filter>
-    </ClCompile>
     <ClCompile Include="Code\GameStates\GameState.cpp">
-      <Filter>Source Files\GameStates</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\GameStates\DebugState.cpp">
       <Filter>Source Files\GameStates</Filter>
     </ClCompile>
     <ClCompile Include="Code\GameObjects\Enemy.cpp">
@@ -207,23 +216,32 @@
     <ClCompile Include="Code\Game\Constants.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
-    <ClCompile Include="Code\GameStates\TitleState.cpp">
-      <Filter>Source Files\GameStates</Filter>
-    </ClCompile>
     <ClCompile Include="Code\UI\UIElements.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Code\GameStates\MainMenuState.cpp">
-      <Filter>Source Files\GameStates</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\GameStates\LoadingState.cpp">
-      <Filter>Source Files\GameStates</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\GameStates\PauseMenuState.cpp">
-      <Filter>Source Files\GameStates</Filter>
-    </ClCompile>
     <ClCompile Include="Code\Game\InputManager.cpp">
       <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameStates\MainMenuState.cpp">
+      <Filter>Source Files\GameStates\MenuStates</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameStates\PauseMenuState.cpp">
+      <Filter>Source Files\GameStates\MenuStates</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameStates\LoadingState.cpp">
+      <Filter>Source Files\GameStates\GameStates</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameStates\MainState.cpp">
+      <Filter>Source Files\GameStates\GameStates</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameStates\DebugState.cpp">
+      <Filter>Source Files\GameStates\GameStates</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameStates\TitleState.cpp">
+      <Filter>Source Files\GameStates\GameStates</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameStates\PlayerState.cpp">
+      <Filter>Source Files\GameStates\GameObjectStates</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -296,15 +314,6 @@
     <ClInclude Include="Code\GameStates\GameStateMgr.h">
       <Filter>Header Files\GameStates</Filter>
     </ClInclude>
-    <ClInclude Include="Code\GameStates\PlayerState.h">
-      <Filter>Header Files\GameStates</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\GameStates\MainState.h">
-      <Filter>Header Files\GameStates</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\GameStates\DebugState.h">
-      <Filter>Header Files\GameStates</Filter>
-    </ClInclude>
     <ClInclude Include="Code\GameObjects\Enemy.h">
       <Filter>Header Files\GameObjects\Enemy</Filter>
     </ClInclude>
@@ -356,23 +365,32 @@
     <ClInclude Include="Code\NEAT\Resource.h">
       <Filter>Header Files\Controller\NEAT</Filter>
     </ClInclude>
-    <ClInclude Include="Code\GameStates\TitleState.h">
-      <Filter>Header Files\GameStates</Filter>
-    </ClInclude>
     <ClInclude Include="Code\UI\UIElements.h">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Code\GameStates\MainMenuState.h">
-      <Filter>Header Files\GameStates</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\GameStates\LoadingState.h">
-      <Filter>Header Files\GameStates</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\GameStates\PauseMenuState.h">
-      <Filter>Header Files\GameStates</Filter>
-    </ClInclude>
     <ClInclude Include="Code\Game\InputManager.h">
       <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameStates\MainMenuState.h">
+      <Filter>Header Files\GameStates\MenuState</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameStates\PauseMenuState.h">
+      <Filter>Header Files\GameStates\MenuState</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameStates\DebugState.h">
+      <Filter>Header Files\GameStates\GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameStates\LoadingState.h">
+      <Filter>Header Files\GameStates\GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameStates\MainState.h">
+      <Filter>Header Files\GameStates\GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameStates\TitleState.h">
+      <Filter>Header Files\GameStates\GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameStates\PlayerState.h">
+      <Filter>Header Files\GameStates\GameObjectStates</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
