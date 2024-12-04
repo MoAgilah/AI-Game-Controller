@@ -5,8 +5,6 @@
 #include "../Game/GameManager.h"
 #include "../UI/UIElements.h"
 
-enum MenuPosition { Resume, ToTitle, Quit, Max = Quit };
-
 class PauseMenuState : public GameState
 {
 public:
@@ -22,14 +20,7 @@ public:
 
 private:
 
-	int m_menuPosition = MenuPosition::Resume;
-	const int m_maxMenuPosition = MenuPosition::Max;
-	bool m_canGoUp = true;
-	bool m_canGoDown = true;
-	bool m_menuMoved = false;
+	Menu m_menu;
 	Sprite m_backgroundSpr;
-	FlashingText m_resumeMessage;
-	FlashingText m_toTitleMessage;
-	FlashingText m_quitMessage;
 	GameManager* m_gameMgr;
 };

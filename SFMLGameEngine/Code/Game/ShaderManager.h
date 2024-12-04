@@ -8,7 +8,6 @@ enum class ShaderID
 {
 	None = -1,
 	Flash,
-	FadeInOut,
 	Max,
 };
 

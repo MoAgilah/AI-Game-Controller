@@ -9,7 +9,6 @@ std::optional<std::pair<std::string,sf::Shader::Type>> ShaderIDToString(ShaderID
 	switch (id)
 	{
 	case ShaderID::Flash:			return std::make_pair< std::string, sf::Shader::Type>("FlashShader.frag", sf::Shader::Fragment);
-	case ShaderID::FadeInOut:		return std::make_pair< std::string, sf::Shader::Type>("FadeInOutShader.frag", sf::Shader::Fragment);
 	default:						return std::nullopt;
 	}
 }

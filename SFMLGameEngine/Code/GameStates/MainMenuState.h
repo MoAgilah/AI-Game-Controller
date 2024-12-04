@@ -5,8 +5,6 @@
 #include "../Game/GameManager.h"
 #include "../UI/UIElements.h"
 
-enum MenuPosition { Automation, Manual, Max = Manual };
-
 class MainMenuState : public GameState
 {
 public:
@@ -22,13 +20,7 @@ public:
 
 private:
 
-	int m_menuPosition = MenuPosition::Automation;
-	const int m_maxMenuPosition = MenuPosition::Max;
-	bool m_menuMoved = false;
-	bool m_canGoDown = true;
-	bool m_canGoUp = true;
+	Menu m_menu;
 	Sprite m_backgroundSpr;
-	FlashingText m_automationMessage;
-	FlashingText m_manualMessage;
 	GameManager* m_gameMgr;
 };
