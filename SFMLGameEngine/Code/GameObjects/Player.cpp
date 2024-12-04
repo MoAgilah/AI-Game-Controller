@@ -17,8 +17,9 @@ Player::Player(const sf::Vector2f& pos)
 	GetAnimSpr()->SetFrames({ 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4 });
 
 	m_keyStates.fill(false);
-	m_fragShader.loadFromFile("Resources/Shaders/FlashShader.frag", sf::Shader::Fragment);
-	m_fragShader.setUniform("flashColor", sf::Glsl::Vec4(1, 1, 1, 1));
+
+	m_fragShader = GameManager::Get()->GetShaderMgr().GetShader(ShaderID::Flash);
+	m_fragShader->setUniform("flashColor", sf::Glsl::Vec4(1, 1, 1, 1));
 	m_invulTimer.SetTime(0);
 }
 
@@ -185,7 +186,7 @@ void Player::Update(float deltaTime)
 		if (GetIfInvulnerable())
 		{
 			m_invulTimer.Update(deltaTime);
-			m_fragShader.setUniform("time", m_invulTimer.GetTime());
+			m_fragShader->setUniform("time", m_invulTimer.GetTime());
 		}
 	}
 	else
@@ -197,7 +198,7 @@ void Player::Update(float deltaTime)
 
 void Player::Render(sf::RenderWindow& window)
 {
-	window.draw(*GetSprite()->GetSprite(), &m_fragShader);
+	window.draw(*GetSprite()->GetSprite(), m_fragShader);
 #if defined _DEBUG
 	GetAABB()->Render(window);
 #endif

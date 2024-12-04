@@ -78,7 +78,7 @@ private:
 	Timer m_airTimer;
 	Timer m_invulTimer;
 	sf::Vector2f m_spawnLoc;
-	sf::Shader m_fragShader;
+	sf::Shader* m_fragShader;
 	GameStateMgr m_stateMgr;
 	std::array<bool, Keys::MAXKEYS> m_keyStates;
 	std::array<sf::Vector2f, MarioBoxes::NUMBOXES> m_boxSizes{ sf::Vector2f(9,16), sf::Vector2f(9,25), sf::Vector2f(14,11) };

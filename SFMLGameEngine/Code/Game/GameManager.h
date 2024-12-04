@@ -9,6 +9,7 @@
 #include "Logger.h"
 #include "FontManager.h"
 #include "TextureManager.h"
+#include "ShaderManager.h"
 #include "World.h"
 #include "../GameObjects/Player.h"
 #include "../Collisions/CollisionManager.h"
@@ -46,6 +47,7 @@ public:
 	InputManager& GetInputManager() { return m_inputManager; }
 	Logger& GetLogger() { return m_logger; }
 	FontManager& GetFontMgr() { return m_fontManager; }
+	ShaderManager& GetShaderMgr() { return m_shaderManager; }
 	TextureManager& GetTextureMgr() { return m_texureManager; }
 	CollisionManager* GetCollisionMgr() { return m_collisionManager.get(); }
 	AIController* GetAIController() { return m_aiController.get(); }
@@ -60,6 +62,7 @@ private:
 	InputManager						m_inputManager;
 	Logger								m_logger;
 	FontManager							m_fontManager;
+	ShaderManager						m_shaderManager;
 	TextureManager						m_texureManager;
 	GameStateMgr						m_stateManager;
 	Player*								m_player;

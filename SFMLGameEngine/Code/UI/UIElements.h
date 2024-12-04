@@ -24,6 +24,6 @@ private:
 	float m_maxTime;
 	Timer m_timer;
 	sf::Text m_text;
-	sf::Shader m_textShader;
+	sf::Shader* m_textShader;
 };
 

@@ -7,7 +7,7 @@ FlashingText::FlashingText()
 {
 	m_text.setFont(GameManager::Get()->GetFontMgr().GetMenuFont());
 
-	m_textShader.loadFromFile("Resources/Shaders/FadeInOutShader.frag", sf::Shader::Fragment);
+	m_textShader = GameManager::Get()->GetShaderMgr().GetShader(ShaderID::FadeInOut);
 }
 
 void FlashingText::Init(const std::string text, unsigned int charSize, const sf::Vector2f pos, float fadeTime)
@@ -34,7 +34,7 @@ void FlashingText::Update(float deltaTime)
 {
 	if (m_paused)
 	{
-		m_textShader.setUniform("time", 1.f);
+		m_textShader->setUniform("time", 1.f);
 	}
 	else
 	{
@@ -56,13 +56,13 @@ void FlashingText::Update(float deltaTime)
 			}
 		}
 
-		m_textShader.setUniform("time", m_timer.GetTime() / m_maxTime);
+		m_textShader->setUniform("time", m_timer.GetTime() / m_maxTime);
 	}
 }
 
 void FlashingText::Render(sf::RenderWindow& window)
 {
-	window.draw(m_text, &m_textShader);
+	window.draw(m_text, m_textShader);
 }
 
 void FlashingText::Pause()
