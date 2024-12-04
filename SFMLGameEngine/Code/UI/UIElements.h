@@ -25,7 +25,7 @@ private:
 	float m_maxTime;
 	Timer m_timer;
 	sf::Text m_text;
-	sf::Shader* m_textShader;
+	std::shared_ptr<sf::Shader> m_textShader;
 };
 
 class Menu

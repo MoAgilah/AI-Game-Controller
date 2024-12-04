@@ -8,7 +8,7 @@ FlashingText::FlashingText()
 {
 	m_text.setFont(GameManager::Get()->GetFontMgr().GetMenuFont());
 
-	m_textShader = new sf::Shader();
+	m_textShader = std::make_shared<sf::Shader>();
 	if (!m_textShader->loadFromFile("Resources/Shaders/FadeInOutShader.frag", sf::Shader::Fragment))
 	{
 		std::cout << "Resources/Shaders/FadeInOut.frag" << std::endl;
@@ -67,7 +67,7 @@ void FlashingText::Update(float deltaTime)
 
 void FlashingText::Render(sf::RenderWindow& window)
 {
-	window.draw(m_text, m_textShader);
+	window.draw(m_text, m_textShader.get());
 }
 
 void FlashingText::Pause()
