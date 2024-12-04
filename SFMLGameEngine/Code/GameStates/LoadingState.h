@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "GameState.h"
 #include "../Game/GameManager.h"
-#include "../UI/UIElements.h"
+#include "../UI/FlashingText.h"
 
 void LoadResources();
 

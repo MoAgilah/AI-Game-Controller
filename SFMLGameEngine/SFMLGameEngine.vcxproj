@@ -204,7 +204,8 @@
     <ClCompile Include="Code\NEAT\CTimer.cpp" />
     <ClCompile Include="Code\NEAT\Genotype.cpp" />
     <ClCompile Include="Code\NEAT\Phenotype.cpp" />
-    <ClCompile Include="Code\UI\UIElements.cpp" />
+    <ClCompile Include="Code\UI\FlashingText.cpp" />
+    <ClCompile Include="Code\UI\Menu.cpp" />
     <ClCompile Include="Code\Utilities\Point.cpp" />
     <ClCompile Include="Code\Utilities\Utilities.cpp" />
   </ItemGroup>
@@ -256,7 +257,8 @@
     <ClInclude Include="Code\NEAT\Phenotype.h" />
     <ClInclude Include="Code\NEAT\Resource.h" />
     <ClInclude Include="Code\NEAT\Utils.h" />
-    <ClInclude Include="Code\UI\UIElements.h" />
+    <ClInclude Include="Code\UI\FlashingText.h" />
+    <ClInclude Include="Code\UI\Menu.h" />
     <ClInclude Include="Code\Utilities\Point.h" />
     <ClInclude Include="Code\Utilities\Utilities.h" />
   </ItemGroup>
