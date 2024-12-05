@@ -11,7 +11,16 @@ enum MarioAnims { IDLE, LOOKUP, JUMP, FALL, RUNJUMP, SKID, SLIDE, VICTORY, CROUC
 
 enum MarioBoxes { REGULAR, SUPER, CROUCHED, NUMBOXES };
 
-enum Keys { LEFT_KEY, RIGHT_KEY, UP_KEY, DOWN_KEY, RUN_KEY, JUMP_KEY, SJUMP_KEY, MAXKEYS };
+enum Keys {
+	LEFT_KEY = sf::Keyboard::Left,
+	RIGHT_KEY = sf::Keyboard::Right,
+	UP_KEY = sf::Keyboard::Up,
+	DOWN_KEY = sf::Keyboard::Down,
+	RUN_KEY = sf::Keyboard::S,
+	JUMP_KEY = sf::Keyboard::A,
+	SJUMP_KEY = sf::Keyboard::D,
+	MAXKEYS
+};
 
 class CNeuralNet;
 
@@ -35,9 +44,6 @@ public:
 	void SetIsAlive(bool val, float airtime = 0.1f);
 
 	void IncreaseCoins(int num) { m_coinTotal = +num; }
-
-	const std::array<bool, Keys::MAXKEYS>& GetKeyStates() const { return m_keyStates; }
-	void SetKeyState(int index, bool val);
 
 	void SetSpawnLoc(sf::Vector2f loc = sf::Vector2f(0, 0));
 
@@ -80,7 +86,6 @@ private:
 	sf::Vector2f m_spawnLoc;
 	sf::Shader* m_fragShader;
 	GameStateMgr m_stateMgr;
-	std::array<bool, Keys::MAXKEYS> m_keyStates;
 	std::array<sf::Vector2f, MarioBoxes::NUMBOXES> m_boxSizes{ sf::Vector2f(9,16), sf::Vector2f(9,25), sf::Vector2f(14,11) };
 };
 

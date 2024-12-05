@@ -216,9 +216,6 @@
     <ClCompile Include="Code\Game\Constants.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
-    <ClCompile Include="Code\UI\UIElements.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
     <ClCompile Include="Code\Game\InputManager.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
@@ -242,6 +239,15 @@
     </ClCompile>
     <ClCompile Include="Code\GameStates\PlayerState.cpp">
       <Filter>Source Files\GameStates\GameObjectStates</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\UI\FlashingText.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\UI\Menu.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Game\ShaderManager.cpp">
+      <Filter>Source Files\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -365,9 +371,6 @@
     <ClInclude Include="Code\NEAT\Resource.h">
       <Filter>Header Files\Controller\NEAT</Filter>
     </ClInclude>
-    <ClInclude Include="Code\UI\UIElements.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
     <ClInclude Include="Code\Game\InputManager.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
@@ -391,6 +394,15 @@
     </ClInclude>
     <ClInclude Include="Code\GameStates\PlayerState.h">
       <Filter>Header Files\GameStates\GameObjectStates</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\UI\FlashingText.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\UI\Menu.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Game\ShaderManager.h">
+      <Filter>Header Files\Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

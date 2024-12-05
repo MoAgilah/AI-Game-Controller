@@ -12,7 +12,8 @@ public:
 	void ProcessKeyPressedEvent(sf::Event& event);
 	void ProcessKeyReleasedEvent(sf::Event& event);
 
-	bool GetKeyState(sf::Keyboard::Key key) { return m_keyStates[key]; }
+	bool GetKeyState(int key) { return m_keyStates[key]; }
+	void SetKeyState(int key, bool val) { m_keyStates[key] = val; }
 
 	bool IsAnyKeyPressed();
 

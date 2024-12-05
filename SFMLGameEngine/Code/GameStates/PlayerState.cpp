@@ -22,9 +22,9 @@ void GroundedState::Resume()
 
 void GroundedState::ProcessInputs()
 {
-	auto& keyStates = m_player->GetKeyStates();
+	auto& inputManager = GameManager::Get()->GetInputManager();
 
-	if (keyStates[Keys::LEFT_KEY] && keyStates[Keys::RIGHT_KEY])
+	if (inputManager.GetKeyState(Keys::LEFT_KEY) && inputManager.GetKeyState(Keys::RIGHT_KEY))
 	{
 		// prioritize multi keys based on previous direction
 		if (m_player->GetDirection())
@@ -40,7 +40,7 @@ void GroundedState::ProcessInputs()
 	}
 	else
 	{
-		if (keyStates[Keys::LEFT_KEY])
+		if (inputManager.GetKeyState(Keys::LEFT_KEY))
 		{
 			if (m_player->GetDirection())
 			{
@@ -56,7 +56,7 @@ void GroundedState::ProcessInputs()
 			}
 		}
 
-		if (keyStates[Keys::RIGHT_KEY])
+		if (inputManager.GetKeyState(Keys::RIGHT_KEY))
 		{
 			if (!m_player->GetDirection())
 			{
@@ -73,16 +73,16 @@ void GroundedState::ProcessInputs()
 		}
 	}
 
-	if (keyStates[Keys::UP_KEY])
+	if (inputManager.GetKeyState(Keys::UP_KEY))
 	{
-		if (!keyStates[Keys::LEFT_KEY] && !keyStates[Keys::RIGHT_KEY])
+		if (!inputManager.GetKeyState(Keys::LEFT_KEY) && !inputManager.GetKeyState(Keys::RIGHT_KEY))
 		{
 			if (m_animSpr->GetCurrentAnim() != MarioAnims::LOOKUP)
 				m_animSpr->ChangeAnim(MarioAnims::LOOKUP);
 		}
 	}
 
-	if (keyStates[Keys::RUN_KEY])
+	if (inputManager.GetKeyState(Keys::RUN_KEY))
 	{
 		if (m_physCtrl->GetXVelocityType() == XVelocity::walking)
 			m_physCtrl->SetRunning();
@@ -93,7 +93,7 @@ void GroundedState::ProcessInputs()
 			m_physCtrl->SetWalking();
 	}
 
-	if (keyStates[Keys::JUMP_KEY])
+	if (inputManager.GetKeyState(Keys::JUMP_KEY))
 	{
 		if (m_player->GetOnGround() && !m_player->GetCantJump())
 		{
@@ -126,7 +126,7 @@ void GroundedState::ProcessInputs()
 		m_player->SetCantJump(false);
 	}
 
-	if (keyStates[Keys::SJUMP_KEY])
+	if (inputManager.GetKeyState(Keys::SJUMP_KEY))
 	{
 		if (m_player->GetOnGround() && !m_player->GetCantSpinJump())
 		{
@@ -198,9 +198,9 @@ void AirborneState::Initialise()
 
 void AirborneState::ProcessInputs()
 {
-	auto& keyStates = m_player->GetKeyStates();
+	auto& inputManager = GameManager::Get()->GetInputManager();
 
-	if (keyStates[Keys::LEFT_KEY])
+	if (inputManager.GetKeyState(Keys::LEFT_KEY))
 	{
 		if (m_player->GetDirection())
 			m_player->SetDirection(false);
@@ -208,7 +208,7 @@ void AirborneState::ProcessInputs()
 		m_player->DecrementXVelocity(m_physCtrl->GetXAcceleration());
 	}
 
-	if (keyStates[Keys::RIGHT_KEY])
+	if (inputManager.GetKeyState(Keys::RIGHT_KEY))
 	{
 		 if (!m_player->GetDirection())
 			 m_player->SetDirection(true);
@@ -216,13 +216,13 @@ void AirborneState::ProcessInputs()
 		 m_player->IncrementXVelocity(m_physCtrl->GetXAcceleration());
 	}
 
-	if (!keyStates[Keys::JUMP_KEY])
+	if (!inputManager.GetKeyState(Keys::JUMP_KEY))
 	{
 		if (m_player->GetAirbourne() && m_player->GetCantJump())
 			m_player->GetAirTimer()->SetTime(0);
 	}
 
-	if (!keyStates[Keys::SJUMP_KEY])
+	if (!inputManager.GetKeyState(Keys::SJUMP_KEY))
 	{
 		if (m_player->GetAirbourne() && m_player->GetCantSpinJump())
 			m_player->GetAirTimer()->SetTime(0);
@@ -251,9 +251,9 @@ void CrouchingState::Resume()
 
 void CrouchingState::ProcessInputs()
 {
-	auto& keyStates = m_player->GetKeyStates();
+	auto& inputManager = GameManager::Get()->GetInputManager();
 
-	if (keyStates[Keys::JUMP_KEY])
+	if (inputManager.GetKeyState(Keys::JUMP_KEY))
 	{
 		if (!m_player->GetCantJump())
 			m_player->SetAirbourne(true);
@@ -263,7 +263,7 @@ void CrouchingState::ProcessInputs()
 		m_player->SetCantJump(false);
 	}
 
-	if (keyStates[Keys::SJUMP_KEY])
+	if (inputManager.GetKeyState(Keys::SJUMP_KEY))
 	{
 		if (!m_player->GetCantSpinJump())
 		{

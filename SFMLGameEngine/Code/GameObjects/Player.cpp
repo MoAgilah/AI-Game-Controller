@@ -16,8 +16,6 @@ Player::Player(const sf::Vector2f& pos)
 	GetAABB()->Update(sf::Vector2f(GetPosition().x, GetPosition().y + 3.5f));
 	GetAnimSpr()->SetFrames({ 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4 });
 
-	m_keyStates.fill(false);
-
 	m_fragShader = GameManager::Get()->GetShaderMgr().GetShader(ShaderID::Flash);
 	m_fragShader->setUniform("flashColor", sf::Glsl::Vec4(1, 1, 1, 1));
 	m_invulTimer.SetTime(0);
@@ -37,6 +35,8 @@ void Player::Update(float deltaTime)
 
 	if (GetIsAlive())
 	{
+		auto& inputManager = gameMgr->GetInputManager();
+
 		if (GetOnGround())
 		{
 			if (m_stateMgr.GetStateName() == "Airborne")
@@ -69,7 +69,7 @@ void Player::Update(float deltaTime)
 
 				if (GetSlideLeft() || GetSlideRight())
 				{
-					if (m_keyStates[Keys::LEFT_KEY] || m_keyStates[Keys::RIGHT_KEY])
+					if (inputManager.GetKeyState(Keys::LEFT_KEY) || inputManager.GetKeyState(Keys::RIGHT_KEY))
 					{
 						SetSlideLeft(false);
 						SetSlideRight(false);
@@ -102,7 +102,7 @@ void Player::Update(float deltaTime)
 
 			if (!GetXVelocity() && !GetYVelocity())
 			{
-				if (!m_keyStates[Keys::DOWN_KEY] && !m_keyStates[Keys::UP_KEY])
+				if (!inputManager.GetKeyState(Keys::DOWN_KEY) && !inputManager.GetKeyState(Keys::UP_KEY))
 				{
 					if (animSpr->GetCurrentAnim() != MarioAnims::IDLE)
 						animSpr->ChangeAnim(MarioAnims::IDLE);
@@ -147,7 +147,7 @@ void Player::Update(float deltaTime)
 			}
 		}
 
-		if ((!m_keyStates[Keys::LEFT_KEY] && !m_keyStates[Keys::RIGHT_KEY]) && (!GetSlideLeft() && !GetSlideRight()))
+		if ((!inputManager.GetKeyState(Keys::LEFT_KEY) && !inputManager.GetKeyState(Keys::RIGHT_KEY)) && (!GetSlideLeft() && !GetSlideRight()))
 			SetXVelocity(0.0f);
 
 		//decomposition of movement
@@ -221,7 +221,6 @@ void Player::Reset()
 
 	m_invulTimer.SetTime(0);
 	m_airTimer.ResetTime();
-	m_keyStates.fill(false);
 	m_stateMgr.ClearStates();
 	GameManager::Get()->GetTimer().ResetTime();
 	GameManager::Get()->GetWorld()->ResetLevel();
@@ -259,12 +258,6 @@ void Player::SetIsAlive(bool val, float airtime)
 	{
 		m_airTimer.SetTime(airtime);
 	}
-}
-
-void Player::SetKeyState(int index, bool val)
-{
-	if (index < m_keyStates.size())
-		m_keyStates[index] = val;
 }
 
 void Player::SetSpawnLoc(sf::Vector2f loc)
@@ -345,7 +338,7 @@ void Player::ProcessInput()
 
 	m_stateMgr.ProcessInputs();
 
-	if (m_keyStates[Keys::DOWN_KEY])
+	if (GameManager::Get()->GetInputManager().GetKeyState(Keys::DOWN_KEY))
 	{
 		if (GetOnSlope())
 		{
@@ -375,44 +368,44 @@ void Player::ProcessInput()
 
 void Player::Input()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-		m_keyStates[Keys::LEFT_KEY] = true;
+		inputManager.GetKeyState(Keys::LEFT_KEY) = true;
 	}
 	else
 	{
-		if (m_keyStates[Keys::LEFT_KEY])
-			m_keyStates[Keys::LEFT_KEY] = false;
+		if (inputManager.GetKeyState(Keys::LEFT_KEY))
+			inputManager.GetKeyState(Keys::LEFT_KEY) = false;
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-		m_keyStates[Keys::RIGHT_KEY] = true;
+		inputManager.GetKeyState(Keys:RIGHT_KEY) = true;
 	}
 	else
 	{
-		if (m_keyStates[Keys::RIGHT_KEY])
-			m_keyStates[Keys::RIGHT_KEY] = false;
+		if (inputManager.GetKeyState(Keys:RIGHT_KEY))
+			inputManager.GetKeyState(Keys:RIGHT_KEY) = false;
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		m_keyStates[Keys::UP_KEY] = true;
+		inputManager.GetKeyState(Keys::UP_KEY) = true;
 	}
 	else
 	{
-		if (m_keyStates[Keys::UP_KEY])
-			m_keyStates[Keys::UP_KEY] = false;
+		if (inputManager.GetKeyState(Keys::UP_KEY))
+			inputManager.GetKeyState(Keys::UP_KEY) = false;
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
-		m_keyStates[Keys::DOWN_KEY] = true;
+		inputManager.GetKeyState(Keys::DOWN_KEY) = true;
 	}
 	else
 	{
-		if (m_keyStates[Keys::DOWN_KEY])
-			m_keyStates[Keys::DOWN_KEY] = false;
+		if (inputManager.GetKeyState(Keys::DOWN_KEY))
+			inputManager.GetKeyState(Keys::DOWN_KEY) = false;
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
@@ -443,7 +436,7 @@ void Player::Input()
 	{
 		if (m_keyStates[Keys::SJUMP_KEY])
 			m_keyStates[Keys::SJUMP_KEY] = false;
-	}
+	}*/
 }
 
 bool AutomatedPlayer::s_playerInserted = false;
@@ -522,8 +515,9 @@ void AutomatedPlayer::Input()
 
 		GameManager::Get()->GetLogger().AddDebugLog(std::format("{} = {} = {}", move, oval, output), false);
 		GameManager::Get()->GetLogger().AddDebugLog("\t", false);
+
 		//store output
-		SetKeyState(i, output);
+		GameManager::Get()->GetInputManager().SetKeyState(i, output);
 	}
 
 	GameManager::Get()->GetLogger().AddDebugLog("");
