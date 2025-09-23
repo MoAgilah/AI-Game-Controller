@@ -38,10 +38,11 @@ Line::Line(const sf::ConvexShape& tri, int bgn, int end)
 	: Line(tri.getPoint(bgn), tri.getPoint(end))
 {}
 
-bool Line::IsPointAboveLine(const Point & pnt) const
+bool Line::IsPointAboveLine(const Point & p) const
 {
-	float s = (end.x - start.x) * (pnt.y - start.y) - (end.y - start.y) * (pnt.x - start.x);
-	return s > 0;
+	float s = (end.x - start.x) * (p.y - start.y)
+		- (end.y - start.y) * (p.x - start.x);
+	return s >= -1e-4f;
 }
 
 bool Line::IntersectsPoint(const Point& pnt) const

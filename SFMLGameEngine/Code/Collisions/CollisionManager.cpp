@@ -23,7 +23,7 @@ namespace
 		return std::find(canCollideWithTile.begin(), canCollideWithTile.end(), id) != canCollideWithTile.end();
 	}
 
-	void SortCollidedTiles(std::vector<std::shared_ptr<Tile>> collidedWith)
+	void SortCollidedTiles(std::vector<std::shared_ptr<Tile>>& collidedWith)
 	{
 		std::ranges::sort(collidedWith, [](const std::shared_ptr<Tile>& a, const std::shared_ptr<Tile>& b)
 			{
@@ -215,39 +215,24 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 	{
 		Point prevOverlap = GetPreviousOverlap(tile->GetAABB(), obj);
 
-		if (dir == DDIR)
+		if (dir == DDIR && prevOverlap.x > 0 && prevOverlap.x > prevOverlap.y)
 		{
-			// the collision came from a vertical direction
-			if (prevOverlap.x > 0)
+			if (tileTopEdge.IsPointAboveLine(objBottomPoint))
 			{
-				// the collision came from the bottom
-				if (prevOverlap.x > prevOverlap.y)
-				{
-					if (tileTopEdge.IsPointAboveLine(objBottomPoint))
-					{
-						ResolveObjectToBoxTop(obj, tile->GetAABB());
-						return;
-					}
-				}
+				ResolveObjectToBoxTop(obj, tile->GetAABB());
+				return;
 			}
 		}
 
-		// the collision came from a horizontal direction
 		if (prevOverlap.y > 0)
 		{
 			ResolveObjectToBoxHorizontally(obj, tile->GetAABB());
 		}
-		else
+		else if (dir == LDIR || dir == RDIR)
 		{
-			if (dir == LDIR || dir == RDIR)
-			{
-				if (tileTopEdge.IsPointAboveLine(objBottomPoint))
-				{
-					ResolveObjectToBoxTop(obj, tile->GetAABB());
-				}
-
-				DynamicObjectToEdgeBounds(obj, tile);
-			}
+			if (tileTopEdge.IsPointAboveLine(objBottomPoint))
+				ResolveObjectToBoxTop(obj, tile->GetAABB());
+			DynamicObjectToEdgeBounds(obj, tile);
 		}
 		return;
 	}
@@ -256,58 +241,30 @@ void CollisionManager::DynamicObjectToTileResolution(DynamicObject* obj, Tile* t
 		return;
 	case Types::DIAGU:
 	{
+		bool hit = false;
 		switch (dir)
 		{
-		case DDIR:
-			if (ResolveObjectToSlopeTop(obj, tile))
-			{
-				if (!obj->GetShouldSlideLeft())
-					obj->SetShouldSlideLeft(true);
-			}
-			break;
-		case RDIR:
-			if (ResolveObjectToSlopeIncline(obj, tile, 0, 1))
-			{
-				if (!obj->GetShouldSlideLeft())
-					obj->SetShouldSlideLeft(true);
-			}
-			break;
-		case LDIR:
-			if (ResolveObjectToSlopeDecline(obj, tile, 1, 0))
-			{
-				if (!obj->GetShouldSlideLeft())
-					obj->SetShouldSlideLeft(true);
-			}
-			break;
+		case DDIR: hit = ResolveObjectToSlopeTop(obj, tile);           break;
+		case RDIR: hit = ResolveObjectToSlopeIncline(obj, tile, 0, 1); break;
+		case LDIR: hit = ResolveObjectToSlopeDecline(obj, tile, 1, 0); break;
 		}
+
+		if (hit && !obj->GetShouldSlideLeft())
+			obj->SetShouldSlideLeft(true);
 		return;
 	}
 	case Types::DIAGD:
 	{
+		bool hit = false;
 		switch (dir)
 		{
-		case DDIR:
-			if (ResolveObjectToSlopeTop(obj, tile))
-			{
-				if (!obj->GetShouldSlideRight())
-					obj->SetShouldSlideRight(true);
-			}
-			break;
-		case LDIR:
-			if (ResolveObjectToSlopeIncline(obj, tile, 1, 0))
-			{
-				if (!obj->GetShouldSlideRight())
-					obj->SetShouldSlideRight(true);
-			}
-			break;
-		case RDIR:
-			if (ResolveObjectToSlopeDecline(obj, tile, 0, 1))
-			{
-				if (!obj->GetShouldSlideRight())
-					obj->SetShouldSlideRight(true);
-			}
-			break;
+		case DDIR: hit = ResolveObjectToSlopeTop(obj, tile); break;
+		case LDIR: hit = ResolveObjectToSlopeIncline(obj, tile, 1, 0); break;
+		case RDIR: hit = ResolveObjectToSlopeDecline(obj, tile, 0, 1); break;
 		}
+
+		if (hit && !obj->GetShouldSlideRight())
+			obj->SetShouldSlideRight(true);
 		return;
 	}
 	}
@@ -486,32 +443,24 @@ void CollisionManager::PlayerToEnemyResolutions(Player* ply, Enemy* enmy)
 
 void CollisionManager::DynamicObjectToBoxResolutions(Direction dirOfTravel, const Point& prevOverlap, DynamicObject* obj, AABB* box, bool resolveUpDir)
 {
-	// the collision came from a horizontal direction
-	if (prevOverlap.y > 0)
+	// horizontal-only case
+	if (prevOverlap.y > 0 && prevOverlap.x <= 0)
 	{
-		// there is no collision vertically
-		if (prevOverlap.x <= 0)
-		{
-			ResolveObjectToBoxHorizontally(obj, box);
-			if (IsPlayerObject(obj->GetID()))
-				((Player*)obj)->ForceFall();
-			return;
-		}
+		ResolveObjectToBoxHorizontally(obj, box);
+		if (IsPlayerObject(obj->GetID()))
+			((Player*)obj)->ForceFall();
+		return;
 	}
 
-	// the collision came from a vertical direction
+	// vertical cases
 	if (prevOverlap.x > 0)
 	{
 		if (dirOfTravel == Direction::UDIR)
 		{
-			if (resolveUpDir)
+			if (resolveUpDir && prevOverlap.x > prevOverlap.y)
 			{
-				// collision came from the bottom
-				if (prevOverlap.x > prevOverlap.y)
-				{
-					ResolveObjectToBoxBottom(obj, box);
-					return;
-				}
+				ResolveObjectToBoxBottom(obj, box);
+				return;
 			}
 		}
 		else
