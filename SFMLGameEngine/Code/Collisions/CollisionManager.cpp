@@ -51,9 +51,15 @@ namespace
 
 	float GetYOffSet(float pDistX, float lDistY, float slopeY, float currY, float tileHeight)
 	{
-		auto percent = pDistX / lDistY;
-		auto colHeight = lDistY * percent + slopeY;
-		return ((currY - colHeight) / 16);
+		// Guard: avoid divide-by-zero and nonsense ratios near flat/degenerate slopes
+		float denom = std::max(1e-4f, std::abs(lDistY));
+		float t = std::clamp(pDistX / denom, 0.0f, 1.0f);
+
+		float colHeight = lDistY * t + slopeY;
+
+		// Scale using the real tile height, not a magic constant
+		float norm = std::max(1.0f, tileHeight);
+		return (currY - colHeight) / norm;
 	}
 
 	bool IsMovingTowards(Point p1, Point p2, Point v1, Point v2)
@@ -565,7 +571,10 @@ void CollisionManager::ResolveObjectToBoxHorizontally(DynamicObject* obj, AABB* 
 
 bool CollisionManager::ResolveObjectToSlopeTop(DynamicObject* obj, Tile* tile)
 {
-	Line line = tile->GetSlope(0, 1);
+	Line line = (tile->GetType() == DIAGD)
+		? tile->GetSlope(1, 0)   // flip for DIAGD
+		: tile->GetSlope(0, 1);  // keep for DIAGU
+
 	Circle circle(obj->GetAABB(), 4);
 	if (line.IsPointAboveLine(circle.center))
 	{
@@ -573,6 +582,7 @@ bool CollisionManager::ResolveObjectToSlopeTop(DynamicObject* obj, Tile* tile)
 		if (capsule.IntersectsCircle(circle))
 		{
 			obj->SetOnSlope(true);
+			obj->SetOnGround(true);
 			return true;
 		}
 	}
@@ -587,18 +597,24 @@ bool CollisionManager::ResolveObjectToSlopeIncline(DynamicObject* obj, Tile* til
 	Capsule capsule(line, 6);
 	if (capsule.IntersectsCircle(circle))
 	{
-		auto yOffset = GetYOffSet(start ? GetXDist(circle.center, line.start) : GetXDist(line.start, circle.center),
+		auto yOffset = GetYOffSet(
+			start ? GetXDist(circle.center, line.start) : GetXDist(line.start, circle.center),
 			line.DistY(),
 			line.start.y,
 			obj->GetAABB()->GetPosition().y,
 			tile->GetTileHeight());
 
-		obj->Move(sf::Vector2f(0, yOffset));
-		obj->SetOnSlope(true);
+		// Convert back to pixels using the same scale used by GetYOffSet
+		float yPixels = yOffset * tile->GetTileHeight();
 
-		return true;
+		// Small threshold avoids micro-jitter; clamp avoids big pops
+		if (std::abs(yPixels) > 0.1f) {
+			yPixels = std::clamp(yPixels, -6.0f, 6.0f);
+			obj->Move(sf::Vector2f(0, yPixels));
+			obj->SetOnSlope(true);
+			return true;
+		}
 	}
-
 
 	return false;
 }
@@ -610,16 +626,21 @@ bool CollisionManager::ResolveObjectToSlopeDecline(DynamicObject* obj, Tile* til
 	Capsule capsule(line, 6);
 	if (!capsule.IntersectsCircle(circle))
 	{
-		auto yOffset = GetYOffSet(start ? GetXDist(circle.center, line.start) : GetXDist(line.start, circle.center),
+		auto yOffset = GetYOffSet(
+			start ? GetXDist(circle.center, line.start) : GetXDist(line.start, circle.center),
 			line.DistY(),
 			line.start.y,
 			obj->GetAABB()->GetPosition().y,
 			tile->GetTileHeight());
 
-		obj->Move(sf::Vector2f(0, -yOffset));
-		obj->SetOnSlope(true);
+		float yPixels = -yOffset * tile->GetTileHeight(); // your original negative push on decline
 
-		return true;
+		if (std::abs(yPixels) > 0.1f) {
+			yPixels = std::clamp(yPixels, -6.0f, 6.0f);
+			obj->Move(sf::Vector2f(0, yPixels));
+			obj->SetOnSlope(true);
+			return true;
+		}
 	}
 
 	return false;
