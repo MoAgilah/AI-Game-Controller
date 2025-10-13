@@ -111,6 +111,6 @@ AI-Game-Controller/
 **Mohamed Agilah**  
 🎓 Games Programmer & AI Developer  
 🌐 [Portfolio Website](https://moagilah.com/)  
-📧 Contact: agilahmohamed@gamil.com  
+📧 Contact: agilahmohamed@gmail.com  
 
 > *Project archived for educational and portfolio purposes (October 2025).*
