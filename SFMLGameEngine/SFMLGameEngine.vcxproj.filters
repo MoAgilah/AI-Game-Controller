@@ -100,6 +100,15 @@
     <Filter Include="Source Files\GameStates\GameObjectStates">
       <UniqueIdentifier>{439ccfda-69d5-4b79-896d-02c56c0a74b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Bin">
+      <UniqueIdentifier>{a9a41353-d0ef-49f2-b466-396f15226c83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Bin\Dlls">
+      <UniqueIdentifier>{659e356d-5407-40f1-9ee4-8ed2bb4d2d55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Bin\Exe">
+      <UniqueIdentifier>{2c0b668a-5d3c-49b9-9614-4f0305161924}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Collisions\CollisionManager.cpp">
@@ -419,6 +428,42 @@
     </None>
     <None Include="Resources\Shaders\FadeInOutShader.frag">
       <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="openal32.dll">
+      <Filter>Resource Files\Bin\Dlls</Filter>
+    </None>
+    <None Include="sfml-audio-2.dll">
+      <Filter>Resource Files\Bin\Dlls</Filter>
+    </None>
+    <None Include="sfml-audio-d-2.dll">
+      <Filter>Resource Files\Bin\Dlls</Filter>
+    </None>
+    <None Include="sfml-graphics-2.dll">
+      <Filter>Resource Files\Bin\Dlls</Filter>
+    </None>
+    <None Include="sfml-graphics-d-2.dll">
+      <Filter>Resource Files\Bin\Dlls</Filter>
+    </None>
+    <None Include="sfml-network-2.dll">
+      <Filter>Resource Files\Bin\Dlls</Filter>
+    </None>
+    <None Include="sfml-network-d-2.dll">
+      <Filter>Resource Files\Bin\Dlls</Filter>
+    </None>
+    <None Include="sfml-system-2.dll">
+      <Filter>Resource Files\Bin\Dlls</Filter>
+    </None>
+    <None Include="sfml-system-d-2.dll">
+      <Filter>Resource Files\Bin\Dlls</Filter>
+    </None>
+    <None Include="sfml-window-2.dll">
+      <Filter>Resource Files\Bin\Dlls</Filter>
+    </None>
+    <None Include="sfml-window-d-2.dll">
+      <Filter>Resource Files\Bin\Dlls</Filter>
+    </None>
+    <None Include="Bin\AI-Game-Controller.zip">
+      <Filter>Resource Files\Bin\Exe</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
