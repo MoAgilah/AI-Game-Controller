@@ -58,11 +58,12 @@ After downloading:
 
 ## 🧱 Folder Structure
 AI-Game-Controller/
-├─ bin/            # Downloadable builds (executables)
-├─ assets/         # Sprites, tiles, sounds
-├─ src/            # Source code (C++)
-├─ docs/           # Screenshots, GIFs, results
-└─ README.md       # Project documentation
+│
+├── bin/            # Downloadable builds (executables)
+├── assets/         # Sprites, tiles, sounds
+├── src/            # Source code (C++)
+├── docs/           # Screenshots, GIFs, results
+└── README.md       # Project documentation
 
 ## 📊 Example Results
 | Generation | Avg Fitness | Best Fitness | Completed? |
