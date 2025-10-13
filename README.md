@@ -37,15 +37,39 @@ After downloading:
 
 ---
 
-## 🕹️ Controls
-| Action | Key |
-|--------|-----|
-| Move Left | ← |
-| Move Right | → |
-| Jump | Space |
-| Toggle AI / Player | A |
-| Restart Level | R |
-| Exit Game | Esc |
+## 🕹️ How to Start / Mode Select
+- Launch the game.
+- When prompted, use **Up / Down** to choose:
+  - **Play Manually (Debug Mode)**
+  - **Start Simulation (AI Mode)**
+- Press **Enter** to confirm your selection.
+
+A global **Pause Menu** is available in both modes, and **Esc** can exit at any point.  
+The pause menu functions just like the main menu and includes:
+- **Resume**
+- **To Title**
+- **Quit**
+
+---
+
+## 🎮 Manual Mode Controls
+
+| Action                     | Key |
+|-----------------------------|-----|
+| Move Left                   | ←   |
+| Move Right                  | →   |
+| Look Up                     | ↑   |
+| Crouch                      | ↓   |
+| Run (hold to keep speed)    | **S** |
+| Jump                        | **A** |
+| Spin Jump (SJUMP)           | **D** | 
+
+---
+
+## 🤖 AI Mode
+- In **AI Mode**, the controller automatically plays the game using neural-network-based behavior.  
+- Player input is disabled, but you can still open the **Pause Menu** or press **Esc** to exit.  
+- Menu navigation (Pause or Title) works the same as in Manual Mode.
 
 ---
 
