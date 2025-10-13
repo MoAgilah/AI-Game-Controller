@@ -19,13 +19,11 @@ void InputManager::ProcessKeyReleasedEvent(sf::Event& event)
 void InputManager::SetKeyPressed(sf::Keyboard::Key key)
 {
 	SetKeyState(key, true);
-	std::cout << " key is pressed" << std::endl;
 }
 
 void InputManager::SetKeyReleased(sf::Keyboard::Key key)
 {
 	SetKeyState(key, false);
-	std::cout << " key is released" << std::endl;
 }
 
 bool InputManager::IsAnyKeyPressed()
