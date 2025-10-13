@@ -58,13 +58,14 @@ After downloading:
 
 ## 🧱 Folder Structure
 ```
-AI-Game-Controller/
+AI-Game-Controller\
 |
-+-- bin/            # Downloadable builds (executables)
-+-- assets/         # Sprites, tiles, sounds
-+-- src/            # Source code (C++)
-+-- docs/           # Screenshots, GIFs, results
-\-- README.md       # Project documentation
+SFMLGameEngine
++-- Bin/		# Downloadable builds (executables)
++-- Code/		# Source code (C++)
++-- Resources/		# Fonts, Sprites, Shaders, Outputs, etc.
++-- Docs/		# Screenshots, GIFs, results
+\-- README.md       	# Project documentation
 ```
 
 ## 📊 Example Results
