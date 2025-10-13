@@ -16,6 +16,14 @@ void MainMenuActionFunc(int menuPosition)
 		break;
 	}
 
+	GameConstants::DControl = GameConstants::Automated;
+
+#if defined(_DEBUG) || defined(DEBUG)
+	GameConstants::DRender = true;
+#else
+	GameConstants::DRender = false;
+#endif
+
 	GameManager::Get()->GetGameStateMgr()->ChangeState(new MainState(GameManager::Get()));
 }
 
