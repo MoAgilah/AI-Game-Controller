@@ -1,36 +1,60 @@
-# MastersDissertation
-## Abstract
-The research outlined in this report documents the research, design, development and evaluation of Artificial Intelligence Controller. That utilises an Artificial Neural Network for the brain of the player that is evolved through Genetic Algorithms. The Genetic Algorithm that has being used throughout is that of Neural Evolution of Augmenting topologies. In the hopes it will be able to see a 2D platformer level built for the purpose of this research to completion. 
-Once capable of completing the level it will be put to Turing test; which is designed to see if a machine can exhibit intelligent behaviour in a similar manner to that of a human. The videogame industry is constantly pushing the boundaries on realistic graphics. But the methods utilised for Artificial Intelligence rather than exhibiting life-like intelligence, merely give the appearance of intelligence. It is the hope that this paper will encourage the use of approaches like these. 
-With the hope it can be an alternative or a replace for the industry standard method having the intelligence match the visuals. The evaluation will focus on the analysation of the sufficient inputs structure for the ANN to complete the level. And its ability to fool human evaluator into thinking it is a human player.
+# 🎮 AI Game Controller
+### Neuroevolved Agent for a 2D Platformer (C++ / SFML)
 
-## Project Description
-![mario](https://github.com/user-attachments/assets/b68389c4-f835-4ce8-8cce-f93f4319b76b)
+![Gameplay Preview](docs/ai_gameplay.gif)
 
-During my time at university, I employed SFML to build a replica of Super Mario World: Yoshi island 1, that can be played manually for debugging purposes. When utilising the artificial controller it utilises a genetic algorithm to control the level automatically. I have incorporating more prevalent contemporary C++ techniques into the implementation. An occasion to demonstrate my development as a programmer during my tenure in the industry.
+---
 
-I aim to continue to implement the following:
-- [x] refactor the code.
-- [x] optimise the collision code.
-- [ ] Add missing super mario world features
-  - [ ] Underworld
-  - [ ] Shells
-  - [ ] Clouds
-  - [ ] Multiple power ups
-  - [ ] Fire Flower power up
-  - [ ] Particles
-- [ ] Neural Network output for easy reload upon training.
-     
-Currently I am doing Artificial Controller testing to see if updates still allows for it to finish the level.
+## 🧠 Overview
+The **AI Game Controller** project is a refactored version of my Master’s dissertation that explores how an **AI agent** can learn to play a 2D platformer level in a way that resembles human gameplay.  
 
-## Project Controls
-| Key    | Response |
-| -------- | ------- |
-| Numpad4 | go left |
-| Numpad6 | go right |
-| Numpad8 | look up |
-| Numpad2 | crouch / slide (if on slope) |
-| A | jump |
-| D | spin jump |
-| S | held to enable run |
+The system uses a **neuroevolutionary algorithm** — evolving artificial neural networks through genetic selection — to teach an AI controller how to complete a *Super Mario–style* level built with **SFML** in C++.  
+The final challenge asks: *Can observers tell if the player is human or AI?*
 
+---
+
+## 🚀 Features
+- 🧩 **AI Controller:** Learns movement and jump patterns using a genetic algorithm (NEAT-inspired).  
+- 🎮 **Human Play Mode:** Manual controls for testing and comparison.  
+- 🧱 **Custom 2D Engine:** Core loop, input mapping, physics, and collision detection built from scratch.  
+- 📊 **Performance Logging:** Option to output generation and fitness data for analysis.  
+- 🧾 **Archived Build:** Ready-to-play executable available for download.  
+
+---
+
+## 📦 Download & Run
+You can download the latest build here:
+
+👉 **[Download Game Build (ZIP)](https://github.com/MoAgilah/AI-Game-Controller/releases/latest)**
+
+After downloading:
+1. Extract the `.zip` file.  
+2. Open the folder and run the executable:  
+   - **Windows:** `AI_Game_Controller.exe`  
+   - **Linux:** `./AI_Game_Controller` (make executable if needed: `chmod +x AI_Game_Controller`)  
+3. Use the controls below to play or toggle AI mode.  
+
+---
+
+## 🕹️ Controls
+| Action | Key |
+|--------|-----|
+| Move Left | ← |
+| Move Right | → |
+| Jump | Space |
+| Toggle AI / Player | A |
+| Restart Level | R |
+| Exit Game | Esc |
+
+---
+
+## 🧩 How It Works
+1. The program creates a **population of neural networks**—each representing an AI controller.  
+2. Every controller plays the level and is **scored by fitness** (distance, survival time, completion).  
+3. The best controllers are **selected, mutated, and crossed over** to form the next generation.  
+4. Over time, the AI learns timing, jumping, and obstacle avoidance.  
+5. The evolved agent is tested against human gameplay for comparison.
+
+---
+
+## 🧱 Folder Structure
