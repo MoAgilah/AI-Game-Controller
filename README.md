@@ -44,11 +44,25 @@ After downloading:
   - **Start Simulation (AI Mode)**
 - Press **Enter** to confirm your selection.
 
-A global **Pause Menu** is available in both modes, and **Esc** can exit at any point.  
-The pause menu functions just like the main menu and includes:
-- **Resume**
-- **To Title**
-- **Quit**
+---
+
+## 🌍 Global Actions
+
+| Action            | Key     |
+|--------------------|---------|
+| Open / Close Pause Menu | **Space** |
+| Exit Game (any time)    | **Esc**   |
+
+---
+
+## ⏸️ Pause Menu
+A global **Pause Menu** is available in both modes and functions just like the main menu.  
+Use **Up / Down** to navigate and **Enter** to select.
+
+**Options:**
+- **Resume** – return to the game.  
+- **To Title** – return to the main menu.  
+- **Quit** – close the game entirely.  
 
 ---
 
@@ -62,14 +76,13 @@ The pause menu functions just like the main menu and includes:
 | Crouch                      | ↓   |
 | Run (hold to keep speed)    | **S** |
 | Jump                        | **A** |
-| Spin Jump (SJUMP)           | **D** | 
+| Spin Jump (SJUMP)           | **D** |
 
 ---
 
 ## 🤖 AI Mode
 - In **AI Mode**, the controller automatically plays the game using neural-network-based behavior.  
-- Player input is disabled, but you can still open the **Pause Menu** or press **Esc** to exit.  
-- Menu navigation (Pause or Title) works the same as in Manual Mode.
+- Player input is disabled, but you can still global actions as required.
 
 ---
 
