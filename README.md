@@ -31,7 +31,6 @@ After downloading:
 1. Extract the `.zip` file.  
 2. Open the folder and run the executable:  
    - **Windows:** `AI_Game_Controller.exe`  
-   - **Linux:** `./AI_Game_Controller` (make executable if needed: `chmod +x AI_Game_Controller`)  
 3. Use the controls below to play or toggle AI mode.  
 
 ---
@@ -59,12 +58,11 @@ After downloading:
 
 ## 🧱 Folder Structure
 AI-Game-Controller/
-│
-├── bin/ # Downloadable builds (executables)
-├── assets/ # Sprites, tiles, sounds
-├── src/ # Source code (C++)
-├── docs/ # Screenshots, GIFs, results
-└── README.md # This file
+├─ bin/            # Downloadable builds (executables)
+├─ assets/         # Sprites, tiles, sounds
+├─ src/            # Source code (C++)
+├─ docs/           # Screenshots, GIFs, results
+└─ README.md       # Project documentation
 
 ## 📊 Example Results
 | Generation | Avg Fitness | Best Fitness | Completed? |
@@ -92,7 +90,6 @@ AI-Game-Controller/
 | Platform | Minimum Spec |
 |-----------|---------------|
 | **Windows** | Windows 10+, SFML runtime included |
-| **Linux** | Ubuntu 22.04+, install SFML via package manager |
 | **CPU** | Dual-core 2.0GHz |
 | **RAM** | 4GB |
 | **GPU** | Any with OpenGL 2.1 support |
