@@ -100,11 +100,11 @@ Use **Up / Down** to navigate and **Enter** to select.
 AI-Game-Controller\
 |
 SFMLGameEngine
-+-- Bin/		# Downloadable builds (executables)
-+-- Code/		# Source code (C++)
++-- Bin/		      # Downloadable builds (executables)
++-- Code/		      # Source code (C++)
 +-- Resources/		# Fonts, Sprites, Shaders, Outputs, etc.
-+-- Docs/		# Screenshots, GIFs, results
-\-- README.md       	# Project documentation
++-- Docs/		      # Screenshots, GIFs, results
+\-- README.md     # Project documentation
 ```
 
 ## 📊 Example Results
