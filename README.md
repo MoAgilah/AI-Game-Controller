@@ -25,7 +25,7 @@ The final challenge asks: *Can observers tell if the player is human or AI?*
 ## 📦 Download & Run
 You can download the latest build here:
 
-👉 **[Download Game Build (ZIP)](https://github.com/MoAgilah/AI-Game-Controller/releases/latest)**
+👉 **[Download Latest Build (ZIP)](https://github.com/MoAgilah/AI-Game-Controller/releases/latest)**
 
 After downloading:
 1. Extract the `.zip` file.  
