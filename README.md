@@ -23,15 +23,16 @@ The final challenge asks: *Can observers tell if the player is human or AI?*
 ---
 
 ## 📦 Download & Run
-You can download the latest build here:
+You can download the latest standalone executabke here:
 
-👉 **[Download Latest Build (ZIP)](https://github.com/MoAgilah/AI-Game-Controller/releases/latest)**
+👉 [Download Standalone Executable](https://github.com/MoAgilah/AI-Game-Controller/blob/master/SFMLGameEngine/Bin/AI-Game-Controller.zip)
 
 After downloading:
-1. Extract the `.zip` file.  
-2. Open the folder and run the executable:  
-   - **Windows:** `AI_Game_Controller.exe`  
-3. Use the controls below to play or toggle AI mode.  
+
+- Extract the .zip file.
+- Open the folder and run the executable:
+  - **Windows:** `AI_Game_Controller.exe`
+- Use the instructions below to play through debug mode or toggle AI simulation mode.
 
 ---
 
