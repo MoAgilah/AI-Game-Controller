@@ -110,7 +110,7 @@ AI-Game-Controller/
 ## 👤 Author
 **Mohamed Agilah**  
 🎓 Games Programmer & AI Developer  
-🌐 [Portfolio Website](#)  
-📧 Contact: [your-email@example.com]  
+🌐 [Portfolio Website](https://moagilah.com/)  
+📧 Contact: agilahmohamed@gamil.com  
 
 > *Project archived for educational and portfolio purposes (October 2025).*
