@@ -25,7 +25,8 @@ The final challenge asks: *Can observers tell if the player is human or AI?*
 ## 📦 Download & Run
 You can download the latest standalone executabke here:
 
-👉 [Download Standalone Executable](https://github.com/MoAgilah/AI-Game-Controller/blob/master/SFMLGameEngine/Bin/AI-Game-Controller.zip)
+👉 [Download Standalone Executable](https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Bin/AI-Game-Controller.zip)
+
 
 After downloading:
 
