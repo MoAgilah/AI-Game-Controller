@@ -58,3 +58,59 @@ After downloading:
 ---
 
 ## 🧱 Folder Structure
+AI-Game-Controller/
+│
+├── bin/ # Downloadable builds (executables)
+├── assets/ # Sprites, tiles, sounds
+├── src/ # Source code (C++)
+├── docs/ # Screenshots, GIFs, results
+└── README.md # This file
+
+## 📊 Example Results
+| Generation | Avg Fitness | Best Fitness | Completed? |
+|-------------|-------------|--------------|-------------|
+| 1 | 41.2 | 63.0 | ❌ |
+| 10 | 117.8 | 155.5 | ✅ |
+| 25 | 201.3 | 210.2 | ✅ |
+
+> After 20+ generations, the AI consistently completes the level, mirroring human-like decision-making patterns.
+
+![Training Curve](docs/training_curve.png)
+
+---
+
+## 🧠 Learning Objectives
+- Design and implement a **2D platformer** using SFML and modern C++ conventions.  
+- Apply **neuroevolution (genetic algorithm + ANN)** to gameplay control problems.  
+- Evaluate and compare **AI and human playstyles** using performance metrics.  
+- Refactor legacy academic code into a **maintainable, modular** structure.  
+- Log, visualize, and interpret AI learning results.  
+
+---
+
+## 🧩 System Requirements
+| Platform | Minimum Spec |
+|-----------|---------------|
+| **Windows** | Windows 10+, SFML runtime included |
+| **Linux** | Ubuntu 22.04+, install SFML via package manager |
+| **CPU** | Dual-core 2.0GHz |
+| **RAM** | 4GB |
+| **GPU** | Any with OpenGL 2.1 support |
+
+---
+
+## 📚 Future Enhancements
+- Add multiple **level files** and adjustable parameters.  
+- Implement **save/load** for trained neural networks.  
+- Display **visual AI debugging overlays**.  
+- Package **cross-platform release builds**.
+
+---
+
+## 👤 Author
+**Mohamed Agilah**  
+🎓 Games Programmer & AI Developer  
+🌐 [Portfolio Website](#)  
+📧 Contact: [your-email@example.com]  
+
+> *Project archived for educational and portfolio purposes (October 2025).*
