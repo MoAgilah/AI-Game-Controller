@@ -107,17 +107,6 @@ SFMLGameEngine
 \-- README.md     # Project documentation
 ```
 
-## 📊 Example Results
-| Generation | Avg Fitness | Best Fitness | Completed? |
-|-------------|-------------|--------------|-------------|
-| 1 | 41.2 | 63.0 | ❌ |
-| 10 | 117.8 | 155.5 | ✅ |
-| 25 | 201.3 | 210.2 | ✅ |
-
-> After 20+ generations, the AI consistently completes the level, mirroring human-like decision-making patterns.
-
-![Training Curve](docs/training_curve.png)
-
 ---
 
 ## 🧠 Learning Objectives
