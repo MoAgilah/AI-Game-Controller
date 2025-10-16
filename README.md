@@ -136,11 +136,11 @@ SFMLGameEngine
 
 | State | Description | Preview |
 |--------|-------------|----------|
-| **TitleState** | Displays **“Press Any Key To Start”** and transitions to the Main Menu upon key press. | ![TitleState](https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Images/Title.jpg) |
-| **MainMenuState** | Title and mode selection (**Manual** or **AI**). | ![MainMenuState](https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Images/MainMenu.jpg) |
-| **LoadingState** | Preloads textures, world objects, and assets before the game begins. | ![LoadingState](https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Images/Loading.jpg) |
-| **MainState** | Active gameplay, player and AI logic, and camera management. | ![MainState](https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Images/Game.jpg) |
-| **PauseMenuState** | Opens with **Space**, offering Resume, Title, or Quit options. | ![PauseMenuState](https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Images/PauseMenu.jpg) |
+| **TitleState** | Displays **“Press Any Key To Start”** and transitions to the Main Menu upon key press.|
+| **MainMenuState** | Title and mode selection (**Manual** or **AI**).|
+| **LoadingState** | Preloads textures, world objects, and assets before the game begins.|
+| **MainState** | Active gameplay, player and AI logic, and camera management.|
+| **PauseMenuState** | Opens with **Space**, offering Resume, Title, or Quit options.|
 
 ---
 
