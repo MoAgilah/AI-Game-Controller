@@ -1,7 +1,7 @@
 # 🎮 AI Game Controller
 ### Neuroevolved Agent for a 2D Platformer (C++ / SFML)
 
-![Gameplay Preview](docs/ai_gameplay.gif)
+![Gameplay Preview](Previews\GIFs\ManualDemo.gif)
 
 ---
 
@@ -23,27 +23,66 @@ The final challenge asks: *Can observers tell if the player is human or AI?*
 ---
 
 ## 📦 Download & Run
-You can download the latest build here:
+You can download the latest standalone executabke here:
 
-👉 **[Download Latest Build (ZIP)](https://github.com/MoAgilah/AI-Game-Controller/releases/latest)**
+👉 [Download Standalone Executable](https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Bin/AI-Game-Controller.zip)
+
 
 After downloading:
-1. Extract the `.zip` file.  
-2. Open the folder and run the executable:  
-   - **Windows:** `AI_Game_Controller.exe`  
-3. Use the controls below to play or toggle AI mode.  
+
+- Extract the .zip file.
+- Open the folder and run the executable:
+  - **Windows:** `AI_Game_Controller.exe`
+- Use the instructions below to play through debug mode or toggle AI simulation mode.
 
 ---
 
-## 🕹️ Controls
-| Action | Key |
-|--------|-----|
-| Move Left | ← |
-| Move Right | → |
-| Jump | Space |
-| Toggle AI / Player | A |
-| Restart Level | R |
-| Exit Game | Esc |
+## 🕹️ How to Start / Mode Select
+- Launch the game.
+- When prompted, use **Up / Down** to choose:
+  - **Play Manually (Debug Mode)**
+  - **Start Simulation (AI Mode)**
+- Press **Enter** to confirm your selection.
+
+---
+
+## 🌍 Global Actions
+
+| Action            | Key     |
+|--------------------|---------|
+| Open / Close Pause Menu | **Space** |
+| Exit Game (any time)    | **Esc**   |
+
+---
+
+## ⏸️ Pause Menu
+A global **Pause Menu** is available in both modes and functions just like the main menu.  
+Use **Up / Down** to navigate and **Enter** to select.
+
+**Options:**
+- **Resume** – return to the game.  
+- **To Title** – return to the main menu.  
+- **Quit** – close the game entirely.  
+
+---
+
+## 🎮 Manual Mode Controls
+
+| Action                     | Key |
+|-----------------------------|-----|
+| Move Left                   | ←   |
+| Move Right                  | →   |
+| Look Up                     | ↑   |
+| Crouch                      | ↓   |
+| Run (hold to keep speed)    | **S** |
+| Jump                        | **A** |
+| Spin Jump (SJUMP)           | **D** |
+
+---
+
+## 🤖 AI Mode
+- In **AI Mode**, the controller automatically plays the game using neural-network-based behavior.  
+- Player input is disabled, but you can still global actions as required.
 
 ---
 
@@ -61,23 +100,12 @@ After downloading:
 AI-Game-Controller\
 |
 SFMLGameEngine
-+-- Bin/		# Downloadable builds (executables)
-+-- Code/		# Source code (C++)
-+-- Resources/		# Fonts, Sprites, Shaders, Outputs, etc.
-+-- Docs/		# Screenshots, GIFs, results
-\-- README.md       	# Project documentation
++-- Bin/          # Downloadable builds (executables)
++-- Code/         # Source code (C++)
++-- Resources/    # Fonts, Sprites, Shaders, Outputs, etc.
++-- Previews/     # Screenshots, GIFs
+\-- README.md     # Project documentation
 ```
-
-## 📊 Example Results
-| Generation | Avg Fitness | Best Fitness | Completed? |
-|-------------|-------------|--------------|-------------|
-| 1 | 41.2 | 63.0 | ❌ |
-| 10 | 117.8 | 155.5 | ✅ |
-| 25 | 201.3 | 210.2 | ✅ |
-
-> After 20+ generations, the AI consistently completes the level, mirroring human-like decision-making patterns.
-
-![Training Curve](docs/training_curve.png)
 
 ---
 
