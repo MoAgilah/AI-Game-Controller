@@ -144,6 +144,17 @@ SFMLGameEngine
 
 ---
 
+## 🎬 Splash Screens
+
+| Title | Preview |
+|--------|----------|
+| **Title Screen** | ![Title](https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Screenshots/Title.jpg) |
+| **Main Menu** | ![Main Menu](https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Screenshots/MainMenu.jpg) |
+| **Gameplay** | ![Game](https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Screenshots/Game.jpg) |
+| **Pause Menu** | ![Pause Menu](https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Screenshots/PauseMenu.jpg) |
+
+---
+
 ## 📚 Future Enhancements
 - Add multiple **level files** and adjustable parameters.  
 - Implement **save/load** for trained neural networks.  
