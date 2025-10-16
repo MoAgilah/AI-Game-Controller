@@ -1,7 +1,7 @@
 # 🎮 AI Game Controller
 ### Neuroevolved Agent for a 2D Platformer (C++ / SFML)
 
-![Gameplay Preview](Previews\GIFs\ManualDemo.gif)
+![Gameplay Preview](https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/GIFs/ManualDemo.gif)
 
 ---
 
