@@ -134,8 +134,8 @@ SFMLGameEngine
 
 ## 🧱 Game States
 
-| State | Description | Preview |
-|--------|-------------|----------|
+| State | Description |
+|--------|-------------|
 | **TitleState** | Displays **“Press Any Key To Start”** and transitions to the Main Menu upon key press.|
 | **MainMenuState** | Title and mode selection (**Manual** or **AI**).|
 | **LoadingState** | Preloads textures, world objects, and assets before the game begins.|
