@@ -1,7 +1,7 @@
 # 🎮 AI Game Controller
 ### Neuroevolved Agent for a 2D Platformer (C++ / SFML)
 
-![Gameplay Preview](docs/ai_gameplay.gif)
+![Gameplay Preview](Previews\GIFs\ManualDemo.gif)
 
 ---
 
