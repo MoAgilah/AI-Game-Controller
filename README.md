@@ -146,13 +146,25 @@ SFMLGameEngine
 
 ## 🎬 Splash Screens
 
-<div align="center">
-  <img src="https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Screenshots/Title.jpg" alt="Title Screen" width="250">
-  <img src="https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Screenshots/MainMenu.jpg" alt="Main Menu" width="250">
-  <img src="https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Screenshots/Game.jpg" alt="Gameplay" width="250">
-  <img src="https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Screenshots/PauseMenu.jpg" alt="Pause Menu" width="250">
-</div>
-
+<p align="center">
+  <div style="display:inline-block; text-align:center; margin:10px;">
+    <h4>Title Screen</h4>
+    <img src="https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Screenshots/Title.jpg" alt="Title Screen" width="300">
+  </div>
+  <div style="display:inline-block; text-align:center; margin:10px;">
+    <h4>Main Menu</h4>
+    <img src="https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Screenshots/MainMenu.jpg" alt="Main Menu" width="300">
+  </div>
+  <br>
+  <div style="display:inline-block; text-align:center; margin:10px;">
+    <h4>Gameplay</h4>
+    <img src="https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Screenshots/Game.jpg" alt="Gameplay" width="300">
+  </div>
+  <div style="display:inline-block; text-align:center; margin:10px;">
+    <h4>Pause Menu</h4>
+    <img src="https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Screenshots/PauseMenu.jpg" alt="Pause Menu" width="300">
+  </div>
+</p>
 
 ---
 
