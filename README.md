@@ -1,16 +1,9 @@
 # 🎮 AI Game Controller
 ### Neuroevolved Agent for a 2D Platformer (C++ / SFML)
 
-<p align="center">
-  <figure style="display:inline-block; margin:0 10px; text-align:center;">
-    <img src="https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/GIFs/ManualDemo.gif" alt="Manual Demo" width="48%">
-    <figcaption><b>Manual Mode</b></figcaption>
-  </figure>
-  <figure style="display:inline-block; margin:0 10px; text-align:center;">
-    <img src="https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/GIFs/ManualDemo.gif" alt="Auto Demo" width="48%">
-    <figcaption><b>AI-Controlled Mode</b></figcaption>
-  </figure>
-</p>
+| **AI-Controlled Mode** | **Manual Mode** |
+|---|---|
+| ![Manual Demo](https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/GIFs/ManualDemo.gif) | ![AI Demo](https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/GIFs/ManualDemo.gif) |
 
 
 
