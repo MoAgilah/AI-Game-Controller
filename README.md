@@ -146,26 +146,13 @@ SFMLGameEngine
 
 ## 🎬 Splash Screens
 
-## 🎬 Splash Screens
+<div align="center">
+  <img src="https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Screenshots/Title.jpg" alt="Title Screen" width="250">
+  <img src="https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Screenshots/MainMenu.jpg" alt="Main Menu" width="250">
+  <img src="https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Screenshots/Game.jpg" alt="Gameplay" width="250">
+  <img src="https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Screenshots/PauseMenu.jpg" alt="Pause Menu" width="250">
+</div>
 
-<p align="center">
-  <figure style="display:inline-block; margin:0 10px; text-align:center;">
-    <img src="https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Screenshots/Title.jpg" alt="Title Screen" width="250">
-    <figcaption><b>Title Screen</b></figcaption>
-  </figure>
-  <figure style="display:inline-block; margin:0 10px; text-align:center;">
-    <img src="https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Screenshots/MainMenu.jpg" alt="Main Menu" width="250">
-    <figcaption><b>Main Menu</b></figcaption>
-  </figure>
-  <figure style="display:inline-block; margin:0 10px; text-align:center;">
-    <img src="https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Screenshots/Game.jpg" alt="Gameplay" width="250">
-    <figcaption><b>Gameplay</b></figcaption>
-  </figure>
-  <figure style="display:inline-block; margin:0 10px; text-align:center;">
-    <img src="https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Screenshots/PauseMenu.jpg" alt="Pause Menu" width="250">
-    <figcaption><b>Pause Menu</b></figcaption>
-  </figure>
-</p>
 
 ---
 
