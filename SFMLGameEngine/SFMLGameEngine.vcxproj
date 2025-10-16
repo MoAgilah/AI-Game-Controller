@@ -319,6 +319,11 @@
     <Font Include="Resources\Fonts\arial.ttf" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Previews\GIFs\ManualDemo.gif" />
+    <Image Include="Previews\Screenshots\Game.jpg" />
+    <Image Include="Previews\Screenshots\MainMenu.jpg" />
+    <Image Include="Previews\Screenshots\PauseMenu.jpg" />
+    <Image Include="Previews\Screenshots\Title.jpg" />
     <Image Include="Resources\Sprites\Background.png" />
     <Image Include="Resources\Sprites\Bill.png" />
     <Image Include="Resources\Sprites\ChkPnt.png" />

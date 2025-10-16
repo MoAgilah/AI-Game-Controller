@@ -20,12 +20,18 @@ Camera::Camera()
 
 void Camera::Update()
 {
-	m_viewBox.Update(m_camera.getCenter());
-	//scroll the screen view with the player
-	float posX = GameManager::Get()->GetPlayer()->GetPosition().x - GameConstants::ScreenDim.x * 0.5f;
 
-	if (posX < 0)
-		posX = 0;
+	m_viewBox.Update(m_camera.getCenter());
+
+	float posX = 0;
+	if (!GameConstants::GameIsPaused)
+	{
+		//scroll the screen view with the player
+		posX = GameManager::Get()->GetPlayer()->GetPosition().x - GameConstants::ScreenDim.x * 0.5f;
+
+		if (posX < 0)
+			posX = 0;
+	}
 
 	//reset the m_camera position
 	m_camera.reset(sf::FloatRect(posX, 0, GameConstants::ScreenDim.x, GameConstants::ScreenDim.y));

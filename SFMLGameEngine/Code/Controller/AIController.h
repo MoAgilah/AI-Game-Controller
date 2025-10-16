@@ -31,7 +31,13 @@ public:
 private:
 
 	double ColourToInput(sf::Color col);
-	void EndOfRunCalculation(AutomatedPlayer* ply);
+	void EndOfRunCalculation(AutomatedPlayer* ply, bool stalled);
+
+	float m_prevPosX = 0.f;     // last frame X for the *current* player
+	float m_prevPosY = 0.f;		// last frame Y for the *current* player
+	int   m_inactiveFrames = 0; // consecutive frames with no real movement
+	// per-player stall flags
+	std::vector<bool> m_playerStalled;
 
 	int m_currPlayer = 0;
 	int m_generations = 0;

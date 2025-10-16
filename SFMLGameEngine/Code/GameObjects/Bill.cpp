@@ -24,8 +24,11 @@ Bill::Bill(bool dir, const sf::Vector2f& initPos)
 void Bill::Render(sf::RenderWindow& window)
 {
 	GetSprite()->Render(window);
+
+#if defined _DEBUG
 	window.draw(m_halfCap.circle);
 	m_halfCap.box.Render(window);
+#endif
 }
 
 bool Bill::Intersects(Object* obj)

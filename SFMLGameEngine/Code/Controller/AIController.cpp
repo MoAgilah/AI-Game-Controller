@@ -4,6 +4,12 @@
 #include "../Game/GameManager.h"
 #include "../GameObjects/Player.h"
 
+// ADD at top of file (tunable from one place)
+#ifndef INACTIVITY_LIMIT_FRAMES
+#define INACTIVITY_LIMIT_FRAMES 12000  // ~20s @ 60 FPS
+#endif
+
+
 namespace
 {
 	std::string OutputDebugMessage(bool didNotMove, bool movedLeft, bool movedRight, bool plyDeath, bool lvlFin)
@@ -69,6 +75,12 @@ void AIController::InitAIController()
 	//assign the phenotypes
 	for (int i = 0; i < CParams::iNumPlayers; i++)
 		m_players[i]->InsertNewBrain(pBrains[i]);
+
+	// init per-player trackers for the first player
+	m_playerStalled.assign(CParams::iNumPlayers, false);
+	m_prevPosX = m_players[0]->GetPosition().x;
+	m_prevPosY = m_players[0]->GetPosition().y;
+	m_inactiveFrames = 0;
 }
 
 bool AIController::Update(float deltaTime)
@@ -77,33 +89,63 @@ bool AIController::Update(float deltaTime)
 
 	auto currPly = GetCurrentPlayer();
 
-	auto currPosX = currPly->GetPosition().x;
-	auto prevPosX = currPly->GetPosition().x;
+	const float currPosX = currPly->GetPosition().x;
+	const float currPosY = currPly->GetPosition().y;
+	const float dx = currPosX - m_prevPosX;
+	const float dy = currPosY - m_prevPosY;
 
-	bool didNotMove = (currPosX == prevPosX);
-	bool movedLeft = (currPosX < currPly->GetInitialPosition().x);
-	bool movedRight = (currPosX > currPly->GetInitialPosition().x);
-	bool plyDeath = !currPly->GetIsAlive();
-	bool lvlFin = currPly->GetGoalHit();
+	// thresholds tuned to ignore jitter but catch real motion
+	const float EPS_X = 1.5f;   // horizontal deadzone (pixels)
+	const float EPS_Y = 1.0f;   // vertical deadzone (pixels)
+	const float MIN_SPEEDX = 10.0f;  // min horizontal speed to count as moving
 
-	if ((didNotMove || movedLeft) && m_timer.CheckEnd()
-		|| plyDeath
-		|| lvlFin)
+	// if available in your player class; else set vx = 0.f
+	const float vx = currPly->GetXVelocity();
+
+	const bool movedX = (std::fabs(dx) > EPS_X);
+	const bool movedY = (std::fabs(dy) > EPS_Y);      // jumping/falling counts
+	const bool movedV = (std::fabs(vx) > MIN_SPEEDX); // running counts
+
+	const bool movedRight = (dx > EPS_X);
+	const bool movedLeft = (dx < -EPS_X);
+	const bool didNotMove = !(movedX || movedY || movedV);
+
+	// inactivity accumulation (~20s window)
+	if (didNotMove) ++m_inactiveFrames; else m_inactiveFrames = 0;
+	const bool timedOutForInactivity = (m_inactiveFrames > INACTIVITY_LIMIT_FRAMES);
+
+	if (((didNotMove || movedLeft) && m_timer.CheckEnd())
+		|| timedOutForInactivity
+		|| !currPly->GetIsAlive()
+		|| currPly->GetGoalHit())
 	{
+		// remember stall for the *current* player
+		if (m_currPlayer < static_cast<int>(m_playerStalled.size()))
+			m_playerStalled[m_currPlayer] = timedOutForInactivity;
+
 		m_currPlayer++;
 		m_timer.ResetTime();
-		if (m_currPlayer < m_players.size())
+
+		if (m_currPlayer < static_cast<int>(m_players.size()))
 		{
-			std::cout << OutputDebugMessage(didNotMove, movedLeft, movedRight, plyDeath, lvlFin);
 			GameManager::Get()->ChangePlayer(GetCurrentPlayer());
 			GameManager::Get()->GetPlayer()->Reset();
+
+			// reset trackers for the new current player
+			m_prevPosX = GetCurrentPlayer()->GetPosition().x;
+			m_prevPosY = GetCurrentPlayer()->GetPosition().y;
+			m_inactiveFrames = 0;
 		}
 	}
-	else if (currPosX > prevPosX)
+	else if (movedRight)
 	{
-		std::cout << "current player has moved further right\n";
+		// made forward progress -> reset dwell timer
 		m_timer.ResetTime();
 	}
+
+	// update previous position AFTER decisions
+	m_prevPosX = currPosX;
+	m_prevPosY = currPosY;
 
 	if (m_currPlayer < m_players.size())
 	{
@@ -122,10 +164,11 @@ bool AIController::Update(float deltaTime)
 		//first add up each players fitness scores. (remember for this task
 		//there are many different sorts of penalties the players may incur
 		//and each one has a coefficient)
-		for (int swp = 0; swp < m_players.size(); ++swp)
+		for (int swp = 0; swp < static_cast<int>(m_players.size()); ++swp)
 		{
 			GameManager::Get()->GetLogger().AddExperimentLog(std::format("Player: {}", swp), false);
-			EndOfRunCalculation(m_players[swp].get());
+			const bool stalled = (swp < static_cast<int>(m_playerStalled.size())) ? m_playerStalled[swp] : false;
+			EndOfRunCalculation(m_players[swp].get(), stalled);
 		}
 
 		//increment the generation counter
@@ -148,6 +191,12 @@ bool AIController::Update(float deltaTime)
 
 		m_currPlayer = 0;
 		GameManager::Get()->ChangePlayer(m_players[m_currPlayer].get());
+		m_prevPosX = m_players[0]->GetPosition().x;
+		m_prevPosY = m_players[0]->GetPosition().y;
+		m_inactiveFrames = 0;
+
+		// clear stall flags for next generation
+		std::fill(m_playerStalled.begin(), m_playerStalled.end(), false);
 
 		m_bestFitness = m_pop->BestEverFitness();
 
@@ -196,25 +245,37 @@ double AIController::ColourToInput(sf::Color col)
 	return -1.0f;
 }
 
-void AIController::EndOfRunCalculation(AutomatedPlayer* ply)
+void AIController::EndOfRunCalculation(AutomatedPlayer* ply, bool stalled)
 {
 	auto currPly = ply;
 
-	auto currPosX = currPly->GetPosition().x;
-	auto initPosX = currPly->GetInitialPosition().x;
+	const float currPosX = currPly->GetPosition().x;
+	const float initPosX = currPly->GetInitialPosition().x;
 
-	float percent = 0;
+	float percent = 0.f;
 
 	if (currPosX > initPosX)
 	{
-		percent = (GameConstants::RightMost / GameConstants::Scale.x) *
-			((currPosX - initPosX) / GameConstants::RightMost);
+		// normalize to ~0..100 across level span
+		percent = ((currPosX - initPosX) / (GameConstants::RightMost - initPosX)) * 100.f;
 	}
 	else if (currPosX < initPosX)
 	{
-		percent = ((currPosX - initPosX) / (initPosX - GameConstants::LeftMost)) * 100;
+		// small negative if moved left
+		percent = ((currPosX - initPosX) / (initPosX - GameConstants::LeftMost)) * 100.f;
 	}
 
 	GameManager::Get()->GetLogger().AddExperimentLog(std::format("Player moved by {}%!", percent));
-	ply->UpdateFitness(percent);
+
+	// shaped terminal fitness (minimal, safe)
+	float fitness = percent;
+	if (!currPly->GetIsAlive())  fitness -= 20.f;   // death penalty
+	if (currPly->GetGoalHit())   fitness += 200.f;  // goal bonus
+	if (stalled)                 fitness -= 5.f;    // inactivity penalty
+
+	GameManager::Get()->GetLogger().AddExperimentLog(std::format(
+		"Fitness terms -> progress:{:.2f}, goal:{}, death:{}, stalled:{}",
+		percent, currPly->GetGoalHit(), !currPly->GetIsAlive(), stalled));
+
+	ply->UpdateFitness(fitness);
 }

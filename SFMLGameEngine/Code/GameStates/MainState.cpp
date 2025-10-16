@@ -22,18 +22,18 @@ void MainState::Pause()
 void MainState::Resume()
 {
 	m_ready = true;
-	m_isPaused = false;
+	GameConstants::GameIsPaused = false;
 }
 
 void MainState::ProcessInputs()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
-		if (!m_isPaused)
+		if (!GameConstants::GameIsPaused)
 		{
 			m_gameMgr->GetCamera().Reset(m_gameMgr->GetRenderWindow());
 			m_gameMgr->GetGameStateMgr()->PushState(new PauseMenuState(m_gameMgr));
-			m_isPaused = true;
+			GameConstants::GameIsPaused = true;
 		}
 	}
 }

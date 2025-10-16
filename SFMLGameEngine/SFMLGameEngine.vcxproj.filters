@@ -109,6 +109,15 @@
     <Filter Include="Resource Files\Bin\Exe">
       <UniqueIdentifier>{2c0b668a-5d3c-49b9-9614-4f0305161924}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Previews">
+      <UniqueIdentifier>{c3a2a5b3-2e1a-4a33-99bb-34c8359a58d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Previews\ScreenShots">
+      <UniqueIdentifier>{e49b9e0f-612a-40a8-be1a-eb0277a9b24e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Previews\Gifs">
+      <UniqueIdentifier>{a0523957-4b3a-4c78-947c-8970e29b0647}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Collisions\CollisionManager.cpp">
@@ -531,6 +540,21 @@
     </Image>
     <Image Include="Resources\Sprites\Coin.png">
       <Filter>Resource Files\Sprites</Filter>
+    </Image>
+    <Image Include="Previews\Screenshots\Game.jpg">
+      <Filter>Resource Files\Previews\ScreenShots</Filter>
+    </Image>
+    <Image Include="Previews\Screenshots\MainMenu.jpg">
+      <Filter>Resource Files\Previews\ScreenShots</Filter>
+    </Image>
+    <Image Include="Previews\Screenshots\PauseMenu.jpg">
+      <Filter>Resource Files\Previews\ScreenShots</Filter>
+    </Image>
+    <Image Include="Previews\Screenshots\Title.jpg">
+      <Filter>Resource Files\Previews\ScreenShots</Filter>
+    </Image>
+    <Image Include="Previews\GIFs\ManualDemo.gif">
+      <Filter>Resource Files\Previews\Gifs</Filter>
     </Image>
   </ItemGroup>
 </Project>

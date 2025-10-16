@@ -68,6 +68,8 @@ void PauseMenuState::Update(float deltaTime)
 
 void PauseMenuState::Render(sf::RenderWindow& window)
 {
+	m_gameMgr->GetCamera().Reset(window);
+
 	m_backgroundSpr.Render(window);
 
 	m_menu.Render(window);
