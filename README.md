@@ -1,7 +1,11 @@
 # 🎮 AI Game Controller
 ### Neuroevolved Agent for a 2D Platformer (C++ / SFML)
 
-![Gameplay Preview](Previews\GIFs\ManualDemo.gif)
+| **AI-Controlled Mode** | **Manual Mode** |
+|---|---|
+| ![Manual Demo](https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/GIFs/ManualDemo.gif) | ![AI Demo](https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/GIFs/ManualDemo.gif) |
+
+
 
 ---
 
@@ -125,6 +129,45 @@ SFMLGameEngine
 | **CPU** | Dual-core 2.0GHz |
 | **RAM** | 4GB |
 | **GPU** | Any with OpenGL 2.1 support |
+
+---
+
+## 🧱 Game States
+
+| State | Description |
+|--------|-------------|
+| **TitleState** | Displays **“Press Any Key To Start”** and transitions to the Main Menu upon key press.|
+| **MainMenuState** | Title and mode selection (**Manual** or **AI**).|
+| **LoadingState** | Preloads textures, world objects, and assets before the game begins.|
+| **MainState** | Active gameplay, player and AI logic, and camera management.|
+| **PauseMenuState** | Opens with **Space**, offering Resume, Title, or Quit options.|
+
+---
+
+## 🎬 Splash Screens
+
+<table>
+  <tr>
+    <td align="center">
+      <strong>Title Screen</strong><br>
+      <img src="https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Screenshots/Title.jpg" alt="Title Screen" width="250">
+    </td>
+    <td align="center">
+      <strong>Main Menu</strong><br>
+      <img src="https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Screenshots/MainMenu.jpg" alt="Main Menu" width="250">
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <strong>Gameplay</strong><br>
+      <img src="https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Screenshots/Game.jpg" alt="Gameplay" width="250">
+    </td>
+    <td align="center">
+      <strong>Pause Menu</strong><br>
+      <img src="https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Screenshots/PauseMenu.jpg" alt="Pause Menu" width="250">
+    </td>
+  </tr>
+</table>
 
 ---
 
