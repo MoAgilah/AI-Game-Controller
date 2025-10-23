@@ -65,7 +65,6 @@ Use **Up / Down** to navigate and **Enter** to select.
 
 **Options:**
 - **Resume** – return to the game.  
-- **To Title** – return to the main menu.  
 - **Quit** – close the game entirely.  
 
 ---
