@@ -49,6 +49,7 @@ void Chuck::Animate(float deltaTime)
 {
 	AnimatedSprite* animSpr = GetAnimSpr();
 	PhysicsController* physCtrl = GetPhysicsController();
+	const float step = GameConstants::FPS * deltaTime;
 
 	animSpr->Update(deltaTime);
 
@@ -59,7 +60,7 @@ void Chuck::Animate(float deltaTime)
 			if (physCtrl->GetPhysicsType() != PhysicsType::drop)
 				physCtrl->SetFalling();
 
-			IncrementYVelocity(physCtrl->GetYAcceleration());
+			IncrementYVelocity(physCtrl->GetYAcceleration() * step);
 		}
 		else
 		{
@@ -83,7 +84,7 @@ void Chuck::Animate(float deltaTime)
 				if (physCtrl->GetPhysicsType() != PhysicsType::rise)
 					physCtrl->SetAerial();
 
-				DecrementYVelocity(physCtrl->GetYAcceleration());
+				DecrementYVelocity(physCtrl->GetYAcceleration() * step);
 				GetAirTimer()->Update(deltaTime);
 				if (animSpr->GetCurrentAnim() != ChuckAnims::LEAP)
 					animSpr->ChangeAnim(ChuckAnims::LEAP);
@@ -98,7 +99,7 @@ void Chuck::Animate(float deltaTime)
 			if (physCtrl->GetPhysicsType() != PhysicsType::drop)
 				physCtrl->SetFalling();
 
-			IncrementYVelocity(physCtrl->GetYAcceleration());
+			IncrementYVelocity(physCtrl->GetYAcceleration() * step);
 		}
 
 		sf::Vector2f currentPos = GetPosition();
@@ -125,7 +126,7 @@ void Chuck::Animate(float deltaTime)
 
 	if (GetYVelocity() != 0)
 	{
-		Move(0, GetYVelocity() * GameConstants::FPS * deltaTime);
+		Move(0, GetYVelocity() * step);
 		GameManager::Get()->GetCollisionMgr()->ProcessCollisions(this);
 	}
 }

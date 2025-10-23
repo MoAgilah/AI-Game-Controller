@@ -109,6 +109,7 @@ void Mushroom::Update(float deltaTime)
 {
 	CollisionManager* colMgr = GameManager::Get()->GetCollisionMgr();
 	PhysicsController* physCtrl = GetPhysicsController();
+	const float step = GameConstants::FPS * deltaTime;
 
 	SetPrevPosition(GetPosition());
 
@@ -130,18 +131,18 @@ void Mushroom::Update(float deltaTime)
 		if (physCtrl->GetPhysicsType() != PhysicsType::drop)
 			physCtrl->SetFalling();
 
-		IncrementYVelocity(GameConstants::Gravity);
+		IncrementYVelocity(GameConstants::Gravity * step);
 	}
 
 	if (GetYVelocity() != 0)
 	{
-		Move(0, GetYVelocity() * GameConstants::FPS * deltaTime);
+		Move(0, GetYVelocity() * step);
 		colMgr->ProcessCollisions(this);
 	}
 
 	if (GetXVelocity() != 0)
 	{
-		Move(GetXVelocity() * GameConstants::FPS * deltaTime, 0);
+		Move(GetXVelocity() * step, 0);
 		colMgr->ProcessCollisions(this);
 	}
 

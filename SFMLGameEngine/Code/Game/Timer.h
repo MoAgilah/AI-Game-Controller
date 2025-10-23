@@ -10,7 +10,7 @@ public:
 
 	float GetTime() const { return m_time; }
 	bool CheckEnd() const { return m_time <= 0.0f; }
-	void ForceEnd() { m_time = m_maxTime; }
+	void ForceEnd() { m_time = 0; }
 	void SetTime(float time) { m_time = time; }
 
 	void Pause() { m_stopped = true; }

@@ -4,6 +4,8 @@
 #include "../Collisions/AABB.h"
 #include "../Game/GameManager.h"
 
+float PlayerState::s_frameStep = 0.0f;
+
 void GroundedState::Initialise()
 {
 	if (m_animSpr->GetCurrentAnim() != MarioAnims::IDLE)
@@ -30,12 +32,12 @@ void GroundedState::ProcessInputs()
 		if (m_player->GetDirection())
 		{
 			UpdateGroundAnimation();
-			m_player->IncrementXVelocity(m_physCtrl->GetXAcceleration());
+			m_player->IncrementXVelocity(m_physCtrl->GetXAcceleration() * PlayerState::s_frameStep);
 		}
 		else
 		{
 			UpdateGroundAnimation();
-			m_player->DecrementXVelocity(m_physCtrl->GetXAcceleration());
+			m_player->DecrementXVelocity(m_physCtrl->GetXAcceleration() * PlayerState::s_frameStep);
 		}
 	}
 	else
@@ -115,10 +117,7 @@ void GroundedState::ProcessInputs()
 			m_player->SetAirbourne(true);
 			m_player->SetCantJump(true);
 			if (m_physCtrl->GetPhysicsType() != PhysicsType::rise)
-			{
 				m_physCtrl->SetAerial();
-				m_player->GetAirTimer()->SetTime(m_physCtrl->GetAirTime());
-			}
 		}
 	}
 	else
@@ -136,10 +135,7 @@ void GroundedState::ProcessInputs()
 			m_player->SetAirbourne(true);
 			m_player->SetCantSpinJump(true);
 			if (m_physCtrl->GetPhysicsType() != PhysicsType::rise)
-			{
 				m_physCtrl->SetAerial();
-				m_player->GetAirTimer()->SetTime(m_physCtrl->GetAirTime());
-			}
 		}
 	}
 	else
@@ -183,7 +179,8 @@ void GroundedState::UpdateGroundAnimation()
 void GroundedState::Slide(bool dir)
 {
 	m_player->SetXVelocity(m_player->GetXVelocity() / 2);
-	m_player->DecrementXVelocity((dir ? -1.f : 1.f) * 0.3125f);
+	m_player->DecrementXVelocity((dir ? -1.f : 1.f) * 0.3125f * PlayerState::s_frameStep);
+
 	if (m_animSpr->GetCurrentAnim() != MarioAnims::SKID)
 		m_animSpr->ChangeAnim(MarioAnims::SKID);
 	m_turningAround = true;
@@ -205,7 +202,7 @@ void AirborneState::ProcessInputs()
 		if (m_player->GetDirection())
 			m_player->SetDirection(false);
 
-		m_player->DecrementXVelocity(m_physCtrl->GetXAcceleration());
+		m_player->DecrementXVelocity(m_physCtrl->GetXAcceleration() * PlayerState::s_frameStep);
 	}
 
 	if (inputManager.GetKeyState(Keys::RIGHT_KEY))
@@ -213,7 +210,7 @@ void AirborneState::ProcessInputs()
 		 if (!m_player->GetDirection())
 			 m_player->SetDirection(true);
 
-		 m_player->IncrementXVelocity(m_physCtrl->GetXAcceleration());
+		 m_player->IncrementXVelocity(m_physCtrl->GetXAcceleration() * PlayerState::s_frameStep);
 	}
 
 	if (!inputManager.GetKeyState(Keys::JUMP_KEY))
@@ -306,16 +303,16 @@ void DieingState::Update(float deltaTime)
 		if (m_physCtrl->GetPhysicsType() != PhysicsType::rise)
 			m_physCtrl->SetAerial();
 
-		m_player->DecrementYVelocity(m_physCtrl->GetYAcceleration());
-		m_player->Move(sf::Vector2f(0, m_player->GetYVelocity() * GameConstants::FPS * deltaTime));
+		m_player->DecrementYVelocity(m_physCtrl->GetYAcceleration() * PlayerState::s_frameStep);
+		m_player->Move(sf::Vector2f(0, m_player->GetYVelocity() * PlayerState::s_frameStep));
 	}
 	else
 	{
 		if (m_physCtrl->GetPhysicsType() != PhysicsType::drop)
 			m_physCtrl->SetAerial();
 
-		m_player->IncrementYVelocity(m_physCtrl->GetYAcceleration());
-		m_player->Move(sf::Vector2f(0, m_player->GetYVelocity() * GameConstants::FPS * deltaTime));
+		m_player->IncrementYVelocity(m_physCtrl->GetYAcceleration() * PlayerState::s_frameStep);
+		m_player->Move(sf::Vector2f(0, m_player->GetYVelocity() * PlayerState::s_frameStep));
 		if (GameManager::Get()->GetCamera().CheckVerticalBounds(m_player->GetAABB()))
 		{
 			if (!GameConstants::Automated)

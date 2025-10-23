@@ -30,6 +30,7 @@ void PPlant::Animate(float deltaTime)
 {
 	AnimatedSprite* animSpr = GetAnimSpr();
 	PhysicsController* physCtrl = GetPhysicsController();
+	const float step = GameConstants::FPS * deltaTime;
 
 	animSpr->Update(deltaTime);
 
@@ -46,7 +47,7 @@ void PPlant::Animate(float deltaTime)
 
 	if (GetYVelocity() != 0)
 	{
-		Move(0, GetYVelocity() * GameConstants::FPS * deltaTime);
+		Move(0, GetYVelocity() * step);
 		GameManager::Get()->GetCollisionMgr()->ProcessCollisions(this);
 	}
 

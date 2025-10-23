@@ -23,6 +23,8 @@ Player::Player(const sf::Vector2f& pos)
 
 void Player::Update(float deltaTime)
 {
+	PlayerState::s_frameStep = GameConstants::FPS * deltaTime;
+
 	AnimatedSprite* animSpr = GetAnimSpr();
 	PhysicsController* physCtrl = GetPhysicsController();
 	GameManager* gameMgr = GameManager::Get();
@@ -77,10 +79,10 @@ void Player::Update(float deltaTime)
 					else
 					{
 						if (GetSlideLeft())
-							DecrementXVelocity(physCtrl->GetXAcceleration());
+							DecrementXVelocity(physCtrl->GetXAcceleration() * PlayerState::s_frameStep);
 
 						if (GetSlideRight())
-							IncrementXVelocity(physCtrl->GetXAcceleration());
+							IncrementXVelocity(physCtrl->GetXAcceleration() * PlayerState::s_frameStep);
 
 						if (animSpr->GetCurrentAnim() != MarioAnims::IDLE)
 							animSpr->ChangeAnim(MarioAnims::IDLE);
@@ -114,7 +116,11 @@ void Player::Update(float deltaTime)
 			if (GetAirbourne())
 			{
 				if (m_stateMgr.GetStateName() != "Airborne")
+				{
 					m_stateMgr.PushState(new AirborneState(this));
+					// reset jump timer exactly once on entering Airborne
+					m_airTimer.SetTime(physCtrl->GetAirTime());
+				}
 
 				m_airTimer.Update(deltaTime);
 				if (m_airTimer.CheckEnd())
@@ -125,12 +131,12 @@ void Player::Update(float deltaTime)
 				else
 				{
 					if (m_airTimer.GetTime() < physCtrl->GetAirTime() * 0.6f)
-						DecrementYVelocity(physCtrl->GetYAcceleration());
+						DecrementYVelocity(physCtrl->GetYAcceleration() * PlayerState::s_frameStep);
 				}
 			}
 			else
 			{
-				IncrementYVelocity(GameConstants::Gravity);
+				IncrementYVelocity(GameConstants::Gravity * PlayerState::s_frameStep);
 				if (!GetOnSlope())
 				{
 					if (physCtrl->GetPhysicsType() != PhysicsType::drop)
@@ -154,7 +160,7 @@ void Player::Update(float deltaTime)
 		if (GetXVelocity() != 0)
 		{
 			SetPrevPosition(GetPosition());
-			Move(sf::Vector2f(GetXVelocity() * GameConstants::FPS * deltaTime, 0));
+			Move(sf::Vector2f(GetXVelocity() * PlayerState::s_frameStep, 0));
 			gameMgr->GetCollisionMgr()->ProcessCollisions(this);
 		}
 
@@ -172,7 +178,7 @@ void Player::Update(float deltaTime)
 		if (GetYVelocity() != 0)
 		{
 			SetPrevPosition(GetPosition());
-			Move(sf::Vector2f(0, GetYVelocity() * GameConstants::FPS * deltaTime));
+			Move(sf::Vector2f(0, GetYVelocity() * PlayerState::s_frameStep));
 			gameMgr->GetCollisionMgr()->ProcessCollisions(this);
 		}
 
@@ -336,8 +342,6 @@ void Player::ProcessInput()
 
 	Input();
 
-	m_stateMgr.ProcessInputs();
-
 	if (GameManager::Get()->GetInputManager().GetKeyState(Keys::DOWN_KEY))
 	{
 		if (GetOnSlope())
@@ -368,75 +372,7 @@ void Player::ProcessInput()
 
 void Player::Input()
 {
-	/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-	{
-		inputManager.GetKeyState(Keys::LEFT_KEY) = true;
-	}
-	else
-	{
-		if (inputManager.GetKeyState(Keys::LEFT_KEY))
-			inputManager.GetKeyState(Keys::LEFT_KEY) = false;
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-	{
-		inputManager.GetKeyState(Keys:RIGHT_KEY) = true;
-	}
-	else
-	{
-		if (inputManager.GetKeyState(Keys:RIGHT_KEY))
-			inputManager.GetKeyState(Keys:RIGHT_KEY) = false;
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-	{
-		inputManager.GetKeyState(Keys::UP_KEY) = true;
-	}
-	else
-	{
-		if (inputManager.GetKeyState(Keys::UP_KEY))
-			inputManager.GetKeyState(Keys::UP_KEY) = false;
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-	{
-		inputManager.GetKeyState(Keys::DOWN_KEY) = true;
-	}
-	else
-	{
-		if (inputManager.GetKeyState(Keys::DOWN_KEY))
-			inputManager.GetKeyState(Keys::DOWN_KEY) = false;
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-	{
-		m_keyStates[Keys::JUMP_KEY] = true;
-	}
-	else
-	{
-		if (m_keyStates[Keys::JUMP_KEY])
-			m_keyStates[Keys::JUMP_KEY] = false;
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-	{
-		m_keyStates[Keys::RUN_KEY] = true;
-	}
-	else
-	{
-		if (m_keyStates[Keys::RUN_KEY])
-			m_keyStates[Keys::RUN_KEY] = false;
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-	{
-		m_keyStates[Keys::SJUMP_KEY] = true;
-	}
-	else
-	{
-		if (m_keyStates[Keys::SJUMP_KEY])
-			m_keyStates[Keys::SJUMP_KEY] = false;
-	}*/
+	m_stateMgr.ProcessInputs();
 }
 
 bool AutomatedPlayer::s_playerInserted = false;
@@ -458,67 +394,56 @@ void AutomatedPlayer::Reset()
 
 bool AutomatedPlayer::UpdateANN()
 {
-	std::vector<double> inputs;
-
-	inputs = GameManager::Get()->GetAIController()->GetGridInputs();
-
+	auto ai = GameManager::Get()->GetAIController();
+	std::vector<double> inputs = ai->GetGridInputs();
 	outputs = m_itsBrain->Update(inputs, CNeuralNet::active);
-
-	if (outputs.size() < CParams::iNumOutputs)
-		return false;
-
-	return true;
+	return !outputs.empty();
 }
 
 void AutomatedPlayer::Input()
 {
-	GameManager::Get()->GetLogger().AddDebugLog(std::format("Player {}", GameManager::Get()->GetAIController()->GetCurrentPlayerNum()), false);
+	auto* gm = GameManager::Get();
+	gm->GetLogger().AddDebugLog(std::format("Player {}", gm->GetAIController()->GetCurrentPlayerNum()), false);
 
-	for (int i = 0; i < outputs.size(); ++i)
+	// Map ANN output index -> actual input keys
+	static const std::array<int, 7> keyOrder = {
+		Keys::LEFT_KEY,
+		Keys::RIGHT_KEY,
+		Keys::UP_KEY,
+		Keys::DOWN_KEY,
+		Keys::RUN_KEY,
+		Keys::JUMP_KEY,
+		Keys::SJUMP_KEY
+	};
+
+	// Labels to mirror your previous logging
+	static const std::array<const char*, 7> moveNames = {
+		"left", "rght", "look", "down", "run", "jump", "sJmp"
+	};
+
+	// Remember last state per ANN-controlled key for hysteresis
+	static std::array<bool, 7> last = { false, false, false, false, false, false, false };
+
+	// Hysteresis band around 0.5
+	constexpr double onThreshold = 0.55;  // press if >= this
+	constexpr double offThreshold = 0.45;  // release if <= this
+
+	for (size_t i = 0; i < keyOrder.size() && i < outputs.size(); ++i)
 	{
-		bool output = false;
-		double oval = outputs[i];
+		const double oval = outputs[i];
 
-		std::string move = "";
-		switch (i)
-		{
-		case Keys::LEFT_KEY:
-			move = "left";
-			break;
-		case Keys::RIGHT_KEY:
-			move = "rght";
-			break;
-		case Keys::UP_KEY:
-			move = "look";
-			break;
-		case Keys::DOWN_KEY:
-			move = "down";
-			break;
-		case Keys::RUN_KEY:
-			move = "run";
-			break;
-		case Keys::JUMP_KEY:
-			move = "jump";
-			break;
-		case Keys::SJUMP_KEY:
-			move = "sJmp";
-			break;
-		default:
-			break;
-		}
+		bool state = last[i];
+		if (!state && oval >= onThreshold)       state = true;
+		else if (state && oval <= offThreshold)  state = false;
+		last[i] = state;
 
-		//clamp output
-		if (oval <= 0.1) output = false;
-		else if (oval >= 0.9)
-			output = true;
-		else output = false;
+		// Log in the same style as the old version
+		gm->GetLogger().AddDebugLog(std::format("{} = {} = {}", moveNames[i], oval, state), false);
+		gm->GetLogger().AddDebugLog("\t", false);
 
-		GameManager::Get()->GetLogger().AddDebugLog(std::format("{} = {} = {}", move, oval, output), false);
-		GameManager::Get()->GetLogger().AddDebugLog("\t", false);
-
-		//store output
-		GameManager::Get()->GetInputManager().SetKeyState(i, output);
+		// Apply to the actual mapped key (fixes the original bug)
+		gm->GetInputManager().SetKeyState(keyOrder[i], state);
 	}
 
-	GameManager::Get()->GetLogger().AddDebugLog("");
+	gm->GetLogger().AddDebugLog(""); // end the line
 }

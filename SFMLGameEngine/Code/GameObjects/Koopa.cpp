@@ -36,6 +36,7 @@ void Koopa::Animate(float deltaTime)
 	AnimatedSprite* animSpr = GetAnimSpr();
 	PhysicsController* physCtrl = GetPhysicsController();
 	CollisionManager* colMgr = GameManager::Get()->GetCollisionMgr();
+	const float step = GameConstants::FPS * deltaTime;
 
 	animSpr->Update(deltaTime);
 
@@ -69,10 +70,10 @@ void Koopa::Animate(float deltaTime)
 			if (GetSlideLeft() || GetSlideRight())
 			{
 				if (GetSlideLeft())
-					DecrementXVelocity(physCtrl->GetXAcceleration());
+					DecrementXVelocity(physCtrl->GetXAcceleration() * step);
 
 				if (GetSlideRight())
-					IncrementXVelocity(physCtrl->GetXAcceleration());
+					IncrementXVelocity(physCtrl->GetXAcceleration() * step);
 			}
 		}
 		else
@@ -96,14 +97,14 @@ void Koopa::Animate(float deltaTime)
 		if (physCtrl->GetPhysicsType() != PhysicsType::drop)
 			physCtrl->SetFalling();
 
-		IncrementYVelocity(GameConstants::Gravity);
+		IncrementYVelocity(GameConstants::Gravity * step);
 	}
 
 	if (HasLifes())
 	{
 		if (GetXVelocity() != 0)
 		{
-			Move(GetXVelocity() * GameConstants::FPS * deltaTime, 0);
+			Move(GetXVelocity() * step, 0);
 			colMgr->ProcessCollisions(this);
 		}
 
@@ -111,7 +112,7 @@ void Koopa::Animate(float deltaTime)
 
 		if (GetYVelocity() != 0)
 		{
-			Move(0, GetYVelocity() * GameConstants::FPS * deltaTime);
+			Move(0, GetYVelocity() * step);
 			colMgr->ProcessCollisions(this);
 		}
 	}

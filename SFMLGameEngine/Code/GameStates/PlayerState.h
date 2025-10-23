@@ -33,6 +33,8 @@ public:
 
 	Player* GetPlayer() { return m_player; }
 
+	static float s_frameStep;
+
 protected:
 
 	Player* m_player;

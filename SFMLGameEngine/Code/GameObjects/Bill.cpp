@@ -80,6 +80,7 @@ void Bill::UpdateBody()
 void Bill::Animate(float deltaTime)
 {
 	SetPrevPosition(GetPosition());
+	const float step = GameConstants::FPS * deltaTime;
 
 	if (HasLifes())
 	{
@@ -94,7 +95,7 @@ void Bill::Animate(float deltaTime)
 
 		if (GetXVelocity() != 0)
 		{
-			Move(GetXVelocity() * GameConstants::FPS * deltaTime, 0);
+			Move(GetXVelocity() * step, 0);
 			GameManager::Get()->GetCollisionMgr()->ProcessCollisions(this);
 		}
 	}
@@ -105,9 +106,9 @@ void Bill::Animate(float deltaTime)
 		if (physCtrl->GetPhysicsType() != PhysicsType::drop)
 			physCtrl->SetFalling();
 
-		IncrementYVelocity(physCtrl->GetYAcceleration());
+		IncrementYVelocity(physCtrl->GetYAcceleration() * step);
 
-		Move(0, GetYVelocity() * GameConstants::FPS * deltaTime);
+		Move(0, GetYVelocity() * step);
 	}
 
 	UpdateBody();

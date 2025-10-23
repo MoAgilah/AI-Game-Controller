@@ -15,7 +15,6 @@ Rex::Rex(bool dir, const sf::Vector2f& initPos)
 
 void Rex::Reset()
 {
-
 	auto animSpr = GetAnimSpr();
 	if (animSpr->GetCurrentAnim() != RexAnims::WALKTALL)
 		animSpr->ChangeAnim(RexAnims::WALKTALL);
@@ -53,6 +52,7 @@ void Rex::Animate(float deltaTime)
 	AnimatedSprite* animSpr = GetAnimSpr();
 	PhysicsController* physCtrl = GetPhysicsController();
 	CollisionManager* colMgr = GameManager::Get()->GetCollisionMgr();
+	const float step = GameConstants::FPS * deltaTime;
 
 	animSpr->Update(deltaTime);
 
@@ -86,14 +86,14 @@ void Rex::Animate(float deltaTime)
 		if (physCtrl->GetPhysicsType() != PhysicsType::drop)
 			physCtrl->SetFalling();
 
-		IncrementYVelocity(GameConstants::Gravity);
+		IncrementYVelocity(GameConstants::Gravity * step);
 	}
 
 	if (HasLifes())
 	{
 		if (GetXVelocity() != 0)
 		{
-			Move(GetXVelocity() * GameConstants::FPS * deltaTime, 0);
+			Move(GetXVelocity() * step, 0);
 			colMgr->ProcessCollisions(this);
 		}
 
@@ -101,7 +101,7 @@ void Rex::Animate(float deltaTime)
 
 		if (GetYVelocity() != 0)
 		{
-			Move(0, GetYVelocity() * GameConstants::FPS * deltaTime);
+			Move(0, GetYVelocity() * step);
 			colMgr->ProcessCollisions(this);
 		}
 	}
