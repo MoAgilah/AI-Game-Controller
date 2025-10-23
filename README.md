@@ -158,15 +158,22 @@ SFMLGameEngine
   </tr>
   <tr>
     <td align="center">
-      <strong>Gameplay</strong><br>
-      <img src="https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Screenshots/Game.jpg" alt="Gameplay" width="250">
+      <strong>Manual Gameplay</strong><br>
+      <img src="https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Screenshots/ManualGame.jpg" alt="Manual Gameplay" width="250">
     </td>
     <td align="center">
+      <strong>Auto Gameplay</strong><br>
+      <img src="https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Screenshots/AutoGame.jpg" alt="Auto Gameplay" width="250">
+    </td>
+  </tr>
+  <tr>
+    <td align="center" colspan="2">
       <strong>Pause Menu</strong><br>
       <img src="https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Screenshots/PauseMenu.jpg" alt="Pause Menu" width="250">
     </td>
   </tr>
 </table>
+
 
 ---
 
