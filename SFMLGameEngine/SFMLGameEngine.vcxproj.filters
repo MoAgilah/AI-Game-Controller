@@ -541,9 +541,6 @@
     <Image Include="Resources\Sprites\Coin.png">
       <Filter>Resource Files\Sprites</Filter>
     </Image>
-    <Image Include="Previews\Screenshots\Game.jpg">
-      <Filter>Resource Files\Previews\ScreenShots</Filter>
-    </Image>
     <Image Include="Previews\Screenshots\MainMenu.jpg">
       <Filter>Resource Files\Previews\ScreenShots</Filter>
     </Image>
@@ -558,6 +555,12 @@
     </Image>
     <Image Include="Previews\GIFs\AutomatedDemo.gif">
       <Filter>Resource Files\Previews\Gifs</Filter>
+    </Image>
+    <Image Include="Previews\Screenshots\AutoGame.jpg">
+      <Filter>Resource Files\Previews\ScreenShots</Filter>
+    </Image>
+    <Image Include="Previews\Screenshots\ManualGame.jpg">
+      <Filter>Resource Files\Previews\ScreenShots</Filter>
     </Image>
   </ItemGroup>
 </Project>

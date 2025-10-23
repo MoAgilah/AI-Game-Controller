@@ -321,8 +321,9 @@
   <ItemGroup>
     <Image Include="Previews\GIFs\AutomatedDemo.gif" />
     <Image Include="Previews\GIFs\ManualDemo.gif" />
-    <Image Include="Previews\Screenshots\Game.jpg" />
+    <Image Include="Previews\Screenshots\AutoGame.jpg" />
     <Image Include="Previews\Screenshots\MainMenu.jpg" />
+    <Image Include="Previews\Screenshots\ManualGame.jpg" />
     <Image Include="Previews\Screenshots\PauseMenu.jpg" />
     <Image Include="Previews\Screenshots\Title.jpg" />
     <Image Include="Resources\Sprites\Background.png" />
