@@ -159,7 +159,7 @@ SFMLGameEngine
   <tr>
     <td align="center">
       <strong>Gameplay</strong><br>
-      <img src="https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Screenshots/Game.jpg" alt="Gameplay" width="250">
+      <img src="https://raw.githubusercontent.com/MoAgilah/AI-Game-Controller/master/SFMLGameEngine/Previews/Screenshots/ManualGame.jpg" alt="Gameplay" width="250">
     </td>
     <td align="center">
       <strong>Pause Menu</strong><br>
