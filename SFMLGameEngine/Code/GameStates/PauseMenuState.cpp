@@ -2,7 +2,7 @@
 #include "../Game/Constants.h"
 #include "../GameStates/TitleState.h"
 
-enum MenuPosition { Resume, ToTitle, Quit };
+enum MenuPosition { Resume, Quit };
 
 void PauseMenuActionFunc(int menuPosition)
 {
@@ -12,12 +12,6 @@ void PauseMenuActionFunc(int menuPosition)
 	{
 	case MenuPosition::Resume:
 		gameMgr->GetGameStateMgr()->PopState();
-		break;
-	case MenuPosition::ToTitle:
-		gameMgr->Reinitialise();
-		gameMgr->GetGameStateMgr()->ClearStates();
-		GameConstants::GameIsReady = false;
-		gameMgr->GetGameStateMgr()->ChangeState(new TitleState(gameMgr));
 		break;
 	case MenuPosition::Quit:
 		gameMgr->GetRenderWindow().close();
@@ -33,7 +27,6 @@ PauseMenuState::PauseMenuState(GameManager* gameMgr)
 		20,
 		sf::Vector2f(GameConstants::ScreenDim.x / 2.0f, GameConstants::ScreenDim.y / 2.0f))
 {
-	m_menu.AddMenuItem("Return To Title Screen");
 	m_menu.AddMenuItem("Quit");
 
 	m_gameMgr = gameMgr;

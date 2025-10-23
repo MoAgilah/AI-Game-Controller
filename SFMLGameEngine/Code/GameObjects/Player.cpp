@@ -6,7 +6,7 @@
 #include "../GameStates/PlayerState.h"
 
 Player::Player(const sf::Vector2f& pos)
-	: DynamicObject(new AnimatedSprite(TexID::Mario, 14, 4, GameConstants::FPS, false, 0.5f), sf::Vector2f(9,16)), m_airTimer(0.4f), m_invulTimer(1)
+	: DynamicObject(new AnimatedSprite(TexID::Mario, 14, 4, GameConstants::FPS, false, 0.5f), sf::Vector2f(9, 16)), m_airTimer(0.4f), m_invulTimer(1)
 {
 	SetInitialDirection(true);
 	SetDirection(GetInitialDirection());
@@ -405,7 +405,7 @@ void AutomatedPlayer::Input()
 	auto* gm = GameManager::Get();
 	gm->GetLogger().AddDebugLog(std::format("Player {}", gm->GetAIController()->GetCurrentPlayerNum()), false);
 
-	// Map ANN output index -> actual input keys
+	// Map ANN output index -> actual input keys (keep this aligned with your ANN outputs)
 	static const std::array<int, 7> keyOrder = {
 		Keys::LEFT_KEY,
 		Keys::RIGHT_KEY,
@@ -416,34 +416,76 @@ void AutomatedPlayer::Input()
 		Keys::SJUMP_KEY
 	};
 
-	// Labels to mirror your previous logging
+	// Labels for one-line debug logging
 	static const std::array<const char*, 7> moveNames = {
 		"left", "rght", "look", "down", "run", "jump", "sJmp"
 	};
 
-	// Remember last state per ANN-controlled key for hysteresis
+	// Persisted hysteresis state per ANN-controlled key
 	static std::array<bool, 7> last = { false, false, false, false, false, false, false };
 
-	// Hysteresis band around 0.5
-	constexpr double onThreshold = 0.55;  // press if >= this
-	constexpr double offThreshold = 0.45;  // release if <= this
+	// Base hysteresis band around 0.5
+	constexpr double onDefault = 0.55;  // press if >= this
+	constexpr double offDefault = 0.45;  // release if <= this
+
+	// Convenience handles for crouch gating
+	const bool onGround = gm->GetPlayer()->GetOnGround();
+	const bool onSlope = gm->GetPlayer()->GetOnSlope();
+	const float vx = gm->GetPlayer()->GetXVelocity();
 
 	for (size_t i = 0; i < keyOrder.size() && i < outputs.size(); ++i)
 	{
 		const double oval = outputs[i];
 
+		// Per-key priors chosen by KEY (order-independent thresholds)
+		double onTh = onDefault;
+		double offTh = offDefault;
+
+		switch (keyOrder[i]) {
+		case Keys::RIGHT_KEY:
+		case Keys::RUN_KEY:
+			onTh = 0.50;  offTh = 0.40;  // nudge to keep moving right
+			break;
+		case Keys::LEFT_KEY:
+			onTh = 0.65;  offTh = 0.50;  // discourage going left
+			break;
+		case Keys::DOWN_KEY:
+			onTh = 0.75;  offTh = 0.52;  // make crouch rarer & release sooner
+			break;
+		default:
+			break;
+		}
+
+		// Hysteresis
 		bool state = last[i];
-		if (!state && oval >= onThreshold)       state = true;
-		else if (state && oval <= offThreshold)  state = false;
+		if (!state && oval >= onTh)       state = true;
+		else if (state && oval <= offTh)  state = false;
+
+		// Light action gating for crouch: don't crouch while airborne/slope/high speed
+		if (keyOrder[i] == Keys::DOWN_KEY) {
+			if (!onGround || onSlope || std::fabs(vx) > 5.f) {
+				state = false;
+			}
+		}
+
+		// One-shot diagnostic: which output index actually toggles crouch ON?
+		const bool pressedThisFrame = (!last[i] && state);
+		if (keyOrder[i] == Keys::DOWN_KEY && pressedThisFrame) {
+			gm->GetLogger().AddExperimentLog(
+				std::format("[ANN] DOWN toggled ON by output index {}", i)
+			);
+		}
+
 		last[i] = state;
 
-		// Log in the same style as the old version
+		// Per-frame debug row (key = value = state)
 		gm->GetLogger().AddDebugLog(std::format("{} = {} = {}", moveNames[i], oval, state), false);
 		gm->GetLogger().AddDebugLog("\t", false);
 
-		// Apply to the actual mapped key (fixes the original bug)
+		// Apply to the actual mapped key
 		gm->GetInputManager().SetKeyState(keyOrder[i], state);
 	}
 
 	gm->GetLogger().AddDebugLog(""); // end the line
 }
+

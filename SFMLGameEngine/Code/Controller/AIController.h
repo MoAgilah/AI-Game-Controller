@@ -29,14 +29,15 @@ public:
 	double BestFitness() const { return m_bestFitness; }
 
 private:
-
 	double ColourToInput(sf::Color col);
 	void EndOfRunCalculation(AutomatedPlayer* ply, bool stalled);
 
+	// --- motion/rotation bookkeeping for the current player ---
 	float m_prevPosX = 0.f;     // last frame X for the *current* player
-	float m_prevPosY = 0.f;		// last frame Y for the *current* player
+	float m_prevPosY = 0.f;     // last frame Y for the *current* player
 	int   m_inactiveFrames = 0; // consecutive frames with no real movement
-	// per-player stall flags
+
+	// per-player stall flags (due to inactivity timeout)
 	std::vector<bool> m_playerStalled;
 
 	int m_currPlayer = 0;
@@ -48,4 +49,15 @@ private:
 	std::vector<double> m_inputs;
 	std::unique_ptr<ANNView> m_AnnView;
 	std::vector<std::shared_ptr<AutomatedPlayer>> m_players;
+
+	// =========================
+	// Shaping trackers (per-player)
+	// =========================
+	std::vector<float> m_rightwardPixels;   // sum of positive dx this run
+	std::vector<int>   m_crouchFrames;      // frames spent crouched
+
+	std::vector<int>   m_superFrames;       // frames spent in Super state
+	std::vector<bool>  m_startedSuper;      // whether player started Super at run begin
+	std::vector<int>   m_framesBoxAhead;    // frames a "box" was reachable ahead/above
+	std::vector<int>   m_framesTriedBox;    // frames we tried (jumped) while a box was reachable
 };
