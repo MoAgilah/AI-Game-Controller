@@ -556,7 +556,7 @@
     <Image Include="Previews\GIFs\ManualDemo.gif">
       <Filter>Resource Files\Previews\Gifs</Filter>
     </Image>
-    <Image Include="Previews\GIFs\AutomatedMode.gif">
+    <Image Include="Previews\GIFs\AutomatedDemo.gif">
       <Filter>Resource Files\Previews\Gifs</Filter>
     </Image>
   </ItemGroup>

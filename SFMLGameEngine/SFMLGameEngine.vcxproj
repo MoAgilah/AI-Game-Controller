@@ -319,7 +319,7 @@
     <Font Include="Resources\Fonts\arial.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Previews\GIFs\AutomatedMode.gif" />
+    <Image Include="Previews\GIFs\AutomatedDemo.gif" />
     <Image Include="Previews\GIFs\ManualDemo.gif" />
     <Image Include="Previews\Screenshots\Game.jpg" />
     <Image Include="Previews\Screenshots\MainMenu.jpg" />
